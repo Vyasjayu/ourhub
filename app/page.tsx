@@ -19,14 +19,10 @@ export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <main
-  className="
-  min-h-screen
-  bg-[#071424]
-  text-white
-  pb-32
-  "
->
+   <main className="min-h-screen bg-slate-950 text-white">
+      {/* Header */}
+      <div className="sticky top-0 z-20 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
+        <div className="mx-auto flex max-w-md items-center gap-3 px-4 py-4">
 
       <Sidebar
         open={sidebarOpen}
@@ -54,7 +50,8 @@ export default function Home() {
 <Testimonials />
       </div>
 <BottomNav />
-
+</div>
+</div>
     </main>
   );
 }

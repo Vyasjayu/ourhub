@@ -22,27 +22,27 @@ import BottomNav from "@/components/BottomNav";
 export default function ReligiousPage() {
 
 
-const router = useRouter();
+  const router = useRouter();
 
 
 
-return (
+  return (
 
-<main
+    <main
 
-className="
+      className="
 min-h-screen
 bg-[#020617]
 flex
 justify-center
 "
 
->
+    >
 
 
-<div
+      <div
 
-className="
+        className="
 relative
 w-full
 max-w-[430px]
@@ -59,16 +59,16 @@ pb-32
 
 "
 
->
+      >
 
 
 
-{/* Background Effects */}
+        {/* Background Effects */}
 
 
-<div
+        <div
 
-className="
+          className="
 absolute
 top-0
 left-0
@@ -87,13 +87,13 @@ blur-3xl
 
 "
 
-/>
+        />
 
 
 
-<div
+        <div
 
-className="
+          className="
 absolute
 bottom-40
 right-[-100px]
@@ -109,7 +109,7 @@ blur-3xl
 
 "
 
-/>
+        />
 
 
 
@@ -118,12 +118,12 @@ blur-3xl
 
 
 
-{/* Floating Header */}
+        {/* Floating Header */}
 
 
-<header
+        <header
 
-className="
+          className="
 sticky
 top-3
 z-50
@@ -143,12 +143,12 @@ shadow-2xl
 
 "
 
->
+        >
 
 
-<div
+          <div
 
-className="
+            className="
 flex
 items-center
 justify-between
@@ -156,28 +156,28 @@ p-4
 
 "
 
->
+          >
 
 
 
-<div>
+            <div>
 
 
-<div
+              <div
 
-className="
+                className="
 flex
 items-center
 gap-2
 
 "
 
->
+              >
 
 
-<div
+                <div
 
-className="
+                  className="
 h-10
 w-10
 
@@ -191,77 +191,77 @@ justify-center
 
 "
 
->
+                >
 
-<Sparkles
+                  <Sparkles
 
-size={20}
+                    size={20}
 
-className="text-yellow-400"
+                    className="text-yellow-400"
 
-/>
+                  />
 
-</div>
-
-
-
-<div>
+                </div>
 
 
-<h1
 
-className="
+                <div>
+
+
+                  <h1
+
+                    className="
 font-bold
 text-lg
 
 "
 
->
+                  >
 
-Religious
+                    Religious
 
-<span className="text-yellow-400">
- Services
-</span>
-
-
-</h1>
+                    <span className="text-yellow-400">
+                      Services
+                    </span>
 
 
-<p
+                  </h1>
 
-className="
+
+                  <p
+
+                    className="
 text-xs
 text-slate-400
 
 "
 
->
+                  >
 
-Book Spiritual Services
+                    Book Spiritual Services
 
-</p>
-
-
-</div>
+                  </p>
 
 
-
-</div>
-
-
-</div>
+                </div>
 
 
+
+              </div>
+
+
+            </div>
 
 
 
 
-<button
 
-onClick={()=>router.back()}
 
-className="
+            <button
+
+              onClick={() => router.back()}
+
+              className="
 h-10
 w-10
 
@@ -275,27 +275,25 @@ justify-center
 
 "
 
->
+            >
 
-<ArrowLeft
+              <ArrowLeft
 
-size={22}
+                size={22}
 
-className="text-yellow-400"
+                className="text-yellow-400"
 
-/>
+              />
 
-</button>
-
-
+            </button>
 
 
-</div>
 
 
-</header>
+          </div>
 
 
+        </header>
 
 
 
@@ -303,12 +301,14 @@ className="text-yellow-400"
 
 
 
-{/* Trust Section */}
 
 
-<section
+        {/* Trust Section */}
 
-className="
+
+        <section
+
+          className="
 mx-4
 mt-6
 
@@ -327,24 +327,24 @@ p-4
 
 "
 
->
+        >
 
 
-<div
+          <div
 
-className="
+            className="
 flex
 items-center
 gap-3
 
 "
 
->
+          >
 
 
-<div
+            <div
 
-className="
+              className="
 h-12
 w-12
 
@@ -358,60 +358,58 @@ justify-center
 
 "
 
->
+            >
 
-<ShieldCheck
+              <ShieldCheck
 
-className="text-green-400"
+                className="text-green-400"
 
-/>
+              />
 
-</div>
-
-
-
-<div>
+            </div>
 
 
-<h3
 
-className="
+            <div>
+
+
+              <h3
+
+                className="
 font-semibold
 
 "
 
->
+              >
 
-Verified Pandits
+                Verified Pandits
 
-</h3>
+              </h3>
 
 
-<p
+              <p
 
-className="
+                className="
 text-xs
 text-slate-400
 
 "
 
->
+              >
 
-Trusted spiritual experts near you
+                Trusted spiritual experts near you
 
-</p>
-
-
-</div>
+              </p>
 
 
-
-</div>
-
-
-</section>
+            </div>
 
 
+
+          </div>
+
+
+        </section>
 
 
 
@@ -420,12 +418,14 @@ Trusted spiritual experts near you
 
 
 
-{/* Search Area */}
 
 
-<section
+        {/* Search Area */}
 
-className="
+
+        <section
+
+          className="
 mx-4
 mt-5
 
@@ -433,31 +433,31 @@ space-y-3
 
 "
 
->
+        >
 
 
-<SearchBar />
+          <SearchBar />
 
 
-<CitySelector />
+          <CitySelector />
 
 
-</section>
-
-
-
+        </section>
 
 
 
 
 
 
-{/* Hero Banner */}
 
 
-<section
 
-className="
+        {/* Hero Banner */}
+
+
+        <section
+
+          className="
 mx-4
 mt-6
 
@@ -481,38 +481,38 @@ shadow-xl
 
 "
 
->
+        >
 
 
-<WelcomeBanner />
+          <WelcomeBanner />
 
 
-</section>
-
-
-
+        </section>
 
 
 
 
 
 
-{/* Categories */}
 
 
-<section
 
-className="
+        {/* Categories */}
+
+
+        <section
+
+          className="
 mt-8
 
 "
 
->
+        >
 
 
-<div
+          <div
 
-className="
+            className="
 flex
 items-center
 justify-between
@@ -522,39 +522,39 @@ mb-3
 
 "
 
->
+          >
 
-<h2
+            <h2
 
-className="
+              className="
 text-lg
 font-bold
 
 "
 
->
+            >
 
-Explore Services
+              Explore Services
 
-</h2>
-
-
-<Star
-
-size={18}
-
-className="text-yellow-400"
-
-/>
+            </h2>
 
 
-</div>
+            <Star
+
+              size={18}
+
+              className="text-yellow-400"
+
+            />
+
+
+          </div>
 
 
 
-<div
+          <div
 
-className="
+            className="
 rounded-3xl
 
 border
@@ -566,14 +566,14 @@ p-3
 
 "
 
->
+          >
 
-<TopCategories />
+            <TopCategories />
 
-</div>
+          </div>
 
 
-</section>
+        </section>
 
 
 
@@ -583,60 +583,60 @@ p-3
 
 
 
-{/* Main Sections */}
+        {/* Main Sections */}
 
 
 
-<div className="mt-6 space-y-6">
+        <div className="mt-6 space-y-6">
 
 
 
-<section className="mx-4 rounded-3xl bg-[#081423] border border-white/10 p-3">
+          <section className="mx-4 rounded-3xl bg-[#081423] border border-white/10 p-3">
 
-<PopularPujas />
+            <PopularPujas />
 
-</section>
+          </section>
 
 
 
 
-<section className="mx-4 rounded-3xl bg-[#081423] border border-white/10 p-3">
+          <section className="mx-4 rounded-3xl bg-[#081423] border border-white/10 p-3">
 
-<JyotishSection />
+            <JyotishSection />
 
-</section>
+          </section>
 
 
 
 
 
-<section className="mx-4 rounded-3xl bg-[#081423] border border-white/10 p-3">
+          <section className="mx-4 rounded-3xl bg-[#081423] border border-white/10 p-3">
 
-<VastuSection />
+            <VastuSection />
 
-</section>
+          </section>
 
 
 
 
 
 
-<section className="mx-4">
+          <section className="mx-4">
 
-<OfferBanner />
+            <OfferBanner />
 
-</section>
+          </section>
 
 
 
 
 
 
-<section className="mx-4 rounded-3xl bg-[#081423] border border-white/10 p-3">
+          <section className="mx-4 rounded-3xl bg-[#081423] border border-white/10 p-3">
 
-<TopPandits />
+            <TopPandits />
 
-</section>
+          </section>
 
 
 
@@ -644,11 +644,11 @@ p-3
 
 
 
-<section className="mx-4 rounded-3xl bg-[#081423] border border-white/10 p-3">
+          <section className="mx-4 rounded-3xl bg-[#081423] border border-white/10 p-3">
 
-<Reviews />
+            <Reviews />
 
-</section>
+          </section>
 
 
 
@@ -656,16 +656,16 @@ p-3
 
 
 
-<section className="mx-4 rounded-3xl bg-[#081423] border border-white/10 p-3 mb-5">
+          <section className="mx-4 rounded-3xl bg-[#081423] border border-white/10 p-3 mb-5">
 
-<FAQ />
+            <FAQ />
 
-</section>
+          </section>
 
 
 
 
-</div>
+        </div>
 
 
 
@@ -674,20 +674,20 @@ p-3
 
 
 
-{/* Bottom Navigation */}
+        {/* Bottom Navigation */}
 
 
-<BottomNav />
+        <BottomNav />
 
 
 
 
 
-</div>
+      </div>
 
 
-</main>
+    </main>
 
-);
+  );
 
 }
