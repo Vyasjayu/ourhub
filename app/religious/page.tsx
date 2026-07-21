@@ -28,16 +28,12 @@ export default function ReligiousPage() {
 
   return (
 
-    <main
-
-      className="
+    <main className="
 min-h-screen
 bg-[#020617]
 flex
 justify-center
-"
-
-    >
+" >
 
 
       <div

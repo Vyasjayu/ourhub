@@ -22,6 +22,7 @@ export default function Home() {
     <main
   className="
   min-h-screen
+  flex justify-center
   bg-[#071424]
   text-white
   pb-32
