@@ -10,34 +10,47 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Offer from "@/components/Offer";
 import ServiceCircle from "@/components/ServiceCircle";
-import Trending from "@/components/Trending";
 import Sidebar from "@/components/Sidebar";
+import Trending from "@/components/Trending";
 
 export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <main className="bg-[#071321] min-h-screen relative">
+    <main className="min-h-screen bg-slate-950 text-white">
       {/* Sidebar */}
       <Sidebar
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />
 
-      {/* Header */}
-      <Header onMenuClick={() => setSidebarOpen(true)} />
+      {/* Mobile Container */}
+      <div className="mx-auto w-full max-w-md min-h-screen bg-slate-950 relative overflow-hidden">
 
-      {/* Page Content */}
-      <Hero />
-      <ServiceCircle />
-      <Categories />
-      <BannerSlider />
-      <Features />
-      <Trending />
-      <Offer />
+        {/* Sticky Header */}
+        <div className="sticky top-0 z-50 bg-slate-950/95 backdrop-blur border-b border-slate-800">
+          <Header onMenuClick={() => setSidebarOpen(true)} />
+        </div>
 
-      {/* Bottom Navigation */}
-      <BottomNav />
+        {/* Page Content */}
+        <div className="pb-24">
+          <Hero />
+          <ServiceCircle />
+          <Categories />
+          <BannerSlider />
+          <Features />
+          <Trending />
+          <Offer />
+        </div>
+
+        {/* Bottom Navigation */}
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-slate-950 border-t border-slate-800">
+          <div className="mx-auto max-w-md">
+            <BottomNav />
+          </div>
+        </div>
+
+      </div>
     </main>
   );
 }
