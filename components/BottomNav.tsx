@@ -6,263 +6,207 @@ import { usePathname } from "next/navigation";
 import {
   Home,
   Search,
-  CalendarCheck2,
+  CalendarCheck,
   User,
-  Sparkles,
+  Grid2X2,
 } from "lucide-react";
 
 
-export default function BottomNav() {
+const navItems = [
 
+  {
+    name: "Home",
+    icon: Home,
+    href: "/",
+  },
 
-const pathname = usePathname();
+  {
+    name: "Services",
+    icon: Grid2X2,
+    href: "/services",
+  },
 
+  {
+    name: "Search",
+    icon: Search,
+    href: "/search",
+  },
 
+  {
+    name: "Bookings",
+    icon: CalendarCheck,
+    href: "/bookings",
+  },
 
-const menu=[
-
-{
-name:"Home",
-icon:Home,
-path:"/religious",
-},
-
-
-{
-name:"Services",
-icon:Search,
-path:"/religious/services",
-},
-
-
-{
-name:"Booking",
-icon:CalendarCheck2,
-path:"/religious/bookings",
-},
-
-
-{
-name:"Profile",
-icon:User,
-path:"/religious/profile",
-},
-
+  {
+    name: "Profile",
+    icon: User,
+    href: "/profile",
+  },
 
 ];
 
 
 
-return (
+export default function BottomNav() {
 
 
-<nav className="
-fixed 
-bottom-0 
-left-0 
-right-0 
-z-50
-bg-[#081321]/95
-backdrop-blur-xl
-border-t 
-border-white/10
-">
+  const pathname = usePathname();
 
 
-<div className="
-max-w-[430px]
-mx-auto
-h-20
-flex
-items-center
-justify-around
-relative
-">
 
+  return (
 
+    <nav
 
+      className="
+      fixed
+      bottom-0
+      left-0
+      right-0
+      z-[9999]
+      h-20
+      w-full
+      border-t
+      border-slate-700
+      bg-[#071321]
+      shadow-[0_-5px_20px_rgba(0,0,0,0.4)]
+      "
 
+    >
 
-{/* Home */}
 
-<Link
+      <div
 
-href="/"
+        className="
+        mx-auto
+        flex
+        h-full
+        max-w-md
+        items-center
+        justify-around
+        px-2
+        "
 
-className={`
-flex flex-col items-center
-text-xs
-${pathname==="/religious"
-?"text-yellow-400"
-:"text-gray-400"}
-`}
+      >
 
->
 
-<Home size={24}/>
 
-<span className="mt-1">
-Home
-</span>
+        {
+          navItems.map((item)=>{
 
 
-</Link>
+            const Icon = item.icon;
 
 
+            const active =
+              pathname === item.href;
 
 
 
+            return (
 
+              <Link
 
-{/* Services */}
+                key={item.name}
 
+                href={item.href}
 
-<Link
+                className="
+                flex
+                flex-1
+                flex-col
+                items-center
+                justify-center
+                gap-1
+                "
 
-href="/religious/services"
+              >
 
-className={`
-flex flex-col items-center
-text-xs
-${pathname.includes("/services")
-?"text-yellow-400"
-:"text-gray-400"}
-`}
 
->
 
+                <div
 
-<Search size={24}/>
+                  className={`
+                  flex
+                  h-9
+                  w-9
+                  items-center
+                  justify-center
+                  rounded-full
+                  transition-all
+                  duration-300
 
+                  ${
+                    active
+                    ? "bg-cyan-400/20"
+                    : "bg-transparent"
+                  }
 
-<span className="mt-1">
-Services
-</span>
+                  `}
 
+                >
 
-</Link>
 
+                  <Icon
 
+                    size={23}
 
+                    className={
 
+                      active
+                      ? "text-cyan-400"
+                      : "text-slate-400"
 
+                    }
 
+                  />
 
-{/* Center Button */}
 
+                </div>
 
-<Link
 
-href="/religious/bookings"
 
-className="
-absolute
--top-8
-w-16
-h-16
-rounded-full
-bg-gradient-to-r
-from-yellow-400
-to-orange-500
-shadow-2xl
-flex
-items-center
-justify-center
-border-4
-border-[#071321]
-"
 
 
->
+                <span
 
+                  className={`
 
-<Sparkles
+                  text-[11px]
+                  font-medium
 
-className="text-black"
+                  ${
+                    active
+                    ? "text-cyan-400"
+                    : "text-slate-400"
+                  }
 
-size={30}
+                  `}
 
-/>
+                >
 
+                  {item.name}
 
-</Link>
+                </span>
 
 
 
+              </Link>
 
+            );
 
 
+          })
+        }
 
-{/* Booking */}
 
 
-<Link
+      </div>
 
-href="/religious/bookings"
 
-className={`
-flex flex-col items-center
-text-xs
-${pathname.includes("/bookings")
-?"text-yellow-400"
-:"text-gray-400"}
-`}
+    </nav>
 
->
-
-
-<CalendarCheck2 size={24}/>
-
-
-<span className="mt-1">
-Booking
-</span>
-
-
-</Link>
-
-
-
-
-
-
-
-{/* Profile */}
-
-
-<Link
-
-href="/religious/profile"
-
-className={`
-flex flex-col items-center
-text-xs
-${pathname.includes("/profile")
-?"text-yellow-400"
-:"text-gray-400"}
-`}
-
->
-
-
-<User size={24}/>
-
-
-<span className="mt-1">
-Profile
-</span>
-
-
-</Link>
-
-
-
-</div>
-
-
-</nav>
-
-
-);
+  );
 
 }

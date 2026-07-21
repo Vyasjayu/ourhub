@@ -1,36 +1,43 @@
 "use client";
 
-import { Search } from "lucide-react";
+import { Search, SlidersHorizontal } from "lucide-react";
 
 export default function SearchBar() {
   return (
-    <section className="px-4 pt-5">
+    <section className="px-4 mt-5">
 
       <div className="relative">
 
-        <Search
-          size={20}
-          className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-        />
+        {/* Search Box */}
+        <div className="flex items-center rounded-2xl border border-slate-700/70 bg-slate-900/80 px-4 py-4 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
 
-        <input
-          type="text"
-          placeholder="Search Pandit, Puja, Jyotish..."
-          className="
-            w-full
-            h-14
-            rounded-2xl
-            bg-[#0d1b2a]
-            border border-white/10
-            pl-12
-            pr-4
-            text-white
-            placeholder:text-gray-400
-            outline-none
-            focus:border-yellow-500
-            transition
-          "
-        />
+          {/* Search Icon */}
+          <Search
+            size={22}
+            className="text-slate-400"
+          />
+
+          {/* Input */}
+          <input
+            type="text"
+            placeholder="Search services..."
+            className="ml-3 flex-1 bg-transparent text-[15px] text-white placeholder:text-slate-400 outline-none"
+          />
+
+          {/* Divider */}
+          <div className="mx-4 h-7 w-px bg-slate-700" />
+
+          {/* Filter Button */}
+          <button className="rounded-xl p-2 transition duration-300 hover:bg-slate-800 hover:text-yellow-400">
+
+            <SlidersHorizontal
+              size={22}
+              className="text-slate-300"
+            />
+
+          </button>
+
+        </div>
 
       </div>
 

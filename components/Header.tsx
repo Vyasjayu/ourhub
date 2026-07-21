@@ -1,54 +1,6 @@
-// "use client";
-
-// import { Menu, Bell } from "lucide-react";
-// import Image from "next/image";
-
-// interface HeaderProps {
-//   onMenuClick: () => void;
-// }
-
-// export default function Header({ onMenuClick }: HeaderProps) {
-//   return (
-//     <header className="fixed top-0 left-0 w-full z-50 bg-[#061225]/95 backdrop-blur-xl border-b border-white/10">
-//       <div className="max-w-md mx-auto h-16 px-5 flex items-center justify-between">
-
-//         {/* Menu */}
-//         <button
-//           onClick={onMenuClick}
-//           className="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition"
-//         >
-//           <Menu className="text-white" size={24} />
-//         </button>
-
-//         {/* Logo */}
-//         <div className="flex items-center gap-3">
-//           <Image
-//             src="/ourhub-logo.png"
-//             alt="OurHub"
-//             width={120}
-//             height={120}
-//             priority
-//           />
-
-//           <h1 className="text-3xl font-extrabold">
-//             <span className="text-white">Our</span>
-//             <span className="text-[#D4AF37]">Hub</span>
-//           </h1>
-//         </div>
-
-//         {/* Notification */}
-//         <button className="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition">
-//           <Bell className="text-white" size={22} />
-//         </button>
-
-//       </div>
-//     </header>
-//   );
-// }
-
 "use client";
 
-import { Menu, Bell } from "lucide-react";
+import { Bell, ChevronDown, MapPin, Menu } from "lucide-react";
 import Image from "next/image";
 
 interface HeaderProps {
@@ -57,37 +9,71 @@ interface HeaderProps {
 
 export default function Header({ onMenuClick }: HeaderProps) {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#061225]/95 backdrop-blur-xl border-b border-white/10">
-      <div className="max-w-[430px] mx-auto h-16 px-5 flex items-center justify-between">
+    <header className="sticky top-0 z-50 border-b border-slate-800/50 bg-[#071321]/95 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-md items-center justify-between px-4 py-4">
 
-        {/* Menu */}
-        <button
-          onClick={onMenuClick}
-          className="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition"
-        >
-          <Menu className="text-white" size={24} />
-        </button>
+        {/* Left */}
+        <div className="flex items-center gap-4">
 
-        {/* Logo */}
-        <div className="flex items-center gap-3">
-          <Image
-            src="/ourhub-logo.png"
-            alt="OurHub"
-            width={120}
-            height={100}
-            priority
-          />
+          <button
+            onClick={onMenuClick}
+            className="rounded-xl p-2 transition hover:bg-slate-800"
+          >
+            <Menu size={26} className="text-white" />
+          </button>
 
-          <h1 className="text-3xl font-extrabold">
-            <span className="text-white">Our</span>
-            <span className="text-[#D4AF37]">Hub</span>
+          <h1 className="text-3xl font-extrabold tracking-tight text-yellow-400">
+            OurHub
           </h1>
+
         </div>
 
-        {/* Notification */}
-        <button className="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition">
-          <Bell className="text-white" size={22} />
-        </button>
+        {/* Right */}
+        <div className="flex items-center gap-3">
+
+          {/* Location */}
+          <button className="flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900 px-4 py-2">
+
+            <MapPin
+              size={15}
+              className="text-yellow-400"
+            />
+
+            <span className="text-sm font-medium text-white">
+              Indore, MP
+            </span>
+
+            <ChevronDown
+              size={16}
+              className="text-slate-400"
+            />
+
+          </button>
+
+          {/* Notification */}
+
+          <button className="relative rounded-full p-2 transition hover:bg-slate-800">
+
+            <Bell
+              size={23}
+              className="text-white"
+            />
+
+            <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-yellow-400" />
+
+          </button>
+
+          {/* Profile */}
+
+          <Image
+            src="/images/profile.jpg"
+            alt="Profile"
+            width={42}
+            height={42}
+            className="rounded-full border-2 border-white object-cover"
+          />
+
+        </div>
 
       </div>
     </header>
