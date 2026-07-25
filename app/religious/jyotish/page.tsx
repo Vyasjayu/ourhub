@@ -1,174 +1,507 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
-  Search,
+  ChevronLeft,
+  User,
+  Phone,
+  Mail,
+  MapPin,
+  Calendar,
+  Clock,
   Star,
-  Filter,
-  ArrowLeft,
 } from "lucide-react";
 
-import CitySelector from "@/components/religious/CitySelector";
-
-const astrologers = [
-  {
-    id: 1,
-    name: "Acharya Rahul Sharma",
-    experience: "15 Years",
-    language: "Hindi, English",
-    rating: 4.9,
-    price: 499,
-    image: "🧙",
-  },
-  {
-    id: 2,
-    name: "Pt. Amit Joshi",
-    experience: "12 Years",
-    language: "Hindi",
-    rating: 4.8,
-    price: 399,
-    image: "🔮",
-  },
-  {
-    id: 3,
-    name: "Acharya Neha Shastri",
-    experience: "10 Years",
-    language: "Hindi, English",
-    rating: 4.9,
-    price: 599,
-    image: "✨",
-  },
-];
-
-export default function JyotishPage() {
-  const router = useRouter();
+export default function JyotishBookingPage() {
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    city: "",
+    date: "",
+    time: "",
+    mode: "Audio Call",
+    category: "Career",
+    problem: "",
+  });
 
   return (
-    <main className="min-h-screen bg-[#071321] flex justify-center">
-      <div className="w-full max-w-[430px] bg-[#071321] text-white min-h-screen pb-24">
+    <main className="min-h-screen bg-[#060a0f] flex justify-center">
+      <div className="w-full max-w-[430px] min-h-screen bg-[#0a121c] text-white pb-44">
 
         {/* Header */}
-        <header className="sticky top-0 z-50 bg-[#081423] border-b border-white/10">
-          <div className="flex items-center justify-between px-4 py-4">
 
-            {/* Title */}
-            <div>
-              <h1 className="text-2xl font-bold">
-                <span className="text-white">Jyotish </span>
-                <span className="text-[#D4AF37]">Consultation</span>
-              </h1>
+        <div className="sticky top-0 z-50 bg-[#0a121c]/90 backdrop-blur-xl border-b border-slate-800 px-4 py-4 flex items-center gap-3">
 
-              <p className="text-sm text-gray-400 mt-1">
-                Talk to Verified Astrologers
-              </p>
+          <Link
+            href="/religious/jyotish"
+            className="w-10 h-10 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center"
+          >
+            <ChevronLeft size={18} />
+          </Link>
+
+          <div>
+
+            <h1 className="font-bold text-lg">
+              Jyotish Consultation
+            </h1>
+
+            <p className="text-xs text-amber-400">
+              Complete Booking Form
+            </p>
+
+          </div>
+
+        </div>
+
+        <form className="px-4 pt-5 space-y-5">
+
+          {/* Astrologer Card */}
+
+          <div className="rounded-3xl border border-amber-500/20 bg-gradient-to-r from-amber-500/10 to-yellow-500/5 p-5">
+
+            <div className="flex gap-4">
+
+              <div className="w-20 h-20 rounded-2xl bg-[#D4AF37] flex items-center justify-center text-4xl">
+                🔮
+              </div>
+
+              <div className="flex-1">
+
+                <h2 className="font-bold text-lg">
+                  Acharya Rahul Sharma
+                </h2>
+
+                <p className="text-sm text-slate-400 mt-1">
+                  15+ Years Experience
+                </p>
+
+                <div className="flex items-center gap-1 mt-2">
+                  <Star
+                    size={16}
+                    className="fill-yellow-400 text-yellow-400"
+                  />
+                  <span className="text-sm">4.9 Rating</span>
+                </div>
+
+                <h3 className="mt-3 text-2xl font-bold text-[#D4AF37]">
+                  ₹499
+                </h3>
+
+              </div>
+
             </div>
 
-            {/* Back Button */}
-            <button
-              onClick={() => router.back()}
-              className="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center transition"
-            >
-              <ArrowLeft size={22} className="text-white" />
-            </button>
-
           </div>
-        </header>
 
-        {/* Search */}
-        <div className="px-4 mt-5">
-          <div className="h-14 rounded-2xl bg-[#0d1b2a] flex items-center px-4">
-            <Search className="text-gray-400" size={20} />
+          {/* Customer Details */}
 
-            <input
-              placeholder="Search Astrologer..."
-              className="flex-1 bg-transparent outline-none ml-3 placeholder:text-gray-500"
-            />
-          </div>
-        </div>
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/40 p-5">
 
-        {/* City */}
-        <CitySelector />
+            <h2 className="text-sm font-bold uppercase tracking-widest text-[#D4AF37] mb-5">
+              Customer Details
+            </h2>
 
-        {/* Filter */}
-        <div className="px-4 mt-5">
-          <button className="h-11 px-5 rounded-xl bg-[#D4AF37] text-[#071321] font-semibold flex items-center gap-2">
-            <Filter size={18} />
-            Filters
-          </button>
-        </div>
+            <div className="space-y-4">
 
-        {/* Top Astrologers */}
-        <div className="px-4 mt-8">
-          <h2 className="text-xl font-bold mb-4">
-            ⭐ Top Astrologers
-          </h2>
+              {/* Name */}
 
-          <div className="space-y-5">
-            {astrologers.map((item) => (
-              <div
-                key={item.id}
-                className="bg-[#0d1b2a] rounded-3xl p-5 border border-white/10"
-              >
-                <div className="flex gap-4">
-                  <div className="w-20 h-20 rounded-2xl bg-[#D4AF37] text-4xl flex items-center justify-center">
-                    {item.image}
-                  </div>
+              <div>
 
-                  <div className="flex-1">
-                    <h3 className="font-bold text-lg">
-                      {item.name}
-                    </h3>
+                <label className="text-xs text-slate-400">
+                  Full Name
+                </label>
 
-                    <p className="text-gray-400 text-sm mt-1">
-                      {item.experience}
-                    </p>
+                <div className="mt-2 flex items-center rounded-xl bg-[#071018] border border-slate-700 px-3">
 
-                    <p className="text-gray-400 text-sm">
-                      {item.language}
-                    </p>
+                  <User size={18} />
 
-                    <div className="flex items-center gap-1 mt-2">
-                      <Star
-                        size={16}
-                        className="fill-yellow-400 text-yellow-400"
-                      />
-                      <span>{item.rating}</span>
-                    </div>
-                  </div>
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e)=>
+                      setFormData({
+                        ...formData,
+                        name:e.target.value
+                      })
+                    }
+                    placeholder="Enter full name"
+                    className="flex-1 bg-transparent p-3 outline-none"
+                  />
+
                 </div>
 
-                <div className="mt-5">
-                  <p className="text-gray-400 text-sm">
-                    Starting From
-                  </p>
-
-                  <h3 className="text-2xl font-bold text-[#D4AF37]">
-                    ₹{item.price}
-                  </h3>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 mt-5">
-                  <Link
-                    href={`/religious/jyotish/${item.id}`}
-                    className="h-12 rounded-xl border border-[#D4AF37] text-[#D4AF37] flex items-center justify-center font-semibold"
-                  >
-                    View Profile
-                  </Link>
-
-                  <Link
-                    href={`/religious/jyotish/${item.id}`}
-                    className="h-12 rounded-xl bg-[#D4AF37] text-[#071321] flex items-center justify-center font-bold"
-                  >
-                    Consult Now
-                  </Link>
-                </div>
               </div>
-            ))}
+
+              {/* Phone */}
+
+              <div>
+
+                <label className="text-xs text-slate-400">
+                  Mobile Number
+                </label>
+
+                <div className="mt-2 flex items-center rounded-xl bg-[#071018] border border-slate-700 px-3">
+
+                  <Phone size={18} />
+
+                  <input
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e)=>
+                      setFormData({
+                        ...formData,
+                        phone:e.target.value
+                      })
+                    }
+                    placeholder="9876543210"
+                    className="flex-1 bg-transparent p-3 outline-none"
+                  />
+
+                </div>
+
+              </div>
+
+              {/* Email */}
+
+              <div>
+
+                <label className="text-xs text-slate-400">
+                  Email
+                </label>
+
+                <div className="mt-2 flex items-center rounded-xl bg-[#071018] border border-slate-700 px-3">
+
+                  <Mail size={18} />
+
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e)=>
+                      setFormData({
+                        ...formData,
+                        email:e.target.value
+                      })
+                    }
+                    placeholder="example@gmail.com"
+                    className="flex-1 bg-transparent p-3 outline-none"
+                  />
+
+                </div>
+
+              </div>
+
+              {/* City */}
+
+              <div>
+
+                <label className="text-xs text-slate-400">
+                  City
+                </label>
+
+                <div className="relative mt-2">
+
+                  <MapPin
+                    size={18}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                  />
+
+                  <select
+                    value={formData.city}
+                    onChange={(e)=>
+                      setFormData({
+                        ...formData,
+                        city:e.target.value
+                      })
+                    }
+                    className="w-full rounded-xl bg-[#071018] border border-slate-700 pl-10 pr-4 py-3 appearance-none"
+                  >
+
+                    <option value="">
+                      Select City
+                    </option>
+
+                    <option>Indore</option>
+                    <option>Ujjain</option>
+                    <option>Bhopal</option>
+                    <option>Dewas</option>
+                    <option>Ratlam</option>
+                    <option>Khargone</option>
+                    <option>Khandwa</option>
+
+                  </select>
+
+                </div>
+
+              </div>
+                            {/* Preferred Date */}
+
+              <div>
+
+                <label className="text-xs text-slate-400">
+                  Preferred Date
+                </label>
+
+                <div className="mt-2 flex items-center rounded-xl bg-[#071018] border border-slate-700 px-3">
+
+                  <Calendar size={18} />
+
+                  <input
+                    type="date"
+                    value={formData.date}
+                    onChange={(e)=>
+                      setFormData({
+                        ...formData,
+                        date:e.target.value
+                      })
+                    }
+                    className="flex-1 bg-transparent p-3 outline-none"
+                  />
+
+                </div>
+
+              </div>
+
+              {/* Preferred Time */}
+
+              <div>
+
+                <label className="text-xs text-slate-400">
+                  Preferred Time
+                </label>
+
+                <div className="mt-2 flex items-center rounded-xl bg-[#071018] border border-slate-700 px-3">
+
+                  <Clock size={18} />
+
+                  <input
+                    type="time"
+                    value={formData.time}
+                    onChange={(e)=>
+                      setFormData({
+                        ...formData,
+                        time:e.target.value
+                      })
+                    }
+                    className="flex-1 bg-transparent p-3 outline-none"
+                  />
+
+                </div>
+
+              </div>
+
+            </div>
+
           </div>
+
+          {/* Consultation */}
+
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/40 p-5">
+
+            <h2 className="text-sm font-bold uppercase tracking-widest text-[#D4AF37] mb-5">
+              Consultation Details
+            </h2>
+
+            <div className="space-y-5">
+
+              <div>
+
+                <label className="text-xs text-slate-400">
+                  Consultation Mode
+                </label>
+
+                <div className="grid grid-cols-3 gap-3 mt-3">
+
+                  {["Audio Call","Video Call","Chat"].map((mode)=>(
+                    <button
+                      type="button"
+                      key={mode}
+                      onClick={()=>
+                        setFormData({
+                          ...formData,
+                          mode
+                        })
+                      }
+                      className={`rounded-xl py-3 text-sm transition ${
+                        formData.mode===mode
+                        ? "bg-[#D4AF37] text-black font-bold"
+                        : "bg-[#071018] border border-slate-700"
+                      }`}
+                    >
+                      {mode}
+                    </button>
+                  ))}
+
+                </div>
+
+              </div>
+
+              <div>
+
+                <label className="text-xs text-slate-400">
+                  Problem Category
+                </label>
+
+                <select
+                  value={formData.category}
+                  onChange={(e)=>
+                    setFormData({
+                      ...formData,
+                      category:e.target.value
+                    })
+                  }
+                  className="mt-2 w-full rounded-xl bg-[#071018] border border-slate-700 p-3"
+                >
+
+                  <option>Career</option>
+                  <option>Marriage</option>
+                  <option>Business</option>
+                  <option>Finance</option>
+                  <option>Health</option>
+                  <option>Love</option>
+                  <option>Education</option>
+                  <option>Family</option>
+
+                </select>
+
+              </div>
+
+              <div>
+
+                <label className="text-xs text-slate-400">
+                  Describe Your Problem
+                </label>
+
+                <textarea
+                  rows={5}
+                  value={formData.problem}
+                  onChange={(e)=>
+                    setFormData({
+                      ...formData,
+                      problem:e.target.value
+                    })
+                  }
+                  placeholder="Write your problem..."
+                  className="mt-2 w-full rounded-xl bg-[#071018] border border-slate-700 p-3 resize-none outline-none"
+                />
+
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* Booking Summary */}
+
+          <div className="rounded-3xl border border-[#D4AF37]/20 bg-gradient-to-r from-[#D4AF37]/10 to-transparent p-5">
+
+            <h2 className="font-bold text-lg">
+              Booking Summary
+            </h2>
+
+            <div className="space-y-3 mt-4 text-sm">
+
+              <div className="flex justify-between">
+                <span>Astrologer</span>
+                <span>Acharya Rahul Sharma</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Experience</span>
+                <span>15 Years</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Consultation</span>
+                <span>{formData.mode}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Fees</span>
+                <span>₹499</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Platform Fee</span>
+                <span>₹49</span>
+              </div>
+
+              <hr className="border-slate-700"/>
+
+              <div className="flex justify-between text-lg font-bold">
+
+                <span>Total</span>
+
+                <span className="text-[#D4AF37]">
+                  ₹548
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div className="h-32"/>
+
+        </form>
+
+        {/* Bottom Button */}
+
+        <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-[#0a121c]/95 backdrop-blur-xl border-t border-slate-800 p-4">
+
+          <button
+            type="button"
+            onClick={() => {
+
+              const phoneNumber = "918878632431";
+
+              const message = `🔮 *New Jyotish Consultation*
+
+👤 Name: ${formData.name}
+
+📞 Phone: ${formData.phone}
+
+📧 Email: ${formData.email}
+
+🏙 City: ${formData.city}
+
+📅 Date: ${formData.date}
+
+⏰ Time: ${formData.time}
+
+🎧 Mode: ${formData.mode}
+
+📂 Category: ${formData.category}
+
+📝 Problem:
+${formData.problem}
+
+🙏 OurHub`;
+
+              window.open(
+                `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`,
+                "_blank"
+              );
+
+            }}
+            className="w-full h-14 rounded-2xl bg-[#D4AF37] text-black font-bold text-lg"
+          >
+            Book Consultation
+          </button>
+
+          <a
+            href="tel:8878632431"
+            className="block text-center mt-3 rounded-2xl border border-slate-700 py-3"
+          >
+            📞 Call Astrologer
+          </a>
+
         </div>
 
       </div>
+
     </main>
   );
 }

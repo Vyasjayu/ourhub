@@ -15,6 +15,7 @@ import {
   Sparkles,
   MapPin,
   Building2,
+  Megaphone,
 } from "lucide-react";
 
 import { FaOm } from "react-icons/fa6";
@@ -37,9 +38,10 @@ const menuItems = [
     href: "/home-service",
   },
   {
-    name: "Travel",
-    icon: Plane,
-    href: "/travel",
+  name: "Digital Marketing & Advertising",
+  icon: Megaphone,
+  href: "/digital-marketing",
+
   },
   {
     name: "Software",

@@ -53,6 +53,7 @@ export default function Home() {
         <div className="reveal-zoom delay-200">
           <Hero />
         </div>
+<div></div>
 
         {/* Title */}
         <div className="reveal delay-300">
@@ -67,7 +68,6 @@ export default function Home() {
         <div className="reveal-left delay-400">
           <ServiceWheel />
         </div>
-
         {/* Categories */}
         <div className="reveal-right delay-500">
           <PopularCategories />
