@@ -1,0 +1,22 @@
+{
+  "menu": {
+    "home": "Home",
+    "religious": "Religious",
+    "homeService": "Home Service",
+    "travel": "Travel",
+    "software": "Software",
+    "agriculture": "Agriculture",
+    "automobile": "Automobile",
+    "construction": "Construction"
+  },
+
+  "welcome":"Welcome Guest",
+
+  "near":"Services Near You",
+
+  "premium":"Premium Services",
+
+  "heroTitle":"One Platform Every Service",
+
+  "heroSub":"Book trusted professionals in minutes."
+}

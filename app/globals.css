@@ -1,4 +1,110 @@
 @import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  background:#050B14;
+  color:white;
+  overflow-x:hidden;
+}
+
+/* Hide Scrollbar */
+
+::-webkit-scrollbar{
+  display:none;
+}
+
+*{
+  -ms-overflow-style:none;
+  scrollbar-width:none;
+}
+
+/* Gold Glow */
+
+.gold-glow{
+  box-shadow:
+  0 0 10px rgba(255,193,7,.18),
+  0 0 25px rgba(255,193,7,.10);
+}
+
+/* Premium Card */
+
+.premium-card{
+  background:linear-gradient(
+      180deg,
+      rgba(18,29,44,.98),
+      rgba(11,20,33,.98)
+  );
+
+  border:1px solid rgba(255,193,7,.15);
+
+  backdrop-filter:blur(18px);
+
+  transition:.35s;
+}
+
+.premium-card:hover{
+
+  transform:translateY(-4px);
+
+  border-color:#F6C453;
+
+  box-shadow:
+  0 0 18px rgba(255,193,7,.22),
+  0 20px 40px rgba(0,0,0,.35);
+}
+.premium-card:hover{
+
+  transform:translateY(-4px);
+
+  border-color:#F6C453;
+
+  box-shadow:
+  0 0 18px rgba(255,193,7,.22),
+  0 20px 40px rgba(0,0,0,.35);
+}
+/* Glass */
+
+.glass{
+
+backdrop-filter:blur(18px);
+
+background:rgba(20,28,42,.55);
+
+border:1px solid rgba(255,255,255,.08);
+
+}
+
+/* Gold Button */
+
+.gold-btn{
+
+background:linear-gradient(
+90deg,
+#E7B341,
+#FFD66B
+);
+
+color:black;
+
+font-weight:700;
+
+transition:.3s;
+
+}
+
+.gold-btn:hover{
+
+transform:scale(1.03);
+
+box-shadow:0 0 18px rgba(255,193,7,.45);
+
+}
 
 :root {
   --background: #ffffff;
@@ -39,4 +145,91 @@ body {
 
 body {
   position: relative;
+}
+/* =========================
+   Scroll Reveal Animations
+========================= */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: all 0.8s ease;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Left */
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-80px);
+  transition: all .8s ease;
+}
+
+.reveal-left.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Right */
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(80px);
+  transition: all .8s ease;
+}
+
+.reveal-right.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Zoom */
+
+.reveal-zoom {
+  opacity: 0;
+  transform: scale(.8);
+  transition: all .8s ease;
+}
+
+.reveal-zoom.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Rotate */
+
+.reveal-rotate {
+  opacity: 0;
+  transform: rotate(-5deg) scale(.9);
+  transition: all .8s ease;
+}
+
+.reveal-rotate.active {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+/* Animation Delay */
+
+.delay-100 {
+  transition-delay: 100ms;
+}
+
+.delay-200 {
+  transition-delay: 200ms;
+}
+
+.delay-300 {
+  transition-delay: 300ms;
+}
+
+.delay-400 {
+  transition-delay: 400ms;
+}
+
+.delay-500 {
+  transition-delay: 500ms;
 }

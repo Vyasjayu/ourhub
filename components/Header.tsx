@@ -32,7 +32,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
         <div className="flex items-center gap-3">
 
           {/* Location */}
-          <button className="flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900 px-4 py-2">
+          {/* <button className="flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900 px-4 py-2">
 
             <MapPin
               size={15}
@@ -48,7 +48,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
               className="text-slate-400"
             />
 
-          </button>
+          </button> */}
 
           {/* Notification */}
 

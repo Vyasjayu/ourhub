@@ -5,10 +5,10 @@ import { ChevronRight } from "lucide-react";
 
 const categories = [
   {
-    title: "Pandit Booking",
+    title: "All Pooja Services",
     description: "Book verified Pandits for all religious ceremonies.",
     icon: "🛕",
-    href: "/religious/pandit-booking",
+    href: "/pooja",
   },
   {
     title: "Jyotish",
