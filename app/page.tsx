@@ -96,9 +96,9 @@ export default function Home() {
       </div>
 
       {/* Bottom Navigation */}
-      <div className="reveal-zoom delay-500">
+      {/* <div className="reveal-zoom delay-500"> */}
         <BottomNav />
-      </div>
+      {/* </div> */}
 
     </main>
   );
