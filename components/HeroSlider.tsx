@@ -13,54 +13,56 @@ import "swiper/css/pagination";
 import { banners } from "@/data/banners";
 
 export default function HeroSlider() {
-  return (
-    <section className="mt-4">
+    return (
+        <section className="mt-3 px-2">
 
-      <Swiper
-        modules={[Autoplay, Pagination, Navigation]}
-        slidesPerView={1}
-        loop
-        speed={900}
-        navigation
-        pagination={{
-          clickable: true,
-        }}
-        autoplay={{
-          delay: 4000,
-          disableOnInteraction: false,
-        }}
-        className="heroSwiper rounded-[28px]"
-      >
-        {banners.map((banner) => (
-          <SwiperSlide key={banner.id}>
+            <Swiper
+                modules={[Autoplay, Pagination, Navigation]}
+                slidesPerView={1}
+                loop
+                speed={900}
+                navigation
+                pagination={{
+                    clickable: true,
+                }}
+                autoplay={{
+                    delay: 4000,
+                    disableOnInteraction: false,
+                }}
+                className="heroSwiper rounded-[28px] overflow: hidden; margin: 0 8px;"
+            >
+                {banners.map((banner) => (
+                    <SwiperSlide key={banner.id}>
 
-            <Link href={banner.link}>
+                        <Link href={banner.link}>
 
-              <div className="relative h-[220px] overflow-hidden rounded-[28px]">
+                            <div className="relative aspect-[2/1] w-full overflow-hidden rounded-[28px] bg-[#071424]">
 
-                {/* Banner */}
+                                {/* Banner */}
 
-                <Image
-                  src={banner.image}
-                  alt={banner.title}
-                  fill
-                  priority
-                  className="object-cover p-2"
-                />
+                                <div className="relative h-[220px] overflow-hidden rounded-[28px] bg-[#071424]">
+                                    <Image
+                                        src={banner.image}
+                                        alt={banner.title}
+                                        width={1200}
+                                        height={600}
+                                        priority
+                                        className="object-cover scale-90"
+                                    />
+                                </div>
+                                {/* Overlay */}
 
-                {/* Overlay */}
+                                <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-transparent" />
 
-                <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-transparent" />
+                            </div>
 
-              </div>
+                        </Link>
 
-            </Link>
+                    </SwiperSlide>
+                ))}
+            </Swiper>
 
-          </SwiperSlide>
-        ))}
-      </Swiper>
-
-      <style jsx global>{`
+            <style jsx global>{`
 
 .heroSwiper{
 overflow:hidden;
@@ -120,6 +122,6 @@ transform:scale(1.03);
 }
 
 `}</style>
-    </section>
-  );
+        </section>
+    );
 }

@@ -66,7 +66,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
           {/* Profile */}
 
           <Image
-            src="/images/profile.jpg"
+            src="/images/profile.png"
             alt="Profile"
             width={42}
             height={42}
