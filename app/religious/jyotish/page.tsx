@@ -467,9 +467,9 @@ export default function JyotishBookingPage() {
 
 🏙 City: ${formData.city}
 
-📅 Date: ${formData.date}
+📅 Date of birth: ${formData.date}
 
-⏰ Time: ${formData.time}
+⏰ Birth Time: ${formData.time}
 
 🎧 Mode: ${formData.mode}
 

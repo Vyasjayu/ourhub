@@ -25,7 +25,103 @@ select:-webkit-autofill {
   border: 1px solid #334155 !important;
   transition: background-color 9999s ease-in-out 0s;
 }
+/* HERO SLIDER */
 
+.heroSwiper {
+  overflow: hidden;
+  border-radius: 28px;
+}
+
+.heroSwiper .swiper-slide {
+  transition: all .8s ease;
+}
+
+.heroSwiper .swiper-slide-active {
+  animation: heroZoom .8s ease;
+}
+
+@keyframes heroZoom {
+
+  from{
+      transform:scale(.96);
+      opacity:.5;
+  }
+
+  to{
+      transform:scale(1);
+      opacity:1;
+  }
+
+}
+
+/* Pagination */
+
+.heroSwiper .swiper-pagination{
+
+    bottom:14px!important;
+
+}
+
+.heroSwiper .swiper-pagination-bullet{
+
+    width:10px;
+    height:10px;
+    background:#6b7280;
+    opacity:1;
+    transition:.35s;
+
+}
+
+.heroSwiper .swiper-pagination-bullet-active{
+
+    width:34px;
+    border-radius:30px;
+    background:#FFC107;
+
+}
+
+/* Navigation */
+
+.heroSwiper .swiper-button-prev,
+.heroSwiper .swiper-button-next{
+
+    width:42px;
+    height:42px;
+    border-radius:999px;
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,.08);
+    color:#fff;
+
+}
+
+.heroSwiper .swiper-button-prev:hover,
+.heroSwiper .swiper-button-next:hover{
+
+    background:#FFC107;
+    color:#000;
+
+}
+
+.heroSwiper .swiper-button-prev:after,
+.heroSwiper .swiper-button-next:after{
+
+    font-size:15px;
+    font-weight:bold;
+
+}
+.heroSwiper .swiper-slide-active img {
+  animation: zoomBanner 4s linear;
+}
+
+@keyframes zoomBanner {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
 input,
 textarea,
 select {
