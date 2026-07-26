@@ -45,7 +45,7 @@ export default function HeroSlider() {
                   alt={banner.title}
                   fill
                   priority
-                  className="object-cover"
+                  className="object-cover p-2"
                 />
 
                 {/* Overlay */}
