@@ -10,8 +10,10 @@ import {
   Tractor,
   Wrench,
   Sparkles,
+  Church,
 } from "lucide-react";
 import { astrologers } from "@/data/astrologers";
+import { ChevronRight } from "lucide-react";
 
 
 const categories = [
@@ -27,7 +29,7 @@ const categories = [
     // color: "text-red-400",
     // href: "/automobile",
     name: "All Pooja Services",
-    icon: "🛕",
+    icon: Church,
     color: "text-red-400",
     href: "/pooja",
   },
