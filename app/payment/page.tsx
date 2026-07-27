@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+import { Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
   Wallet,
@@ -11,7 +13,7 @@ import {
 } from "lucide-react";
 
 
-export default function PaymentPage() {
+ function PaymentContent() {
 
 
 const router = useRouter();
@@ -535,4 +537,17 @@ Pay ₹{amount}
 
 );
 
+}
+export default function PaymentPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-[#020617] text-white">
+          Loading Payment...
+        </div>
+      }
+    >
+      <PaymentContent />
+    </Suspense>
+  );
 }
