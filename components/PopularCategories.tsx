@@ -11,20 +11,25 @@ import {
   Wrench,
   Sparkles,
 } from "lucide-react";
+import { astrologers } from "@/data/astrologers";
 
 
 const categories = [
   {
-    name: "Home Service",
-    icon: Home,
-    color: "text-orange-400",
-    href: "/home-service",
+  name: "Astrology",
+  icon: Sparkles,
+  color: "text-orange-400",
+  href: "/religious/astrology",
   },
   {
-    name: "Automobile",
-    icon: Car,
+    // name: "Automobile",
+    // icon: Car,
+    // color: "text-red-400",
+    // href: "/automobile",
+    name: "All Pooja Services",
+    icon: "🛕",
     color: "text-red-400",
-    href: "/automobile",
+    href: "/pooja",
   },
   {
     name: "Travel",

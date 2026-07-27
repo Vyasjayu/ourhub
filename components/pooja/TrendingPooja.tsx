@@ -1,6 +1,7 @@
 import { Flame } from "lucide-react";
 import TrendingCard from "./TrendingCard";
 import { trendingPoojas } from "@/data/poojaData";
+import { allPoojas } from "@/data/allPooja";
 // import { trendingPoojas } from "@/data/poojaData";
 
 export default function TrendingPooja() {
@@ -39,13 +40,11 @@ export default function TrendingPooja() {
         scrollbar-hide
       "
       >
-        {trendingPoojas.map((item) => (
+        {allPoojas.map((item) => (
           <TrendingCard
             key={item.id}
-            title={item.title}
-            image={item.image}
-            price={item.price}
-          />
+            title={item.name}
+            image={item.image} id={""} />
         ))}
       </div>
     </section>

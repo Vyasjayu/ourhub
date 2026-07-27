@@ -1,27 +1,28 @@
+import Link from "next/link";
 import Image from "next/image";
 
 interface Props {
+  id: string;
   title: string;
   image: string;
-  price: string;
 }
 
 export default function TrendingCard({
+  id,
   title,
   image,
-  price,
 }: Props) {
   return (
     <div
       className="
-      min-w-[150px]
-      bg-[#0D1724]
-      rounded-2xl
-      border
-      border-yellow-700/40
-      overflow-hidden
-      shadow-xl
-    "
+        min-w-[150px]
+        bg-[#0D1724]
+        rounded-2xl
+        border
+        border-yellow-700/40
+        overflow-hidden
+        shadow-xl
+      "
     >
       <div className="relative h-30 w-full">
         <Image
@@ -33,37 +34,38 @@ export default function TrendingCard({
       </div>
 
       <div className="p-3 text-center">
-
         <h3
           className="
-          text-white
-          text-sm
-          font-semibold
-          whitespace-pre-line
-          min-h-[42px]
-        "
+            text-white
+            text-sm
+            font-semibold
+            whitespace-pre-line
+            min-h-[42px]
+          "
         >
           {title}
         </h3>
 
-        <p className="text-yellow-400 text-lg font-bold mt-2">
+        {/* <p className="text-yellow-400 text-lg font-bold mt-2">
           ₹{price}
-        </p>
+        </p> */}
 
-        <button
+        <Link
+          href={`/pooja/checkout/${id}`}
           className="
-          mt-3
-          w-full
-          rounded-xl
-          bg-yellow-400
-          text-black
-          py-2
-          font-semibold
-        "
+            mt-3
+            w-full
+            rounded-xl
+            bg-yellow-400
+            text-black
+            py-2
+            font-semibold
+            text-center
+            block
+          "
         >
           Book Now
-        </button>
-
+        </Link>
       </div>
     </div>
   );

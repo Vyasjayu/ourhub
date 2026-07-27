@@ -29,25 +29,25 @@ export default function HeroSlider() {
                     delay: 4000,
                     disableOnInteraction: false,
                 }}
-                className="heroSwiper rounded-[28px] overflow: hidden; margin: 0 8px;"
+                className="heroSwiper rounded-[28px] overflow: hidden; margin: 0;"
             >
                 {banners.map((banner) => (
                     <SwiperSlide key={banner.id}>
 
                         <Link href={banner.link}>
 
-                            <div className="relative aspect-[2/1] w-full overflow-hidden rounded-[28px] bg-[#071424]">
+                            <div className="relative aspect-[2/1] h-[220px] w-full overflow-hidden rounded-[28px] bg-[#071424]">
 
                                 {/* Banner */}
 
-                                <div className="relative h-[220px] overflow-hidden rounded-[28px] bg-[#071424]">
+                                <div className="relative h-[240px] overflow-hidden rounded-[28px] bg-[#071424]">
                                     <Image
                                         src={banner.image}
                                         alt={banner.title}
-                                        width={1200}
-                                        height={600}
+                                        fill
                                         priority
-                                        className="object-cover scale-90"
+                                        sizes="100vw"
+                                        className="object-contain object-center"
                                     />
                                 </div>
                                 {/* Overlay */}

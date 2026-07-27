@@ -18,6 +18,7 @@ export default function CheckoutPage({ params }: PageProps) {
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
+     poojaMode: "Offline",
     address: "",
     landmark: "",
     city: "Indore",
@@ -106,32 +107,114 @@ Har Har Mahadev 🙏`;
             </div>
           </div>
 
+{/* Pooja Mode */}
+<div className="space-y-3 bg-slate-900/30 border border-slate-800/40 rounded-xl p-4 backdrop-blur-sm">
+  <h3 className="text-[11px] font-bold text-amber-400 tracking-widest uppercase">
+    Pooja Mode
+  </h3>
+
+  <label className="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">
+    Select Pooja Type *
+  </label>
+
+  <select
+    value={formData.poojaMode}
+    onChange={(e) =>
+      setFormData({
+        ...formData,
+        poojaMode: e.target.value,
+      })
+    }
+    className="w-full bg-[#070d14] border border-slate-800 rounded-xl px-3 py-3 text-xs text-slate-200 focus:outline-none focus:border-amber-500/50"
+  >
+    <option value="Offline">
+      🏠 Offline Pooja (Home Visit)
+    </option>
+
+    <option value="Online">
+      💻 Online Pooja (Video Call)
+    </option>
+  </select>
+</div>
           {/* Section 2: Address Inputs */}
-          <div className="space-y-3 bg-slate-900/30 border border-slate-800/40 rounded-xl p-4 backdrop-blur-sm">
-            <h3 className="text-[11px] font-bold text-amber-400 tracking-widest uppercase flex items-center gap-2">
-              <MapPin size={13} /> Pooja Location Address
-            </h3>
-            <div className="space-y-3">
-              <div>
-                <label className="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">House No, Building, Street *</label>
-                <textarea required rows={2} placeholder="Flat no., House name, Road details..." value={formData.address} onChange={(e) => setFormData({...formData, address: e.target.value})} className="w-full bg-[#070d14] border border-slate-800 rounded-xl p-3 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-amber-500/50 resize-none transition duration-150" />
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">Landmark</label>
-                  <input type="text" placeholder="e.g. Near Temple" value={formData.landmark} onChange={(e) => setFormData({...formData, landmark: e.target.value})} className="w-full bg-[#070d14] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-amber-500/50" />
-                </div>
-                <div>
-                  <label className="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">City *</label>
-                  <select value={formData.city} onChange={(e) => setFormData({...formData, city: e.target.value})} className="w-full bg-[#070d14] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-300 focus:outline-none focus:border-amber-500/50 appearance-none" >
-                    <option value="Indore">Indore</option>
-                    <option value="Ujjain">Ujjain</option>
-                    <option value="Ratlam">Ratlam</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
+          {formData.poojaMode === "Offline" && (
+  <div className="space-y-3 bg-slate-900/30 border border-slate-800/40 rounded-xl p-4 backdrop-blur-sm">
+
+    <h3 className="text-[11px] font-bold text-amber-400 tracking-widest uppercase flex items-center gap-2">
+      <MapPin size={13} />
+      Pooja Location Address
+    </h3>
+
+    <div className="space-y-3">
+
+      <div>
+        <label className="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">
+          House No, Building, Street *
+        </label>
+
+        <textarea
+          required={formData.poojaMode === "Offline"}
+          rows={2}
+          placeholder="Flat no., House name, Road details..."
+          value={formData.address}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              address: e.target.value,
+            })
+          }
+          className="w-full bg-[#070d14] border border-slate-800 rounded-xl p-3 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-amber-500/50 resize-none"
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+
+        <div>
+          <label className="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">
+            Landmark
+          </label>
+
+          <input
+            type="text"
+            value={formData.landmark}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                landmark: e.target.value,
+              })
+            }
+            placeholder="Near Temple"
+            className="w-full bg-[#070d14] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200"
+          />
+        </div>
+
+        <div>
+          <label className="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">
+            City
+          </label>
+
+          <select
+            value={formData.city}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                city: e.target.value,
+              })
+            }
+            className="w-full bg-[#070d14] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200"
+          >
+            <option value="Indore">Indore</option>
+            <option value="Ujjain">Ujjain</option>
+            <option value="Ratlam">Ratlam</option>
+          </select>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+)}
 
           {/* Section 3: Special Request Notes */}
           <div className="space-y-3 bg-slate-900/30 border border-slate-800/40 rounded-xl p-4 backdrop-blur-sm">

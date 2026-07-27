@@ -11,10 +11,10 @@ const categories = [
     href: "/pooja",
   },
   {
-    title: "Jyotish",
+    title: "Astrology",
     description: "Marriage, Career, Business & Kundli Consultation.",
     icon: "🔯",
-    href: "/religious/jyotish",
+    href: "/religious/astrology",
   },
   {
     title: "Vastu",
