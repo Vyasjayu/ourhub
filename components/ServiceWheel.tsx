@@ -10,6 +10,7 @@ import {
   Tractor,
   Building2,
   Landmark,
+  PartyPopper,
 } from "lucide-react";
 import { FaOm } from "react-icons/fa6";
 
@@ -21,10 +22,10 @@ const services = [
     href: "/religious",
   },
   {
-    name: "Travel",
-    icon: Plane,
+    name: "Event Management",
+    icon: PartyPopper,
     color: "#34D399",
-    href: "/travel",
+    href: "/eventManagement",
   },
   {
     name: "Software",

@@ -16,6 +16,7 @@ import {
   MapPin,
   Building2,
   Megaphone,
+  PartyPopper,
 } from "lucide-react";
 
 import { FaOm } from "react-icons/fa6";
@@ -49,9 +50,9 @@ const menuItems = [
     href: "/software",
   },
   {
-    name: "Agriculture",
-    icon: Tractor,
-    href: "/agriculture",
+    name: "Event Management",
+    icon: PartyPopper,
+    href: "/eventManagement",
   },
   {
     name: "Automobile",

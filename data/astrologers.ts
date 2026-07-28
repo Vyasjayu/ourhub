@@ -36,9 +36,9 @@ export interface Astrologer {
 export const astrologers: Astrologer[] = [
   {
     id: "1",
-    slug: "acharya-rahul-sharma",
+    slug: "acharya Hemant Vyas",
 
-    name: "Acharya Rahul Sharma",
+    name: "Acharya Hemant Vyas",
 
     image: "/astrologers/rahul.png",
     cover: "/astrologers/banner1.jpg",
@@ -90,9 +90,9 @@ export const astrologers: Astrologer[] = [
 
   {
     id: "2",
-    slug: "pandit-amit-joshi",
+    slug: "Shastri Rohit Sharma",
 
-    name: "Pandit Amit Joshi",
+    name: "Shastri Rohit Sharma",
 
     image: "/astrologers/amit.png",
     cover: "/astrologers/banner2.jpg",
@@ -138,9 +138,9 @@ export const astrologers: Astrologer[] = [
 
   {
     id: "3",
-    slug: "acharya-neha-verma",
+    slug: "acharya Jitendra Rawal",
 
-    name: "Acharya Neha Verma",
+    name: "Acharya Jitendra Rawal",
 
     image: "/astrologers/neha.png",
     cover: "/astrologers/banner3.jpg",

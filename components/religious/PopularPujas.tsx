@@ -1,31 +1,33 @@
 "use client";
 
-import { Star, Clock } from "lucide-react";
 import Link from "next/link";
+import {
+  Star,
+  Clock,
+  ArrowRight,
+  BadgePercent,
+} from "lucide-react";
 
 const pujas = [
   {
     id: 1,
     title: "Griha Pravesh",
-    price: "₹999",
     rating: "4.9",
-    duration: "2 Hours",
+    duration: "6 Hours",
     image: "🪔",
     href: "/religious/griha-pravesh",
   },
   {
     id: 2,
     title: "Satyanarayan Katha",
-    price: "₹1499",
     rating: "4.8",
-    duration: "3 Hours",
+    duration: "2 Hours",
     image: "📿",
     href: "/religious/satyanarayan-katha",
   },
   {
     id: 3,
     title: "Rudrabhishek",
-    price: "₹2100",
     rating: "5.0",
     duration: "2.5 Hours",
     image: "🔱",
@@ -34,7 +36,6 @@ const pujas = [
   {
     id: 4,
     title: "Mahamrityunjaya Jaap",
-    price: "₹2500",
     rating: "4.9",
     duration: "4 Hours",
     image: "🕉️",
@@ -44,77 +45,90 @@ const pujas = [
 
 export default function PopularPujas() {
   return (
-    <section className="mt-8">
+    <section className="mt-10">
+      <div className="mb-5 flex items-center justify-between px-4">
+        <div>
+          <h2 className="text-2xl font-bold text-white">
+            🔥 Popular Pujas
+          </h2>
 
-      <div className="flex items-center justify-between px-4 mb-4">
-        <h2 className="text-xl font-bold text-white">
-          🔥 Popular Pujas
-        </h2>
+          <p className="text-sm text-slate-400">
+            Book verified Pandits for sacred rituals.
+          </p>
+        </div>
 
-        <button className="text-sm text-[#D4AF37]">
+        <Link
+          href="/pooja"
+          className="text-sm font-semibold text-[#D4AF37]"
+        >
           View All
-        </button>
+        </Link>
       </div>
 
-      <div className="flex gap-4 overflow-x-auto px-4 pb-2 scrollbar-hide">
-
+      <div className="flex gap-5 overflow-x-auto px-4 pb-3 scrollbar-hide">
         {pujas.map((puja) => (
-
           <Link
             key={puja.id}
             href={puja.href}
-            className="min-w-[240px] rounded-3xl bg-[#0d1b2a] border border-white/10 overflow-hidden active:scale-95 transition"
+            className="group min-w-[280px] overflow-hidden rounded-3xl border border-[#D4AF37]/20 bg-gradient-to-b from-[#112033] to-[#08111d] shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#D4AF37]/60"
           >
+            {/* Hero */}
+            <div className="relative flex h-48 items-center justify-center overflow-hidden bg-gradient-to-br from-[#D4AF37] via-[#B88918] to-[#6f4d00]">
+              <div className="absolute inset-0 bg-black/10" />
 
-            {/* Image */}
-            <div className="h-36 bg-gradient-to-br from-[#D4AF37] to-[#7b5b00] flex items-center justify-center text-6xl">
-              {puja.image}
+              <div className="absolute left-4 top-4 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
+                ⭐ Bestseller
+              </div>
+
+              <div className="text-8xl drop-shadow-xl transition duration-300 group-hover:scale-110">
+                {puja.image}
+              </div>
             </div>
 
             {/* Content */}
-            <div className="p-4">
-
-              <h3 className="font-bold text-lg text-white">
+            <div className="p-5">
+              <h3 className="text-xl font-bold text-white">
                 {puja.title}
               </h3>
 
-              <div className="flex items-center gap-4 mt-3 text-sm text-gray-300">
-
-                <div className="flex items-center gap-1">
+              <div className="mt-4 flex gap-3">
+                <div className="flex items-center gap-1 rounded-full bg-yellow-500/10 px-3 py-1 text-xs text-yellow-300">
                   <Star
-                    size={15}
+                    size={14}
                     className="fill-yellow-400 text-yellow-400"
                   />
                   {puja.rating}
                 </div>
 
-                <div className="flex items-center gap-1">
-                  <Clock size={15} />
+                <div className="flex items-center gap-1 rounded-full bg-cyan-500/10 px-3 py-1 text-xs text-cyan-300">
+                  <Clock size={14} />
                   {puja.duration}
                 </div>
-
               </div>
 
-              <div className="flex items-center justify-between mt-5">
-
-                <span className="text-xl font-bold text-[#D4AF37]">
+              {/* <div className="mt-5 flex items-end gap-2">
+                <span className="text-3xl font-bold text-[#D4AF37]">
                   {puja.price}
                 </span>
 
-                <button className="px-4 py-2 rounded-xl bg-[#D4AF37] text-[#071321] font-semibold">
-                  Book Now
-                </button>
+                <span className="pb-1 text-sm text-slate-500 line-through">
+                  {puja.oldPrice}
+                </span>
+              </div> */}
 
+              <div className="mt-2 flex items-center gap-2 text-xs text-green-400">
+                <BadgePercent size={14} />
+                Save up to 25%
               </div>
 
+              <button className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#D4AF37] to-[#F6D365] py-3 font-bold text-[#071321] transition hover:scale-[1.02]">
+                Book Now
+                <ArrowRight size={18} />
+              </button>
             </div>
-
           </Link>
-
         ))}
-
       </div>
-
     </section>
   );
 }

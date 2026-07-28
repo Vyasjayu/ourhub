@@ -11,6 +11,7 @@ import {
   Wrench,
   Sparkles,
   Church,
+  PartyPopper,
 } from "lucide-react";
 import { astrologers } from "@/data/astrologers";
 import { ChevronRight } from "lucide-react";
@@ -34,10 +35,10 @@ const categories = [
     href: "/pooja",
   },
   {
-    name: "Travel",
-    icon: Plane,
+    name: "Event Management",
+    icon: PartyPopper,
     color: "text-green-400",
-    href: "/travel",
+    href: "/eventManagement",
   },
   {
     name: "Software",
