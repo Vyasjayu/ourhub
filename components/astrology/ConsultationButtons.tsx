@@ -62,8 +62,8 @@ alert(`${type} Consultation Started`);
 const plans=[
 
 {
-amount:125,
-minutes:5
+amount:1,
+minutes:1
 },
 
 {

@@ -2,6 +2,7 @@
 
 import { Bell, ChevronDown, MapPin, Menu } from "lucide-react";
 import Image from "next/image";
+import WalletButton from "@/components/wallet/WalletButton";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -25,7 +26,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
           <h1 className="text-3xl font-extrabold tracking-tight text-yellow-400">
             OurHub
           </h1>
-
+ <WalletButton />
         </div>
 
         {/* Right */}

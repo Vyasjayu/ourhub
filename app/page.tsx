@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
@@ -15,9 +15,19 @@ import WhyChooseUs from "@/components/WhyChooseUs";
 import Testimonials from "@/components/Testimonials";
 import BottomNav from "@/components/BottomNav";
 import ScrollReveal from "@/ScrollReveal";
+import { getPhone } from "@/lib/user";
 
 export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [phone, setPhone] = useState("");
+
+  useEffect(() => {
+    const savedPhone = getPhone();
+
+    if (savedPhone) {
+      setPhone(savedPhone);
+    }
+  }, []);
 
   return (
     <main className="min-h-screen bg-[#071424] text-white">

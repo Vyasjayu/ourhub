@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { notFound } from "next/navigation";
 
 import Hero from "@/components/astrology/Hero";
@@ -20,90 +20,68 @@ import FAQ from "@/components/astrology/FAQ";
 import StickyBottom from "@/components/astrology/StickyBottom";
 import RechargeSheet from "@/components/astrology/RechargeSheet";
 
-// import { Astrologer } from "@/data/astrologers";
 import { getAstrologerBySlug } from "@/data/astrologers";
-
 
 interface PageProps {
   params: Promise<{
-    id:string;
+    id: string;
   }>;
 }
 
+export default function AstrologyDetailPage({ params }: PageProps) {
+  const { id } = use(params);
 
-export default function AstrologyDetailPage({
-  params
-}:PageProps){
+  const astrologer = getAstrologerBySlug(id);
 
-
-  const {id}=use(params);
-
-
- const astrologer=getAstrologerBySlug(id);
-
-
-  if(!astrologer){
+  if (!astrologer) {
     notFound();
   }
 
+  const [walletBalance, setWalletBalance] = useState(0);
 
-  const [showRecharge,setShowRecharge]=useState(false);
+  const [showRecharge, setShowRecharge] = useState(false);
 
+  useEffect(() => {
+    const phone = localStorage.getItem("userPhone");
 
-  const walletBalance=0;
+    if (!phone) return;
 
-
+    fetch(`/api/wallet/${phone}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setWalletBalance(data.walletBalance);
+        }
+      })
+      .catch(console.error);
+  }, []);
 
   return (
-
     <main className="min-h-screen bg-[#050B14]">
-
-
-      <Hero astrologer={astrologer}/>
-
-
+      <Hero astrologer={astrologer} />
 
       <div className="mx-auto max-w-md px-4 pb-40">
-
-
         <WalletCard
           walletBalance={walletBalance}
           pricePerMinute={astrologer.pricePerMinute}
+          onRecharge={() => setShowRecharge(true)}
         />
-
-
 
         <ConsultationButtons
           walletBalance={walletBalance}
           pricePerMinute={astrologer.pricePerMinute}
         />
 
-
-
-        <AboutSection 
-          about={astrologer.about}
-        />
-
-
+        <AboutSection about={astrologer.about} />
 
         <ExperienceSection
           experience={astrologer.experience}
           rating={astrologer.rating}
         />
 
+        <ExpertiseSection expertise={astrologer.expertise} />
 
-
-        <ExpertiseSection
-          expertise={astrologer.expertise}
-        />
-
-
-
-        <LanguageSection
-          languages={astrologer.languages}
-        />
-
-
+        <LanguageSection languages={astrologer.languages} />
 
         <FreeKundli />
 
@@ -116,43 +94,20 @@ export default function AstrologyDetailPage({
         <ReviewSection />
 
         <FAQ />
-
-
       </div>
 
-
-
       <StickyBottom
-
         walletBalance={walletBalance}
-
         pricePerMinute={astrologer.pricePerMinute}
-
-        onRecharge={()=>setShowRecharge(true)}
-
+        onRecharge={() => setShowRecharge(true)}
       />
-
-
 
       <RechargeSheet
-
         open={showRecharge}
-
         walletBalance={walletBalance}
-
-        onClose={()=>setShowRecharge(false)}
-
-        onRecharge={(amount)=>{
-
-          console.log("Recharge:",amount);
-
-        }}
-
+        onClose={() => setShowRecharge(false)}
+        onRecharge={() => {}}
       />
-
-
     </main>
-
   );
-
 }
