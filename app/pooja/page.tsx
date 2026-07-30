@@ -43,7 +43,9 @@ export default function PoojaPage() {
 
         </div>
 
-        <BottomNav />
+        <BottomNav
+  onCategoriesClick={() => {}}
+/>
 
       </div>
     </main>

@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 
 interface BottomNavProps {
-  onCategoriesClick: () => void;
+  onCategoriesClick?: () => void;
 }
 
 export default function BottomNav({
@@ -53,9 +53,9 @@ export default function BottomNav({
         {/* Categories */}
 
         <button
-          onClick={onCategoriesClick}
-          className="flex flex-1 flex-col items-center"
-        >
+  onClick={() => onCategoriesClick?.()}
+  className="flex flex-1 flex-col items-center"
+>
           <Grid2X2
             size={22}
             className="text-slate-400"
