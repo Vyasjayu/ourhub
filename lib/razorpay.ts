@@ -9,17 +9,10 @@ console.log("KEY ID:", keyId ? "Loaded ✅" : "Missing ❌");
 console.log("KEY SECRET:", keySecret ? "Loaded ✅" : "Missing ❌");
 console.log("=====================================");
 
-if (!keyId) {
-  throw new Error("RAZORPAY_KEY_ID is missing in .env.local");
-}
-
-if (!keySecret) {
-  throw new Error("RAZORPAY_KEY_SECRET is missing in .env.local");
-}
-
+// Razorpay Instance
 const razorpay = new Razorpay({
-  key_id: keyId,
-  key_secret: keySecret,
+  key_id: keyId || "",
+  key_secret: keySecret || "",
 });
 
 export default razorpay;
