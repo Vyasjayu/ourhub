@@ -1,82 +1,142 @@
 "use client";
 
-import { ArrowLeft, Sparkles, ShieldCheck, Star } from "lucide-react";
-import { useRouter } from "next/navigation";
+import {
+  Bell,
+  MapPin,
+  ChevronDown,
+} from "lucide-react";
 
 import ScrollReveal from "@/ScrollReveal";
 
+// import Header from "@/components/religious/Header";
+// import HeroBanner from "@/components/religious/HeroBanner";
+// import SearchBar from "@/components/religious/SearchBar";
+// import QuickActions from "@/components/religious/QuickActions";
+
+// import TrendingPujas from "@/components/religious/TrendingPujas";
+// import UpcomingFestivals from "@/components/religious/UpcomingFestivals";
+// import PopularServices from "@/components/religious/PopularServices";
+// import TopPandits from "@/components/religious/TopPandits";
+// import OfferSlider from "@/components/religious/OfferSlider";
+// import ReferEarn from "@/components/religious/ReferEarn";
+// import Reviews from "@/components/religious/Reviews";
+// import FAQ from "@/components/religious/FAQ";
+// import HelpSection from "@/components/religious/HelpSection";
+// import WhyChooseUs from "@/components/religious/WhyChooseUs";
+import BottomNav from "@/components/BottomNav";
+import HeroBanner from "@/components/religious/HeroBanner";
 import SearchBar from "@/components/religious/SearchBar";
-import CitySelector from "@/components/religious/CitySelector";
-import WelcomeBanner from "@/components/religious/WelcomeBanner";
-import TopCategories from "@/components/religious/TopCategories";
-import PopularPujas from "@/components/religious/PopularPujas";
-import JyotishSection from "@/components/religious/JyotishSection";
-import VastuSection from "@/components/religious/VastuSection";
-import OfferBanner from "@/components/religious/OfferBanner";
+import QuickActions from "@/components/religious/QuickActions";
+import OfferSlider from "@/components/religious/OfferSlider";
+import TrendingPoojas from "@/components/religious/TrendingPoojas";
+import UpcomingFestivals from "@/components/religious/UpcomingFestivals";
+import PopularServices from "@/components/religious/PopularServices";
 import TopPandits from "@/components/religious/TopPandits";
 import Reviews from "@/components/religious/Reviews";
 import FAQ from "@/components/religious/FAQ";
-import BottomNav from "@/components/BottomNav";
+import HelpSection from "@/components/religious/HelpSection";
+import WhyChooseUs from "@/components/religious/WhyChooseUs";
 
 export default function ReligiousPage() {
-  const router = useRouter();
-
   return (
-    <main className="min-h-screen flex justify-center bg-[#020617]">
+    <main className="min-h-screen flex justify-center bg-[#020817]">
 
       <ScrollReveal />
 
-      <div className="relative w-full max-w-[430px] min-h-screen overflow-hidden bg-[#071321] text-white pb-32">
+      {/* Mobile Container */}
+
+      <div
+        className="
+        relative
+        w-full
+        max-w-[430px]
+        min-h-screen
+        overflow-hidden
+        bg-[#071424]
+        text-white
+        pb-28
+      "
+      >
 
         {/* Background Glow */}
 
-        <div className="absolute inset-x-0 top-0 h-[350px] bg-gradient-to-b from-yellow-400/20 via-orange-400/5 to-transparent blur-3xl" />
+        <div className="absolute -top-24 left-0 h-72 w-72 rounded-full bg-yellow-500/10 blur-[120px]" />
 
-        <div className="absolute bottom-40 -right-24 h-60 w-60 rounded-full bg-cyan-400/10 blur-3xl" />
+        <div className="absolute top-[400px] -right-20 h-60 w-60 rounded-full bg-orange-500/10 blur-[120px]" />
 
-        {/* Header */}
+        {/* ========================= */}
 
-        <header className="sticky top-3 z-50 mx-4 mt-3 rounded-3xl border border-white/10 bg-[#081423]/90 backdrop-blur-xl shadow-2xl">
+        {/* HEADER */}
 
-          <div className="flex items-center justify-between p-4">
+        {/* ========================= */}
 
-            <div className="flex items-center gap-3">
+        <header
+          className="
+          sticky
+          top-0
+          z-50
+          border-b
+          border-white/5
+          bg-[#071424]/90
+          backdrop-blur-xl
+        "
+        >
 
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-yellow-400/20">
+          <div className="flex items-center justify-between px-5 py-4">
 
-                <Sparkles
-                  size={20}
-                  className="text-yellow-400"
-                />
 
-              </div>
+            <div className="text-center">
 
-              <div>
+              <h1 className="text-3xl font-black text-yellow-400">
+                OurHub
+              </h1>
 
-                <h1 className="text-lg font-bold">
-                  Religious
-                  <span className="text-yellow-400">
-                    {" "}Services
-                  </span>
-                </h1>
-
-                <p className="text-xs text-slate-400">
-                  Book Spiritual Services
-                </p>
-
-              </div>
+              <p className="text-xs text-slate-400">
+                Religious Services
+              </p>
 
             </div>
-
-            <button
-              onClick={() => router.back()}
-              className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 transition hover:bg-yellow-400 hover:text-black"
+ <button
+              className="
+              flex
+              items-center
+              gap-2
+              rounded-2xl
+              border
+              border-yellow-500/20
+              bg-[#111827]
+              px-4
+              py-3
+            "
             >
 
-              <ArrowLeft
-                size={22}
+              <MapPin
+                size={18}
                 className="text-yellow-400"
               />
+
+              <span className="font-semibold">
+                Indore
+              </span>
+
+              <ChevronDown size={16} />
+
+            </button>
+            <button
+              className="
+              flex
+              h-12
+              w-12
+              items-center
+              justify-center
+              rounded-2xl
+              border
+              border-yellow-500/20
+              bg-[#111827]
+            "
+            >
+
+              <Bell />
 
             </button>
 
@@ -84,208 +144,166 @@ export default function ReligiousPage() {
 
         </header>
 
-        {/* Trust Card */}
 
-        <div className="reveal delay-100">
+        {/* HERO */}
 
-          <section className="mx-4 mt-6 rounded-3xl border border-green-400/20 bg-gradient-to-r from-green-400/10 to-transparent p-4">
 
-            <div className="flex items-center gap-3">
+        <section className="px-4 pt-5">
 
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-green-400/20">
+          <HeroBanner />
 
-                <ShieldCheck className="text-green-400" />
+        </section>
 
-              </div>
+        {/* ========================= */}
 
-              <div>
+        {/* SEARCH */}
 
-                <h3 className="font-semibold">
-                  Verified Pandits
-                </h3>
+        {/* ========================= */}
 
-                <p className="text-xs text-slate-400">
-                  Trusted spiritual experts near you
-                </p>
+        <section className="mt-4 px-4">
 
-              </div>
+          <SearchBar />
 
-            </div>
+        </section>
 
-          </section>
+        {/* ========================= */}
 
-        </div>
+        {/* QUICK ACTIONS */}
 
-        {/* Search */}
+        {/* ========================= */}
 
-        <div className="reveal delay-200">
+        <section className="mt-6 px-4">
 
-          <section className="mx-4 mt-5 space-y-3">
+          <QuickActions />
 
-            <SearchBar />
+        </section>
 
-            <CitySelector />
+        {/* ========================= */}
 
-          </section>
+        {/* OFFER */}
 
-        </div>
+        {/* ========================= */}
 
-        {/* Hero */}
+        <section className="mt-7 px-4">
 
-        <div className="reveal-zoom delay-300">
+          <OfferSlider />
 
-          <section className="mx-4 mt-6 overflow-hidden rounded-3xl border border-yellow-400/20 bg-gradient-to-br from-yellow-400/10 via-orange-400/5 to-transparent shadow-xl">
+        </section>
 
-            <WelcomeBanner />
+        {/* ========================= */}
 
-          </section>
+        {/* TRENDING */}
 
-        </div>
+        {/* ========================= */}
 
-        {/* ===== PART 2 STARTS HERE ===== */}
-        {/* ==============================
-    Explore Services
-============================== */}
+        <section className="mt-8">
 
-<div className="reveal-left delay-400">
+          <TrendingPoojas />
 
-  <section className="mt-8">
+        </section>
 
-    <div className="flex items-center justify-between px-4 mb-3">
+        {/* ========================= */}
 
-      <h2 className="text-lg font-bold">
-        Explore Services
-      </h2>
+        {/* UPCOMING */}
 
-      <Star
-        size={18}
-        className="text-yellow-400"
-      />
+        {/* ========================= */}
 
-    </div>
+        <section className="mt-8">
 
-    <div className="mx-4 rounded-3xl border border-white/10 bg-[#081423] p-3">
+          <UpcomingFestivals />
 
-      <TopCategories />
+        </section>
 
-    </div>
+        {/* ========================= */}
 
-  </section>
+        {/* POPULAR */}
 
-</div>
+        {/* ========================= */}
 
-{/* ==============================
-    Main Content
-============================== */}
+        <section className="mt-8">
 
-<div className="mt-6 space-y-6">
+          <PopularServices />
 
-  {/* Popular Pujas */}
+        </section>
 
-  <div className="reveal-right delay-100">
+        {/* ========================= */}
 
-    <section className="mx-4 rounded-3xl border border-white/10 bg-[#081423] p-3 shadow-lg">
+        {/* TOP PANDITS */}
 
-      <PopularPujas />
+        {/* ========================= */}
 
-    </section>
+        <section className="mt-8">
 
-  </div>
+          <TopPandits />
 
-  {/* Jyotish */}
+        </section>
 
-  <div className="reveal-left delay-200">
+        {/* ========================= */}
 
-    <section className="mx-4 rounded-3xl border border-white/10 bg-[#081423] p-3 shadow-lg">
+        {/* REFER */}
 
-      <JyotishSection />
+        {/* ========================= */}
 
-    </section>
+        <section className="mt-8 px-4">
 
-  </div>
+          {/* <ReferEarn /> */}
 
-  {/* Vastu */}
+        </section>
 
-  <div className="reveal-right delay-300">
+        {/* ========================= */}
 
-    <section className="mx-4 rounded-3xl border border-white/10 bg-[#081423] p-3 shadow-lg">
+        {/* REVIEWS */}
 
-      <VastuSection />
+        {/* ========================= */}
 
-    </section>
+        <section className="mt-8">
 
-  </div>
+          <Reviews />
 
-  {/* Offer Banner */}
+        </section>
 
-  <div className="reveal-zoom delay-400">
+        {/* ========================= */}
 
-    <section className="mx-4">
+        {/* FAQ */}
 
-      <OfferBanner />
+        {/* ========================= */}
 
-    </section>
+        <section className="mt-8">
 
-  </div>
+          <FAQ />
 
-  {/* ===== PART 3 STARTS HERE ===== */}
-    {/* ==============================
-      Top Pandits
-  ============================== */}
+        </section>
 
-  <div className="reveal delay-100">
+        {/* ========================= */}
 
-    <section className="mx-4 rounded-3xl border border-white/10 bg-[#081423] p-3 shadow-lg">
+        {/* HELP */}
 
-      <TopPandits />
+        {/* ========================= */}
 
-    </section>
+        <section className="mt-8 px-4">
 
-  </div>
+          <HelpSection />
 
-  {/* ==============================
-      Reviews
-  ============================== */}
+        </section>
 
-  <div className="reveal-left delay-200">
+        {/* ========================= */}
 
-    <section className="mx-4 rounded-3xl border border-white/10 bg-[#081423] p-3 shadow-lg">
+        {/* WHY */}
 
-      <Reviews />
+        {/* ========================= */}
 
-    </section>
+        <section className="mt-8 mb-10 px-4">
 
-  </div>
+          <WhyChooseUs />
 
-  {/* ==============================
-      FAQ
-  ============================== */}
+        </section>
 
-  <div className="reveal-right delay-300">
+        <BottomNav onCategoriesClick={function (): void {
+          throw new Error("Function not implemented.");
+        } } />
 
-    <section className="mx-4 mb-5 rounded-3xl border border-white/10 bg-[#081423] p-3 shadow-lg">
+      </div>
 
-      <FAQ />
-
-    </section>
-
-  </div>
-
-</div>
-
-{/* ==============================
-    Bottom Navigation
-============================== */}
-
-<div className="reveal-zoom delay-500">
-
-  <BottomNav />
-
-</div>
-
-</div>
-
-</main>
-
+    </main>
   );
 }

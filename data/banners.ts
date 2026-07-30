@@ -1,32 +1,29 @@
 export const banners = [
   {
     id: 1,
+    badge: "100+ Trusted Services",
     title: "Everything You Need",
-    image: "/banners/banner1.webp",
+    subtitle: "Book verified professionals in seconds.",
+    button: "Explore",
+    image: "/banners/hero1.png",
     link: "/",
   },
   {
     id: 2,
-    title: "Premium Religious Services",
-    image: "/banners/banner2.webp",
+    badge: "Premium Booking",
+    title: "Religious Services",
+    subtitle: "Pandit Ji, Pooja, Astrology & Vastu.",
+    button: "Book Now",
+    image: "/banners/hero2.png",
     link: "/religious",
   },
   {
     id: 3,
-    title: "Home Services",
-    image: "/banners/banner3.webp",
+    badge: "Fast Home Services",
+    title: "Home Repairs",
+    subtitle: "Electrician, AC Repair, Cleaning & More.",
+    button: "Get Started",
+    image: "/banners/hero3.png",
     link: "/home-service",
   },
-  {
-    id: 4,
-    title: "Digital Marketing",
-    image: "/banners/banner4.webp",
-    link: "/digital-marketing",
-  },
- {
-  id: 5,
-  title: "Software Solutions",
-  image: "/banners/banner5.webp",
-  link: "/software",
-}
 ];

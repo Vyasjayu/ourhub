@@ -1,109 +1,295 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+
+import {
+  ChevronDown,
+  HelpCircle,
+} from "lucide-react";
+
 
 const faqs = [
+
   {
-    question: "How do I book a Pandit?",
+    id:1,
+    question:"How can I book a Pooja service?",
     answer:
-      "Select your city, choose a Pandit or Puja, select your preferred date and time, then complete the booking.",
+    "You can select your desired Pooja, choose online or offline mode, select date and time, fill booking details and confirm your booking."
   },
+
+
   {
-    question: "Can I choose my preferred Pandit?",
+    id:2,
+    question:"Can I book a Pandit Ji for home Pooja?",
     answer:
-      "Yes. You can view Pandit profiles, experience, ratings, languages, and choose the one you prefer.",
+    "Yes, OurHub provides verified Pandit Ji services for home Pooja in available cities."
   },
+
+
   {
-    question: "Which cities are currently available?",
+    id:3,
+    question:"Do you provide online Pooja services?",
     answer:
-      "Currently, services are available in Indore, Ujjain, and Ratlam. More cities will be added soon.",
+    "Yes, you can book online Pooja where Pandit Ji performs rituals through video call."
   },
+
+
   {
-    question: "Do you provide online Jyotish consultation?",
+    id:4,
+    question:"How do I consult an astrologer?",
     answer:
-      "Yes. You can book audio, video, or chat consultations with verified astrologers.",
+    "Choose Astrology Consultation, select your preferred astrologer and book a convenient time slot."
   },
+
+
   {
-    question: "How can I pay?",
+    id:5,
+    question:"Which cities are covered for offline Pooja?",
     answer:
-      "You can pay securely using UPI, Debit Card, Credit Card, Net Banking, or Wallet.",
+    "Offline Pooja availability depends on your location. We are expanding services across multiple cities."
   },
+
+
   {
-    question: "Can I cancel or reschedule my booking?",
+    id:6,
+    question:"Is online payment secure?",
     answer:
-      "Yes. Depending on the service, you can cancel or reschedule before the scheduled time.",
+    "Yes, payments are processed through secure payment gateways for safe transactions."
   },
+
+
 ];
 
-export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  return (
-    <section className="px-4 mt-8 mb-24">
 
-      <div className="flex items-center justify-between mb-5">
+export default function FAQ(){
 
-        <h2 className="text-xl font-bold text-white">
-          ❓ Frequently Asked Questions
-        </h2>
 
-      </div>
+const [open,setOpen] = useState<number | null>(null);
 
-      <div className="space-y-4">
 
-        {faqs.map((faq, index) => {
 
-          const open = openIndex === index;
+return (
 
-          return (
-            <div
-              key={index}
-              className="bg-[#0d1b2a] border border-white/10 rounded-2xl overflow-hidden"
-            >
+<section className="mt-6 px-3">
 
-              <button
-                onClick={() =>
-                  setOpenIndex(open ? null : index)
-                }
-                className="w-full flex items-center justify-between p-5 text-left"
-              >
 
-                <span className="font-semibold text-white pr-4">
-                  {faq.question}
-                </span>
+{/* Heading */}
 
-                <ChevronDown
-                  size={22}
-                  className={`transition-transform duration-300 ${
-                    open ? "rotate-180 text-[#D4AF37]" : "text-gray-400"
-                  }`}
-                />
+<div className="mb-4">
 
-              </button>
 
-              <div
-                className={`grid transition-all duration-300 ${
-                  open
-                    ? "grid-rows-[1fr]"
-                    : "grid-rows-[0fr]"
-                }`}
-              >
-                <div className="overflow-hidden">
+<div className="flex items-center gap-2">
 
-                  <p className="px-5 pb-5 text-sm leading-7 text-gray-300">
-                    {faq.answer}
-                  </p>
 
-                </div>
-              </div>
+<div
 
-            </div>
-          );
-        })}
+className="
+w-9
+h-9
+rounded-full
+bg-yellow-400
+flex
+items-center
+justify-center
+"
 
-      </div>
+>
 
-    </section>
-  );
+<HelpCircle
+
+size={18}
+
+className="text-black"
+
+/>
+
+</div>
+
+
+
+<h2
+
+className="
+text-lg
+font-bold
+text-white
+"
+
+>
+
+Frequently Asked Questions
+
+</h2>
+
+
+</div>
+
+
+
+<p
+
+className="
+mt-2
+text-xs
+text-gray-400
+"
+
+>
+
+Find answers about our spiritual services
+
+</p>
+
+
+</div>
+
+
+
+
+
+{/* FAQ List */}
+
+<div
+
+className="
+space-y-3
+"
+
+>
+
+
+{
+
+faqs.map((faq)=>(
+
+
+<div
+
+key={faq.id}
+
+className="
+rounded-2xl
+border
+border-yellow-500/20
+bg-white/5
+backdrop-blur-xl
+overflow-hidden
+"
+
+>
+
+
+<button
+
+onClick={()=>setOpen(
+open === faq.id ? null : faq.id
+)}
+
+className="
+w-full
+flex
+items-center
+justify-between
+p-4
+text-left
+"
+
+>
+
+
+<span
+
+className="
+text-sm
+font-semibold
+text-white
+"
+
+>
+
+{faq.question}
+
+</span>
+
+
+
+<ChevronDown
+
+size={18}
+
+className={`
+text-yellow-400
+transition-transform
+${
+open === faq.id
+? "rotate-180"
+:""
+}
+`}
+
+/>
+
+
+</button>
+
+
+
+
+
+<div
+
+className={`
+transition-all
+duration-300
+overflow-hidden
+${
+open === faq.id
+?
+"max-h-40 opacity-100"
+:
+"max-h-0 opacity-0"
+}
+`}
+
+>
+
+
+<p
+
+className="
+px-4
+pb-4
+text-xs
+leading-relaxed
+text-gray-300
+"
+
+>
+
+{faq.answer}
+
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+))
+
+}
+
+
+</div>
+
+
+
+</section>
+
+);
+
 }

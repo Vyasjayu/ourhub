@@ -1,222 +1,142 @@
 "use client";
 
-import { Star, Quote } from "lucide-react";
+import Image from "next/image";
+import { Star } from "lucide-react";
 
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/pagination";
 
 const testimonials = [
   {
+    id: 1,
     name: "Rahul Sharma",
-    role: "Customer",
+    city: "Indore",
+    image: "/images/testimonials/user1.jpg",
     review:
-      "Amazing service experience. Professional team and quick response.",
+      "Excellent service! Booking was quick and the pandit arrived on time. Highly recommended.",
     rating: 5,
   },
-
   {
+    id: 2,
     name: "Priya Verma",
-    role: "Customer",
+    city: "Bhopal",
+    image: "/images/testimonials/user2.jpg",
     review:
-      "I booked home service and the work was completed perfectly.",
+      "Booked AC repair through OurHub. Very professional and affordable.",
     rating: 5,
   },
-
   {
+    id: 3,
     name: "Amit Patel",
-    role: "Business Owner",
+    city: "Ujjain",
+    image: "/images/testimonials/user3.jpg",
     review:
-      "Very easy platform to find trusted service providers.",
-    rating: 4,
+      "Very smooth experience. Secure payment and excellent customer support.",
+    rating: 5,
   },
-
 ];
 
-
-
 export default function Testimonials() {
-
   return (
-
-    <section className="mt-8 px-4">
-
+    <section className="mt-8">
 
       {/* Heading */}
 
-      <div className="mb-5">
+      <div className="mb-6 text-center">
 
-        <h2
-          className="
-          text-xl
-          font-bold
-          text-white
-          "
-        >
-          Customer Reviews
+        <span className="rounded-full bg-yellow-500/20 px-3 py-1 text-xs font-semibold text-yellow-300">
+          CUSTOMER REVIEWS
+        </span>
+
+        <h2 className="mt-3 text-2xl font-bold text-white">
+          What Our Customers Say
         </h2>
 
-
-        <p
-          className="
-          mt-1
-          text-sm
-          text-slate-400
-          "
-        >
-          What our customers say about us
+        <p className="mt-2 text-sm text-slate-400">
+          Trusted by thousands of happy customers.
         </p>
 
       </div>
 
-
-
-
-
-      {/* Reviews */}
-
-      <div
-        className="
-        flex
-        gap-4
-        overflow-x-auto
-        pb-3
-        scrollbar-hide
-        "
+      <Swiper
+        modules={[Autoplay, Pagination]}
+        slidesPerView={1.1}
+        spaceBetween={16}
+        centeredSlides
+        loop
+        autoplay={{
+          delay: 3500,
+          disableOnInteraction: false,
+        }}
+        pagination={{
+          clickable: true,
+        }}
+        className="testimonialSwiper"
       >
-
-
-        {testimonials.map((item,index)=>(
-
-
-          <div
-            key={index}
-            className="
-            min-w-[280px]
-            rounded-2xl
-            border
-            border-slate-700
-            bg-slate-900
-            p-5
-            "
-          >
-
-
-            {/* Quote Icon */}
+        {testimonials.map((item) => (
+          <SwiperSlide key={item.id}>
 
             <div
               className="
-              flex
-              h-10
-              w-10
-              items-center
-              justify-center
-              rounded-full
-              bg-cyan-400/10
+                rounded-3xl
+                border
+                border-yellow-500/20
+                bg-[#111827]
+                p-5
+                shadow-lg
               "
             >
+              {/* User */}
 
-              <Quote
-                size={20}
-                className="text-cyan-400"
-              />
+              <div className="flex items-center gap-4">
 
-            </div>
-
-
-
-
-
-            {/* Review */}
-
-            <p
-              className="
-              mt-4
-              text-sm
-              leading-relaxed
-              text-slate-300
-              "
-            >
-              "{item.review}"
-            </p>
-
-
-
-
-
-            {/* Rating */}
-
-            <div
-              className="
-              mt-4
-              flex
-              gap-1
-              "
-            >
-
-              {Array.from({
-                length:item.rating
-              }).map((_,i)=>(
-
-                <Star
-                  key={i}
-                  size={16}
-                  fill="currentColor"
-                  className="text-yellow-400"
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  width={60}
+                  height={60}
+                  className="rounded-full border-2 border-yellow-400 object-cover"
                 />
 
-              ))}
+                <div>
 
-            </div>
+                  <h3 className="font-bold text-white">
+                    {item.name}
+                  </h3>
 
+                  <p className="text-sm text-slate-400">
+                    {item.city}
+                  </p>
 
+                  <div className="mt-2 flex gap-1">
+                    {[...Array(item.rating)].map((_, index) => (
+                      <Star
+                        key={index}
+                        size={16}
+                        className="fill-yellow-400 text-yellow-400"
+                      />
+                    ))}
+                  </div>
 
+                </div>
 
+              </div>
 
-            {/* User */}
+              {/* Review */}
 
-            <div
-              className="
-              mt-5
-              border-t
-              border-slate-700
-              pt-4
-              "
-            >
-
-              <h3
-                className="
-                text-sm
-                font-semibold
-                text-white
-                "
-              >
-                {item.name}
-              </h3>
-
-
-              <p
-                className="
-                text-xs
-                text-slate-400
-                "
-              >
-                {item.role}
+              <p className="mt-5 text-sm leading-7 text-slate-300">
+                "{item.review}"
               </p>
 
-
             </div>
 
-
-
-          </div>
-
-
+          </SwiperSlide>
         ))}
-
-
-      </div>
-
+      </Swiper>
 
     </section>
-
   );
-
 }

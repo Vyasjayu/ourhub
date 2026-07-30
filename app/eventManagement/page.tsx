@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
+
 const services = [
   {
-    title: "Wedding Planning",
+    title: "Wedding Event",
     image: "/images/events/wedding.jpg",
     description: "Complete wedding planning and management services.",
+    href: "/eventManagement/wedding-event",
   },
   {
     title: "Birthday Parties",

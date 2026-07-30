@@ -1,149 +1,377 @@
 "use client";
 
 import Image from "next/image";
-import { Star, MapPin, Languages, Briefcase } from "lucide-react";
 import Link from "next/link";
 
+import {
+  Star,
+  MapPin,
+  Award,
+} from "lucide-react";
+
+
 const pandits = [
+
   {
-    id: 1,
-    name: "Pt. Rajesh Sharma",
-    city: "Indore",
-    experience: "15 Years",
-    languages: "Hindi, Sanskrit",
-    rating: "4.9",
-    price: "₹999",
-    image: "/pandits/pandit1.jpg",
-    href: "/religious/pandit-booking/1",
+    id:1,
+    name:"Acharya Rajesh Sharma",
+    image:"/images/pandits/pandit1.png",
+    speciality:"Vedic Pooja Expert",
+    experience:"15+ Years Experience",
+    rating:"4.9",
+    reviews:"1200+",
+    location:"Ujjain",
+    link:"/religious/pandit/rajesh-sharma",
   },
+
+
   {
-    id: 2,
-    name: "Pt. Mahesh Joshi",
-    city: "Ujjain",
-    experience: "18 Years",
-    languages: "Hindi, Gujarati",
-    rating: "5.0",
-    price: "₹1499",
-    image: "/pandits/pandit2.jpg",
-    href: "/religious/pandit-booking/2",
+    id:2,
+    name:"Pandit Amit Mishra",
+    image:"/images/pandits/pandit2.png",
+    speciality:"Kundli & Astrology",
+    experience:"12+ Years Experience",
+    rating:"4.8",
+    reviews:"900+",
+    location:"Indore",
+    link:"/religious/pandit/amit-mishra",
   },
+
+
   {
-    id: 3,
-    name: "Pt. Anil Mishra",
-    city: "Ratlam",
-    experience: "12 Years",
-    languages: "Hindi",
-    rating: "4.8",
-    price: "₹799",
-    image: "/pandits/pandit3.jpg",
-    href: "/religious/pandit-booking/3",
+    id:3,
+    name:"Acharya Vikram Joshi",
+    image:"/images/pandits/pandit3.png",
+    speciality:"Rudrabhishek Specialist",
+    experience:"20+ Years Experience",
+    rating:"5.0",
+    reviews:"1500+",
+    location:"Varanasi",
+    link:"/religious/pandit/vikram-joshi",
   },
+
+
+  {
+    id:4,
+    name:"Pandit Mohan Tiwari",
+    image:"/images/pandits/pandit4.png",
+    speciality:"Marriage Pooja Expert",
+    experience:"10+ Years Experience",
+    rating:"4.9",
+    reviews:"700+",
+    location:"Bhopal",
+    link:"/religious/pandit/mohan-tiwari",
+  },
+
 ];
 
-export default function TopPandits() {
-  return (
-    <section className="mt-8">
 
-      <div className="flex items-center justify-between px-4 mb-4">
-        <h2 className="text-xl font-bold text-white">
-          ⭐ Top Rated Pandits
-        </h2>
 
-        <button className="text-[#D4AF37] text-sm font-medium">
-          View All
-        </button>
-      </div>
+export default function TopPandits(){
 
-      <div className="flex gap-4 overflow-x-auto px-4 pb-2 scrollbar-hide">
+return (
 
-        {pandits.map((pandit) => (
+<section className="mt-6 px-3">
 
-          <div
-            key={pandit.id}
-            className="min-w-[270px] rounded-3xl bg-[#0d1b2a] border border-white/10 overflow-hidden"
-          >
 
-            {/* Image */}
+{/* Header */}
 
-            <div className="relative h-48">
+<div className="flex justify-between items-center mb-4">
 
-              <Image
-                src={pandit.image}
-                alt={pandit.name}
-                fill
-                className="object-cover"
-              />
 
-              <div className="absolute top-3 right-3 bg-green-500 text-white text-xs px-3 py-1 rounded-full">
-                Online
-              </div>
+<div>
 
-            </div>
+<h2
+className="
+text-lg
+font-bold
+text-white
+"
+>
+Top Pandits
+</h2>
 
-            <div className="p-4">
 
-              <h3 className="font-bold text-lg text-white">
-                {pandit.name}
-              </h3>
+<p
+className="
+text-xs
+text-gray-400
+"
+>
+Trusted spiritual experts
+</p>
 
-              <div className="flex items-center gap-2 mt-3 text-gray-300">
 
-                <Star
-                  size={16}
-                  className="fill-yellow-400 text-yellow-400"
-                />
+</div>
 
-                <span>{pandit.rating}</span>
 
-              </div>
+<Link
 
-              <div className="flex items-center gap-2 mt-3 text-gray-400">
+href="/religious/pandits"
 
-                <Briefcase size={16} />
+className="
+text-xs
+text-yellow-400
+font-medium
+"
 
-                <span>{pandit.experience}</span>
+>
+View All
+</Link>
 
-              </div>
 
-              <div className="flex items-center gap-2 mt-3 text-gray-400">
+</div>
 
-                <Languages size={16} />
 
-                <span>{pandit.languages}</span>
 
-              </div>
 
-              <div className="flex items-center gap-2 mt-3 text-gray-400">
 
-                <MapPin size={16} />
+{/* Pandit Cards */}
 
-                <span>{pandit.city}</span>
+<div
 
-              </div>
+className="
+flex
+gap-4
+overflow-x-auto
+pb-2
+scrollbar-hide
+"
 
-              <div className="flex items-center justify-between mt-5">
+>
 
-                <span className="text-2xl font-bold text-[#D4AF37]">
-                  {pandit.price}
-                </span>
 
-                <Link
-                  href={pandit.href}
-                  className="px-5 py-2 rounded-xl bg-[#D4AF37] text-[#071321] font-semibold"
-                >
-                  Book Now
-                </Link>
+{
+pandits.map((pandit)=>(
 
-              </div>
 
-            </div>
+<div
 
-          </div>
+key={pandit.id}
 
-        ))}
+className="
+min-w-[250px]
+rounded-3xl
+border
+border-yellow-500/20
+bg-white/5
+backdrop-blur-xl
+overflow-hidden
+"
 
-      </div>
+>
 
-    </section>
-  );
+
+{/* Profile Image */}
+
+<div
+
+className="
+relative
+h-36
+"
+
+>
+
+<Image
+
+src={pandit.image}
+
+alt={pandit.name}
+
+fill
+
+className="
+object-cover
+"
+
+/>
+
+
+
+{/* Rating */}
+
+<div
+
+className="
+absolute
+top-3
+right-3
+px-3
+py-1
+rounded-full
+bg-black/70
+flex
+items-center
+gap-1
+text-xs
+text-yellow-400
+"
+
+>
+
+<Star
+size={12}
+fill="currentColor"
+/>
+
+{pandit.rating}
+
+</div>
+
+
+</div>
+
+
+
+
+
+{/* Content */}
+
+<div className="p-4">
+
+
+<h3
+
+className="
+text-sm
+font-bold
+text-white
+"
+
+>
+
+{pandit.name}
+
+</h3>
+
+
+
+<p
+
+className="
+text-xs
+text-yellow-400
+mt-1
+"
+
+>
+
+{pandit.speciality}
+
+</p>
+
+
+
+
+
+<div
+
+className="
+flex
+items-center
+gap-2
+mt-3
+text-xs
+text-gray-400
+"
+
+>
+
+<Award size={14}/>
+
+{pandit.experience}
+
+</div>
+
+
+
+
+
+<div
+
+className="
+flex
+items-center
+gap-2
+mt-2
+text-xs
+text-gray-400
+"
+
+>
+
+<MapPin size={14}/>
+
+{pandit.location}
+
+</div>
+
+
+
+
+<p
+
+className="
+text-[11px]
+text-gray-500
+mt-2
+"
+
+>
+
+{pandit.reviews} devotees consulted
+
+</p>
+
+
+
+
+
+<Link
+
+href={pandit.link}
+
+className="
+block
+text-center
+mt-4
+rounded-full
+py-2
+bg-gradient-to-r
+from-yellow-400
+to-orange-500
+text-black
+text-xs
+font-semibold
+"
+
+>
+
+Book Consultation
+
+</Link>
+
+
+
+</div>
+
+
+
+</div>
+
+
+))
+
+}
+
+
+</div>
+
+
+
+</section>
+
+);
+
 }

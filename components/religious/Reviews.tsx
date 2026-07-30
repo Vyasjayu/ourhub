@@ -1,108 +1,359 @@
 "use client";
 
-import { Star, BadgeCheck } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+
+import {
+  Star,
+  Quote,
+} from "lucide-react";
+
+
 
 const reviews = [
+
   {
-    id: 1,
-    name: "Rahul Verma",
-    city: "Indore",
-    rating: 5,
+    id:1,
+    name:"Rahul Sharma",
+    image:"/images/users/user1.png",
+    service:"Satyanarayan Pooja",
+    rating:5,
     review:
-      "Excellent service. Pandit ji arrived on time and completed the Griha Pravesh Puja perfectly.",
+    "OurHub se ghar par pooja booking ka experience bahut accha raha. Pandit ji bahut knowledgeable the.",
   },
+
+
   {
-    id: 2,
-    name: "Priya Sharma",
-    city: "Ujjain",
-    rating: 5,
+    id:2,
+    name:"Priya Verma",
+    image:"/images/users/user2.png",
+    service:"Kundli Consultation",
+    rating:5,
     review:
-      "Very knowledgeable Jyotish. The consultation was clear and helpful.",
+    "Astrologer ne meri kundli ka detailed analysis diya. Service fast aur trusted thi.",
   },
+
+
   {
-    id: 3,
-    name: "Amit Patel",
-    city: "Ratlam",
-    rating: 4,
+    id:3,
+    name:"Amit Patel",
+    image:"/images/users/user3.png",
+    service:"Vastu Consultation",
+    rating:4,
     review:
-      "Good Vastu consultation for my shop. Professional and polite service.",
+    "Vastu guidance se ghar me positive changes feel hue. Highly recommended.",
   },
+
+
+  {
+    id:4,
+    name:"Neha Singh",
+    image:"/images/users/user4.png",
+    service:"Ganesh Pooja",
+    rating:5,
+    review:
+    "Online booking process bahut simple tha aur pooja ka arrangement perfect tha.",
+  },
+
+
 ];
 
-export default function Reviews() {
-  return (
-    <section className="mt-8">
 
-      <div className="flex items-center justify-between px-4 mb-4">
-        <h2 className="text-xl font-bold text-white">
-          ⭐ Customer Reviews
-        </h2>
 
-        <button className="text-[#D4AF37] text-sm">
-          View All
-        </button>
-      </div>
+export default function Reviews(){
 
-      <div className="flex gap-4 overflow-x-auto px-4 pb-2">
 
-        {reviews.map((review) => (
-          <div
-            key={review.id}
-            className="min-w-[300px] rounded-3xl bg-[#0d1b2a] border border-white/10 p-5"
-          >
-            {/* User */}
-            <div className="flex items-center gap-4">
+return (
 
-              <div className="w-14 h-14 rounded-full bg-[#D4AF37] flex items-center justify-center text-[#071321] font-bold text-xl">
-                {review.name.charAt(0)}
-              </div>
+<section className="mt-6 px-3">
 
-              <div>
 
-                <div className="flex items-center gap-2">
+{/* Heading */}
 
-                  <h3 className="font-bold text-white">
-                    {review.name}
-                  </h3>
+<div className="flex justify-between items-center mb-4">
 
-                  <BadgeCheck
-                    size={16}
-                    className="text-green-500"
-                  />
 
-                </div>
+<div>
 
-                <p className="text-gray-400 text-sm">
-                  {review.city}
-                </p>
+<h2
 
-              </div>
+className="
+text-lg
+font-bold
+text-white
+"
 
-            </div>
+>
+Devotee Reviews
+</h2>
 
-            {/* Rating */}
 
-            <div className="flex gap-1 mt-4">
-              {Array.from({ length: review.rating }).map((_, index) => (
-                <Star
-                  key={index}
-                  size={16}
-                  className="fill-yellow-400 text-yellow-400"
-                />
-              ))}
-            </div>
+<p
 
-            {/* Review */}
+className="
+text-xs
+text-gray-400
+"
 
-            <p className="text-gray-300 text-sm leading-6 mt-4">
-              {review.review}
-            </p>
+>
+Trusted by thousands of devotees
+</p>
 
-          </div>
-        ))}
 
-      </div>
+</div>
 
-    </section>
-  );
+
+
+<Link
+
+href="/reviews"
+
+className="
+text-xs
+text-yellow-400
+font-medium
+"
+
+>
+
+View All
+
+</Link>
+
+
+</div>
+
+
+
+
+
+{/* Review Cards */}
+
+<div
+
+className="
+flex
+gap-4
+overflow-x-auto
+pb-2
+scrollbar-hide
+"
+
+>
+
+
+{
+reviews.map((item)=>(
+
+
+<div
+
+key={item.id}
+
+className="
+min-w-[280px]
+rounded-3xl
+border
+border-yellow-500/20
+bg-white/5
+backdrop-blur-xl
+p-4
+"
+
+>
+
+
+{/* Top */}
+
+<div
+
+className="
+flex
+items-center
+justify-between
+"
+
+>
+
+
+<div
+
+className="
+flex
+items-center
+gap-3
+"
+
+>
+
+<div
+
+className="
+relative
+w-12
+h-12
+rounded-full
+overflow-hidden
+border
+border-yellow-400/30
+"
+
+>
+
+<Image
+
+src={item.image}
+
+alt={item.name}
+
+fill
+
+className="
+object-cover
+"
+
+/>
+
+
+</div>
+
+
+
+
+<div>
+
+
+<h3
+
+className="
+text-sm
+font-semibold
+text-white
+"
+
+>
+
+{item.name}
+
+</h3>
+
+
+<p
+
+className="
+text-[11px]
+text-yellow-400
+"
+
+>
+
+{item.service}
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<Quote
+
+size={28}
+
+className="
+text-yellow-400/50
+"
+
+/>
+
+
+</div>
+
+
+
+
+
+{/* Stars */}
+
+<div
+
+className="
+flex
+gap-1
+mt-4
+"
+
+>
+
+{
+
+Array.from({length:item.rating}).map((_,index)=>(
+
+
+<Star
+
+key={index}
+
+size={14}
+
+fill="currentColor"
+
+className="
+text-yellow-400
+"
+
+/>
+
+
+))
+
+}
+
+
+</div>
+
+
+
+
+
+{/* Review */}
+
+<p
+
+className="
+mt-3
+text-xs
+text-gray-300
+leading-relaxed
+"
+
+>
+
+"{item.review}"
+
+</p>
+
+
+
+</div>
+
+
+))
+
+}
+
+
+</div>
+
+
+
+</section>
+
+);
+
 }

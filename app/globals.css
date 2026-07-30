@@ -347,3 +347,63 @@ body {
 .delay-500 {
   transition-delay: 500ms;
 }
+.heroSwiper .swiper-pagination{
+  bottom:12px !important;
+}
+
+.heroSwiper .swiper-pagination-bullet{
+  width:8px;
+  height:8px;
+  background:#64748b;
+  opacity:1;
+  transition:.3s;
+}
+
+.heroSwiper .swiper-pagination-bullet-active{
+  width:24px;
+  border-radius:999px;
+  background:#F4C542;
+}
+
+.heroSwiper .swiper-button-prev,
+.heroSwiper .swiper-button-next{
+  width:38px;
+  height:38px;
+  border-radius:999px;
+  background:rgba(0,0,0,.35);
+  backdrop-filter:blur(10px);
+  color:#fff;
+}
+
+.heroSwiper .swiper-button-prev::after,
+.heroSwiper .swiper-button-next::after{
+  font-size:14px;
+  font-weight:bold;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  scrollbar-width: none;
+}
+.testimonialSwiper {
+  padding-bottom: 36px;
+}
+
+.testimonialSwiper .swiper-pagination {
+  bottom: 0 !important;
+}
+
+.testimonialSwiper .swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background: #64748b;
+  opacity: 1;
+}
+
+.testimonialSwiper .swiper-pagination-bullet-active {
+  width: 24px;
+  border-radius: 999px;
+  background: #f4c542;
+}

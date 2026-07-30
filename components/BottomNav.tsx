@@ -2,211 +2,120 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
 import {
-  Home,
-  Search,
-  CalendarCheck,
-  User,
+  House,
   Grid2X2,
+  CalendarDays,
+  Wallet,
+  User,
 } from "lucide-react";
 
+interface BottomNavProps {
+  onCategoriesClick: () => void;
+}
 
-const navItems = [
-
-  {
-    name: "Home",
-    icon: Home,
-    href: "/",
-  },
-
-  {
-    name: "Services",
-    icon: Grid2X2,
-    href: "/services",
-  },
-
-  {
-    name: "Search",
-    icon: Search,
-    href: "/search",
-  },
-
-  {
-    name: "Bookings",
-    icon: CalendarCheck,
-    href: "/bookings",
-  },
-
-  {
-    name: "Profile",
-    icon: User,
-    href: "/profile",
-  },
-
-];
-
-
-
-export default function BottomNav() {
-
-
+export default function BottomNav({
+  onCategoriesClick,
+}: BottomNavProps) {
   const pathname = usePathname();
 
+  const iconClass = (active: boolean) =>
+    active
+      ? "text-yellow-400"
+      : "text-slate-400";
 
+  const textClass = (active: boolean) =>
+    active
+      ? "mt-1 text-[11px] font-semibold text-yellow-400"
+      : "mt-1 text-[11px] text-slate-400";
 
   return (
+    <nav className="fixed bottom-4 left-1/2 z-50 w-[95%] max-w-md -translate-x-1/2">
 
-    <nav
+      <div className="flex items-center justify-between rounded-[26px] border border-yellow-500/20 bg-[#101B2C]/95 px-4 py-3 shadow-2xl backdrop-blur-xl">
 
-      className="
-      fixed
-      bottom-0
-      left-0
-      right-0
-      z-[9999]
-      h-20
-      w-full
-      border-t
-      border-slate-700
-      bg-[#071321]
-      shadow-[0_-5px_20px_rgba(0,0,0,0.4)]
-      "
+        {/* Home */}
 
-    >
+        <Link
+          href="/"
+          className="flex flex-1 flex-col items-center"
+        >
+          <House
+            size={22}
+            className={iconClass(pathname === "/")}
+          />
 
+          <span className={textClass(pathname === "/")}>
+            Home
+          </span>
+        </Link>
 
-      <div
+        {/* Categories */}
 
-        className="
-        mx-auto
-        flex
-        h-full
-        max-w-md
-        items-center
-        justify-around
-        px-2
-        "
+        <button
+          onClick={onCategoriesClick}
+          className="flex flex-1 flex-col items-center"
+        >
+          <Grid2X2
+            size={22}
+            className="text-slate-400"
+          />
 
-      >
+          <span className="mt-1 text-[11px] text-slate-400">
+            Categories
+          </span>
+        </button>
 
+        {/* Bookings */}
 
+        <Link
+          href="/bookings"
+          className="flex flex-1 flex-col items-center"
+        >
+          <CalendarDays
+            size={22}
+            className={iconClass(pathname === "/bookings")}
+          />
 
-        {
-          navItems.map((item)=>{
+          <span className={textClass(pathname === "/bookings")}>
+            Bookings
+          </span>
+        </Link>
 
+        {/* Wallet */}
 
-            const Icon = item.icon;
+        <Link
+          href="/wallet"
+          className="flex flex-1 flex-col items-center"
+        >
+          <Wallet
+            size={22}
+            className={iconClass(pathname === "/wallet")}
+          />
 
+          <span className={textClass(pathname === "/wallet")}>
+            Wallet
+          </span>
+        </Link>
 
-            const active =
-              pathname === item.href;
+        {/* Profile */}
 
+        <Link
+          href="/profile"
+          className="flex flex-1 flex-col items-center"
+        >
+          <User
+            size={22}
+            className={iconClass(pathname === "/profile")}
+          />
 
-
-            return (
-
-              <Link
-
-                key={item.name}
-
-                href={item.href}
-
-                className="
-                flex
-                flex-1
-                flex-col
-                items-center
-                justify-center
-                gap-1
-                "
-
-              >
-
-
-
-                <div
-
-                  className={`
-                  flex
-                  h-9
-                  w-9
-                  items-center
-                  justify-center
-                  rounded-full
-                  transition-all
-                  duration-300
-
-                  ${
-                    active
-                    ? "bg-cyan-400/20"
-                    : "bg-transparent"
-                  }
-
-                  `}
-
-                >
-
-
-                  <Icon
-
-                    size={23}
-
-                    className={
-
-                      active
-                      ? "text-cyan-400"
-                      : "text-slate-400"
-
-                    }
-
-                  />
-
-
-                </div>
-
-
-
-
-
-                <span
-
-                  className={`
-
-                  text-[11px]
-                  font-medium
-
-                  ${
-                    active
-                    ? "text-cyan-400"
-                    : "text-slate-400"
-                  }
-
-                  `}
-
-                >
-
-                  {item.name}
-
-                </span>
-
-
-
-              </Link>
-
-            );
-
-
-          })
-        }
-
-
+          <span className={textClass(pathname === "/profile")}>
+            Profile
+          </span>
+        </Link>
 
       </div>
 
-
     </nav>
-
   );
-
 }
