@@ -1,92 +1,93 @@
-import mongoose,{Schema,Document} from "mongoose";
+import mongoose, { Schema, Document, Model } from "mongoose";
 
 
 export interface IConsultation extends Document {
 
+  userId: string;
 
-userId:string;
+  panditId: string;
 
-panditId:string;
+  amount: number;
 
-amount:number;
+  duration: number;
 
-duration:number;
+  paymentId: string;
 
-paymentId:string;
+  status: string;
 
-status:string;
+  startTime?: Date | null;
 
-startTime?:Date;
-
-endTime?:Date;
-
+  endTime?: Date | null;
 
 }
 
 
 
-const ConsultationSchema =
-new Schema<IConsultation>({
+const ConsultationSchema = new Schema<IConsultation>(
+{
 
-userId:{
-type:String,
-required:true
-},
-
-
-panditId:{
-type:String,
-required:true
-},
+  userId:{
+    type:String,
+    required:true
+  },
 
 
-amount:{
-type:Number,
-required:true
-},
+  panditId:{
+    type:String,
+    required:true
+  },
 
 
-duration:{
-type:Number,
-required:true
-},
+  amount:{
+    type:Number,
+    required:true
+  },
 
 
-paymentId:{
-type:String,
-required:true
-},
+  duration:{
+    type:Number,
+    required:true
+  },
 
 
-status:{
-type:String,
-default:"requested"
-},
-startTime:{
-type:Date
-},
+  paymentId:{
+    type:String,
+    required:true
+  },
 
 
-endTime:{
-type:Date
-}
+  status:{
+    type:String,
+    default:"requested"
+  },
 
+
+  startTime:{
+    type:Date,
+    default:null
+  },
+
+
+  endTime:{
+    type:Date,
+    default:null
+  }
 
 
 },
 {
-timestamps:true
-});
-
-
-
-const Consultation =
-mongoose.models.Consultation ||
-mongoose.model<IConsultation>(
-"Consultation",
-ConsultationSchema
+  timestamps:true
+}
 );
 
+
+
+const Consultation: Model<IConsultation> =
+  mongoose.models.Consultation ||
+  mongoose.model<IConsultation>(
+    "Consultation",
+    ConsultationSchema
+  );
 
 
 export default Consultation;
