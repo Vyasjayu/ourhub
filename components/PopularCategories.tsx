@@ -2,52 +2,64 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Star } from "lucide-react";
 
 interface Props {
-  onMoreClick: () => void;
   search?: string;
+  onMoreClick: () => void;
 }
 
-const categories = [
+const services = [
   {
     id: 1,
-    title: "Religious",
+    title: "Pandit Booking",
     image: "/images/categories/religious.png",
+    rating: "4.9",
     link: "/religious",
   },
   {
     id: 2,
-    title: "Home",
-    image: "/images/categories/home.png",
-    link: "/home-services",
-  },
-  {
-    id: 3,
     title: "Astrology",
     image: "/images/categories/astrology.png",
+    rating: "4.8",
     link: "/astrology",
   },
   {
+    id: 3,
+    title: "AC Repair",
+    image: "/images/offers/ac.png",
+    rating: "4.8",
+    link: "/home-service",
+  },
+  {
     id: 4,
-    title: "Events Management",
-    image: "/images/categories/events.png",
-    link: "/events",
+    title: "Electrician",
+    image: "/images/offers/electrician.png",
+    rating: "4.8",
+    link: "/home-service",
   },
   {
     id: 5,
-    title: "Digital Marketing",
-    image: "/images/categories/digital-marketing.png",
-    link: "/digital-marketing",
+    title: "Car Wash",
+    image: "/images/offers/carwash.png",
+    rating: "4.7",
+    link: "/automobile",
+  },
+  {
+    id: 6,
+    title: "Wedding Planner",
+    image: "/images/offers/wedding.png",
+    rating: "5.0",
+    link: "/eventManagement",
   },
 ];
 
-export default function PopularCategories({
-  onMoreClick,
+export default function MostBookedServices({
   search = "",
+  onMoreClick,
 }: Props) {
-  const filteredCategories = categories.filter((item) =>
-    item.title.toLowerCase().includes(search.toLowerCase())
+  const filteredServices = services.filter((service) =>
+    service.title.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -57,123 +69,95 @@ export default function PopularCategories({
       <div className="mb-5 flex items-center justify-between">
         <div>
           <h2 className="text-xl font-bold text-white">
-            Popular Categories
+            Most Booked Services
           </h2>
 
           <p className="mt-1 text-sm text-slate-400">
-            Explore our most popular services
+            Trusted by thousands of customers
           </p>
         </div>
 
+        {/* View All */}
+
         <button
           onClick={onMoreClick}
-          className="flex items-center gap-1 text-sm font-semibold text-yellow-400 hover:text-yellow-300"
+          className="flex items-center gap-1 text-sm font-semibold text-yellow-400 transition hover:text-yellow-300"
         >
           View All
           <ChevronRight size={18} />
         </button>
       </div>
 
-      {/* Categories */}
+      {/* Services */}
 
-      <div className="grid grid-cols-3 gap-4">
-        {filteredCategories.map((item) => (
-          <Link
-            key={item.id}
-            href={item.link}
-            className="
-              group
-              rounded-3xl
-              border
-              border-yellow-500/20
-              bg-[#101B2C]
-              p-4
-              transition-all
-              duration-300
-              hover:-translate-y-1
-              hover:border-yellow-400
-              hover:shadow-[0_0_25px_rgba(244,197,66,.18)]
-            "
-          >
-            <div className="flex flex-col items-center">
-              <div
-                className="
-                  relative
-                  flex
-                  h-16
-                  w-16
-                  items-center
-                  justify-center
-                  rounded-2xl
-                  bg-gradient-to-br
-                  from-yellow-500/20
-                  to-yellow-300/5
-                "
-              >
+      {filteredServices.length > 0 ? (
+        <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+          {filteredServices.map((service) => (
+            <Link
+              key={service.id}
+              href={service.link}
+              className="
+                min-w-[165px]
+                rounded-3xl
+                border
+                border-yellow-500/20
+                bg-[#111827]
+                transition-all
+                duration-300
+                hover:-translate-y-1
+                hover:border-yellow-400
+                hover:shadow-[0_0_25px_rgba(244,197,66,.18)]
+              "
+            >
+              {/* Image */}
+
+              <div className="relative h-36 overflow-hidden rounded-t-3xl">
                 <Image
-                  src={item.image}
-                  alt={item.title}
-                  width={42}
-                  height={42}
-                  className="object-contain transition-transform duration-300 group-hover:scale-110"
+                  src={service.image}
+                  alt={service.title}
+                  fill
+                  sizes="165px"
+                  className="object-cover transition duration-500 hover:scale-110"
                 />
               </div>
 
-              <h3 className="mt-3 text-center text-xs font-semibold leading-5 text-white">
-                {item.title}
-              </h3>
-            </div>
-          </Link>
-        ))}
+              {/* Content */}
 
-        {/* More Card */}
+              <div className="p-4">
+                <div className="flex items-center justify-between">
+                  <span className="rounded-full bg-yellow-500/20 px-2 py-1 text-xs font-semibold text-yellow-300">
+                    Popular
+                  </span>
 
-        <button
-          onClick={onMoreClick}
-          className="
-            group
-            rounded-3xl
-            border
-            border-yellow-500/20
-            bg-[#101B2C]
-            p-4
-            transition-all
-            duration-300
-            hover:-translate-y-1
-            hover:border-yellow-400
-            hover:shadow-[0_0_25px_rgba(244,197,66,.18)]
-          "
-        >
-          <div className="flex flex-col items-center">
-            <div
-              className="
-                flex
-                h-16
-                w-16
-                items-center
-                justify-center
-                rounded-2xl
-                bg-gradient-to-br
-                from-yellow-500/20
-                to-yellow-300/5
-              "
-            >
-              <span className="text-3xl font-bold text-yellow-400">
-                +
-              </span>
-            </div>
+                  <div className="flex items-center gap-1">
+                    <Star
+                      size={14}
+                      className="fill-yellow-400 text-yellow-400"
+                    />
 
-            <h3 className="mt-3 text-xs font-semibold text-white">
-              More
-            </h3>
-          </div>
-        </button>
-      </div>
+                    <span className="text-xs text-white">
+                      {service.rating}
+                    </span>
+                  </div>
+                </div>
 
-      {filteredCategories.length === 0 && (
-        <div className="mt-8 rounded-2xl border border-slate-700 bg-[#101B2C] p-8 text-center">
+                <h3 className="mt-3 line-clamp-2 text-base font-bold text-white">
+                  {service.title}
+                </h3>
+
+                <div className="mt-4 flex items-center justify-end">
+                  <button className="rounded-full bg-yellow-400 px-4 py-2 text-sm font-semibold text-[#071424] transition hover:scale-105">
+                    Book
+                  </button>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <div className="rounded-3xl border border-slate-700 bg-[#111827] p-8 text-center">
           <p className="text-slate-400">
-            No category found.
+            No services found.
           </p>
         </div>
       )}

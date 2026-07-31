@@ -28,14 +28,14 @@ const services = [
     title: "AC Repair",
     image: "/images/offers/ac.png",
     rating: "4.8",
-    link: "/home-services",
+    link: "/home-service",
   },
   {
     id: 4,
     title: "Electrician",
     image: "/images/offers/electrician.png",
     rating: "4.8",
-    link: "/home-services",
+    link: "/home-service",
   },
   {
     id: 5,
@@ -49,7 +49,7 @@ const services = [
     title: "Wedding Planner",
     image: "/images/offers/wedding.png",
     rating: "5.0",
-    link: "/events",
+    link: "/eventManagement",
   },
 ];
 
@@ -78,8 +78,8 @@ export default function MostBookedServices({
         </div>
 
         <Link
-          href="/services"
-          className="flex items-center gap-1 text-sm font-semibold text-yellow-400 hover:text-yellow-300"
+           href="/#categories"
+  className="flex items-center gap-1 text-sm font-semibold text-yellow-400 hover:text-yellow-300"
         >
           View All
           <ChevronRight size={18} />

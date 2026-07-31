@@ -2,125 +2,134 @@
 
 import {
   ShieldCheck,
-  BadgeIndianRupee,
-  CalendarDays,
-  Zap,
-  Shield,
+  BadgeCheck,
+  CreditCard,
+  Headphones,
 } from "lucide-react";
 
 const features = [
   {
+    id: 1,
     icon: ShieldCheck,
     title: "Verified Pandits",
-    subtitle: "Trusted & Experienced",
+    desc: "Experienced & Trusted Vedic Pandits",
   },
   {
-    icon: BadgeIndianRupee,
-    title: "Fixed Pricing",
-    subtitle: "No Hidden Charges",
+    id: 2,
+    icon: BadgeCheck,
+    title: "100% Authentic Rituals",
+    desc: "Traditional Pooja Vidhi & Samagri",
   },
   {
-    icon: CalendarDays,
-    title: "Online Booking",
-    subtitle: "Book in 2 Minutes",
+    id: 3,
+    icon: CreditCard,
+    title: "Secure Payments",
+    desc: "Safe & Fast Online Transactions",
   },
   {
-    icon: Zap,
-    title: "Same Day Service",
-    subtitle: "Quick & Reliable",
-  },
-  {
-    icon: Shield,
-    title: "Secure Payment",
-    subtitle: "100% Safe & Secure",
+    id: 4,
+    icon: Headphones,
+    title: "24×7 Support",
+    desc: "We're Always Here To Help",
   },
 ];
 
 export default function WhyChooseUs() {
   return (
-    <section
-      className="
-      mt-6
-      rounded-3xl
-      border
-      border-[#2F3E50]
-      bg-[#0C1623]
-      overflow-hidden
-      shadow-[0_0_25px_rgba(255,180,40,0.06)]
-      "
-    >
-      {/* Heading */}
+    <section className="mt-7">
 
-      <div className="flex items-center justify-center gap-3 py-5">
+      <div
+        className="
+          relative
+          overflow-hidden
+          rounded-[28px]
+          border
+          border-yellow-500/20
+          bg-gradient-to-b
+          from-[#0F1B2E]
+          via-[#0B1625]
+          to-[#08111C]
+          p-5
+          shadow-[0_0_30px_rgba(250,204,21,.08)]
+        "
+      >
+        {/* Background Glow */}
 
-        <div className="h-px w-10 bg-gradient-to-r from-transparent to-yellow-500" />
+        <div className="absolute -left-16 -top-16 h-40 w-40 rounded-full bg-yellow-500/10 blur-3xl" />
 
-        <span className="text-yellow-400 text-lg">⭐</span>
+        {/* Heading */}
 
-        <h2 className="text-[24px] font-semibold text-white">
-          Why Choose Us
-        </h2>
+        <div className="mb-6 text-center">
 
-        <div className="h-px w-10 bg-gradient-to-l from-transparent to-yellow-500" />
+          <h2 className="text-2xl font-bold text-yellow-400">
+            Why Choose OurHub?
+          </h2>
 
-      </div>
+          <p className="mt-2 text-sm text-slate-400">
+            Trusted by thousands of devotees across India.
+          </p>
 
-      {/* Features */}
+        </div>
 
-      <div className="grid grid-cols-2 gap-3 px-4 pb-5">
+        {/* Cards */}
 
-        {features.map((item, index) => {
-          const Icon = item.icon;
+        <div className="grid grid-cols-2 gap-4">
 
-          return (
-            <div
-              key={index}
-              className="
-              rounded-2xl
-              border
-              border-[#334155]
-              bg-[#111C2B]
-              p-4
-              flex
-              gap-3
-              items-start
-              transition-all
-              duration-300
-              active:scale-95
-              "
-            >
+          {features.map((item) => {
+            const Icon = item.icon;
+
+            return (
               <div
+                key={item.id}
                 className="
-                w-11
-                h-11
-                rounded-xl
-                bg-[#1A2433]
-                flex
-                items-center
-                justify-center
+                  group
+                  rounded-2xl
+                  border
+                  border-yellow-500/15
+                  bg-[#13233B]
+                  p-4
+                  transition-all
+                  duration-300
+                  hover:-translate-y-1
+                  hover:border-yellow-400
+                  hover:shadow-[0_0_20px_rgba(250,204,21,.15)]
                 "
               >
-                <Icon
-                  size={22}
-                  className="text-[#F6C453]"
-                />
-              </div>
+                <div
+                  className="
+                    flex
+                    h-12
+                    w-12
+                    items-center
+                    justify-center
+                    rounded-xl
+                    bg-yellow-500/15
+                    transition
+                    group-hover:scale-110
+                  "
+                >
+                  <Icon
+                    size={24}
+                    className="text-yellow-400"
+                  />
+                </div>
 
-              <div>
-
-                <h3 className="text-white text-[14px] font-semibold">
+                <h3 className="mt-4 text-sm font-bold text-white">
                   {item.title}
                 </h3>
 
-                <p className="text-[11px] text-gray-400 mt-1 leading-4">
-                  {item.subtitle}
+                <p className="mt-2 text-xs leading-5 text-slate-400">
+                  {item.desc}
                 </p>
 
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+
+        </div>
+
       </div>
+
     </section>
   );
 }

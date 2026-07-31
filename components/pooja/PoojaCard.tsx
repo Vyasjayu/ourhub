@@ -1,47 +1,164 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link"; // 1. Next Link Import Kiya
+import Link from "next/link";
 
 interface Props {
-  id: string | number; // Added to fallback if dynamic slug is used
+  id: string | number;
   name: string;
   image: string;
-  href?: string; // 2. Optional Href Prop Receive Kiya
+  href?: string;
 }
 
-export default function PoojaCard({ id, name, image, href }: Props) {
-  // Agar parent component se href nahi aa raha, toh default fallback path set kiya
+export default function PoojaCard({
+  id,
+  name,
+  image,
+  href,
+}: Props) {
   const targetPath = href || `/pooja/${id}`;
 
   return (
-    // 3. Poore Div Ko Link Component Se Replace Kiya
     <Link
       href={targetPath}
-      className="group bg-[#0e1724]/90 backdrop-blur-sm rounded-xl border border-slate-800/60 flex flex-col items-center justify-center p-2 h-[112px] active:scale-[0.96] transition-all duration-200 hover:border-amber-500/30 hover:bg-[#121d2e] shadow-[0_4px_12px_rgba(0,0,0,0.2)]"
+      className="
+      group
+      relative
+      overflow-hidden
+      rounded-2xl
+      border
+      border-[#2B3C55]
+      bg-gradient-to-b
+      from-[#13243D]
+      via-[#0E1B2E]
+      to-[#09131F]
+      h-[122px]
+      p-2.5
+      flex
+      flex-col
+      items-center
+      justify-center
+      transition-all
+      duration-300
+      active:scale-95
+      hover:-translate-y-1
+      hover:border-yellow-400
+      hover:shadow-[0_0_25px_rgba(250,204,21,.18)]
+    "
     >
-      {/* 
-        Premium Glow Container Behind Deity Images:
-        Isse transparent backgrounds modern aur glowing premium design ban jate hain
-      */}
-      <div className="relative w-12 h-12 flex items-center justify-center bg-radial-gradient from-amber-500/10 to-transparent rounded-full group-hover:scale-105 transition-transform duration-200">
-        <div className="absolute inset-0 bg-amber-500/5 blur-md rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
-        <div className="relative w-11 h-11">
-          <Image
-            src={image}
-            alt={name}
-            fill
-            sizes="44px"
-            priority
-            className="object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
-          />
-        </div>
+      {/* Golden Glow */}
+
+      <div className="absolute -top-10 -right-10 h-24 w-24 rounded-full bg-yellow-400/10 blur-3xl opacity-0 transition duration-500 group-hover:opacity-100" />
+
+      {/* Shine */}
+
+      <div
+        className="
+        absolute
+        -left-16
+        top-0
+        h-full
+        w-8
+        rotate-12
+        bg-white/10
+        blur-md
+        transition-all
+        duration-700
+        group-hover:left-[120%]
+      "
+      />
+
+      {/* Image */}
+
+      <div
+        className="
+        relative
+        flex
+        h-[62px]
+        w-[62px]
+        items-center
+        justify-center
+        rounded-[18px]
+        border
+        border-yellow-500/20
+        bg-gradient-to-br
+        from-yellow-500/20
+        to-yellow-500/5
+        transition
+        duration-300
+        group-hover:scale-110
+      "
+      >
+        <div className="absolute h-12 w-12 rounded-full bg-yellow-400/20 blur-xl" />
+
+        <Image
+          src={image}
+          alt={name}
+          width={58}
+          height={58}
+          priority
+          className="
+          relative
+          object-contain
+          drop-shadow-[0_6px_12px_rgba(0,0,0,.45)]
+        "
+        />
       </div>
 
-      {/* Typography: Space optimization & multi-line safety */}
-      <p className="mt-2 text-center text-[10px] font-medium text-slate-300 leading-3 tracking-wide group-hover:text-slate-100 line-clamp-2 transition-colors">
+      {/* Name */}
+
+      <h3
+        className="
+        mt-3
+        line-clamp-2
+        text-center
+        text-[11px]
+        font-semibold
+        leading-4
+        text-white
+        transition
+        duration-300
+        group-hover:text-yellow-300
+      "
+      >
         {name}
-      </p>
+      </h3>
+
+      {/* Bottom Highlight */}
+
+      <div
+        className="
+        absolute
+        bottom-0
+        left-0
+        h-[2px]
+        w-0
+        bg-gradient-to-r
+        from-yellow-400
+        via-yellow-500
+        to-yellow-300
+        transition-all
+        duration-300
+        group-hover:w-full
+      "
+      />
+
+      {/* Corner Glow */}
+
+      <div
+        className="
+        absolute
+        right-2
+        top-2
+        h-2
+        w-2
+        rounded-full
+        bg-yellow-400
+        opacity-0
+        transition
+        group-hover:opacity-100
+      "
+      />
     </Link>
   );
 }
