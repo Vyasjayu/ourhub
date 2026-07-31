@@ -3,6 +3,8 @@ export interface Astrologer {
   name: string;
   slug: string;
 
+  phone: string;
+
   image: string;
   cover: string;
 
@@ -35,15 +37,20 @@ export interface Astrologer {
 
 export const astrologers: Astrologer[] = [
   {
-    id: "1",
-    slug: "acharya Hemant Vyas",
+    id: "6a6b922182d22a9d780d6fb9",
 
-    name: "Acharya Hemant Vyas",
+    name: "Pandit Rohit Sharma",
+
+    slug: "pandit-rohit-sharma",
+
+    phone: "9302552375",
 
     image: "/astrologers/rahul.png",
+
     cover: "/astrologers/banner1.jpg",
 
     rating: 4.9,
+
     reviews: 15248,
 
     experience: 15,
@@ -71,7 +78,7 @@ export const astrologers: Astrologer[] = [
     online: true,
 
     about:
-      "Acharya Rahul Sharma is a renowned Vedic astrologer with over 15 years of experience in Kundli Analysis, Marriage Matching, Career Guidance, Finance, Business and Spiritual Remedies. Thousands of people have consulted him for accurate predictions and practical guidance.",
+      "Pandit Rohit Sharma is a renowned Vedic astrologer with over 15 years of experience in Kundli Analysis, Marriage Matching, Career Guidance, Finance, Business and Spiritual Remedies.",
 
     totalConsultations: 50231,
 
@@ -90,14 +97,19 @@ export const astrologers: Astrologer[] = [
 
   {
     id: "2",
-    slug: "Shastri Rohit Sharma",
 
     name: "Shastri Rohit Sharma",
 
+    slug: "shastri-rohit-sharma",
+
+    phone: "9876543210",
+
     image: "/astrologers/amit.png",
+
     cover: "/astrologers/banner2.jpg",
 
     rating: 4.8,
+
     reviews: 10421,
 
     experience: 12,
@@ -119,7 +131,7 @@ export const astrologers: Astrologer[] = [
     online: false,
 
     about:
-      "Pandit Amit Joshi specializes in Career Astrology, Job Problems, Business Growth and Gemstone Consultation.",
+      "Shastri Rohit Sharma specializes in Career Astrology, Job Problems, Business Growth and Gemstone Consultation.",
 
     totalConsultations: 31880,
 
@@ -138,11 +150,15 @@ export const astrologers: Astrologer[] = [
 
   {
     id: "3",
-    slug: "acharya Jitendra Rawal",
 
     name: "Acharya Jitendra Rawal",
 
+    slug: "acharya-jitendra-rawal",
+
+    phone: "9999999999",
+
     image: "/astrologers/neha.png",
+
     cover: "/astrologers/banner3.jpg",
 
     rating: 5,
@@ -170,7 +186,7 @@ export const astrologers: Astrologer[] = [
     online: true,
 
     about:
-      "Acharya Neha Verma is an expert Tarot Reader and Numerologist helping people solve relationship and marriage issues.",
+      "Acharya Jitendra Rawal is an expert Tarot Reader and Numerologist helping people solve relationship and marriage issues.",
 
     totalConsultations: 21500,
 
@@ -188,25 +204,16 @@ export const astrologers: Astrologer[] = [
   }
 ];
 
-// export function getAstrologerBySlug(slug:string){
-
-//   return astrologers.find(
-//     (astrologer)=>astrologer.slug === slug
-//   );
-
-// }
-export function getAstrologerBySlug(slug:string){
-
+export function getAstrologerBySlug(slug: string) {
   return astrologers.find(
-    (item)=> item.slug === slug
+    (item) =>
+      item.slug.toLowerCase() ===
+      decodeURIComponent(slug).toLowerCase()
   );
-
 }
 
-export function getAstrologerById(id:string){
-
+export function getAstrologerById(id: string) {
   return astrologers.find(
-    (astrologer)=>astrologer.id === id
+    (item) => item.id === id
   );
-
 }

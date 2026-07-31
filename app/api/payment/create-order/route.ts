@@ -1,68 +1,83 @@
+import Razorpay from "razorpay";
 import { NextResponse } from "next/server";
-import razorpay from "@/lib/razorpay";
+
+
+const razorpay = new Razorpay({
+
+  key_id: process.env.RAZORPAY_KEY_ID!,
+
+  key_secret: process.env.RAZORPAY_KEY_SECRET!
+
+});
+
+
 
 export async function POST(req: Request) {
+
   try {
-    // Check Environment Variables
-    if (
-      !process.env.RAZORPAY_KEY_ID ||
-      !process.env.RAZORPAY_KEY_SECRET
-    ) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Razorpay environment variables are missing",
-        },
-        {
-          status: 500,
-        }
-      );
-    }
 
-    const body = await req.json();
 
-    console.log("CREATE ORDER BODY:", body);
+    const { amount } = await req.json();
 
-    const amount = Number(body.amount);
 
-    if (!amount) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Amount missing",
-        },
-        {
-          status: 400,
-        }
-      );
-    }
+    if(!amount){
 
-    const order = await razorpay.orders.create({
-      amount: amount * 100,
-      currency: "INR",
-      receipt: `ourhub_${Date.now()}`,
-    });
+      return NextResponse.json({
 
-    console.log("RAZORPAY ORDER:", order);
+        success:false,
 
-    return NextResponse.json({
-      success: true,
-      order,
-    });
-  } catch (error: any) {
-    console.error("RAZORPAY CREATE ORDER ERROR:", error);
+        message:"Amount required"
 
-    return NextResponse.json(
-      {
-        success: false,
-        message:
-          error?.error?.description ||
-          error?.message ||
-          "Order creation failed",
       },
       {
-        status: 500,
-      }
-    );
+        status:400
+      });
+
+    }
+
+
+
+    const order =
+    await razorpay.orders.create({
+
+      amount: Number(amount) * 100,
+
+      currency:"INR",
+
+      receipt:`order_${Date.now()}`
+
+    });
+
+
+
+    return NextResponse.json({
+
+      success:true,
+
+      order
+
+    });
+
+
+
+  } catch(error:any) {
+
+
+    console.log("Razorpay Error:", error);
+
+
+    return NextResponse.json({
+
+      success:false,
+
+      message:error.message || "Payment order failed"
+
+    },
+    {
+      status:500
+    });
+
+
   }
+
 }

@@ -1,18 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import {
   Wallet,
   X,
   CheckCircle2,
   Zap,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 interface RechargeSheetProps {
   open: boolean;
   walletBalance: number;
+
+  panditId: string;
+  panditPhone: string;
+  panditName: string;
+
   onClose: () => void;
+
   onRecharge: (plan: {
     amount: number;
     minutes: number;
@@ -49,22 +56,27 @@ const plans = [
 export default function RechargeSheet({
   open,
   walletBalance,
+
+  panditId,
+  panditPhone,
+  panditName,
+
   onClose,
+  onRecharge,
 }: RechargeSheetProps) {
 
   const router = useRouter();
 
-  const [selectedPlan, setSelectedPlan] = useState(plans[1]);
+  const [selectedPlan, setSelectedPlan] =
+    useState(plans[1]);
 
-  // Local wallet state
-  const [wallet, setWallet] = useState(walletBalance);
+  const [wallet, setWallet] =
+    useState(walletBalance);
 
-  // Sync parent value
   useEffect(() => {
     setWallet(walletBalance);
   }, [walletBalance]);
 
-  // Fetch latest wallet whenever sheet opens
   useEffect(() => {
 
     if (!open) return;
@@ -74,22 +86,47 @@ export default function RechargeSheet({
     fetch("/api/wallet/8878632431")
       .then((res) => res.json())
       .then((data) => {
+
         if (data.success) {
+
           setWallet(data.walletBalance);
+
         }
+
       })
       .catch(console.error);
 
     return () => {
+
       document.body.style.overflow = "";
+
     };
 
   }, [open]);
 
   if (!open) return null;
 
+  const handleContinue = () => {
+
+    onRecharge(selectedPlan);
+
+    router.push(
+
+      `/payment?amount=${selectedPlan.amount}` +
+      `&minutes=${selectedPlan.minutes}` +
+      `&panditId=${panditId}` +
+      `&phone=${panditPhone}` +
+      `&name=${encodeURIComponent(panditName)}`
+
+    );
+
+  };
+
   return (
+
     <>
+
+      {/* Overlay */}
 
       <div
         onClick={onClose}
@@ -99,8 +136,10 @@ export default function RechargeSheet({
         z-40
         bg-black/70
         backdrop-blur-sm
-      "
+        "
       />
+
+      {/* Bottom Sheet */}
 
       <div
         className="
@@ -117,7 +156,7 @@ export default function RechargeSheet({
         bg-[#08111D]
         p-6
         shadow-2xl
-      "
+        "
       >
 
         <div
@@ -128,7 +167,7 @@ export default function RechargeSheet({
           w-16
           rounded-full
           bg-gray-500
-        "
+          "
         />
 
         <div className="flex items-center justify-between">
@@ -151,17 +190,17 @@ export default function RechargeSheet({
             rounded-full
             bg-white/10
             p-2
-          "
+            "
           >
             <X
-              className="text-white"
               size={18}
+              className="text-white"
             />
           </button>
 
         </div>
 
-        {/* Wallet Card */}
+        {/* Wallet */}
 
         <div
           className="
@@ -171,7 +210,7 @@ export default function RechargeSheet({
           border-yellow-500/20
           bg-[#101C30]
           p-4
-        "
+          "
         >
 
           <div className="flex items-center gap-3">
@@ -201,7 +240,7 @@ export default function RechargeSheet({
           {plans.map((plan) => {
 
             const active =
-              selectedPlan.amount === plan.amount;
+              selectedPlan.id === plan.id;
 
             return (
 
@@ -214,14 +253,14 @@ export default function RechargeSheet({
                 rounded-2xl
                 border
                 p-4
-                transition-all
+                transition
 
                 ${
                   active
                     ? "border-yellow-400 bg-yellow-400/10"
                     : "border-white/10 bg-[#101C30]"
                 }
-              `}
+                `}
               >
 
                 {plan.popular && (
@@ -238,7 +277,7 @@ export default function RechargeSheet({
                     text-xs
                     font-bold
                     text-black
-                  "
+                    "
                   >
                     Popular
                   </span>
@@ -260,15 +299,19 @@ export default function RechargeSheet({
                   </div>
 
                   {active ? (
+
                     <CheckCircle2
-                      className="text-yellow-400"
                       size={30}
+                      className="text-yellow-400"
                     />
+
                   ) : (
+
                     <Zap
-                      className="text-gray-500"
                       size={28}
+                      className="text-gray-500"
                     />
+
                   )}
 
                 </div>
@@ -281,6 +324,8 @@ export default function RechargeSheet({
 
         </div>
 
+        {/* Info */}
+
         <div
           className="
           mt-6
@@ -289,29 +334,27 @@ export default function RechargeSheet({
           border-yellow-500/20
           bg-[#101C30]
           p-4
-        "
+          "
         >
+
           <p className="text-sm text-gray-300">
 
-            Wallet amount will be deducted automatically at
+            Wallet amount will be deducted at
 
             <span className="font-bold text-yellow-400">
               {" "}₹25/min
             </span>
 
-            {" "}during Chat, Voice or Video consultation.
+            {" "}during consultation.
 
           </p>
+
         </div>
 
+        {/* Continue */}
+
         <button
-          onClick={() => {
-
-            router.push(
-              `/payment?amount=${selectedPlan.amount}&minutes=${selectedPlan.minutes}`
-            );
-
-          }}
+          onClick={handleContinue}
           className="
           mt-6
           w-full
@@ -325,7 +368,7 @@ export default function RechargeSheet({
           text-black
           transition
           hover:scale-[1.02]
-        "
+          "
         >
           Continue to Payment
         </button>
@@ -333,5 +376,7 @@ export default function RechargeSheet({
       </div>
 
     </>
+
   );
+
 }

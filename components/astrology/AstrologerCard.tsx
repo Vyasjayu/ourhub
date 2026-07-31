@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import {
   Star,
@@ -11,9 +12,28 @@ import {
 } from "lucide-react";
 
 
+
 export default function AstrologerCard({
   astrologer
 }:any){
+
+
+const router = useRouter();
+
+
+
+function startConsultation(){
+
+
+router.push(
+
+`/payment?amount=${astrologer.pricePerMinute}&panditId=${astrologer.panditId}&phone=${astrologer.phone}&name=${encodeURIComponent(astrologer.name)}`
+
+);
+
+
+}
+
 
 
 return (
@@ -30,7 +50,9 @@ shadow-xl
 >
 
 
+
 <div className="flex gap-4">
+
 
 
 {/* Image */}
@@ -39,10 +61,15 @@ shadow-xl
 
 
 <Image
+
 src={astrologer.image}
+
 alt={astrologer.name}
+
 width={80}
+
 height={80}
+
 className="
 h-20
 w-20
@@ -51,12 +78,16 @@ border-4
 border-yellow-400
 object-cover
 "
+
 />
 
 
-{astrologer.online && (
+
+{
+astrologer.online && (
 
 <span
+
 className="
 absolute
 bottom-1
@@ -68,34 +99,44 @@ bg-green-500
 ring-4
 ring-[#101C30]
 "
+
 />
 
-)}
+)
+}
+
 
 
 </div>
 
 
 
+
+
 <div className="flex-1">
 
 
-<h2 className="
+<h2
+className="
 text-lg
 font-bold
 text-white
-">
+"
+>
 
 {astrologer.name}
 
 </h2>
 
 
-<p className="
+
+<p
+className="
 text-sm
 text-gray-400
 mt-1
-">
+"
+>
 
 Vedic Astrologer
 
@@ -103,36 +144,48 @@ Vedic Astrologer
 
 
 
-<div className="
+
+<div
+className="
 mt-2
 flex
 items-center
 gap-2
-">
+"
+>
 
 
-<div className="
+
+<div
+className="
 flex
 items-center
 rounded-full
 bg-yellow-500/20
 px-3
 py-1
-">
+"
+>
 
 
 <Star
+
 size={14}
+
 fill="#FFD54F"
+
 className="text-yellow-400"
+
 />
 
 
-<span className="
+<span
+className="
 ml-1
 text-sm
 text-white
-">
+"
+>
 
 {astrologer.rating}
 
@@ -143,85 +196,126 @@ text-white
 
 
 
-<span className="
+<span
+className="
 text-sm
 text-gray-400
-">
+"
+>
 
 {astrologer.experience}+ Years
 
 </span>
 
 
-</div>
-
-
-</div>
-
 
 </div>
 
 
 
+</div>
 
 
-{/* Services */}
 
-<div className="
+</div>
+
+
+
+
+
+{/* Consultation Options */}
+
+
+<div
+className="
 mt-4
 flex
-gap-3
+gap-4
 text-gray-300
-">
+"
+>
 
 
-<div className="
+
+<button
+
+onClick={startConsultation}
+
+className="
 flex
 items-center
 gap-1
 text-xs
-">
+hover:text-yellow-400
+"
+
+>
 
 <MessageCircle size={14}/>
+
 Chat
 
-</div>
+</button>
 
 
-<div className="
+
+
+
+<button
+
+onClick={startConsultation}
+
+className="
 flex
 items-center
 gap-1
 text-xs
-">
+hover:text-yellow-400
+"
+
+>
 
 <Phone size={14}/>
+
 Call
 
-</div>
+</button>
 
 
 
-<div className="
+
+
+<button
+
+onClick={startConsultation}
+
+className="
 flex
 items-center
 gap-1
 text-xs
-">
+hover:text-yellow-400
+"
+
+>
 
 <Video size={14}/>
+
 Video
 
+</button>
+
+
+
 </div>
 
 
-</div>
 
 
 
 
+{/* View Profile */}
 
-{/* Button */}
 
 <Link
 
@@ -250,6 +344,6 @@ View Profile
 
 </div>
 
-)
+);
 
 }

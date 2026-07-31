@@ -74,9 +74,12 @@ export default function AstrologyDetailPage({
 
 
         <ConsultationButtons
-          walletBalance={walletBalance}
-          pricePerMinute={astrologer.pricePerMinute}
-        />
+  walletBalance={walletBalance}
+  pricePerMinute={astrologer.pricePerMinute}
+  panditId={astrologer.id}
+  panditPhone={astrologer.phone}
+  panditName={astrologer.name}
+/>
 
 
 
@@ -123,32 +126,27 @@ export default function AstrologyDetailPage({
 
 
       <StickyBottom
-
-        walletBalance={walletBalance}
-
-        pricePerMinute={astrologer.pricePerMinute}
-
-        onRecharge={()=>setShowRecharge(true)}
-
-      />
+  walletBalance={walletBalance}
+  pricePerMinute={astrologer.pricePerMinute}
+  panditId={astrologer.id}
+  panditPhone={astrologer.phone}
+  panditName={astrologer.name}
+  onRecharge={() => setShowRecharge(true)}
+/>
 
 
 
       <RechargeSheet
-
-        open={showRecharge}
-
-        walletBalance={walletBalance}
-
-        onClose={()=>setShowRecharge(false)}
-
-        onRecharge={(amount)=>{
-
-          console.log("Recharge:",amount);
-
-        }}
-
-      />
+  open={showRecharge}
+  walletBalance={walletBalance}
+  panditId={astrologer.id}
+  panditPhone={astrologer.phone}
+  panditName={astrologer.name}
+  onClose={() => setShowRecharge(false)}
+  onRecharge={(amount) => {
+    console.log("Recharge:", amount);
+  }}
+/>
 
 
     </main>
