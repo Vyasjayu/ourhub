@@ -56,7 +56,7 @@ export default function ContactCTA() {
           {/* WhatsApp */}
 
           <a
-            href={`https://wa.me/8878632431?text=${whatsappMessage}`}
+            href={`https://wa.me/+918878632431?text=${whatsappMessage}`}
             target="_blank"
             className="
             flex
@@ -82,7 +82,7 @@ export default function ContactCTA() {
           {/* Call */}
 
           <a
-            href="tel: 8878632431"
+            href="tel: +918878632431"
             className="
             flex
             items-center

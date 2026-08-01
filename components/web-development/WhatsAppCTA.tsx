@@ -4,7 +4,7 @@ import { MessageCircle, Phone } from "lucide-react";
 
 export default function WhatsAppCTA() {
 
-  const phone = "8878632431";
+  const phone = "+918878632431";
 
   return (
 
