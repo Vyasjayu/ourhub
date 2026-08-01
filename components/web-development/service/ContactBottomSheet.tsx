@@ -46,7 +46,7 @@ Sent from OurHub Website
 `);
 
     window.open(
-      `https://wa.me/8878632431?text=${text}`,
+      `https://wa.me/+918878632431?text=${text}`,
       "_blank"
     );
 
