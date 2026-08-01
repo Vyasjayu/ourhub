@@ -16,7 +16,7 @@ export default function ContactForm() {
       return;
     }
 
-    const phoneNumber = "918878632431"; // Your WhatsApp Number
+    const phoneNumber = "8878632431"; // Your WhatsApp Number
 
     const whatsappMessage = `💻 *New Web Development Enquiry*
 
