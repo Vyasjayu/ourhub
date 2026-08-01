@@ -41,7 +41,7 @@ export default function StickyBottom() {
           {/* WhatsApp */}
 
           <a
-            href={`https://wa.me/919876543210?text=${whatsappMessage}`}
+            href={`https://wa.me/8878632431?text=${whatsappMessage}`}
             target="_blank"
             className="
             flex
@@ -66,7 +66,7 @@ export default function StickyBottom() {
           {/* Call */}
 
           <a
-            href="tel:+919876543210"
+            href="tel:8878632431"
             className="
             flex
             h-14
