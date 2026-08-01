@@ -38,16 +38,16 @@ const menuItems = [
     icon: Wrench,
     href: "/home-service",
   },
+   {
+    name: "Web Designing & Development",
+    icon: Monitor,
+    href: "/web-development",
+  },
   {
   name: "Digital Marketing & Advertising",
   icon: Megaphone,
   href: "/digital-marketing",
 
-  },
-  {
-    name: "Software",
-    icon: Monitor,
-    href: "/software",
   },
   {
     name: "Event Management",
