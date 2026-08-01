@@ -44,7 +44,7 @@ export default function ServiceHeader() {
         <div className="flex items-center gap-3">
 
           <a
-            href="tel:+919876543210"
+            href="tel:+918878632431"
             className="flex h-10 w-10 items-center justify-center rounded-full bg-[#111C30]"
           >
             <Phone
@@ -54,7 +54,7 @@ export default function ServiceHeader() {
           </a>
 
           <a
-            href="https://wa.me/919876543210"
+            href="https://wa.me/918878632431"
             target="_blank"
             className="flex h-10 w-10 items-center justify-center rounded-full bg-[#111C30]"
           >

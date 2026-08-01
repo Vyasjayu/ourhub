@@ -61,7 +61,7 @@ export default function ServiceHero({ service }: Props) {
           "
           />
 
-          <div
+          {/* <div
             className="
             absolute
             left-4
@@ -75,8 +75,8 @@ export default function ServiceHero({ service }: Props) {
             text-black
           "
           >
-            Premium Service
-          </div>
+            {/* Premium Service */}
+          {/* </div> */} 
 
         </div>
 
