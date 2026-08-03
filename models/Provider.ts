@@ -2,7 +2,10 @@ import mongoose, { Schema, model, models } from "mongoose";
 
 const ProviderSchema = new Schema(
   {
+    // =========================
     // Account Details
+    // =========================
+
     username: {
       type: String,
       required: true,
@@ -16,7 +19,10 @@ const ProviderSchema = new Schema(
       required: true,
     },
 
-    // Basic Details
+    // =========================
+    // Private Details (Admin + Provider)
+    // =========================
+
     fullName: {
       type: String,
       required: true,
@@ -34,6 +40,16 @@ const ProviderSchema = new Schema(
       default: "",
       trim: true,
       lowercase: true,
+    },
+
+    // =========================
+    // Public Details
+    // =========================
+
+    displayName: {
+      type: String,
+      default: "",
+      trim: true,
     },
 
     category: {
@@ -61,7 +77,10 @@ const ProviderSchema = new Schema(
       default: "",
     },
 
+    // =========================
     // Professional Details
+    // =========================
+
     businessName: {
       type: String,
       default: "",
@@ -97,11 +116,38 @@ const ProviderSchema = new Schema(
       default: "",
     },
 
-    // Documents
+    // =========================
+    // Public Profile
+    // =========================
+
     profilePhoto: {
       type: String,
       default: "",
     },
+
+    rating: {
+      type: Number,
+      default: 5,
+    },
+
+    totalReviews: {
+      type: Number,
+      default: 0,
+    },
+
+    totalConsultations: {
+      type: Number,
+      default: 0,
+    },
+
+    isProfilePublic: {
+      type: Boolean,
+      default: true,
+    },
+
+    // =========================
+    // Private Documents
+    // =========================
 
     aadhaar: {
       type: String,
@@ -113,7 +159,10 @@ const ProviderSchema = new Schema(
       default: "",
     },
 
-    // Bank Details
+    // =========================
+    // Private Bank Details
+    // =========================
+
     accountHolder: {
       type: String,
       default: "",
@@ -139,7 +188,21 @@ const ProviderSchema = new Schema(
       default: "",
     },
 
-    // Status
+    // =========================
+    // Verification Status
+    // =========================
+
+    status: {
+      type: String,
+      enum: [
+        "pending",
+        "approved",
+        "rejected",
+        "suspended",
+      ],
+      default: "pending",
+    },
+
     isVerified: {
       type: Boolean,
       default: false,
@@ -147,7 +210,23 @@ const ProviderSchema = new Schema(
 
     isActive: {
       type: Boolean,
-      default: true,
+      default: false,
+    },
+
+    approvedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Admin",
+      default: null,
+    },
+
+    approvedAt: {
+      type: Date,
+      default: null,
+    },
+
+    rejectedReason: {
+      type: String,
+      default: "",
     },
   },
   {
@@ -155,4 +234,5 @@ const ProviderSchema = new Schema(
   }
 );
 
-export default models.Provider || model("Provider", ProviderSchema);
+export default models.Provider ||
+  model("Provider", ProviderSchema);

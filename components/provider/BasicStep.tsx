@@ -5,6 +5,7 @@ import { User2 } from "lucide-react";
 
 type FormType = {
   fullName: string;
+  displayName: string;
   email: string;
   mobile: string;
   gender: string;
@@ -29,21 +30,14 @@ export default function BasicStep({
     <div className="mt-8">
 
       {/* Avatar */}
-
       <div className="flex justify-center">
-
         <div className="flex h-20 w-20 items-center justify-center rounded-full bg-yellow-400 text-black">
-
           <User2 size={38} />
-
         </div>
-
       </div>
 
       {/* Heading */}
-
       <div className="mt-5 text-center">
-
         <h2 className="text-xl font-bold text-white">
           Basic Information
         </h2>
@@ -51,21 +45,38 @@ export default function BasicStep({
         <p className="mt-1 text-sm text-gray-400">
           Fill your personal details
         </p>
-
       </div>
 
       {/* Form */}
-
       <div className="mt-8 space-y-5">
 
+        {/* Private Name */}
         <Input
-          label="Full Name *"
-          placeholder="Enter full name"
+          label="Full Name * (Private)"
+          placeholder="Enter your real name"
           value={form.fullName}
           onChange={(e) =>
             updateField("fullName", e.target.value)
           }
         />
+
+        <p className="-mt-3 text-xs text-gray-500">
+          This name is visible only to Admin and you.
+        </p>
+
+        {/* Public Name */}
+        <Input
+          label="Display Name * (Public)"
+          placeholder="Example: Astro Rudra"
+          value={form.displayName}
+          onChange={(e) =>
+            updateField("displayName", e.target.value)
+          }
+        />
+
+        <p className="-mt-3 text-xs text-yellow-400">
+          Customers will see this name. Your real name will remain private.
+        </p>
 
         <Input
           label="Email"
@@ -86,7 +97,6 @@ export default function BasicStep({
         />
 
         <div>
-
           <label className="mb-2 block text-sm">
             Gender
           </label>
@@ -103,7 +113,6 @@ export default function BasicStep({
             <option value="Female">Female</option>
             <option value="Other">Other</option>
           </select>
-
         </div>
 
         <Input
@@ -158,7 +167,6 @@ function Input({
 }: InputProps) {
   return (
     <div>
-
       <label className="mb-2 block text-sm text-gray-300">
         {label}
       </label>
@@ -170,7 +178,6 @@ function Input({
         onChange={onChange}
         className="h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-white outline-none transition focus:border-yellow-400"
       />
-
     </div>
   );
 }

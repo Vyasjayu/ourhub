@@ -22,7 +22,7 @@ const services = [
     title: "Astrology",
     image: "/images/categories/astrology.png",
     rating: "4.8",
-    link: "/astrology",
+    link: "/religious/astrology",
   },
   {
     id: 3,

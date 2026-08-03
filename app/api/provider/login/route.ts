@@ -16,18 +16,19 @@ export async function POST(req: Request) {
     const loginId = body.loginId?.trim();
     const password = body.password;
 
-    console.log("Login ID:", loginId);
-
     if (!loginId || !password) {
       return NextResponse.json(
         {
           success: false,
           message: "Login ID and Password are required.",
         },
-        { status: 400 }
+        {
+          status: 400,
+        }
       );
     }
 
+    // Username OR Mobile
     const provider = await Provider.findOne({
       $or: [
         {
@@ -39,39 +40,23 @@ export async function POST(req: Request) {
       ],
     });
 
-    console.log(
-      "Provider Found:",
-      provider ? provider.username : "NO PROVIDER"
-    );
-
     if (!provider) {
       return NextResponse.json(
         {
           success: false,
           message: "Provider not found.",
         },
-        { status: 404 }
-      );
-    }
-
-    if (!provider.password) {
-      console.error("Provider password is missing");
-
-      return NextResponse.json(
         {
-          success: false,
-          message: "Provider password not found.",
-        },
-        { status: 500 }
+          status: 404,
+        }
       );
     }
 
+    // Password Check
     const isPasswordValid = await bcrypt.compare(
       password,
       provider.password
     );
-
-    console.log("Password Match:", isPasswordValid);
 
     if (!isPasswordValid) {
       return NextResponse.json(
@@ -79,19 +64,105 @@ export async function POST(req: Request) {
           success: false,
           message: "Invalid password.",
         },
-        { status: 401 }
+        {
+          status: 401,
+        }
       );
     }
+
+    // ==========================
+    // Account Status Check
+    // ==========================
+
+    if (provider.status === "pending") {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Your profile is pending admin approval.",
+        },
+        {
+          status: 403,
+        }
+      );
+    }
+
+    if (provider.status === "rejected") {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Your profile has been rejected. Please contact support.",
+        },
+        {
+          status: 403,
+        }
+      );
+    }
+
+    if (provider.status === "suspended") {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Your account has been suspended.",
+        },
+        {
+          status: 403,
+        }
+      );
+    }
+
+    if (!provider.isVerified) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Your account is not verified yet.",
+        },
+        {
+          status: 403,
+        }
+      );
+    }
+
+    if (!provider.isActive) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Your account is currently inactive.",
+        },
+        {
+          status: 403,
+        }
+      );
+    }
+
+    // ==========================
+    // Login Success
+    // ==========================
 
     return NextResponse.json({
       success: true,
       message: "Login successful.",
+
       provider: {
         id: provider._id,
+
+        // Private
         fullName: provider.fullName,
+
+        // Public
+        displayName: provider.displayName,
+
         username: provider.username,
         mobile: provider.mobile,
         category: provider.category,
+
+        status: provider.status,
+        isVerified: provider.isVerified,
+        isActive: provider.isActive,
       },
     });
   } catch (error) {

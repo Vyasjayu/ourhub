@@ -5,19 +5,22 @@ import { useEffect, useState } from "react";
 import {
   Briefcase,
   MapPin,
-  User,
   Wallet,
+  Languages,
+  Star,
+  BadgeCheck,
 } from "lucide-react";
 
 import HeaderCard from "@/components/provider/dashboard/HeaderCard";
-// import ProfileCompletion from "@/components/provider/dashboard/ProfileCompletion";
+import ProfileCompletion from "@/components/provider/dashboard/ProfileCompletion";
 import StatsCards from "@/components/provider/dashboard/StatsCards";
 import InfoCard from "@/components/provider/dashboard/InfoCard";
 import QuickActions from "@/components/provider/dashboard/QuickActions";
-import ProfileCompletion from "@/components/provider/dashboard/ProfileCompletion";
 
 type Provider = {
   fullName: string;
+  displayName: string;
+
   mobile: string;
   email: string;
 
@@ -32,9 +35,16 @@ type Provider = {
   serviceArea: string;
   price: string;
 
+  specialization: string;
+  languages: string;
+  about: string;
+
   profilePhoto: string;
 
+  rating: number;
+
   isVerified: boolean;
+  isActive: boolean;
 };
 
 export default function ProviderDashboardPage() {
@@ -75,8 +85,7 @@ export default function ProviderDashboardPage() {
 
     loadProvider();
   }, []);
-
-  if (loading) {
+    if (loading) {
     return (
       <main className="min-h-screen flex items-center justify-center bg-[#071424] text-white">
         Loading Dashboard...
@@ -88,7 +97,6 @@ export default function ProviderDashboardPage() {
     return (
       <main className="min-h-screen flex items-center justify-center bg-[#071424] text-white">
         <div className="text-center">
-
           <h2 className="text-2xl font-bold">
             Provider Not Found
           </h2>
@@ -96,7 +104,6 @@ export default function ProviderDashboardPage() {
           <p className="mt-2 text-gray-400">
             Please login again.
           </p>
-
         </div>
       </main>
     );
@@ -104,9 +111,9 @@ export default function ProviderDashboardPage() {
 
   return (
     <main className="min-h-screen bg-[#071424] pb-28">
-
       <div className="mx-auto max-w-md px-4 py-5">
-                {/* Header */}
+
+        {/* Header */}
 
         <HeaderCard provider={provider} />
 
@@ -114,24 +121,34 @@ export default function ProviderDashboardPage() {
 
         <ProfileCompletion provider={provider} />
 
-        {/* Statistics */}
+        {/* Stats */}
 
         <StatsCards
           earnings={0}
           bookings={0}
-          rating={0}
+          rating={provider.rating || 0}
           notifications={0}
         />
 
-        {/* Business Information */}
+        {/* Business Details */}
 
         <div className="mt-7">
 
           <h2 className="mb-4 text-xl font-bold text-white">
-            Business Details
+            Professional Details
           </h2>
 
           <div className="space-y-4">
+
+            <InfoCard
+              icon={<Briefcase size={22} />}
+              title="Display Name"
+              value={
+                provider.displayName ||
+                provider.fullName ||
+                "-"
+              }
+            />
 
             <InfoCard
               icon={<Briefcase size={22} />}
@@ -142,11 +159,33 @@ export default function ProviderDashboardPage() {
             <InfoCard
               icon={<MapPin size={22} />}
               title="Location"
-              value={`${provider.city || "-"}, ${provider.state || "-"}`}
+              value={`${provider.city || "-"}, ${
+                provider.state || "-"
+              }`}
             />
 
             <InfoCard
-              icon={<User size={22} />}
+              icon={<Briefcase size={22} />}
+              title="Category"
+              value={provider.category || "-"}
+            />
+
+            <InfoCard
+              icon={<Briefcase size={22} />}
+              title="Specialization"
+              value={
+                provider.specialization || "-"
+              }
+            />
+
+            <InfoCard
+              icon={<Languages size={22} />}
+              title="Languages"
+              value={provider.languages || "-"}
+            />
+
+            <InfoCard
+              icon={<Briefcase size={22} />}
               title="Experience"
               value={provider.experience || "-"}
             />
@@ -162,20 +201,53 @@ export default function ProviderDashboardPage() {
             />
 
             <InfoCard
-              icon={<Briefcase size={22} />}
+              icon={<MapPin size={22} />}
               title="Service Area"
-              value={provider.serviceArea || "-"}
+              value={
+                provider.serviceArea || "-"
+              }
+            />
+
+            <InfoCard
+              icon={<Star size={22} />}
+              title="Rating"
+              value={`${provider.rating || 0}/5`}
+            />
+
+            <InfoCard
+              icon={<BadgeCheck size={22} />}
+              title="Verification"
+              value={
+                provider.isVerified
+                  ? "Verified"
+                  : "Pending"
+              }
             />
 
           </div>
 
         </div>
 
+        {/* About */}
+
+        <div className="mt-7 rounded-3xl border border-white/10 bg-white/5 p-5">
+
+          <h2 className="text-lg font-bold text-white">
+            About
+          </h2>
+
+          <p className="mt-3 text-sm leading-7 text-gray-300">
+            {provider.about ||
+              "No description added yet."}
+          </p>
+
+        </div>
+
         {/* Quick Actions */}
 
         <QuickActions />
-              </div>
 
+      </div>
     </main>
   );
 }

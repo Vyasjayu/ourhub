@@ -22,6 +22,7 @@ export default function ProviderProfileContent() {
 
   const [form, setForm] = useState({
     // Basic
+    displayName: "",
     fullName: "",
     email: "",
     mobile: "",
@@ -79,34 +80,38 @@ export default function ProviderProfileContent() {
 
         if (data.success) {
           const p = data.provider;
+setForm({
+  // Basic
+  displayName: p.displayName || "",
+  fullName: p.fullName || "",
+  email: p.email || "",
+  mobile: p.mobile || "",
+  gender: p.gender || "",
+  dob: p.dob || "",
+  city: p.city || "",
+  state: p.state || "",
 
-          setForm({
-            fullName: p.fullName || "",
-            email: p.email || "",
-            mobile: p.mobile || "",
-            gender: p.gender || "",
-            dob: p.dob || "",
-            city: p.city || "",
-            state: p.state || "",
+  // Professional
+  businessName: p.businessName || "",
+  experience: p.experience || "",
+  languages: p.languages || "",
+  serviceArea: p.serviceArea || "",
+  price: p.price || "",
+  specialization: p.specialization || "",
+  about: p.about || "",
 
-            businessName: p.businessName || "",
-            experience: p.experience || "",
-            languages: p.languages || "",
-            serviceArea: p.serviceArea || "",
-            price: p.price || "",
-            specialization: p.specialization || "",
-            about: p.about || "",
+  // Documents
+  profilePhoto: null,
+  aadhaar: null,
+  pan: null,
 
-            profilePhoto: null,
-            aadhaar: null,
-            pan: null,
-
-            accountHolder: p.accountHolder || "",
-            accountNumber: p.accountNumber || "",
-            ifsc: p.ifsc || "",
-            bankName: p.bankName || "",
-            upi: p.upi || "",
-          });
+  // Bank
+  accountHolder: p.accountHolder || "",
+  accountNumber: p.accountNumber || "",
+  ifsc: p.ifsc || "",
+  bankName: p.bankName || "",
+  upi: p.upi || "",
+});
         }
       } catch (error) {
         console.error(error);
