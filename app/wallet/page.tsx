@@ -1,235 +1,187 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  Wallet,
   ArrowLeft,
+  Wallet,
   Plus,
-  RefreshCw,
-  CheckCircle2,
+  ArrowDownLeft,
+  ArrowUpRight,
 } from "lucide-react";
 
 export default function WalletPage() {
   const router = useRouter();
 
-  const phone = "8878632431"; // Temporary
-
-  const [loading, setLoading] = useState(true);
-
-  const [wallet, setWallet] = useState(0);
-
-  const [transactions, setTransactions] = useState<any[]>([]);
-
-  const loadWallet = async () => {
-    try {
-      setLoading(true);
-
-      const res = await fetch(`/api/wallet/${phone}`, {
-        cache: "no-store",
-      });
-
-      const data = await res.json();
-
-      if (data.success) {
-        setWallet(data.walletBalance);
-
-        setTransactions(data.transactions || []);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    loadWallet();
-  }, []);
+  const transactions = [
+    {
+      id: 1,
+      title: "Wallet Recharge",
+      amount: "+₹500",
+      date: "Today, 10:30 AM",
+      type: "credit",
+    },
+    {
+      id: 2,
+      title: "Pandit Booking",
+      amount: "-₹299",
+      date: "Yesterday",
+      type: "debit",
+    },
+    {
+      id: 3,
+      title: "Refund",
+      amount: "+₹150",
+      date: "20 Aug 2026",
+      type: "credit",
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-[#020617] flex justify-center">
-      <div className="w-full max-w-[430px] min-h-screen pb-10">
-        {/* HEADER */}
+    <main className="min-h-screen bg-[#071424] pb-10 text-white">
 
-        <div
-          className="
-          sticky
-          top-0
-          z-20
-          flex
-          items-center
-          justify-between
-          px-4
-          py-4
-          bg-[#020617]
-          border-b
-          border-white/10
-        "
-        >
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => router.back()}
-              className="rounded-full bg-white/10 p-2"
-            >
-              <ArrowLeft size={20} />
-            </button>
+      {/* Header */}
+
+      <div className="sticky top-0 z-20 border-b border-white/10 bg-[#071424]/95 backdrop-blur">
+
+        <div className="mx-auto flex max-w-md items-center gap-4 px-5 py-5">
+
+          <button
+            onClick={() => router.back()}
+            className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10"
+          >
+            <ArrowLeft size={22} />
+          </button>
+
+          <h1 className="text-2xl font-bold">
+            My Wallet
+          </h1>
+
+        </div>
+
+      </div>
+
+      <div className="mx-auto max-w-md px-5">
+
+        {/* Wallet Card */}
+
+        <div className="mt-6 rounded-3xl border border-yellow-400/20 bg-gradient-to-br from-[#13233C] to-[#0B1527] p-6">
+
+          <div className="flex items-center justify-between">
 
             <div>
-              <h1 className="text-lg font-bold text-white">
-                My Wallet
-              </h1>
 
-              <p className="text-xs text-gray-400">
-                OurHub Wallet
+              <p className="text-sm text-gray-400">
+                Available Balance
               </p>
+
+              <h2 className="mt-2 text-4xl font-bold text-yellow-400">
+                ₹0
+              </h2>
+
             </div>
+
+            <div className="rounded-2xl bg-yellow-400/10 p-4">
+
+              <Wallet
+                size={38}
+                className="text-yellow-400"
+              />
+
+            </div>
+
           </div>
 
           <button
-            onClick={loadWallet}
-            className="rounded-full bg-white/10 p-2"
+            className="mt-6 flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-yellow-400 font-semibold text-black transition hover:bg-yellow-300"
           >
-            <RefreshCw size={18} />
+
+            <Plus size={22} />
+
+            Add Money
+
           </button>
+
         </div>
 
-        {/* WALLET CARD */}
+        {/* Recent Transactions */}
 
-        <div className="p-4">
-          <div
-            className="
-            rounded-3xl
-            border
-            border-yellow-500/30
-            bg-gradient-to-br
-            from-yellow-500/20
-            to-[#111C30]
-            p-6
-          "
-          >
-            <div className="flex items-center gap-4">
-              <div className="rounded-2xl bg-yellow-400/20 p-4">
-                <Wallet
-                  className="text-yellow-400"
-                  size={34}
-                />
-              </div>
+        <div className="mt-8">
 
-              <div>
-                <p className="text-gray-300 text-sm">
-                  Available Balance
-                </p>
+          <h2 className="mb-4 text-xl font-bold">
+            Recent Transactions
+          </h2>
 
-                <h2 className="text-4xl font-black text-yellow-400">
-                  {loading ? "..." : `₹${wallet}`}
-                </h2>
-              </div>
-            </div>
+          <div className="space-y-4">
 
-            <button
-              onClick={() =>
-                router.push("/payment?amount=100&minutes=0")
-              }
-              className="
-                mt-6
-                w-full
-                rounded-2xl
-                bg-yellow-400
-                py-4
-                font-bold
-                text-black
-                flex
-                justify-center
-                items-center
-                gap-2
-              "
-            >
-              <Plus size={20} />
-              Add Money
-            </button>
-          </div>
+            {transactions.map((item) => (
 
-          {/* TRANSACTIONS */}
-
-          <div className="mt-8">
-            <h2 className="text-lg font-bold text-white mb-4">
-              Recent Transactions
-            </h2>
-
-            {loading ? (
-              <p className="text-gray-400">
-                Loading...
-              </p>
-            ) : transactions.length === 0 ? (
               <div
-                className="
-                rounded-2xl
-                border
-                border-white/10
-                bg-[#111C30]
-                p-6
-                text-center
-              "
+                key={item.id}
+                className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#13233C] p-4"
               >
-                <p className="text-gray-400">
-                  No Transactions Yet
-                </p>
+
+                <div className="flex items-center gap-4">
+
+                  <div
+                    className={`flex h-12 w-12 items-center justify-center rounded-2xl ${
+                      item.type === "credit"
+                        ? "bg-green-500/10"
+                        : "bg-red-500/10"
+                    }`}
+                  >
+
+                    {item.type === "credit" ? (
+
+                      <ArrowDownLeft
+                        className="text-green-400"
+                        size={24}
+                      />
+
+                    ) : (
+
+                      <ArrowUpRight
+                        className="text-red-400"
+                        size={24}
+                      />
+
+                    )}
+
+                  </div>
+
+                  <div>
+
+                    <h3 className="font-semibold">
+                      {item.title}
+                    </h3>
+
+                    <p className="text-xs text-gray-400">
+                      {item.date}
+                    </p>
+
+                  </div>
+
+                </div>
+
+                <span
+                  className={`font-bold ${
+                    item.type === "credit"
+                      ? "text-green-400"
+                      : "text-red-400"
+                  }`}
+                >
+                  {item.amount}
+                </span>
+
               </div>
-            ) : (
-              <div className="space-y-3">
-                {transactions
-                  .slice()
-                  .reverse()
-                  .map((item, index) => (
-                    <div
-                      key={index}
-                      className="
-                      rounded-2xl
-                      border
-                      border-white/10
-                      bg-[#111C30]
-                      p-4
-                      flex
-                      justify-between
-                      items-center
-                    "
-                    >
-                      <div className="flex gap-3">
-                        <div className="rounded-full bg-green-500/20 p-2">
-                          <CheckCircle2
-                            className="text-green-400"
-                            size={20}
-                          />
-                        </div>
 
-                        <div>
-                          <p className="font-semibold text-white">
-                            Wallet Recharge
-                          </p>
+            ))}
 
-                          <p className="text-xs text-gray-400">
-                            {item.paymentId}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="text-right">
-                        <p className="font-bold text-green-400">
-                          +₹{item.amount}
-                        </p>
-
-                        <p className="text-xs text-gray-400">
-                          {item.status}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            )}
           </div>
+
         </div>
+
       </div>
-    </div>
+
+    </main>
   );
 }
