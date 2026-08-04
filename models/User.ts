@@ -1,82 +1,63 @@
-import mongoose, { Schema, models } from "mongoose";
-
+import mongoose, { Schema, models, model } from "mongoose";
 
 const UserSchema = new Schema(
-
-{
-    name: {
-        type: String,
-        default: "",
+  {
+    fullName: {
+      type: String,
+      required: true,
+      trim: true,
     },
 
-
-    phone: {
-        type: String,
-        required: true,
-        unique: true,
+    mobile: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
     },
-
 
     email: {
-        type: String,
-        default: "",
+      type: String,
+      default: "",
+      lowercase: true,
+      trim: true,
     },
 
+    password: {
+      type: String,
+      required: true,
+    },
 
-    // Wallet Balance
     walletBalance: {
-        type: Number,
-        default: 0,
+      type: Number,
+      default: 0,
     },
 
+    profilePhoto: {
+      type: String,
+      default: "",
+    },
 
-    // Payment History
-    transactions: [
-        {
-            orderId: {
-                type: String,
-            },
+    isVerified: {
+      type: Boolean,
+      default: true,
+    },
 
+    isBlocked: {
+      type: Boolean,
+      default: false,
+    },
 
-            paymentId: {
-                type: String,
-            },
-
-
-            amount: {
-                type: Number,
-            },
-
-
-            status: {
-                type: String,
-                default: "success",
-            },
-
-
-            createdAt: {
-                type: Date,
-                default: Date.now,
-            },
-        },
-    ],
-
-
-},
-
-
-{
+    lastLogin: {
+      type: Date,
+      default: null,
+    },
+  },
+  {
     timestamps: true,
-}
-
+  }
 );
 
-
-
 const User =
-    models.User ||
-    mongoose.model("User", UserSchema);
-
-
+  models.User || model("User", UserSchema);
 
 export default User;

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   House,
   Grid2X2,
@@ -18,6 +18,7 @@ export default function BottomNav({
   onCategoriesClick,
 }: BottomNavProps) {
   const pathname = usePathname();
+  const router = useRouter();
 
   const iconClass = (active: boolean) =>
     active
@@ -29,13 +30,31 @@ export default function BottomNav({
       ? "mt-1 text-[11px] font-semibold text-yellow-400"
       : "mt-1 text-[11px] text-slate-400";
 
+  async function handleProfileClick() {
+    try {
+      const res = await fetch("/api/user/me", {
+        credentials: "include",
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        router.push("/profile");
+      } else {
+        router.push("/auth/login");
+      }
+    } catch (error) {
+      console.error(error);
+      router.push("/auth/login");
+    }
+  }
+
   return (
     <nav className="fixed bottom-4 left-1/2 z-50 w-[95%] max-w-md -translate-x-1/2">
 
       <div className="flex items-center justify-between rounded-[26px] border border-yellow-500/20 bg-[#101B2C]/95 px-4 py-3 shadow-2xl backdrop-blur-xl">
 
         {/* Home */}
-
         <Link
           href="/"
           className="flex flex-1 flex-col items-center"
@@ -51,11 +70,10 @@ export default function BottomNav({
         </Link>
 
         {/* Categories */}
-
         <button
-  onClick={() => onCategoriesClick?.()}
-  className="flex flex-1 flex-col items-center"
->
+          onClick={() => onCategoriesClick?.()}
+          className="flex flex-1 flex-col items-center"
+        >
           <Grid2X2
             size={22}
             className="text-slate-400"
@@ -67,7 +85,6 @@ export default function BottomNav({
         </button>
 
         {/* Bookings */}
-
         <Link
           href="/bookings"
           className="flex flex-1 flex-col items-center"
@@ -83,7 +100,6 @@ export default function BottomNav({
         </Link>
 
         {/* Wallet */}
-
         <Link
           href="/wallet"
           className="flex flex-1 flex-col items-center"
@@ -99,9 +115,8 @@ export default function BottomNav({
         </Link>
 
         {/* Profile */}
-
-        <Link
-          href="/profile"
+        <button
+          onClick={handleProfileClick}
           className="flex flex-1 flex-col items-center"
         >
           <User
@@ -112,7 +127,7 @@ export default function BottomNav({
           <span className={textClass(pathname === "/profile")}>
             Profile
           </span>
-        </Link>
+        </button>
 
       </div>
 
