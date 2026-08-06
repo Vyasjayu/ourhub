@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getGridFSBucket } from "@/lib/gridfs";
+export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   try {
