@@ -41,9 +41,10 @@ export default function ProviderProfileContent() {
     about: "",
 
     // Documents
-    profilePhoto: null as File | null,
-    aadhaar: null as File | null,
-    pan: null as File | null,
+    // Documents
+profilePhoto: null as string | File | null,
+aadhaar: null as string | File | null,
+pan: null as string | File | null,
 
     // Bank
     accountHolder: "",
@@ -101,9 +102,10 @@ setForm({
   about: p.about || "",
 
   // Documents
-  profilePhoto: null,
-  aadhaar: null,
-  pan: null,
+ // Documents
+profilePhoto: p.profilePhoto || null,
+aadhaar: p.aadhaar || null,
+pan: p.pan || null,
 
   // Bank
   accountHolder: p.accountHolder || "",
@@ -122,7 +124,45 @@ setForm({
 
     loadProfile();
   }, []);
+const calculateProgress = () => {
+  const fields = [
+    form.displayName,
+    form.fullName,
+    form.email,
+    form.mobile,
+    form.gender,
+    form.dob,
+    form.city,
+    form.state,
 
+    form.businessName,
+    form.experience,
+    form.languages,
+    form.serviceArea,
+    form.price,
+    form.specialization,
+    form.about,
+
+    form.profilePhoto,
+    form.aadhaar,
+    form.pan,
+
+    form.accountHolder,
+    form.accountNumber,
+    form.ifsc,
+    form.bankName,
+    form.upi,
+  ];
+
+  const completed = fields.filter((field) => {
+    if (field === null || field === undefined) return false;
+    return String(field).trim() !== "";
+  }).length;
+
+  return Math.round((completed / fields.length) * 100);
+};
+
+const progress = calculateProgress();
   const updateField = (
     key: keyof typeof form,
     value: string | File | null
@@ -189,50 +229,110 @@ setForm({
   }
 
   // STEP 4
-  if (step === 4) {
-    if (
-      !form.accountNumber ||
-      !form.ifsc ||
-      !form.bankName
-    ) {
-      alert("Please complete Bank Details.");
+  // STEP 4
+if (step === 4) {
+  if (
+    !form.accountNumber ||
+    !form.ifsc ||
+    !form.bankName
+  ) {
+    alert("Please complete Bank Details.");
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    let profilePhoto = form.profilePhoto;
+    let aadhaar = form.aadhaar;
+    let pan = form.pan;
+
+    // Upload Profile Photo
+    if (profilePhoto instanceof File) {
+      const fd = new FormData();
+      fd.append("file", profilePhoto);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: fd,
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        profilePhoto = data.url;
+      }
+    }
+
+    // Upload Aadhaar
+    if (aadhaar instanceof File) {
+      const fd = new FormData();
+      fd.append("file", aadhaar);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: fd,
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        aadhaar = data.url;
+      }
+    }
+
+    // Upload PAN
+    if (pan instanceof File) {
+      const fd = new FormData();
+      fd.append("file", pan);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: fd,
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        pan = data.url;
+      }
+    }
+
+    // Save Provider
+    const response = await fetch("/api/provider/profile", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...form,
+        mobile,
+        category,
+        profilePhoto,
+        aadhaar,
+        pan,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (!result.success) {
+      alert(result.message || "Profile update failed.");
       return;
     }
 
-    try {
-      setLoading(true);
+    alert("Profile Updated Successfully");
 
-      const response = await fetch("/api/provider/profile", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...form,
-          mobile,
-          category,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!data.success) {
-        alert(data.message || "Profile update failed.");
-        return;
-      }
-
-      alert("Profile Updated Successfully");
-
-      router.push("/provider/dashboard");
-    } catch (error) {
-      console.error(error);
-      alert("Server Error");
-    } finally {
-      setLoading(false);
-    }
-
-    return;
+    router.push("/provider/dashboard");
+  } catch (error) {
+    console.error(error);
+    alert("Server Error");
+  } finally {
+    setLoading(false);
   }
+
+  return;
+}
 
   // STEP 5
   if (step === 5) {
@@ -267,7 +367,7 @@ return (
       </div>
 
       {/* Progress */}
-      <ProgressBar step={step} />
+      <ProgressBar progress={progress} />
 
       {/* Step 1 */}
       {step === 1 && (

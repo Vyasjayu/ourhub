@@ -8,7 +8,6 @@ export async function POST(req: Request) {
 
     const body = await req.json();
 
-    // Remove File Objects
     const {
       profilePhoto,
       aadhaar,
@@ -17,7 +16,6 @@ export async function POST(req: Request) {
       ...rest
     } = body;
 
-    // Find Provider
     const existingProvider = await Provider.findOne({
       mobile: body.mobile,
     });
@@ -34,72 +32,113 @@ export async function POST(req: Request) {
       );
     }
 
-    // Never overwrite Category
-    if (!rest.category) {
-      rest.category = existingProvider.category;
+    // Preserve values
+    rest.category =
+      rest.category || existingProvider.category;
+
+    rest.username =
+      rest.username || existingProvider.username;
+
+    if (!rest.displayName?.trim()) {
+      rest.displayName =
+        existingProvider.displayName ||
+        `Astro ${Math.floor(
+          1000 + Math.random() * 9000
+        )}`;
     }
 
-    // Never overwrite Username
-    if (!rest.username) {
-      rest.username = existingProvider.username;
+    rest.rating =
+      rest.rating ?? existingProvider.rating ?? 5;
+
+    rest.totalReviews =
+      rest.totalReviews ??
+      existingProvider.totalReviews ??
+      0;
+
+    rest.totalConsultations =
+      rest.totalConsultations ??
+      existingProvider.totalConsultations ??
+      0;
+
+    rest.isProfilePublic =
+      rest.isProfilePublic ??
+      existingProvider.isProfilePublic ??
+      true;
+
+    const updateData: any = {
+      ...rest,
+      updatedAt: new Date(),
+    };
+
+    // ==========================
+    // Profile Photo
+    // ==========================
+
+    if (profilePhoto === null) {
+      updateData.profilePhoto = "";
+    } else if (
+      typeof profilePhoto === "string"
+    ) {
+      updateData.profilePhoto = profilePhoto;
+    } else {
+      updateData.profilePhoto =
+        existingProvider.profilePhoto;
     }
 
-    // Generate Display Name (if empty)
-    if (!rest.displayName || rest.displayName.trim() === "") {
-      if (existingProvider.displayName) {
-        rest.displayName = existingProvider.displayName;
-      } else {
-        const random = Math.floor(1000 + Math.random() * 9000);
+    // ==========================
+    // Aadhaar
+    // ==========================
 
-        rest.displayName = `Astro ${random}`;
-      }
+    if (aadhaar === null) {
+      updateData.aadhaar = "";
+    } else if (
+      typeof aadhaar === "string"
+    ) {
+      updateData.aadhaar = aadhaar;
+    } else {
+      updateData.aadhaar =
+        existingProvider.aadhaar;
     }
 
-    // Default Public Profile Fields
-    if (rest.rating === undefined) {
-      rest.rating = existingProvider.rating ?? 5;
+    // ==========================
+    // PAN
+    // ==========================
+
+    if (pan === null) {
+      updateData.pan = "";
+    } else if (
+      typeof pan === "string"
+    ) {
+      updateData.pan = pan;
+    } else {
+      updateData.pan =
+        existingProvider.pan;
     }
 
-    if (rest.totalReviews === undefined) {
-      rest.totalReviews =
-        existingProvider.totalReviews ?? 0;
-    }
-
-    if (rest.totalConsultations === undefined) {
-      rest.totalConsultations =
-        existingProvider.totalConsultations ?? 0;
-    }
-
-    if (rest.isProfilePublic === undefined) {
-      rest.isProfilePublic =
-        existingProvider.isProfilePublic ?? true;
-    }
-
-    // Update Provider
-    const provider = await Provider.findOneAndUpdate(
-      {
-        mobile: body.mobile,
-      },
-      {
-        $set: {
-          ...rest,
-          updatedAt: new Date(),
+    const provider =
+      await Provider.findOneAndUpdate(
+        {
+          mobile: body.mobile,
         },
-      },
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+        {
+          $set: updateData,
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
 
     return NextResponse.json({
       success: true,
       message: "Profile Updated Successfully.",
       provider,
     });
-
   } catch (error) {
-    console.error("PROFILE UPDATE ERROR:", error);
+    console.error(
+      "PROFILE UPDATE ERROR:",
+      error
+    );
 
     return NextResponse.json(
       {

@@ -26,9 +26,10 @@ type FormType = {
   price: string;
 
   // Documents
-  profilePhoto: File | null;
-  aadhaar: File | null;
-  pan: File | null;
+  // Documents
+profilePhoto: string | File | null;
+aadhaar: string | File | null;
+pan: string | File | null;
 
   // Bank
   accountHolder: string;
@@ -39,7 +40,32 @@ type FormType = {
 };
 
 interface ReviewStepProps {
-  form: FormType;
+  form: {
+    displayName: string;
+    fullName: string;
+    email: string;
+    mobile: string;
+    city: string;
+    state: string;
+
+    businessName: string;
+    experience: string;
+    languages: string;
+    serviceArea: string;
+    specialization: string;
+    about: string;
+    price: string;
+
+    profilePhoto: string | File | null;
+    aadhaar: string | File | null;
+    pan: string | File | null;
+
+    accountHolder: string;
+    accountNumber: string;
+    ifsc: string;
+    bankName: string;
+    upi: string;
+  };
 }
 
 export default function ReviewStep({
@@ -324,7 +350,7 @@ function Item({
   value,
 }: {
   label: string;
-  value: string;
+  value: string | number;
 }) {
   return (
     <div className="flex items-start justify-between gap-4">

@@ -10,16 +10,16 @@ import {
 } from "lucide-react";
 
 type FormType = {
-  profilePhoto: File | null;
-  aadhaar: File | null;
-  pan: File | null;
+  profilePhoto: string | File | null;
+  aadhaar: string | File | null;
+  pan: string | File | null;
 };
 
 interface DocumentStepProps {
   form: FormType;
   updateField: (
     key: keyof FormType,
-    value: File | null
+    value: string | File | null
   ) => void;
 }
 
@@ -93,8 +93,8 @@ interface UploadCardProps {
   title: string;
   required?: boolean;
   accept: string;
-  file: File | null;
-  onChange: (file: File | null) => void;
+  file: string | File | null;
+  onChange: (file: string | File | null) => void;
 }
 
 function UploadCard({
@@ -104,35 +104,62 @@ function UploadCard({
   file,
   onChange,
 }: UploadCardProps) {
-
   const preview = useMemo(() => {
-
     if (!file) return "";
 
+    // Already uploaded image
+    if (typeof file === "string") {
+      // Already a complete URL
+      if (file.startsWith("/api/upload/")) {
+        return file;
+      }
+
+      // GridFS ObjectId (24 hex chars)
+      if (/^[a-fA-F0-9]{24}$/.test(file)) {
+        return `/api/upload/${file}`;
+      }
+
+      // Direct image URL
+      if (
+        file.endsWith(".jpg") ||
+        file.endsWith(".jpeg") ||
+        file.endsWith(".png") ||
+        file.endsWith(".webp")
+      ) {
+        return file;
+      }
+
+      return "";
+    }
+
+    // Newly selected image
     if (file.type.startsWith("image/")) {
       return URL.createObjectURL(file);
     }
 
     return "";
-
   }, [file]);
 
+  const fileName =
+  typeof file === "string"
+    ? "Uploaded Image"
+    : file?.name || "";
+
+  const fileInfo =
+    typeof file === "string"
+      ? "Already Uploaded"
+      : file
+        ? `${(file.size / 1024 / 1024).toFixed(2)} MB`
+        : "";
+
   return (
-
     <div className="rounded-3xl border border-white/10 bg-white/5 p-5">
-
       <div className="mb-3 flex items-center justify-between">
-
         <h3 className="font-semibold">
-
           {title}
-
           {required && (
-            <span className="text-red-400">
-              {" "}*
-            </span>
+            <span className="text-red-400"> *</span>
           )}
-
         </h3>
 
         {file && (
@@ -141,11 +168,9 @@ function UploadCard({
             className="text-green-400"
           />
         )}
-
       </div>
 
-      {!file && (
-
+      {!file ? (
         <label className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-yellow-400/40 py-10 transition hover:border-yellow-400 hover:bg-yellow-400/5">
 
           <Upload
@@ -165,56 +190,39 @@ function UploadCard({
             hidden
             type="file"
             accept={accept}
-            onChange={(e)=>
-              onChange(
-                e.target.files?.[0] ?? null
-              )
+            onChange={(e) =>
+              onChange(e.target.files?.[0] ?? null)
             }
           />
-
         </label>
-
-      )}
-
-      {file && (
-
+      ) : (
         <div className="mt-4 rounded-2xl bg-green-500/10 p-4">
 
           <div className="flex gap-4">
 
             {preview ? (
-
               <img
                 src={preview}
                 alt=""
                 className="h-20 w-20 rounded-xl object-cover"
               />
-
             ) : (
-
               <div className="flex h-20 w-20 items-center justify-center rounded-xl bg-white/10">
-
                 <FileText
                   size={34}
                   className="text-yellow-400"
                 />
-
               </div>
-
             )}
 
             <div className="flex-1">
 
-              <p className="font-medium">
-
-                {file.name}
-
+              <p className="font-medium break-all">
+                {fileName}
               </p>
 
               <p className="mt-1 text-xs text-gray-400">
-
-                {(file.size/1024/1024).toFixed(2)} MB
-
+                {fileInfo}
               </p>
 
               <div className="mt-4 flex gap-2">
@@ -227,10 +235,8 @@ function UploadCard({
                     hidden
                     type="file"
                     accept={accept}
-                    onChange={(e)=>
-                      onChange(
-                        e.target.files?.[0] ?? null
-                      )
+                    onChange={(e) =>
+                      onChange(e.target.files?.[0] ?? null)
                     }
                   />
 
@@ -241,9 +247,7 @@ function UploadCard({
                   onClick={() => onChange(null)}
                   className="rounded-xl bg-red-500 px-3 py-2 text-xs"
                 >
-
                   Remove
-
                 </button>
 
               </div>
@@ -253,11 +257,7 @@ function UploadCard({
           </div>
 
         </div>
-
       )}
-
     </div>
-
   );
-
 }
