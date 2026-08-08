@@ -1,183 +1,49 @@
 "use client";
 
-import Link from "next/link";
-import {
-  Menu,
-  Bell,
-  Search,
-  Heart,
-} from "lucide-react";
+import { ArrowLeft, Bell } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
+  const router = useRouter();
+
   return (
-    <header
-      className="
-        sticky
-        top-0
-        z-50
-        border-b
-        border-yellow-500/10
-        bg-[#071424]/90
-        backdrop-blur-2xl
-      "
-    >
-      <div className="px-4 pt-5 pb-4">
+    <header className="sticky top-0 z-40 bg-[#071424]">
 
-        {/* Top Row */}
+      <div className="flex items-center justify-between">
 
-        <div className="flex items-center justify-between">
+        {/* Back Button */}
+        <button
+          onClick={() => router.back()}
+          className="flex h-11 w-11 items-center justify-center rounded-xl border border-yellow-500/20 bg-[#111827] text-yellow-400 transition hover:bg-yellow-400 hover:text-black active:scale-95"
+        >
+          <ArrowLeft size={22} />
+        </button>
 
-          {/* Menu */}
+        {/* Logo */}
+        <div className="flex flex-col items-center">
 
-          <button
-            className="
-              flex
-              h-11
-              w-11
-              items-center
-              justify-center
-              rounded-2xl
-              border
-              border-yellow-500/20
-              bg-white/5
-              transition
-              hover:border-yellow-400
-              hover:bg-yellow-500/10
-            "
-          >
-            <Menu
-              size={22}
-              className="text-yellow-400"
-            />
-          </button>
+          <span className="text-[10px] font-medium uppercase tracking-[4px] text-yellow-500">
+            OURHUB
+          </span>
 
-          {/* Title */}
+          <h1 className="mt-0.5 text-base font-bold leading-none text-white">
+            Pooja Booking
+          </h1>
 
-          <div className="text-center">
-
-            <p className="text-[11px] tracking-[3px] uppercase text-yellow-500">
-              OurHub
-            </p>
-
-            <h1
-              className="
-                mt-1
-                bg-gradient-to-r
-                from-yellow-300
-                via-yellow-400
-                to-yellow-500
-                bg-clip-text
-                text-2xl
-                font-extrabold
-                text-transparent
-              "
-            >
-              All Pooja Services
-            </h1>
-
-          </div>
-
-          {/* Notification */}
-
-          <button
-            className="
-              relative
-              flex
-              h-11
-              w-11
-              items-center
-              justify-center
-              rounded-2xl
-              border
-              border-yellow-500/20
-              bg-white/5
-              transition
-              hover:border-yellow-400
-              hover:bg-yellow-500/10
-            "
-          >
-            <Bell
-              size={21}
-              className="text-yellow-300"
-            />
-
-            <span
-              className="
-                absolute
-                right-2
-                top-2
-                h-2.5
-                w-2.5
-                rounded-full
-                bg-red-500
-                ring-2
-                ring-[#071424]
-              "
-            />
-          </button>
+          <span className="mt-1 h-[2px] w-12 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500" />
 
         </div>
 
-        {/* Action Buttons */}
+        {/* Notification */}
+        <button className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-yellow-500/20 bg-[#111827] text-yellow-400 transition hover:bg-yellow-400 hover:text-black active:scale-95">
 
-        {/* <div className="mt-5 flex gap-3">
+          <Bell size={20} />
 
-          <Link
-            href="/search"
-            className="
-              flex
-              flex-1
-              items-center
-              justify-center
-              gap-2
-              rounded-2xl
-              border
-              border-yellow-500/15
-              bg-[#0F1C2F]
-              py-3
-              transition
-              hover:border-yellow-400
-            "
-          >
-            <Search
-              size={18}
-              className="text-yellow-400"
-            />
+          <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-[#111827]" />
 
-            <span className="text-sm font-medium text-slate-300">
-              Search
-            </span>
-          </Link>
-
-          <Link
-            href="/wishlist"
-            className="
-              flex
-              h-[50px]
-              w-[50px]
-              items-center
-              justify-center
-              rounded-2xl
-              border
-              border-yellow-500/15
-              bg-[#0F1C2F]
-              transition
-              hover:border-yellow-400
-            "
-          >
-            <Heart
-              size={20}
-              className="text-yellow-400"
-            />
-          </Link>
-
-        </div> */}
+        </button>
 
       </div>
-
-      {/* Bottom Glow */}
-
-      <div className="h-px bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent" />
 
     </header>
   );

@@ -3,106 +3,89 @@
 import { useState } from "react";
 
 import Header from "@/components/pooja/Header";
-import HeroBanner from "@/components/pooja/HeroBanner";
-import LocationBar from "@/components/pooja/LocationBar";
 import SearchBar from "@/components/pooja/SearchBar";
-import PoojaGrid from "@/components/pooja/PoojaGrid";
-import TrendingPooja from "@/components/pooja/TrendingPooja";
+// import LocationSelector from "@/components/pooja/LocationSelector";
+import HeroSlider from "@/components/pooja/HeroSlider";
+import PopularPooja from "@/components/pooja/PopularPooja";
+import OnlineOfflineCard from "@/components/pooja/OnlineOfflineCard";
+// import PremiumBanner from "@/components/pooja/PremiumBanner";
+import TrendingSection from "@/components/pooja/TrendingSection";
+import BottomNavbar from "@/components/pooja/BottomNavbar";
 import WhyChooseUs from "@/components/pooja/WhyChooseUs";
 import HelpCard from "@/components/pooja/HelpCard";
-import BottomNav from "@/components/BottomNav";
-import AllPoojaSheet from "@/components/pooja/AllPoojaSheet";
+import PoojaBottomSheet from "@/components/pooja/PoojaBottomSheet";
 
-export default function PoojaPage() {
-  const [search, setSearch] = useState("");
-  const [showSheet, setShowSheet] = useState(false);
+export default function Page() {
+  const [poojaSheetOpen, setPoojaSheetOpen] = useState(false);
 
   return (
-    <main
-      className="
-        min-h-screen
-        flex
-        justify-center
-        bg-gradient-to-b
-        from-[#030712]
-        via-[#071424]
-        to-[#020617]
-      "
-    >
-      <div
-        className="
-          relative
-          w-full
-          max-w-[430px]
-          overflow-hidden
-          border-x
-          border-yellow-500/10
-          bg-[#071424]
-          pb-28
-        "
-      >
-        {/* Background Glow */}
-        <div className="absolute left-0 top-0 h-72 w-full bg-[radial-gradient(circle_at_top,#FACC1530,transparent_70%)]" />
+    <main className="flex justify-center bg-[#050B14]">
+      <div className="relative min-h-screen w-full max-w-[430px] bg-[#071424] shadow-2xl">
 
-        <div className="relative z-10">
+        <div className="pb-28">
 
           {/* Header */}
-          <Header />
+          <div className="px-4 pt-4">
+            <Header />
+          </div>
 
-          {/* Hero Banner */}
-          {/* <HeroBanner /> */}
+          {/* Sticky Search */}
+          <div className="sticky top-0 z-30 border-b border-yellow-500/10 bg-[#071424]/95 backdrop-blur-xl">
 
-          <div className="space-y-5 px-4">
+            <div className="px-4 py-3">
 
-            {/* Location */}
-            <LocationBar />
+              {/* <LocationSelector /> */}
 
-            {/* Search */}
-            <SearchBar
-              search={search}
-              setSearch={setSearch}
-            />
+              <div className="mt-3">
+                <SearchBar />
+              </div>
 
-            {/* Pooja Grid */}
-            <div
-              className="
-                rounded-3xl
-                border
-                border-yellow-500/20
-                bg-[#0E1A2D]
-                p-4
-                shadow-[0_0_30px_rgba(250,204,21,.08)]
-              "
-            >
-              <PoojaGrid
-                search={search}
-                onMoreClick={() => setShowSheet(true)}
-              />
             </div>
-
-            {/* Trending */}
-            <TrendingPooja />
-
-            {/* Why Choose Us */}
-            <WhyChooseUs />
-
-            {/* Help */}
-            <HelpCard />
 
           </div>
 
-          {/* Bottom Navigation */}
-          <BottomNav
-            onCategoriesClick={() => {}}
-          />
+          {/* Hero */}
+          <section className="mt-4 px-4">
+            <HeroSlider />
+          </section>
 
-          {/* Bottom Sheet */}
-          <AllPoojaSheet
-            open={showSheet}
-            onClose={() => setShowSheet(false)}
-          />
+          {/* Popular */}
+          <section className="mt-7 overflow-x-hidden px-4">
+            <PopularPooja
+              onMoreClick={() => setPoojaSheetOpen(true)}
+            />
+          </section>
+
+          {/* Online Offline */}
+          <section className="mt-7 px-4">
+            <OnlineOfflineCard />
+          </section>
+
+          {/* Premium */}
+          {/* <section className="mt-7 px-4">
+            <PremiumBanner />
+          </section> */}
+
+          {/* Trending */}
+          <section className="mt-7">
+            <TrendingSection />
+          </section>
+
+          <WhyChooseUs />
+
+          <HelpCard />
 
         </div>
+
+        {/* Bottom Sheet */}
+        <PoojaBottomSheet
+          open={poojaSheetOpen}
+          onClose={() => setPoojaSheetOpen(false)}
+        />
+
+        {/* Bottom Navigation */}
+        <BottomNavbar />
+
       </div>
     </main>
   );
