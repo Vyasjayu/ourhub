@@ -64,7 +64,7 @@ export default function TrendingSection() {
         </div>
 
         <Link
-          href="/pooja/trending"
+          href=""
           className="flex items-center gap-1 text-sm font-semibold text-yellow-400"
         >
           View All

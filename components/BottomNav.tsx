@@ -8,6 +8,7 @@ import {
   CalendarDays,
   Wallet,
   User,
+  Info,
 } from "lucide-react";
 
 interface BottomNavProps {
@@ -99,35 +100,36 @@ export default function BottomNav({
           </span>
         </Link>
 
-        {/* Wallet */}
-        <Link
-          href="/wallet"
-          className="flex flex-1 flex-col items-center"
-        >
-          <Wallet
-            size={22}
-            className={iconClass(pathname === "/wallet")}
-          />
+        
+    {/* About */}
+<Link
+  href="/about"
+  className="flex flex-1 flex-col items-center"
+>
+  <Info
+    size={22}
+    className={iconClass(pathname === "/about")}
+  />
 
-          <span className={textClass(pathname === "/wallet")}>
-            Wallet
-          </span>
-        </Link>
+  <span className={textClass(pathname === "/about")}>
+    About
+  </span>
+</Link>
 
-        {/* Profile */}
-        <button
-          onClick={handleProfileClick}
-          className="flex flex-1 flex-col items-center"
-        >
-          <User
-            size={22}
-            className={iconClass(pathname === "/profile")}
-          />
+{/* Profile */}
+<button
+  onClick={handleProfileClick}
+  className="flex flex-1 flex-col items-center"
+>
+  <User
+    size={22}
+    className={iconClass(pathname === "/profile")}
+  />
 
-          <span className={textClass(pathname === "/profile")}>
-            Profile
-          </span>
-        </button>
+  <span className={textClass(pathname === "/profile")}>
+    Profile
+  </span>
+</button>
 
       </div>
 

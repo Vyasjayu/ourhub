@@ -98,7 +98,6 @@ export const technologies = [
   "Tailwind CSS",
   "Firebase",
   "TypeScript",
-  "Razorpay",
   "Cloudinary",
   "Git",
   "Vercel"

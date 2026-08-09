@@ -43,12 +43,12 @@ const menuItems = [
     icon: Monitor,
     href: "/web-development",
   },
-  {
-  name: "Digital Marketing & Advertising",
-  icon: Megaphone,
-  href: "/digital-marketing",
+  // {
+  // name: "Digital Marketing & Advertising",
+  // icon: Megaphone,
+  // href: "/digital-marketing",
 
-  },
+  // },
   {
     name: "Event Management",
     icon: PartyPopper,

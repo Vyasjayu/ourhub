@@ -83,7 +83,7 @@ export default function OnlineOfflineCard() {
             {/* Offline */}
 
             <Link
-              href="/pooja/offline"
+              href="/offline-pooja"
               className="rounded-3xl border border-yellow-500/40 bg-[#111827]/90 p-4 backdrop-blur-md transition hover:border-yellow-400"
             >
 

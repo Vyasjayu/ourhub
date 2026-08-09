@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -9,76 +10,74 @@ interface Props {
   onMoreClick: () => void;
 }
 
-const services = [
+const categories = [
   {
     id: 1,
-    title: "Pandit Booking",
+    title: "Religious Services",
     image: "/images/categories/religious.png",
     rating: "4.9",
     link: "/religious",
   },
-  {
-    id: 2,
-    title: "Astrology",
-    image: "/images/categories/astrology.png",
-    rating: "4.8",
-    link: "/religious/astrology",
-  },
+ {
+  id: 2,
+  title: "Astrology",
+  image: "/images/categories/astrology.png",
+  rating: "4.8",
+  link: "/religious/astrology",
+},
   {
     id: 3,
-    title: "AC Repair",
-    image: "/images/offers/ac.png",
-    rating: "4.8",
-    link: "/home-service",
-  },
-  {
-    id: 4,
-    title: "Electrician",
-    image: "/images/offers/electrician.png",
-    rating: "4.8",
-    link: "/home-service",
-  },
-  {
-    id: 5,
-    title: "Car Wash",
-    image: "/images/offers/carwash.png",
+    title: "Automobile",
+    image: "/images/categories/automobile.png",
     rating: "4.7",
     link: "/automobile",
   },
   {
-    id: 6,
-    title: "Wedding Planner",
-    image: "/images/offers/wedding.png",
-    rating: "5.0",
+    id: 4,
+    title: "Event Management",
+    image: "/images/categories/events.png",
+    rating: "4.9",
     link: "/eventManagement",
+  },
+  {
+    id: 5,
+    title: "Web Development",
+    image: "/images/categories/web-development.png",
+    rating: "5.0",
+    link: "/web-development",
+  },
+  {
+    id: 6,
+    title: "Construction",
+    image: "/images/categories/construction.png",
+    rating: "4.8",
+    link: "/construction",
   },
 ];
 
-export default function MostBookedServices({
+export default function PopularCategories({
   search = "",
   onMoreClick,
 }: Props) {
-  const filteredServices = services.filter((service) =>
-    service.title.toLowerCase().includes(search.toLowerCase())
+  const filteredCategories = categories.filter((category) =>
+    category.title.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
-    <section className="mt-8">
+    <section className="mb-6">
       {/* Heading */}
-
       <div className="mb-5 flex items-center justify-between">
         <div>
           <h2 className="text-xl font-bold text-white">
-            Most Booked Services
+            Popular Categories
           </h2>
 
           <p className="mt-1 text-sm text-slate-400">
-            Trusted by thousands of customers
+            Explore our most popular services
           </p>
         </div>
 
         {/* View All */}
-
         <button
           onClick={onMoreClick}
           className="flex items-center gap-1 text-sm font-semibold text-yellow-400 transition hover:text-yellow-300"
@@ -88,16 +87,16 @@ export default function MostBookedServices({
         </button>
       </div>
 
-      {/* Services */}
-
-      {filteredServices.length > 0 ? (
+      {/* Categories */}
+      {filteredCategories.length > 0 ? (
         <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-          {filteredServices.map((service) => (
+          {filteredCategories.map((category) => (
             <Link
-              key={service.id}
-              href={service.link}
+              key={category.id}
+              href={category.link}
               className="
                 min-w-[165px]
+                overflow-hidden
                 rounded-3xl
                 border
                 border-yellow-500/20
@@ -110,19 +109,20 @@ export default function MostBookedServices({
               "
             >
               {/* Image */}
-
-              <div className="relative h-36 overflow-hidden rounded-t-3xl">
+              <div className="relative h-36 overflow-hidden">
                 <Image
-                  src={service.image}
-                  alt={service.title}
+                  src={category.image}
+                  alt={category.title}
                   fill
                   sizes="165px"
                   className="object-cover transition duration-500 hover:scale-110"
                 />
+
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               </div>
 
               {/* Content */}
-
               <div className="p-4">
                 <div className="flex items-center justify-between">
                   <span className="rounded-full bg-yellow-500/20 px-2 py-1 text-xs font-semibold text-yellow-300">
@@ -136,19 +136,20 @@ export default function MostBookedServices({
                     />
 
                     <span className="text-xs text-white">
-                      {service.rating}
+                      {category.rating}
                     </span>
                   </div>
                 </div>
 
                 <h3 className="mt-3 line-clamp-2 text-base font-bold text-white">
-                  {service.title}
+                  {category.title}
                 </h3>
 
-                <div className="mt-4 flex items-center justify-end">
-                  <button className="rounded-full bg-yellow-400 px-4 py-2 text-sm font-semibold text-[#071424] transition hover:scale-105">
-                    Book
-                  </button>
+                {/* Explore Button */}
+                <div className="mt-4">
+                  <div className="flex w-full items-center justify-center rounded-full bg-yellow-400 px-4 py-2 text-sm font-semibold text-[#071424] transition hover:scale-[1.03]">
+                    Explore
+                  </div>
                 </div>
               </div>
             </Link>
@@ -157,10 +158,11 @@ export default function MostBookedServices({
       ) : (
         <div className="rounded-3xl border border-slate-700 bg-[#111827] p-8 text-center">
           <p className="text-slate-400">
-            No services found.
+            No categories found.
           </p>
         </div>
       )}
     </section>
   );
 }
+

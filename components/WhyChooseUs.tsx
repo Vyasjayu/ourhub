@@ -138,13 +138,11 @@ export default function WhyChooseUs() {
         "
       >
         <h3 className="text-lg font-bold text-white">
-          ⭐ Trusted by Thousands of Customers
+          ⭐ One Platform. Multiple Services.
         </h3>
 
         <p className="mt-2 text-sm leading-6 text-slate-300">
-          From religious services to home repairs, automobile assistance,
-          events, health, and more — OurHub connects you with verified
-          professionals across every category.
+          From religious services and astrology to home services, automobile, events, construction, and web development — OurHub helps you discover and book professional services from one platform.p
         </p>
 
         <button

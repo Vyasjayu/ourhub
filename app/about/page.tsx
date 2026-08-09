@@ -18,7 +18,7 @@ export default function AboutPage() {
           <strong> Electrician</strong>, <strong>Plumber</strong>,
           <strong> Car Wash</strong>, <strong>Construction Services</strong>,
           <strong> Event Management</strong>,
-          <strong> Digital Marketing</strong>, or
+          or
           <strong> Web Designing & Development</strong>, OurHub connects you
           with trusted professionals through a seamless online booking
           experience.

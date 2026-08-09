@@ -235,7 +235,7 @@ export default function PoojaBottomSheet({
             {/* ================================================= */}
 
             <Link
-              href="/online-pooja"
+              href="/pooja/online"
               onClick={onClose}
               className="
                 group
@@ -558,7 +558,7 @@ export default function PoojaBottomSheet({
                 </h3>
 
                 <Link
-                  href="/online-pooja"
+                  href="/pooja/online"
                   onClick={onClose}
                   className="
                     text-xs
