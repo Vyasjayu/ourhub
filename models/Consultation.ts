@@ -1,86 +1,172 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, {
+  Schema,
+  Document,
+  Model,
+} from "mongoose";
 
+// ============================================
+// CONSULTATION INTERFACE
+// ============================================
 
 export interface IConsultation extends Document {
-
+  // USER
   userId: string;
 
+  // PANDIT
   panditId: string;
+  panditName?: string | null;
+  panditPhone?: string | null;
 
+  // CONSULTATION TYPE
+  consultationType?: "chat" | "voice" | "video";
+
+  // PAYMENT
   amount: number;
-
   duration: number;
-
   paymentId: string;
 
-  status: string;
+  // STATUS
+  status:
+    | "requested"
+    | "accepted"
+    | "active"
+    | "rejected"
+    | "completed"
+    | "cancelled";
 
+  // TIMING
   startTime?: Date | null;
-
   endTime?: Date | null;
 
+  // TIMESTAMPS
+  createdAt: Date;
+  updatedAt: Date;
 }
 
+// ============================================
+// SCHEMA
+// ============================================
 
+const ConsultationSchema =
+  new Schema<IConsultation>(
+    {
+      // ========================================
+      // USER
+      // ========================================
 
-const ConsultationSchema = new Schema<IConsultation>(
-{
+      userId: {
+        type: String,
+        required: true,
+        index: true,
+        trim: true,
+      },
 
-  userId:{
-    type:String,
-    required:true
-  },
+      // ========================================
+      // PANDIT
+      // ========================================
 
+      panditId: {
+        type: String,
+        required: true,
+        index: true,
+        trim: true,
+      },
 
-  panditId:{
-    type:String,
-    required:true
-  },
+      panditName: {
+        type: String,
+        default: null,
+        trim: true,
+      },
 
+      panditPhone: {
+        type: String,
+        default: null,
+        trim: true,
+      },
 
-  amount:{
-    type:Number,
-    required:true
-  },
+      // ========================================
+      // CONSULTATION TYPE
+      // ========================================
 
+      consultationType: {
+        type: String,
+        enum: [
+          "chat",
+          "voice",
+          "video",
+        ],
+        default: "chat",
+        index: true,
+      },
 
-  duration:{
-    type:Number,
-    required:true
-  },
+      // ========================================
+      // PAYMENT
+      // ========================================
 
+      amount: {
+        type: Number,
+        required: true,
+        min: 1,
+      },
 
-  paymentId:{
-    type:String,
-    required:true
-  },
+      duration: {
+        type: Number,
+        required: true,
+        min: 1,
+      },
 
+      paymentId: {
+        type: String,
+        required: true,
+        unique: true,
+        index: true,
+        trim: true,
+      },
 
-  status:{
-    type:String,
-    default:"requested"
-  },
+      // ========================================
+      // STATUS
+      // ========================================
 
+      status: {
+        type: String,
+        enum: [
+          "requested",
+          "accepted",
+          "active",
+          "rejected",
+          "completed",
+          "cancelled",
+        ],
+        default: "requested",
+        index: true,
+      },
 
-  startTime:{
-    type:Date,
-    default:null
-  },
+      // ========================================
+      // START TIME
+      // ========================================
 
+      startTime: {
+        type: Date,
+        default: null,
+      },
 
-  endTime:{
-    type:Date,
-    default:null
-  }
+      // ========================================
+      // END TIME
+      // ========================================
 
+      endTime: {
+        type: Date,
+        default: null,
+      },
+    },
+    {
+      timestamps: true,
+    }
+  );
 
-},
-{
-  timestamps:true
-}
-);
-
-
+// ============================================
+// MODEL
+// ============================================
 
 const Consultation: Model<IConsultation> =
   mongoose.models.Consultation ||
@@ -89,5 +175,8 @@ const Consultation: Model<IConsultation> =
     ConsultationSchema
   );
 
+// ============================================
+// EXPORT
+// ============================================
 
 export default Consultation;

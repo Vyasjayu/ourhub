@@ -3,13 +3,9 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
-
 export default function PaymentSuccessClient() {
-
   const router = useRouter();
-
   const searchParams = useSearchParams();
-
 
   const [loading, setLoading] = useState(true);
 
@@ -17,211 +13,287 @@ export default function PaymentSuccessClient() {
     "Payment Successful"
   );
 
+  const [error, setError] = useState("");
 
   useEffect(() => {
+    let cancelled = false;
 
     async function createConsultation() {
-
       try {
-
+        // ==========================================
+        // GET PAYMENT DETAILS
+        // ==========================================
 
         const paymentId =
           searchParams.get("paymentId");
 
-
         const panditId =
           searchParams.get("panditId");
 
+        const amount = Number(
+          searchParams.get("amount") || 0
+        );
 
-        const amount =
-          Number(searchParams.get("amount") || 0);
+        // Payment page is sending "minutes"
+        const minutes = Number(
+          searchParams.get("minutes") ||
+            searchParams.get("duration") ||
+            0
+        );
 
+        const panditPhone =
+          searchParams.get("phone") || "";
 
-        const duration =
-          Number(searchParams.get("duration") || 0);
+        const panditName =
+          searchParams.get("name") || "";
 
+        console.log(
+          "================================"
+        );
 
+        console.log(
+          "PAYMENT SUCCESS PAGE"
+        );
 
-        const userId =
-          localStorage.getItem("userId");
+        console.log(
+          "paymentId:",
+          paymentId
+        );
 
+        console.log(
+          "panditId:",
+          panditId
+        );
 
+        console.log(
+          "amount:",
+          amount
+        );
 
-        if (
-          !paymentId ||
-          !panditId ||
-          !userId
-        ) {
+        console.log(
+          "minutes:",
+          minutes
+        );
 
+        console.log(
+          "panditName:",
+          panditName
+        );
+
+        console.log(
+          "================================"
+        );
+
+        // ==========================================
+        // VALIDATION
+        // ==========================================
+
+        if (!paymentId) {
           setMessage(
-            "Payment details missing"
+            "Payment ID missing"
           );
 
-          setLoading(false);
+          setError(
+            "Payment information was not found."
+          );
 
           return;
-
         }
 
+        if (!panditId) {
+          setMessage(
+            "Astrologer information missing"
+          );
 
+          setError(
+            "Astrologer information was not found."
+          );
+
+          return;
+        }
+
+        if (!amount || amount <= 0) {
+          setMessage(
+            "Invalid payment amount"
+          );
+
+          setError(
+            "Payment amount is invalid."
+          );
+
+          return;
+        }
+
+        if (!minutes || minutes <= 0) {
+          setMessage(
+            "Consultation duration missing"
+          );
+
+          setError(
+            "Consultation duration was not found."
+          );
+
+          return;
+        }
+
+        // ==========================================
+        // CREATE CONSULTATION
+        // ==========================================
 
         const res = await fetch(
           "/api/consultation/create",
           {
-            method:"POST",
+            method: "POST",
 
-            headers:{
-              "Content-Type":"application/json"
+            headers: {
+              "Content-Type":
+                "application/json",
             },
 
-            body:JSON.stringify({
+            credentials: "include",
 
-              userId,
-
+            body: JSON.stringify({
               panditId,
 
               amount,
 
-              duration,
+              duration: minutes,
 
-              paymentId
+              paymentId,
 
-            })
+              panditPhone,
 
+              panditName,
+            }),
           }
         );
 
-
-
         const data = await res.json();
 
+        console.log(
+          "CONSULTATION CREATE RESPONSE:",
+          data
+        );
 
+        // ==========================================
+        // HANDLE RESPONSE
+        // ==========================================
 
-        if(data.success){
+        if (!res.ok || !data.success) {
+          setMessage(
+            data.message ||
+              "Consultation creation failed"
+          );
 
+          setError(
+            data.message ||
+              "Unable to create consultation."
+          );
 
+          return;
+        }
+
+        // ==========================================
+        // SUCCESS
+        // ==========================================
+
+        if (!cancelled) {
           setMessage(
             "Consultation Started"
           );
 
+          setError("");
 
-
-          setTimeout(()=>{
-
-
+          setTimeout(() => {
             router.push(
-              `/chat?panditId=${panditId}`
+              `/chat?panditId=${encodeURIComponent(
+                panditId
+              )}`
             );
-
-
-          },1000);
-
-
-
+          }, 1000);
         }
-        else{
-
-
-          setMessage(
-            data.message ||
-            "Consultation failed"
-          );
-
-
-        }
-
-
-
-      }
-      catch(error){
-
-        console.log(error);
-
-        setMessage(
-          "Something went wrong"
+      } catch (error) {
+        console.error(
+          "CREATE CONSULTATION ERROR:",
+          error
         );
 
+        if (!cancelled) {
+          setMessage(
+            "Something went wrong"
+          );
+
+          setError(
+            "Unable to create consultation. Please contact support."
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
-
-
-      finally{
-
-        setLoading(false);
-
-      }
-
     }
-
-
 
     createConsultation();
 
-
-  },[]);
-
-
+    return () => {
+      cancelled = true;
+    };
+  }, [searchParams, router]);
 
   return (
+    <div className="flex min-h-screen items-center justify-center bg-[#050B14]">
+      <div className="mx-4 w-full max-w-md rounded-3xl bg-[#111C30] p-8 text-center shadow-2xl">
 
-    <div
-      className="
-      min-h-screen
-      bg-[#050B14]
-      flex
-      items-center
-      justify-center
-      "
-    >
+        {/* Icon */}
 
-      <div
-        className="
-        bg-[#111C30]
-        rounded-2xl
-        p-8
-        text-center
-        mx-4
-        "
-      >
-
-        <div
-          className="
-          text-5xl
-          mb-4
-          "
-        >
-          ✅
+        <div className="mb-4 text-5xl">
+          {loading ? "⏳" : "✅"}
         </div>
 
+        {/* Message */}
 
-        <h1
-          className="
-          text-white
-          text-xl
-          font-bold
-          "
-        >
+        <h1 className="text-xl font-bold text-white">
           {message}
         </h1>
 
+        {/* Loading */}
 
-        {
-          loading &&
-          <p
-            className="
-            text-gray-400
-            mt-3
-            "
-          >
+        {loading && (
+          <p className="mt-3 text-sm text-gray-400">
             Creating consultation...
           </p>
-        }
+        )}
 
+        {/* Error */}
 
+        {!loading && error && (
+          <>
+            <p className="mt-4 text-sm text-red-400">
+              {error}
+            </p>
+
+            <button
+              onClick={() =>
+                router.push(
+                  "/provider/dashboard"
+                )
+              }
+              className="mt-6 rounded-xl bg-yellow-400 px-6 py-3 font-bold text-black"
+            >
+              Go to Dashboard
+            </button>
+          </>
+        )}
+
+        {/* Success */}
+
+        {!loading && !error && (
+          <p className="mt-3 text-sm text-gray-400">
+            Connecting you with the astrologer...
+          </p>
+        )}
       </div>
-
-
     </div>
-
   );
-
 }

@@ -1,4 +1,47 @@
-import mongoose, { Schema, models, model } from "mongoose";
+import mongoose, {
+  Schema,
+  models,
+  model,
+} from "mongoose";
+
+const TransactionSchema = new Schema(
+  {
+    type: {
+      type: String,
+      enum: ["credit", "debit"],
+      required: true,
+    },
+
+    amount: {
+      type: Number,
+      required: true,
+    },
+
+    paymentId: {
+      type: String,
+      default: "",
+    },
+
+    orderId: {
+      type: String,
+      default: "",
+    },
+
+    status: {
+      type: String,
+      enum: ["success", "failed", "pending"],
+      default: "success",
+    },
+
+    description: {
+      type: String,
+      default: "",
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 const UserSchema = new Schema(
   {
@@ -30,6 +73,11 @@ const UserSchema = new Schema(
     walletBalance: {
       type: Number,
       default: 0,
+    },
+
+    transactions: {
+      type: [TransactionSchema],
+      default: [],
     },
 
     profilePhoto: {

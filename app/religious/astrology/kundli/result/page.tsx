@@ -1,7 +1,7 @@
 import { Suspense } from "react";
-import PaymentPageContent from "./PaymentPageContent";
+import KundliResultPage from "./KundliResultPage";
 
-export default function PaymentPage() {
+export default function KundliResultRoute() {
   return (
     <Suspense
       fallback={
@@ -10,13 +10,13 @@ export default function PaymentPage() {
             <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-white/20 border-t-yellow-400" />
 
             <p className="mt-4 text-sm text-gray-400">
-              Loading payment...
+              Loading Kundli...
             </p>
           </div>
         </main>
       }
     >
-      <PaymentPageContent />
+      <KundliResultPage />
     </Suspense>
   );
 }

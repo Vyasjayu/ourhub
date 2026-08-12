@@ -25,72 +25,88 @@ import {
   WifiOff,
 } from "lucide-react";
 
-// ======================================================
-// TYPES
-// ======================================================
+interface ChatMessage {
+  id: string;
+  text: string;
+  sender: "user" | "pandit";
+  senderId: string;
+  time: string;
+}
 
 interface Consultation {
   _id: string;
+
   userId: string;
+
   panditId: string;
 
   panditName?: string | null;
+
   panditPhone?: string | null;
 
   amount: number;
+
   duration: number;
+
   paymentId: string;
 
   status:
     | "requested"
     | "accepted"
     | "active"
+    | "rejected"
     | "completed"
-    | "cancelled"
-    | "rejected";
+    | "cancelled";
 
   startTime?: string | null;
+
   endTime?: string | null;
 
   createdAt?: string;
+
   updatedAt?: string;
 }
 
-interface Message {
-  id: string;
-  text: string;
-  sender: "user" | "pandit";
-  senderId?: string;
-  time: string;
-}
-
-// ======================================================
-// COMPONENT
-// ======================================================
-
-export default function ChatClient() {
+export default function ProviderChatPage() {
   const router = useRouter();
-  const params = useSearchParams();
 
-  // IMPORTANT:
-  // get() returns string | null
-  const consultationIdParam = params.get("consultationId");
-  const panditIdParam = params.get("panditId");
+  const searchParams =
+    useSearchParams();
 
-  // ====================================================
-  // STATES
-  // ====================================================
+  // =====================================================
+  // URL PARAMS
+  // =====================================================
 
-  const [loading, setLoading] = useState(true);
+  const consultationId =
+    searchParams.get(
+      "consultationId"
+    );
 
-  const [status, setStatus] =
-    useState<Consultation["status"]>("requested");
+  const panditId =
+    searchParams.get(
+      "panditId"
+    );
+
+  // =====================================================
+  // STATE
+  // =====================================================
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState("");
 
   const [consultation, setConsultation] =
-    useState<Consultation | null>(null);
+    useState<Consultation | null>(
+      null
+    );
 
-  const [secondsLeft, setSecondsLeft] =
-    useState(0);
+  const [status, setStatus] =
+    useState<string>("loading");
+
+  const [messages, setMessages] =
+    useState<ChatMessage[]>([]);
 
   const [message, setMessage] =
     useState("");
@@ -98,184 +114,123 @@ export default function ChatClient() {
   const [sending, setSending] =
     useState(false);
 
-  const [messages, setMessages] =
-    useState<Message[]>([]);
+  const [secondsLeft, setSecondsLeft] =
+    useState(0);
 
-  const [error, setError] =
-    useState("");
-
-  const [isPanditOnline, setIsPanditOnline] =
+  const [loadingMessages, setLoadingMessages] =
     useState(false);
 
-  const [userId, setUserId] =
-    useState<string | null>(null);
-
   const messagesEndRef =
-    useRef<HTMLDivElement | null>(null);
+    useRef<HTMLDivElement | null>(
+      null
+    );
 
-  // ====================================================
-  // GET USER ID
-  // ====================================================
-
-  useEffect(() => {
-    try {
-      let foundUserId: string | null = null;
-
-      // ----------------------------------------------
-      // localStorage possibilities
-      // ----------------------------------------------
-
-      const possibleKeys = [
-        "userId",
-        "user_id",
-        "user",
-        "currentUser",
-        "userData",
-        "authUser",
-      ];
-
-      for (const key of possibleKeys) {
-        const value =
-          localStorage.getItem(key);
-
-        if (!value) continue;
-
-        // Direct ID
-        if (
-          !value.startsWith("{") &&
-          !value.startsWith("[")
-        ) {
-          foundUserId = value;
-          break;
-        }
-
-        // JSON object
-        try {
-          const parsed =
-            JSON.parse(value);
-
-          const id =
-            parsed?._id ||
-            parsed?.id ||
-            parsed?.userId;
-
-          if (id) {
-            foundUserId = String(id);
-            break;
-          }
-        } catch {
-          // Ignore invalid JSON
-        }
-      }
-
-      // ----------------------------------------------
-      // If consultation already contains userId,
-      // use that as final fallback.
-      // ----------------------------------------------
-
-      if (!foundUserId) {
-        console.log(
-          "User ID not found in localStorage yet."
-        );
-      }
-
-      setUserId(foundUserId);
-    } catch (error) {
-      console.error(
-        "User ID detection error:",
-        error
-      );
-    }
-  }, []);
-
-  // ====================================================
-  // VALIDATE PARAMS
-  // ====================================================
+  // =====================================================
+  // VALIDATE URL
+  // =====================================================
 
   useEffect(() => {
-    if (!consultationIdParam) {
+    if (
+      !consultationId ||
+      !panditId
+    ) {
       setError(
-        "Consultation ID is missing."
+        "Consultation ID or Pandit ID is missing."
       );
 
-      setLoading(false);
-      return;
-    }
-
-    if (!panditIdParam) {
-      setError(
-        "Pandit ID is missing."
-      );
+      setStatus("invalid");
 
       setLoading(false);
-      return;
     }
   }, [
-    consultationIdParam,
-    panditIdParam,
+    consultationId,
+    panditId,
   ]);
 
-  // ====================================================
-  // LOAD CONSULTATION STATUS
-  // ====================================================
+  // =====================================================
+  // LOAD CONSULTATION
+  // =====================================================
 
   useEffect(() => {
-    // TypeScript narrowing
-    if (!consultationIdParam) return;
-    if (!panditIdParam) return;
+    if (
+      !consultationId ||
+      !panditId
+    ) {
+      return;
+    }
 
-    const consultationId =
-      consultationIdParam;
+    const currentConsultationId =
+      consultationId;
 
-    const panditId =
-      panditIdParam;
+    const currentPanditId =
+      panditId;
 
     let cancelled = false;
 
-    async function checkConsultation() {
+    async function loadConsultation() {
       try {
-        const url =
-          `/api/consultation/status` +
-          `?consultationId=${encodeURIComponent(
-            consultationId
-          )}` +
-          `&panditId=${encodeURIComponent(
-            panditId
-          )}`;
-
         const res =
-          await fetch(url, {
-            method: "GET",
-            credentials: "include",
-            cache: "no-store",
-          });
+          await fetch(
+            `/api/consultation/status?consultationId=${encodeURIComponent(
+              currentConsultationId
+            )}&panditId=${encodeURIComponent(
+              currentPanditId
+            )}`,
+            {
+              method: "GET",
+              credentials: "include",
+              cache: "no-store",
+            }
+          );
 
         const data =
           await res.json();
 
         console.log(
-          "CONSULTATION STATUS:",
+          "PANDIT CONSULTATION STATUS:",
           data
         );
 
-        if (cancelled) return;
+        if (cancelled) {
+          return;
+        }
 
         if (
           !res.ok ||
-          !data.success ||
-          !data.consultation
+          !data.success
         ) {
           setError(
             data.message ||
-              "Unable to load consultation."
+              "Consultation not found."
+          );
+
+          setStatus(
+            "not_found"
           );
 
           setLoading(false);
+
           return;
         }
 
         const consultationData =
-          data.consultation as Consultation;
+          data.consultation;
+
+        if (
+          !consultationData
+        ) {
+          setError(
+            "Consultation details not found."
+          );
+
+          setStatus(
+            "not_found"
+          );
+
+          setLoading(false);
+
+          return;
+        }
 
         setConsultation(
           consultationData
@@ -285,48 +240,18 @@ export default function ChatClient() {
           consultationData.status
         );
 
-        // --------------------------------------------
-        // User ID fallback from consultation
-        // --------------------------------------------
+        // =================================================
+        // TIMER
+        // =================================================
 
         if (
-          consultationData.userId &&
-          !userId
-        ) {
-          setUserId(
-            String(
-              consultationData.userId
-            )
-          );
-        }
-
-        // --------------------------------------------
-        // Pandit online
-        // --------------------------------------------
-
-        if (
-          consultationData.status ===
-            "accepted" ||
-          consultationData.status ===
-            "active"
-        ) {
-          setIsPanditOnline(true);
-        } else {
-          setIsPanditOnline(false);
-        }
-
-        // --------------------------------------------
-        // Timer
-        // --------------------------------------------
-
-        if (
+          consultationData.startTime &&
           (
             consultationData.status ===
-              "accepted" ||
+              "active" ||
             consultationData.status ===
-              "active"
-          ) &&
-          consultationData.startTime
+              "accepted"
+          )
         ) {
           const start =
             new Date(
@@ -347,7 +272,8 @@ export default function ChatClient() {
             Math.max(
               0,
               Math.floor(
-                (end - Date.now()) /
+                (end -
+                  Date.now()) /
                   1000
               )
             );
@@ -358,10 +284,10 @@ export default function ChatClient() {
         }
 
         setLoading(false);
-      } catch (error) {
+      } catch (err) {
         console.error(
-          "Consultation status error:",
-          error
+          "Pandit consultation status error:",
+          err
         );
 
         if (!cancelled) {
@@ -369,83 +295,57 @@ export default function ChatClient() {
             "Unable to load consultation."
           );
 
+          setStatus("error");
+
           setLoading(false);
         }
       }
     }
 
-    checkConsultation();
+    loadConsultation();
 
     const interval =
       setInterval(
-        checkConsultation,
+        loadConsultation,
         5000
       );
 
     return () => {
       cancelled = true;
-      clearInterval(interval);
+
+      clearInterval(
+        interval
+      );
     };
   }, [
-    consultationIdParam,
-    panditIdParam,
-    userId,
+    consultationId,
+    panditId,
   ]);
 
-  // ====================================================
-  // TIMER
-  // ====================================================
+  // =====================================================
+  // LOAD CHAT MESSAGES
+  // =====================================================
 
   useEffect(() => {
-    if (
-      (
-        status !== "active" &&
-        status !== "accepted"
-      ) ||
-      secondsLeft <= 0
-    ) {
+    if (!consultationId) {
       return;
     }
 
-    const timer =
-      setInterval(() => {
-        setSecondsLeft(
-          (prev) =>
-            Math.max(
-              0,
-              prev - 1
-            )
-        );
-      }, 1000);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, [
-    status,
-    secondsLeft,
-  ]);
-
-  // ====================================================
-  // LOAD MESSAGES
-  // ====================================================
-
-  useEffect(() => {
-    if (!consultationIdParam) {
-      return;
-    }
-
-    const consultationId =
-      consultationIdParam;
+    const currentConsultationId =
+      consultationId;
 
     let cancelled = false;
 
     async function loadMessages() {
       try {
+        setLoadingMessages(
+          true
+        );
+
         const res =
           await fetch(
             `/api/chat/messages?consultationId=${encodeURIComponent(
-              consultationId
+              currentConsultationId
             )}`,
             {
               method: "GET",
@@ -457,68 +357,113 @@ export default function ChatClient() {
         const data =
           await res.json();
 
-        if (
-          cancelled
-        ) {
+        console.log(
+          "PANDIT CHAT MESSAGES:",
+          data
+        );
+
+        if (cancelled) {
           return;
         }
 
         if (
-          !res.ok ||
-          !data.success
-        ) {
-          console.error(
-            "Load messages error:",
-            data.message
-          );
-          return;
-        }
-
-        setMessages(
+          res.ok &&
+          data.success &&
           Array.isArray(
             data.messages
           )
-            ? data.messages
-            : []
-        );
-      } catch (error) {
+        ) {
+          setMessages(
+            data.messages
+          );
+        }
+      } catch (err) {
         console.error(
-          "Messages load error:",
-          error
+          "Load messages error:",
+          err
         );
+      } finally {
+        if (!cancelled) {
+          setLoadingMessages(
+            false
+          );
+        }
       }
     }
 
     loadMessages();
 
-    // Refresh messages every 3 seconds
     const interval =
       setInterval(
         loadMessages,
-        3000
+        2000
       );
 
     return () => {
       cancelled = true;
-      clearInterval(interval);
+
+      clearInterval(
+        interval
+      );
     };
   }, [
-    consultationIdParam,
+    consultationId,
   ]);
 
-  // ====================================================
-  // AUTO SCROLL
-  // ====================================================
+  // =====================================================
+  // TIMER
+  // =====================================================
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
-    });
-  }, [messages]);
+    if (
+      status !== "active" &&
+      status !== "accepted"
+    ) {
+      return;
+    }
 
-  // ====================================================
-  // FORMAT TIMER
-  // ====================================================
+    if (secondsLeft <= 0) {
+      return;
+    }
+
+    const timer =
+      setInterval(() => {
+        setSecondsLeft(
+          (previous) =>
+            Math.max(
+              0,
+              previous - 1
+            )
+        );
+      }, 1000);
+
+    return () => {
+      clearInterval(
+        timer
+      );
+    };
+  }, [
+    status,
+    secondsLeft,
+  ]);
+
+  // =====================================================
+  // AUTO SCROLL
+  // =====================================================
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView(
+      {
+        behavior: "smooth",
+      }
+    );
+  }, [
+    messages,
+  ]);
+
+  // =====================================================
+  // FORMAT TIME
+  // =====================================================
 
   function formatTime(
     totalSeconds: number
@@ -544,9 +489,9 @@ export default function ChatClient() {
     )}`;
   }
 
-  // ====================================================
+  // =====================================================
   // SEND MESSAGE
-  // ====================================================
+  // =====================================================
 
   async function handleSendMessage() {
     const text =
@@ -556,28 +501,19 @@ export default function ChatClient() {
       return;
     }
 
-    // ----------------------------------------------
-    // TypeScript-safe IDs
-    // ----------------------------------------------
-
-    if (!consultationIdParam) {
+    if (!consultationId) {
       setError(
         "Consultation ID is missing."
       );
+
       return;
     }
 
-    if (!panditIdParam) {
+    if (!panditId) {
       setError(
         "Pandit ID is missing."
       );
-      return;
-    }
 
-    if (!consultation) {
-      setError(
-        "Consultation details are not loaded."
-      );
       return;
     }
 
@@ -588,6 +524,7 @@ export default function ChatClient() {
       setError(
         "Consultation is not active."
       );
+
       return;
     }
 
@@ -595,60 +532,19 @@ export default function ChatClient() {
       return;
     }
 
-    // ----------------------------------------------
-    // Resolve sender ID
-    // ----------------------------------------------
-
-    const senderId =
-      userId ||
-      consultation.userId;
-
-    if (!senderId) {
-      setError(
-        "User ID is missing. Please login again."
-      );
-
-      console.error(
-        "❌ SEND MESSAGE: senderId missing"
-      );
-
-      return;
-    }
-
     setSending(true);
+
     setError("");
 
     try {
       console.log(
-        "===================================="
-      );
-
-      console.log(
-        "📨 SENDING USER MESSAGE"
-      );
-
-      console.log(
-        "Consultation ID:",
-        consultationIdParam
-      );
-
-      console.log(
-        "User ID:",
-        senderId
-      );
-
-      console.log(
-        "Pandit ID:",
-        panditIdParam
-      );
-
-      console.log(
-        "Message:",
-        text
-      );
-
-      console.log(
-        "===================================="
+        "📤 Sending Pandit Message:",
+        {
+          consultationId,
+          senderId: panditId,
+          senderType: "pandit",
+          text,
+        }
       );
 
       const res =
@@ -662,17 +558,18 @@ export default function ChatClient() {
                 "application/json",
             },
 
-            credentials: "include",
+            credentials:
+              "include",
 
             body: JSON.stringify({
               consultationId:
-                consultationIdParam,
+                consultationId,
 
               senderId:
-                String(senderId),
+                panditId,
 
               senderType:
-                "user",
+                "pandit",
 
               text,
             }),
@@ -683,7 +580,7 @@ export default function ChatClient() {
         await res.json();
 
       console.log(
-        "SEND MESSAGE RESPONSE:",
+        "📥 SEND PANDIT MESSAGE RESPONSE:",
         data
       );
 
@@ -691,45 +588,55 @@ export default function ChatClient() {
         !res.ok ||
         !data.success
       ) {
-        setError(
+        throw new Error(
           data.message ||
             "Unable to send message."
         );
-
-        return;
       }
 
-      // ----------------------------------------------
-      // Add returned DB message
-      // ----------------------------------------------
-
-      if (data.message) {
+      if (
+        data.message
+      ) {
         setMessages(
-          (prev) => [
-            ...prev,
-            data.message as Message,
-          ]
+          (previous) => {
+            const exists =
+              previous.some(
+                (item) =>
+                  item.id ===
+                  data.message.id
+              );
+
+            if (exists) {
+              return previous;
+            }
+
+            return [
+              ...previous,
+              data.message,
+            ];
+          }
         );
       }
 
       setMessage("");
-    } catch (error) {
+    } catch (err: any) {
       console.error(
-        "Send message error:",
-        error
+        "❌ Send Pandit message error:",
+        err
       );
 
       setError(
-        "Unable to send message."
+        err?.message ||
+          "Unable to send message."
       );
     } finally {
       setSending(false);
     }
   }
 
-  // ====================================================
-  // ENTER SEND
-  // ====================================================
+  // =====================================================
+  // ENTER
+  // =====================================================
 
   function handleKeyDown(
     e: React.KeyboardEvent<HTMLInputElement>
@@ -744,17 +651,19 @@ export default function ChatClient() {
     }
   }
 
-  // ====================================================
+  // =====================================================
   // BACK
-  // ====================================================
+  // =====================================================
 
   function handleBack() {
-    router.back();
+    router.push(
+      "/provider/dashboard"
+    );
   }
 
-  // ====================================================
+  // =====================================================
   // LOADING
-  // ====================================================
+  // =====================================================
 
   if (loading) {
     return (
@@ -766,7 +675,7 @@ export default function ChatClient() {
           />
 
           <h2 className="mt-5 text-lg font-semibold">
-            Connecting to consultation...
+            Opening consultation...
           </h2>
 
           <p className="mt-2 text-sm text-gray-400">
@@ -777,19 +686,18 @@ export default function ChatClient() {
     );
   }
 
-  // ====================================================
+  // =====================================================
   // ERROR
-  // ====================================================
+  // =====================================================
 
   if (
-    !consultation ||
-    error &&
-    !consultation
+    status === "invalid" ||
+    status === "error" ||
+    status === "not_found"
   ) {
     return (
       <main className="min-h-screen bg-[#050B14] text-white flex items-center justify-center px-5">
         <div className="w-full max-w-md rounded-3xl bg-[#111C30] p-7 text-center">
-
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-500/10 text-3xl">
             ⚠️
           </div>
@@ -800,45 +708,43 @@ export default function ChatClient() {
 
           <p className="mt-3 text-sm text-gray-400">
             {error ||
-              "We could not find your consultation."}
+              "We could not find this consultation."}
           </p>
 
           <button
             onClick={() =>
-              router.push("/")
+              router.push(
+                "/provider/dashboard"
+              )
             }
             className="mt-6 w-full rounded-2xl bg-yellow-400 py-4 font-bold text-black"
           >
-            Go Home
+            Back to Dashboard
           </button>
         </div>
       </main>
     );
   }
 
-  // ====================================================
-  // DISPLAY NAME
-  // ====================================================
+  // =====================================================
+  // MAIN DATA
+  // =====================================================
 
-  const panditDisplayName =
-    consultation.panditName?.trim() ||
-    "Pandit Ji";
+  const isActive =
+    status === "active" ||
+    status === "accepted";
 
-  // ====================================================
-  // MAIN CHAT
-  // ====================================================
+  // =====================================================
+  // MAIN UI
+  // =====================================================
 
   return (
     <main className="min-h-screen bg-[#050B14] text-white">
-
       <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-[#081321]">
 
-        {/* ============================================ */}
         {/* HEADER */}
-        {/* ============================================ */}
 
         <header className="sticky top-0 z-30 border-b border-white/10 bg-[#0D1B2D]/95 px-4 py-3 backdrop-blur">
-
           <div className="flex items-center gap-3">
 
             <button
@@ -850,33 +756,25 @@ export default function ChatClient() {
               />
             </button>
 
-            {/* Avatar */}
-
             <div className="relative">
-
               <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 text-black">
                 <User
                   size={23}
                 />
               </div>
 
-              {isPanditOnline && (
+              {isActive && (
                 <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#0D1B2D] bg-green-500" />
               )}
-
             </div>
 
-            {/* Name */}
-
             <div className="min-w-0 flex-1">
-
               <h1 className="truncate font-bold">
-                {panditDisplayName}
+                Customer
               </h1>
 
               <div className="flex items-center gap-1 text-xs">
-
-                {isPanditOnline ? (
+                {isActive ? (
                   <>
                     <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
 
@@ -886,19 +784,14 @@ export default function ChatClient() {
                   </>
                 ) : (
                   <span className="text-gray-400">
-                    Waiting for connection...
+                    Waiting...
                   </span>
                 )}
-
               </div>
             </div>
 
-            {/* Phone */}
-
             <button
-              disabled={
-                status !== "active"
-              }
+              disabled={!isActive}
               className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 disabled:opacity-30"
             >
               <Phone
@@ -906,12 +799,8 @@ export default function ChatClient() {
               />
             </button>
 
-            {/* Video */}
-
             <button
-              disabled={
-                status !== "active"
-              }
+              disabled={!isActive}
               className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 disabled:opacity-30"
             >
               <Video
@@ -924,82 +813,57 @@ export default function ChatClient() {
                 size={20}
               />
             </button>
-
           </div>
         </header>
 
-        {/* ============================================ */}
-        {/* ERROR BANNER */}
-        {/* ============================================ */}
-
-        {error && consultation && (
-          <div className="mx-4 mt-3 rounded-xl border border-red-400/20 bg-red-400/10 px-4 py-3 text-xs text-red-300">
-            {error}
-          </div>
-        )}
-
-        {/* ============================================ */}
-        {/* CONSULTATION STATUS */}
-        {/* ============================================ */}
+        {/* STATUS */}
 
         <div className="px-4 pt-4">
 
-          {status === "requested" && (
+          {status ===
+            "requested" && (
             <div className="rounded-2xl border border-yellow-400/20 bg-yellow-400/10 p-4">
-
               <div className="flex items-center gap-3">
-
                 <Clock
                   size={22}
                   className="text-yellow-400"
                 />
 
                 <div>
-
                   <p className="font-semibold text-yellow-300">
-                    Waiting for Pandit Ji
+                    Waiting for connection
                   </p>
 
                   <p className="mt-1 text-xs text-gray-400">
-                    Your payment is confirmed.
-                    Pandit Ji will accept the
-                    consultation shortly.
+                    Consultation is waiting.
                   </p>
-
                 </div>
               </div>
             </div>
           )}
 
-          {(status === "accepted" ||
-            status === "active") && (
+          {isActive && (
             <div className="rounded-2xl border border-green-400/20 bg-green-400/10 p-4">
-
               <div className="flex items-center justify-between">
 
                 <div className="flex items-center gap-3">
-
                   <Wifi
                     size={21}
                     className="text-green-400"
                   />
 
                   <div>
-
                     <p className="font-semibold text-green-300">
                       Consultation Active
                     </p>
 
                     <p className="text-xs text-gray-400">
-                      You are connected with{" "}
-                      {panditDisplayName}
+                      You are connected with the customer
                     </p>
-
                   </div>
                 </div>
 
-                <div className="rounded-xl bg-green-400/20 px-3 py-2">
-
+                <div className="rounded-xl bg-green-400/20 px-3 py-2 text-center">
                   <p className="text-xs text-green-300">
                     Time Left
                   </p>
@@ -1009,59 +873,50 @@ export default function ChatClient() {
                       secondsLeft
                     )}
                   </p>
-
                 </div>
               </div>
             </div>
           )}
 
-          {status === "completed" && (
+          {status ===
+            "completed" && (
             <div className="rounded-2xl border border-blue-400/20 bg-blue-400/10 p-4">
-
               <div className="flex items-center gap-3">
-
                 <CheckCheck
                   size={22}
                   className="text-blue-400"
                 />
 
                 <div>
-
                   <p className="font-semibold text-blue-300">
                     Consultation Completed
                   </p>
 
                   <p className="text-xs text-gray-400">
-                    Thank you for using OurHub
-                    Services.
+                    This consultation has ended.
                   </p>
-
                 </div>
               </div>
             </div>
           )}
 
-          {status === "cancelled" && (
+          {status ===
+            "cancelled" && (
             <div className="rounded-2xl border border-red-400/20 bg-red-400/10 p-4">
-
               <div className="flex items-center gap-3">
-
                 <WifiOff
                   size={22}
                   className="text-red-400"
                 />
 
                 <div>
-
                   <p className="font-semibold text-red-300">
                     Consultation Cancelled
                   </p>
 
                   <p className="text-xs text-gray-400">
-                    This consultation is no
-                    longer active.
+                    This consultation is no longer active.
                   </p>
-
                 </div>
               </div>
             </div>
@@ -1069,64 +924,68 @@ export default function ChatClient() {
 
         </div>
 
-        {/* ============================================ */}
-        {/* CHAT AREA */}
-        {/* ============================================ */}
+        {/* ERROR */}
+
+        {error && (
+          <div className="px-4 pt-3">
+            <div className="rounded-xl border border-red-400/20 bg-red-400/10 px-4 py-3 text-sm text-red-300">
+              {error}
+            </div>
+          </div>
+        )}
+
+        {/* CHAT */}
 
         <section className="flex-1 overflow-y-auto px-4 py-5">
 
           <div className="mb-5 text-center">
-
             <span className="rounded-full bg-white/5 px-4 py-2 text-xs text-gray-400">
               Today
             </span>
-
           </div>
-
-          {/* Pandit */}
 
           <div className="mb-6 text-center">
 
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-yellow-400/10 text-yellow-400">
-
               <User
                 size={27}
               />
-
             </div>
 
             <h2 className="mt-3 font-semibold">
-              {panditDisplayName}
+              Customer
             </h2>
 
             <p className="mt-1 text-xs text-gray-500">
-              Your consultation partner
+              Consultation customer
             </p>
-
           </div>
 
-          {/* Welcome */}
-
-          <div className="mb-5 flex justify-center">
-
-            <div className="max-w-[85%] rounded-2xl bg-white/5 px-4 py-3 text-center text-xs leading-5 text-gray-400">
-
-              🙏 Welcome to OurHub
-              consultation.
-
-              <br />
-
-              {status === "requested"
-                ? "Please wait while Pandit Ji connects with you."
-                : "You can now chat with Pandit Ji."}
-
+          {messages.length ===
+            0 && (
+            <div className="mb-5 flex justify-center">
+              <div className="max-w-[85%] rounded-2xl bg-white/5 px-4 py-3 text-center text-xs leading-5 text-gray-400">
+                🙏 Welcome to OurHub consultation.
+                <br />
+                Customer ke messages yahan automatically appear honge.
+              </div>
             </div>
+          )}
 
-          </div>
+          {loadingMessages &&
+            messages.length ===
+              0 && (
+              <div className="mb-4 flex justify-center">
+                <div className="flex items-center gap-2 text-xs text-gray-500">
+                  <Loader2
+                    size={14}
+                    className="animate-spin"
+                  />
 
-          {/* ========================================== */}
-          {/* MESSAGES */}
-          {/* ========================================== */}
+                  Loading messages...
+                </div>
+              </div>
+            )}
 
           {messages.map(
             (item) => (
@@ -1134,21 +993,19 @@ export default function ChatClient() {
                 key={item.id}
                 className={`mb-3 flex ${
                   item.sender ===
-                  "user"
+                  "pandit"
                     ? "justify-end"
                     : "justify-start"
                 }`}
               >
-
                 <div
                   className={`max-w-[80%] rounded-2xl px-4 py-3 ${
                     item.sender ===
-                    "user"
+                    "pandit"
                       ? "rounded-br-md bg-yellow-400 text-black"
                       : "rounded-bl-md bg-[#17263A] text-white"
                   }`}
                 >
-
                   <p className="break-words text-sm leading-5">
                     {item.text}
                   </p>
@@ -1156,26 +1013,23 @@ export default function ChatClient() {
                   <div
                     className={`mt-1 flex items-center justify-end gap-1 text-[10px] ${
                       item.sender ===
-                      "user"
+                      "pandit"
                         ? "text-black/60"
                         : "text-gray-500"
                     }`}
                   >
-
                     <span>
                       {item.time}
                     </span>
 
                     {item.sender ===
-                      "user" && (
+                      "pandit" && (
                       <CheckCheck
                         size={13}
                       />
                     )}
-
                   </div>
                 </div>
-
               </div>
             )
           )}
@@ -1185,20 +1039,13 @@ export default function ChatClient() {
               messagesEndRef
             }
           />
-
         </section>
 
-        {/* ============================================ */}
         {/* INPUT */}
-        {/* ============================================ */}
 
         <div className="sticky bottom-0 border-t border-white/10 bg-[#0D1B2D] p-3">
 
-          {(
-            status === "active" ||
-            status === "accepted"
-          ) ? (
-
+          {isActive ? (
             <div className="flex items-end gap-2">
 
               <input
@@ -1212,7 +1059,7 @@ export default function ChatClient() {
                 onKeyDown={
                   handleKeyDown
                 }
-                placeholder="Type your message..."
+                placeholder="Reply to customer..."
                 disabled={sending}
                 className="min-w-0 flex-1 rounded-2xl border border-white/10 bg-[#17263A] px-4 py-3 text-sm text-white outline-none placeholder:text-gray-500 focus:border-yellow-400"
               />
@@ -1227,7 +1074,6 @@ export default function ChatClient() {
                 }
                 className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-yellow-400 text-black transition disabled:cursor-not-allowed disabled:opacity-40"
               >
-
                 {sending ? (
                   <Loader2
                     size={20}
@@ -1238,33 +1084,19 @@ export default function ChatClient() {
                     size={19}
                   />
                 )}
-
               </button>
-
             </div>
-
           ) : (
-
             <div className="rounded-2xl bg-white/5 px-4 py-3 text-center text-sm text-gray-500">
-
-              {status ===
-              "requested"
-                ? "Waiting for Pandit Ji to accept..."
-                : "Chat is not available."}
-
+              Waiting for consultation to become active...
             </div>
-
           )}
-
         </div>
 
-        {/* ============================================ */}
-        {/* PAYMENT INFO */}
-        {/* ============================================ */}
+        {/* INFO */}
 
         {consultation && (
           <div className="border-t border-white/5 bg-[#081321] px-4 py-2">
-
             <div className="flex items-center justify-between text-[10px] text-gray-600">
 
               <span>
@@ -1276,17 +1108,16 @@ export default function ChatClient() {
 
               <span>
                 ₹
-                {consultation.amount}
+                {
+                  consultation.amount
+                }
               </span>
 
             </div>
-
           </div>
         )}
 
       </div>
-
     </main>
   );
 }
-

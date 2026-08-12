@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import {
   User,
   CalendarDays,
+  MessageCircle,
   Wallet,
   FileText,
   Bell,
@@ -17,36 +18,58 @@ export default function QuickActions() {
 
   const actions = [
     {
+      title: "Consultation Requests",
+      icon: MessageCircle,
+      onClick: () =>
+        router.push("/provider/consultations"),
+    },
+
+    {
       title: "Edit Profile",
       icon: User,
-      onClick: () => router.push("/provider/profile"),
+      onClick: () =>
+        router.push("/provider/profile"),
     },
+
     {
       title: "Bookings",
       icon: CalendarDays,
-      onClick: () => router.push("/provider/bookings"),
+      onClick: () =>
+        router.push("/provider/bookings"),
     },
+
     {
       title: "Wallet",
       icon: Wallet,
-      onClick: () => router.push("/provider/wallet"),
+      onClick: () =>
+        router.push("/provider/wallet"),
     },
+
     {
       title: "Documents",
       icon: FileText,
-      onClick: () => router.push("/provider/documents"),
+      onClick: () =>
+        router.push("/provider/documents"),
     },
+
     {
       title: "Reviews & Ratings",
       icon: Star,
-      onClick: () => router.push("/provider/reviews"),
+      onClick: () =>
+        router.push("/provider/reviews"),
     },
+
     {
       title: "Notifications",
       icon: Bell,
-      onClick: () => router.push("/provider/notifications"),
+      onClick: () =>
+        router.push("/provider/notifications"),
     },
   ];
+
+  // =========================
+  // LOGOUT
+  // =========================
 
   const handleLogout = () => {
     localStorage.removeItem("providerMobile");
@@ -57,9 +80,13 @@ export default function QuickActions() {
   return (
     <div className="mt-8">
 
+      {/* TITLE */}
+
       <h2 className="mb-4 text-xl font-bold text-white">
         Quick Actions
       </h2>
+
+      {/* ACTIONS */}
 
       <div className="space-y-3">
 
@@ -69,6 +96,7 @@ export default function QuickActions() {
           return (
             <button
               key={item.title}
+              type="button"
               onClick={item.onClick}
               className="
                 flex
@@ -82,9 +110,13 @@ export default function QuickActions() {
                 px-5
                 py-4
                 transition
+                active:scale-[0.98]
                 hover:bg-[#1d3148]
               "
             >
+
+              {/* LEFT */}
+
               <div className="flex items-center gap-4">
 
                 <div
@@ -92,6 +124,7 @@ export default function QuickActions() {
                     flex
                     h-11
                     w-11
+                    shrink-0
                     items-center
                     justify-center
                     rounded-xl
@@ -104,23 +137,29 @@ export default function QuickActions() {
                   />
                 </div>
 
-                <span className="font-medium text-white">
+                <span className="text-left font-medium text-white">
                   {item.title}
                 </span>
 
               </div>
 
+              {/* ARROW */}
+
               <ChevronRight
                 size={20}
-                className="text-gray-400"
+                className="shrink-0 text-gray-400"
               />
+
             </button>
           );
         })}
 
-        {/* Logout */}
+        {/* =========================
+            LOGOUT
+        ========================= */}
 
         <button
+          type="button"
           onClick={handleLogout}
           className="
             mt-4
@@ -137,10 +176,12 @@ export default function QuickActions() {
             font-semibold
             text-red-400
             transition
+            active:scale-[0.98]
             hover:bg-red-500/20
           "
         >
           <LogOut size={20} />
+
           Logout
         </button>
 

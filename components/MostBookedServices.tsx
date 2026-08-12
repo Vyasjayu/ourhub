@@ -11,17 +11,17 @@ interface Props {
 const services = [
   {
     id: 1,
-    title: "Pandit Booking",
+    title: "Pooja Booking",
     image: "/images/categories/religious.png",
     rating: "4.9",
-    link: "/religious",
+    link: "/pooja",
   },
   {
     id: 2,
     title: "Astrology",
     image: "/images/categories/astrology.png",
     rating: "4.8",
-    link: "/astrology",
+    link: "/religious/astrology",
   },
   {
     id: 3,
