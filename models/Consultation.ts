@@ -4,26 +4,45 @@ import mongoose, {
   Model,
 } from "mongoose";
 
-// ============================================
-// CONSULTATION INTERFACE
-// ============================================
 
-export interface IConsultation extends Document {
+// ============================================================
+// CONSULTATION INTERFACE
+// ============================================================
+
+export interface IConsultation
+  extends Document {
   // USER
   userId: string;
 
-  // PANDIT
+  // PANDIT / ASTROLOGER
   panditId: string;
   panditName?: string | null;
   panditPhone?: string | null;
 
   // CONSULTATION TYPE
-  consultationType?: "chat" | "voice" | "video";
+  consultationType:
+    | "chat"
+    | "voice"
+    | "video";
 
   // PAYMENT
   amount: number;
-  duration: number;
-  paymentId: string;
+
+  /*
+   * Duration actual consultation start
+   * hone ke baad use hogi.
+   *
+   * Request create hote waqt duration
+   * available hona zaroori nahi.
+   */
+  duration?: number | null;
+
+  /*
+   * Payment successful hone ke baad
+   * Razorpay/payment transaction ID
+   * yahan store hogi.
+   */
+  paymentId?: string | null;
 
   // STATUS
   status:
@@ -43,16 +62,17 @@ export interface IConsultation extends Document {
   updatedAt: Date;
 }
 
-// ============================================
+
+// ============================================================
 // SCHEMA
-// ============================================
+// ============================================================
 
 const ConsultationSchema =
   new Schema<IConsultation>(
     {
-      // ========================================
+      // ======================================================
       // USER
-      // ========================================
+      // ======================================================
 
       userId: {
         type: String,
@@ -61,9 +81,10 @@ const ConsultationSchema =
         trim: true,
       },
 
-      // ========================================
-      // PANDIT
-      // ========================================
+
+      // ======================================================
+      // PANDIT / ASTROLOGER
+      // ======================================================
 
       panditId: {
         type: String,
@@ -84,51 +105,90 @@ const ConsultationSchema =
         trim: true,
       },
 
-      // ========================================
+
+      // ======================================================
       // CONSULTATION TYPE
-      // ========================================
+      // ======================================================
 
       consultationType: {
         type: String,
+
         enum: [
           "chat",
           "voice",
           "video",
         ],
+
         default: "chat",
+
         index: true,
       },
 
-      // ========================================
+
+      // ======================================================
       // PAYMENT
-      // ========================================
+      // ======================================================
 
       amount: {
         type: Number,
+
         required: true,
+
         min: 1,
       },
+
+
+      /*
+       * IMPORTANT
+       *
+       * Request create hote waqt duration
+       * optional rahegi.
+       *
+       * Example:
+       *
+       * requested → duration null
+       * accepted  → duration null
+       * active    → actual duration
+       * completed → final duration
+       */
 
       duration: {
         type: Number,
-        required: true,
+
+        default: null,
+
         min: 1,
       },
 
+
+      /*
+       * Payment ID request creation se pehle
+       * available nahi ho sakti.
+       *
+       * Isliye required=false.
+       *
+       * Payment complete hone ke baad
+       * paymentId update karenge.
+       */
+
       paymentId: {
         type: String,
-        required: true,
-        unique: true,
+
+        default: null,
+
         index: true,
+
         trim: true,
       },
 
-      // ========================================
+
+      // ======================================================
       // STATUS
-      // ========================================
+      // ======================================================
 
       status: {
         type: String,
+
         enum: [
           "requested",
           "accepted",
@@ -137,36 +197,61 @@ const ConsultationSchema =
           "completed",
           "cancelled",
         ],
+
         default: "requested",
+
         index: true,
       },
 
-      // ========================================
+
+      // ======================================================
       // START TIME
-      // ========================================
+      // ======================================================
 
       startTime: {
         type: Date,
+
         default: null,
       },
 
-      // ========================================
+
+      // ======================================================
       // END TIME
-      // ========================================
+      // ======================================================
 
       endTime: {
         type: Date,
+
         default: null,
       },
     },
+
     {
       timestamps: true,
     }
   );
 
-// ============================================
+
+// ============================================================
+// INDEXES
+// ============================================================
+
+ConsultationSchema.index({
+  panditId: 1,
+  status: 1,
+  createdAt: -1,
+});
+
+ConsultationSchema.index({
+  userId: 1,
+  status: 1,
+  createdAt: -1,
+});
+
+
+// ============================================================
 // MODEL
-// ============================================
+// ============================================================
 
 const Consultation: Model<IConsultation> =
   mongoose.models.Consultation ||
@@ -175,8 +260,9 @@ const Consultation: Model<IConsultation> =
     ConsultationSchema
   );
 
-// ============================================
+
+// ============================================================
 // EXPORT
-// ============================================
+// ============================================================
 
 export default Consultation;

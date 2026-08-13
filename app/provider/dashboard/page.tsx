@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 
 import {
@@ -67,8 +67,17 @@ type Provider = {
 // CONSULTATION TYPE
 // ======================================================
 
+type ConsultationStatus =
+  | "requested"
+  | "accepted"
+  | "active"
+  | "rejected"
+  | "completed"
+  | "cancelled"
+  | string;
+
 type Consultation = {
-  id: string;
+  id?: string;
   _id?: string;
 
   userId: string;
@@ -79,14 +88,7 @@ type Consultation = {
 
   paymentId: string;
 
-  status:
-    | "requested"
-    | "accepted"
-    | "active"
-    | "rejected"
-    | "completed"
-    | "cancelled"
-    | string;
+  status: ConsultationStatus;
 
   startTime: string | null;
   endTime: string | null;
@@ -110,369 +112,338 @@ type Consultation = {
 // ======================================================
 
 export default function ProviderDashboardPage() {
-  const [provider, setProvider] =
-    useState<Provider | null>(null);
+  const [provider, setProvider] = useState<Provider | null>(null);
 
-  const [loading, setLoading] =
-    useState(true);
+  const [loading, setLoading] = useState(true);
 
-  const [consultations, setConsultations] =
-    useState<Consultation[]>([]);
+  const [consultations, setConsultations] = useState<Consultation[]>([]);
 
-  const [consultationsLoading, setConsultationsLoading] =
-    useState(false);
+  const [consultationsLoading, setConsultationsLoading] = useState(false);
 
-  const [actionLoading, setActionLoading] =
-    useState<string | null>(null);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
+
+  const pollingRef = useRef<NodeJS.Timeout | null>(null);
+
+  const isMountedRef = useRef(true);
 
   // ====================================================
   // PROVIDER ID
   // ====================================================
 
-  const providerId =
-    provider?._id ||
-    provider?.id ||
-    "";
+  const providerId = provider?._id || provider?.id || "";
+
+  // ====================================================
+  // CONSULTATION ID HELPER
+  // ====================================================
+
+  const getConsultationId = useCallback(
+    (consultation: Consultation) => {
+      return consultation.id || consultation._id || "";
+    },
+    []
+  );
 
   // ====================================================
   // LOAD PROVIDER
   // ====================================================
 
-  const loadProvider = async () => {
+  const loadProvider = useCallback(async () => {
     try {
-      const mobile =
-        localStorage.getItem(
-          "providerMobile"
-        );
+      const mobile = localStorage.getItem("providerMobile");
 
       if (!mobile) {
-        setLoading(false);
+        if (isMountedRef.current) {
+          setProvider(null);
+          setLoading(false);
+        }
+
         return;
       }
 
       const response = await fetch(
-        `/api/provider/me?mobile=${encodeURIComponent(
-          mobile
-        )}`,
+        `/api/provider/me?mobile=${encodeURIComponent(mobile)}`,
         {
+          method: "GET",
           cache: "no-store",
         }
       );
 
-      const data =
-        await response.json();
+      const data = await response.json();
 
-      console.log(
-        "===================================="
-      );
+      if (!response.ok || !data.success || !data.provider) {
+        if (isMountedRef.current) {
+          setProvider(null);
+        }
 
-      console.log(
-        "PROVIDER DATA"
-      );
+        return;
+      }
 
-      console.log(data);
-
-      console.log(
-        "===================================="
-      );
-
-      if (
-        response.ok &&
-        data.success &&
-        data.provider
-      ) {
-        setProvider(
-          data.provider
-        );
-      } else {
-        setProvider(null);
+      if (isMountedRef.current) {
+        setProvider(data.provider);
       }
     } catch (error) {
-      console.error(
-        "Provider load error:",
-        error
-      );
+      console.error("Provider load error:", error);
 
-      setProvider(null);
+      if (isMountedRef.current) {
+        setProvider(null);
+      }
     } finally {
-      setLoading(false);
+      if (isMountedRef.current) {
+        setLoading(false);
+      }
     }
-  };
+  }, []);
 
   // ====================================================
   // LOAD CONSULTATIONS
   // ====================================================
 
-  const loadConsultations = async () => {
-    try {
-      const mobile =
-        localStorage.getItem(
-          "providerMobile"
-        );
+  const loadConsultations = useCallback(
+    async (showLoader = false) => {
+      try {
+        const mobile = localStorage.getItem("providerMobile");
 
-      if (!mobile) {
-        return;
-      }
+        if (!mobile) {
+          if (isMountedRef.current) {
+            setConsultations([]);
+          }
 
-      setConsultationsLoading(
-        true
-      );
-
-      const response = await fetch(
-        `/api/provider/consultations?mobile=${encodeURIComponent(
-          mobile
-        )}`,
-        {
-          cache: "no-store",
+          return;
         }
-      );
 
-      const data =
-        await response.json();
+        if (showLoader && isMountedRef.current) {
+          setConsultationsLoading(true);
+        }
 
-      console.log(
-        "===================================="
-      );
-
-      console.log(
-        "PROVIDER CONSULTATIONS RESPONSE"
-      );
-
-      console.log(data);
-
-      console.log(
-        "===================================="
-      );
-
-      if (
-        response.ok &&
-        data.success
-      ) {
-        const list =
-          Array.isArray(
-            data.consultations
-          )
-            ? data.consultations
-            : [];
-
-        setConsultations(
-          list
+        const response = await fetch(
+          `/api/provider/consultations?mobile=${encodeURIComponent(mobile)}`,
+          {
+            method: "GET",
+            cache: "no-store",
+          }
         );
-      } else {
-        setConsultations([]);
-      }
-    } catch (error) {
-      console.error(
-        "Consultation load error:",
-        error
-      );
 
-      setConsultations([]);
-    } finally {
-      setConsultationsLoading(
-        false
-      );
-    }
-  };
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          if (isMountedRef.current) {
+            setConsultations([]);
+          }
+
+          return;
+        }
+
+        const list = Array.isArray(data.consultations)
+          ? data.consultations
+          : [];
+
+        if (isMountedRef.current) {
+          setConsultations(list);
+        }
+      } catch (error) {
+        console.error("Consultation load error:", error);
+
+        if (isMountedRef.current) {
+          setConsultations([]);
+        }
+      } finally {
+        if (showLoader && isMountedRef.current) {
+          setConsultationsLoading(false);
+        }
+      }
+    },
+    []
+  );
 
   // ====================================================
   // ACCEPT / REJECT CONSULTATION
   // ====================================================
 
-  const handleConsultationAction = async (
-    consultationId: string,
-    action: "accept" | "reject"
-  ) => {
-    try {
-      const mobile =
-        localStorage.getItem(
-          "providerMobile"
-        );
+  const handleConsultationAction = useCallback(
+    async (
+      consultationId: string,
+      action: "accept" | "reject"
+    ) => {
+      try {
+        const mobile = localStorage.getItem("providerMobile");
 
-      if (!mobile) {
-        alert(
-          "Provider login expired. Please login again."
-        );
-
-        return;
-      }
-
-      if (!consultationId) {
-        alert(
-          "Consultation ID is missing."
-        );
-
-        return;
-      }
-
-      setActionLoading(
-        consultationId
-      );
-
-      const response = await fetch(
-        `/api/provider/consultations/${encodeURIComponent(
-          consultationId
-        )}`,
-        {
-          method: "PATCH",
-
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-
-          body: JSON.stringify({
-            action,
-            mobile,
-          }),
+        if (!mobile) {
+          alert("Provider login expired. Please login again.");
+          return;
         }
-      );
 
-      const data =
-        await response.json();
+        if (!consultationId) {
+          alert("Consultation ID is missing.");
+          return;
+        }
 
-      console.log(
-        "CONSULTATION ACTION RESPONSE:",
-        data
-      );
+        setActionLoading(consultationId);
 
-      if (
-        !response.ok ||
-        !data.success
-      ) {
-        alert(
-          data.message ||
-            "Unable to update consultation."
+        const response = await fetch(
+          `/api/provider/consultations/${encodeURIComponent(
+            consultationId
+          )}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              action,
+              mobile,
+            }),
+          }
         );
 
-        return;
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          alert(
+            data.message ||
+              `Unable to ${
+                action === "accept" ? "accept" : "reject"
+              } consultation.`
+          );
+
+          return;
+        }
+
+        await loadConsultations(false);
+
+        if (action === "accept") {
+          alert("Consultation accepted successfully.");
+        } else {
+          alert("Consultation rejected successfully.");
+        }
+      } catch (error) {
+        console.error("Consultation action error:", error);
+
+        alert("Something went wrong. Please try again.");
+      } finally {
+        if (isMountedRef.current) {
+          setActionLoading(null);
+        }
       }
-
-      if (
-        action === "accept"
-      ) {
-        alert(
-          "Consultation accepted successfully."
-        );
-      } else {
-        alert(
-          "Consultation rejected successfully."
-        );
-      }
-
-      await loadConsultations();
-    } catch (error) {
-      console.error(
-        "Consultation action error:",
-        error
-      );
-
-      alert(
-        "Something went wrong. Please try again."
-      );
-    } finally {
-      setActionLoading(
-        null
-      );
-    }
-  };
+    },
+    [loadConsultations]
+  );
 
   // ====================================================
   // INITIAL LOAD + POLLING
   // ====================================================
 
   useEffect(() => {
-    loadProvider();
-    loadConsultations();
+    isMountedRef.current = true;
 
-    const interval =
-      setInterval(() => {
-        loadProvider();
-        loadConsultations();
-      }, 5000);
+    const initialize = async () => {
+      await Promise.all([
+        loadProvider(),
+        loadConsultations(true),
+      ]);
+    };
+
+    initialize();
+
+    pollingRef.current = setInterval(() => {
+      loadProvider();
+      loadConsultations(false);
+    }, 5000);
 
     return () => {
-      clearInterval(
-        interval
-      );
+      isMountedRef.current = false;
+
+      if (pollingRef.current) {
+        clearInterval(pollingRef.current);
+        pollingRef.current = null;
+      }
     };
-  }, []);
+  }, [loadProvider, loadConsultations]);
 
   // ====================================================
-  // PENDING
+  // PENDING CONSULTATIONS
   // ====================================================
 
-  const pendingConsultations =
-    useMemo(() => {
-      return consultations.filter(
-        (item) =>
-          item.status ===
-          "requested"
-      );
-    }, [consultations]);
+  const pendingConsultations = useMemo(() => {
+    return consultations.filter(
+      (item) => item.status === "requested"
+    );
+  }, [consultations]);
 
   // ====================================================
-  // ACTIVE / ACCEPTED
+  // ACTIVE / ACCEPTED CONSULTATIONS
   // ====================================================
 
-  const activeConsultations =
-    useMemo(() => {
-      return consultations.filter(
-        (item) =>
-          item.status ===
-            "accepted" ||
-          item.status ===
-            "active"
-      );
-    }, [consultations]);
+  const activeConsultations = useMemo(() => {
+    return consultations.filter(
+      (item) =>
+        item.status === "accepted" ||
+        item.status === "active"
+    );
+  }, [consultations]);
 
   // ====================================================
-  // COMPLETED
+  // COMPLETED CONSULTATIONS
   // ====================================================
 
-  const completedConsultations =
-    useMemo(() => {
-      return consultations.filter(
-        (item) =>
-          item.status ===
-          "completed"
-      );
-    }, [consultations]);
+  const completedConsultations = useMemo(() => {
+    return consultations.filter(
+      (item) => item.status === "completed"
+    );
+  }, [consultations]);
+
+  // ====================================================
+  // TOTAL EARNINGS
+  // ====================================================
+
+  const totalEarnings = useMemo(() => {
+    return completedConsultations.reduce(
+      (total, consultation) => {
+        return total + Number(consultation.amount || 0);
+      },
+      0
+    );
+  }, [completedConsultations]);
 
   // ====================================================
   // CHAT URL
   // ====================================================
 
-  const getChatUrl = (
-    consultation: Consultation
-  ) => {
-    const consultationId =
-      consultation.id ||
-      consultation._id ||
-      "";
+  const getChatUrl = useCallback(
+    (consultation: Consultation) => {
+      const consultationId = getConsultationId(consultation);
 
-    const customerId =
-      consultation.user?.id ||
-      consultation.userId ||
-      "";
+      const customerId =
+        consultation.user?.id ||
+        consultation.userId ||
+        "";
 
-    const panditId =
-      consultation.panditId ||
-      providerId ||
-      "";
+      const panditId =
+        consultation.panditId ||
+        providerId ||
+        "";
 
-    return (
-      `/provider/chat` +
-      `?consultationId=${encodeURIComponent(
-        consultationId
-      )}` +
-      `&userId=${encodeURIComponent(
-        customerId
-      )}` +
-      `&panditId=${encodeURIComponent(
-        panditId
-      )}`
-    );
+      return (
+        `/provider/chat` +
+        `?consultationId=${encodeURIComponent(
+          consultationId
+        )}` +
+        `&userId=${encodeURIComponent(
+          customerId
+        )}` +
+        `&panditId=${encodeURIComponent(
+          panditId
+        )}`
+      );
+    },
+    [getConsultationId, providerId]
+  );
+
+  // ====================================================
+  // MANUAL REFRESH
+  // ====================================================
+
+  const handleRefresh = async () => {
+    await loadConsultations(true);
   };
 
   // ====================================================
@@ -481,7 +452,7 @@ export default function ProviderDashboardPage() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#071424] text-white">
+      <main className="flex min-h-screen items-center justify-center bg-[#071424] px-5 text-white">
         <div className="text-center">
           <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-yellow-400 border-t-transparent" />
 
@@ -500,14 +471,29 @@ export default function ProviderDashboardPage() {
   if (!provider) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#071424] px-5 text-white">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold">
+        <div className="w-full max-w-sm rounded-3xl border border-white/10 bg-white/5 p-7 text-center">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-500/10">
+            <User
+              size={30}
+              className="text-red-400"
+            />
+          </div>
+
+          <h2 className="mt-5 text-2xl font-bold">
             Provider Not Found
           </h2>
 
-          <p className="mt-2 text-gray-400">
-            Please login again.
+          <p className="mt-2 text-sm leading-6 text-gray-400">
+            Your provider session could not be found.
+            Please login again to continue.
           </p>
+
+          <Link
+            href="/provider/login"
+            className="mt-6 flex h-12 w-full items-center justify-center rounded-2xl bg-yellow-400 font-bold text-black transition active:scale-[0.98]"
+          >
+            Login Again
+          </Link>
         </div>
       </main>
     );
@@ -519,35 +505,31 @@ export default function ProviderDashboardPage() {
 
   return (
     <main className="min-h-screen bg-[#071424] pb-28 text-white">
-      <div className="mx-auto max-w-md px-4 py-5">
+      <div className="mx-auto w-full max-w-md px-4 py-5">
 
         {/* ================================================= */}
         {/* HEADER */}
         {/* ================================================= */}
 
-        <HeaderCard
-          provider={provider}
-        />
+        <HeaderCard provider={provider} />
 
         {/* ================================================= */}
         {/* PROFILE COMPLETION */}
         {/* ================================================= */}
 
-        <ProfileCompletion
-          provider={provider}
-        />
+        <ProfileCompletion provider={provider} />
 
         {/* ================================================= */}
         {/* ACTIVE CONSULTATIONS */}
         {/* ================================================= */}
 
-        {activeConsultations.length >
-          0 && (
+        {activeConsultations.length > 0 && (
           <section className="mt-7">
+
+            {/* SECTION HEADER */}
 
             <div className="mb-4">
               <div className="flex items-center gap-2">
-
                 <MessageSquare
                   size={22}
                   className="text-green-400"
@@ -556,7 +538,6 @@ export default function ProviderDashboardPage() {
                 <h2 className="text-xl font-bold">
                   Active Consultations
                 </h2>
-
               </div>
 
               <p className="mt-1 text-xs text-gray-400">
@@ -564,44 +545,45 @@ export default function ProviderDashboardPage() {
               </p>
             </div>
 
-            <div className="space-y-4">
+            {/* ACTIVE CARDS */}
 
+            <div className="space-y-4">
               {activeConsultations.map(
                 (consultation) => {
-
-                  const customerName =
-                    consultation.user
-                      ?.fullName ||
-                    "Customer";
-
-                  const chatUrl =
-                    getChatUrl(
+                  const consultationId =
+                    getConsultationId(
                       consultation
                     );
 
+                  const customerName =
+                    consultation.user?.fullName ||
+                    "Customer";
+
+                  const chatUrl =
+                    getChatUrl(consultation);
+
+                  const isActive =
+                    consultation.status ===
+                    "active";
+
                   return (
                     <div
-                      key={
-                        consultation.id ||
-                        consultation._id
-                      }
-                      className="overflow-hidden rounded-3xl border border-green-400/20 bg-[#111C30]"
+                      key={consultationId}
+                      className="overflow-hidden rounded-3xl border border-green-400/20 bg-[#111C30] shadow-xl shadow-black/10"
                     >
 
                       {/* CUSTOMER */}
 
                       <div className="p-5">
-
                         <div className="flex items-center gap-3">
 
-                          <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-yellow-400/10">
+                          <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-yellow-400/10 ring-1 ring-yellow-400/10">
 
                             {consultation.user
                               ?.profilePhoto ? (
                               <img
                                 src={
-                                  consultation
-                                    .user
+                                  consultation.user
                                     .profilePhoto
                                 }
                                 alt={
@@ -621,26 +603,21 @@ export default function ProviderDashboardPage() {
                           <div className="min-w-0 flex-1">
 
                             <h3 className="truncate text-lg font-bold">
-                              {
-                                customerName
-                              }
+                              {customerName}
                             </h3>
 
                             <div className="mt-1 flex items-center gap-2">
 
-                              <span className="h-2 w-2 rounded-full bg-green-400" />
+                              <span className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
 
                               <span className="text-xs font-medium text-green-400">
-                                {consultation.status ===
-                                "active"
+                                {isActive
                                   ? "Chat Active"
                                   : "Accepted"}
                               </span>
 
                             </div>
-
                           </div>
-
                         </div>
 
                         {/* DETAILS */}
@@ -648,7 +625,6 @@ export default function ProviderDashboardPage() {
                         <div className="mt-5 grid grid-cols-2 gap-3">
 
                           <div className="rounded-2xl bg-white/5 p-4">
-
                             <Wallet
                               size={19}
                               className="text-yellow-400"
@@ -660,15 +636,14 @@ export default function ProviderDashboardPage() {
 
                             <p className="mt-1 font-bold">
                               ₹
-                              {
-                                consultation.amount
-                              }
+                              {Number(
+                                consultation.amount ||
+                                  0
+                              )}
                             </p>
-
                           </div>
 
                           <div className="rounded-2xl bg-white/5 p-4">
-
                             <Clock
                               size={19}
                               className="text-green-400"
@@ -684,44 +659,34 @@ export default function ProviderDashboardPage() {
                               }{" "}
                               min
                             </p>
-
                           </div>
 
                         </div>
 
-                        {/* OPEN CHAT */}
+                        {/* START / CHAT */}
 
                         <Link
-                          href={
-                            chatUrl
-                          }
+                          href={chatUrl}
                           className="mt-5 flex h-13 w-full items-center justify-center gap-2 rounded-2xl bg-yellow-400 py-3.5 font-bold text-black transition active:scale-[0.98]"
                         >
-
                           <MessageCircle
                             size={20}
                           />
 
-                          {consultation.status ===
-                          "active"
+                          {isActive
                             ? "Continue Chat"
                             : "Open Chat"}
 
                           <ExternalLink
                             size={17}
                           />
-
                         </Link>
-
                       </div>
-
                     </div>
                   );
                 }
               )}
-
             </div>
-
           </section>
         )}
 
@@ -731,10 +696,11 @@ export default function ProviderDashboardPage() {
 
         <section className="mt-7">
 
-          <div className="flex items-center justify-between">
+          {/* SECTION HEADER */}
+
+          <div className="flex items-start justify-between gap-3">
 
             <div>
-
               <div className="flex items-center gap-2">
 
                 <MessageCircle
@@ -745,25 +711,22 @@ export default function ProviderDashboardPage() {
                 <h2 className="text-xl font-bold">
                   Consultation Requests
                 </h2>
-
               </div>
 
               <p className="mt-1 text-xs text-gray-400">
                 New customer requests will appear here
               </p>
-
             </div>
 
             <button
-              onClick={
-                loadConsultations
-              }
+              type="button"
+              onClick={handleRefresh}
               disabled={
                 consultationsLoading
               }
-              className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 transition active:scale-95 disabled:opacity-50"
+              aria-label="Refresh consultations"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 transition active:scale-95 disabled:opacity-50"
             >
-
               <RefreshCw
                 size={18}
                 className={
@@ -772,16 +735,13 @@ export default function ProviderDashboardPage() {
                     : ""
                 }
               />
-
             </button>
-
           </div>
 
           {/* LOADING */}
 
           {consultationsLoading &&
-            consultations.length ===
-              0 && (
+            consultations.length === 0 && (
               <div className="mt-4 rounded-3xl border border-white/10 bg-white/5 p-6 text-center">
 
                 <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-yellow-400 border-t-transparent" />
@@ -789,29 +749,30 @@ export default function ProviderDashboardPage() {
                 <p className="mt-3 text-sm text-gray-400">
                   Checking requests...
                 </p>
-
               </div>
             )}
 
           {/* NO REQUEST */}
 
           {!consultationsLoading &&
-            pendingConsultations.length ===
-              0 && (
+            pendingConsultations.length === 0 && (
               <div className="mt-4 rounded-3xl border border-white/10 bg-white/5 p-6 text-center">
 
-                <MessageCircle
-                  size={42}
-                  className="mx-auto text-yellow-400"
-                />
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-yellow-400/10">
+                  <MessageCircle
+                    size={32}
+                    className="text-yellow-400"
+                  />
+                </div>
 
                 <h3 className="mt-4 text-lg font-bold">
                   No New Requests
                 </h3>
 
-                <p className="mt-2 text-sm text-gray-400">
+                <p className="mt-2 text-sm leading-6 text-gray-400">
                   New consultation requests
-                  from customers will appear here.
+                  from customers will appear
+                  here automatically.
                 </p>
 
               </div>
@@ -822,259 +783,253 @@ export default function ProviderDashboardPage() {
           <div className="mt-4 space-y-4">
 
             {pendingConsultations.map(
-              (consultation) => (
+              (consultation) => {
+                const consultationId =
+                  getConsultationId(
+                    consultation
+                  );
 
-                <div
-                  key={
-                    consultation.id ||
-                    consultation._id
-                  }
-                  className="overflow-hidden rounded-3xl border border-yellow-400/20 bg-[#111C30]"
-                >
+                const customerName =
+                  consultation.user?.fullName ||
+                  "Customer";
 
-                  {/* HEADER */}
+                const isProcessing =
+                  actionLoading ===
+                  consultationId;
 
-                  <div className="border-b border-white/10 p-5">
+                return (
+                  <div
+                    key={consultationId}
+                    className="overflow-hidden rounded-3xl border border-yellow-400/20 bg-[#111C30] shadow-xl shadow-black/10"
+                  >
 
-                    <div className="flex items-start justify-between gap-3">
+                    {/* HEADER */}
+
+                    <div className="border-b border-white/10 p-5">
+
+                      <div className="flex items-start justify-between gap-3">
+
+                        <div className="flex min-w-0 items-center gap-3">
+
+                          <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-yellow-400/10">
+
+                            {consultation.user
+                              ?.profilePhoto ? (
+                              <img
+                                src={
+                                  consultation.user
+                                    .profilePhoto
+                                }
+                                alt={
+                                  customerName
+                                }
+                                className="h-12 w-12 rounded-full object-cover"
+                              />
+                            ) : (
+                              <User
+                                size={24}
+                                className="text-yellow-400"
+                              />
+                            )}
+
+                          </div>
+
+                          <div className="min-w-0">
+
+                            <h3 className="truncate font-bold text-white">
+                              {customerName}
+                            </h3>
+
+                            <p className="text-xs text-gray-400">
+                              Customer
+                            </p>
+                          </div>
+
+                        </div>
+
+                        <span className="shrink-0 rounded-full bg-yellow-400/10 px-3 py-1 text-xs font-semibold text-yellow-400">
+                          New Request
+                        </span>
+
+                      </div>
+                    </div>
+
+                    {/* DETAILS */}
+
+                    <div className="grid grid-cols-2 gap-3 p-5">
+
+                      <div className="rounded-2xl bg-white/5 p-4">
+
+                        <Wallet
+                          size={20}
+                          className="text-yellow-400"
+                        />
+
+                        <p className="mt-2 text-xs text-gray-400">
+                          Amount
+                        </p>
+
+                        <p className="mt-1 text-lg font-bold">
+                          ₹
+                          {Number(
+                            consultation.amount ||
+                              0
+                          )}
+                        </p>
+
+                      </div>
+
+                      <div className="rounded-2xl bg-white/5 p-4">
+
+                        <Clock
+                          size={20}
+                          className="text-green-400"
+                        />
+
+                        <p className="mt-2 text-xs text-gray-400">
+                          Duration
+                        </p>
+
+                        <p className="mt-1 text-lg font-bold">
+                          {
+                            consultation.duration
+                          }{" "}
+                          min
+                        </p>
+
+                      </div>
+
+                    </div>
+
+                    {/* CHAT INFO */}
+
+                    <div className="mx-5 rounded-2xl bg-green-500/10 p-4">
 
                       <div className="flex items-center gap-3">
 
-                        <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-yellow-400/10">
-
-                          {consultation.user
-                            ?.profilePhoto ? (
-                            <img
-                              src={
-                                consultation
-                                  .user
-                                  .profilePhoto
-                              }
-                              alt={
-                                consultation.user
-                                  ?.fullName ||
-                                "Customer"
-                              }
-                              className="h-12 w-12 rounded-full object-cover"
-                            />
-                          ) : (
-                            <User
-                              size={24}
-                              className="text-yellow-400"
-                            />
-                          )}
-
-                        </div>
+                        <MessageCircle
+                          size={22}
+                          className="shrink-0 text-green-400"
+                        />
 
                         <div>
-
-                          <h3 className="font-bold text-white">
-                            {
-                              consultation.user
-                                ?.fullName ||
-                              "Customer"
-                            }
-                          </h3>
-
-                          <p className="text-xs text-gray-400">
-                            Customer
+                          <p className="text-sm font-semibold text-green-400">
+                            Chat Consultation
                           </p>
 
+                          <p className="text-xs leading-5 text-gray-400">
+                            Customer is waiting
+                            for your response
+                          </p>
                         </div>
 
                       </div>
-
-                      <span className="rounded-full bg-yellow-400/10 px-3 py-1 text-xs font-semibold text-yellow-400">
-                        New Request
-                      </span>
-
                     </div>
 
-                  </div>
+                    {/* REQUEST TIME */}
 
-                  {/* DETAILS */}
-
-                  <div className="grid grid-cols-2 gap-3 p-5">
-
-                    <div className="rounded-2xl bg-white/5 p-4">
-
-                      <Wallet
-                        size={20}
-                        className="text-yellow-400"
-                      />
-
-                      <p className="mt-2 text-xs text-gray-400">
-                        Amount
+                    {consultation.createdAt && (
+                      <p className="px-5 pt-4 text-xs text-gray-500">
+                        Requested{" "}
+                        {new Date(
+                          consultation.createdAt
+                        ).toLocaleString(
+                          "en-IN",
+                          {
+                            dateStyle: "medium",
+                            timeStyle: "short",
+                          }
+                        )}
                       </p>
+                    )}
 
-                      <p className="mt-1 text-lg font-bold">
-                        ₹
-                        {
-                          consultation.amount
+                    {/* BUTTONS */}
+
+                    <div className="grid grid-cols-2 gap-3 p-5">
+
+                      {/* REJECT */}
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleConsultationAction(
+                            consultationId,
+                            "reject"
+                          )
                         }
-                      </p>
+                        disabled={
+                          isProcessing
+                        }
+                        className="flex h-12 items-center justify-center gap-2 rounded-2xl border border-red-500/30 bg-red-500/10 font-semibold text-red-400 transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        <X size={20} />
+
+                        Reject
+                      </button>
+
+                      {/* ACCEPT */}
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleConsultationAction(
+                            consultationId,
+                            "accept"
+                          )
+                        }
+                        disabled={
+                          isProcessing
+                        }
+                        className="flex h-12 items-center justify-center gap-2 rounded-2xl bg-green-500 font-bold text-black transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+
+                        {isProcessing ? (
+                          <>
+                            <div className="h-5 w-5 animate-spin rounded-full border-2 border-black border-t-transparent" />
+
+                            Processing
+                          </>
+                        ) : (
+                          <>
+                            <Check
+                              size={20}
+                            />
+
+                            Accept
+                          </>
+                        )}
+
+                      </button>
 
                     </div>
-
-                    <div className="rounded-2xl bg-white/5 p-4">
-
-                      <Clock
-                        size={20}
-                        className="text-green-400"
-                      />
-
-                      <p className="mt-2 text-xs text-gray-400">
-                        Duration
-                      </p>
-
-                      <p className="mt-1 text-lg font-bold">
-                        {
-                          consultation.duration
-                        }{" "}
-                        min
-                      </p>
-
-                    </div>
-
                   </div>
-
-                  {/* CHAT INFO */}
-
-                  <div className="mx-5 rounded-2xl bg-green-500/10 p-4">
-
-                    <div className="flex items-center gap-3">
-
-                      <MessageCircle
-                        size={22}
-                        className="text-green-400"
-                      />
-
-                      <div>
-
-                        <p className="text-sm font-semibold text-green-400">
-                          Chat Consultation
-                        </p>
-
-                        <p className="text-xs text-gray-400">
-                          Customer is waiting for your response
-                        </p>
-
-                      </div>
-
-                    </div>
-
-                  </div>
-
-                  {/* REQUEST TIME */}
-
-                  {consultation.createdAt && (
-                    <p className="px-5 pt-4 text-xs text-gray-500">
-
-                      Requested{" "}
-
-                      {new Date(
-                        consultation.createdAt
-                      ).toLocaleString(
-                        "en-IN"
-                      )}
-
-                    </p>
-                  )}
-
-                  {/* BUTTONS */}
-
-                  <div className="grid grid-cols-2 gap-3 p-5">
-
-                    {/* REJECT */}
-
-                    <button
-                      onClick={() =>
-                        handleConsultationAction(
-                          consultation.id ||
-                            consultation._id ||
-                            "",
-                          "reject"
-                        )
-                      }
-                      disabled={
-                        actionLoading ===
-                        consultation.id
-                      }
-                      className="flex h-12 items-center justify-center gap-2 rounded-2xl border border-red-500/30 bg-red-500/10 font-semibold text-red-400 transition active:scale-[0.98] disabled:opacity-50"
-                    >
-
-                      <X
-                        size={20}
-                      />
-
-                      Reject
-
-                    </button>
-
-                    {/* ACCEPT */}
-
-                    <button
-                      onClick={() =>
-                        handleConsultationAction(
-                          consultation.id ||
-                            consultation._id ||
-                            "",
-                          "accept"
-                        )
-                      }
-                      disabled={
-                        actionLoading ===
-                        consultation.id
-                      }
-                      className="flex h-12 items-center justify-center gap-2 rounded-2xl bg-green-500 font-bold text-black transition active:scale-[0.98] disabled:opacity-50"
-                    >
-
-                      {actionLoading ===
-                      consultation.id ? (
-                        <>
-                          <div className="h-5 w-5 animate-spin rounded-full border-2 border-black border-t-transparent" />
-
-                          Processing
-                        </>
-                      ) : (
-                        <>
-                          <Check
-                            size={20}
-                          />
-
-                          Accept
-                        </>
-                      )}
-
-                    </button>
-
-                  </div>
-
-                </div>
-
-              )
+                );
+              }
             )}
 
           </div>
-
         </section>
 
         {/* ================================================= */}
         {/* STATS */}
         {/* ================================================= */}
 
-        <StatsCards
-          earnings={0}
-          bookings={
-            consultations.length
-          }
-          rating={
-            provider.rating || 0
-          }
-          notifications={
-            pendingConsultations.length
-          }
-        />
+        <div className="mt-7">
+
+          <StatsCards
+            earnings={totalEarnings}
+            bookings={
+              consultations.length
+            }
+            rating={
+              provider.rating || 0
+            }
+            notifications={
+              pendingConsultations.length
+            }
+          />
+
+        </div>
 
         {/* ================================================= */}
         {/* PROFESSIONAL DETAILS */}
@@ -1090,9 +1045,7 @@ export default function ProviderDashboardPage() {
 
             <InfoCard
               icon={
-                <Briefcase
-                  size={22}
-                />
+                <Briefcase size={22} />
               }
               title="Display Name"
               value={
@@ -1104,9 +1057,7 @@ export default function ProviderDashboardPage() {
 
             <InfoCard
               icon={
-                <Briefcase
-                  size={22}
-                />
+                <Briefcase size={22} />
               }
               title="Business Name"
               value={
@@ -1117,9 +1068,7 @@ export default function ProviderDashboardPage() {
 
             <InfoCard
               icon={
-                <MapPin
-                  size={22}
-                />
+                <MapPin size={22} />
               }
               title="Location"
               value={`${provider.city || "-"}, ${
@@ -1129,9 +1078,7 @@ export default function ProviderDashboardPage() {
 
             <InfoCard
               icon={
-                <Briefcase
-                  size={22}
-                />
+                <Briefcase size={22} />
               }
               title="Category"
               value={
@@ -1142,9 +1089,7 @@ export default function ProviderDashboardPage() {
 
             <InfoCard
               icon={
-                <Briefcase
-                  size={22}
-                />
+                <Briefcase size={22} />
               }
               title="Specialization"
               value={
@@ -1155,9 +1100,7 @@ export default function ProviderDashboardPage() {
 
             <InfoCard
               icon={
-                <Languages
-                  size={22}
-                />
+                <Languages size={22} />
               }
               title="Languages"
               value={
@@ -1168,9 +1111,7 @@ export default function ProviderDashboardPage() {
 
             <InfoCard
               icon={
-                <Briefcase
-                  size={22}
-                />
+                <Briefcase size={22} />
               }
               title="Experience"
               value={
@@ -1181,9 +1122,7 @@ export default function ProviderDashboardPage() {
 
             <InfoCard
               icon={
-                <Wallet
-                  size={22}
-                />
+                <Wallet size={22} />
               }
               title="Consultation Fee"
               value={
@@ -1195,9 +1134,7 @@ export default function ProviderDashboardPage() {
 
             <InfoCard
               icon={
-                <MapPin
-                  size={22}
-                />
+                <MapPin size={22} />
               }
               title="Service Area"
               value={
@@ -1208,9 +1145,7 @@ export default function ProviderDashboardPage() {
 
             <InfoCard
               icon={
-                <Star
-                  size={22}
-                />
+                <Star size={22} />
               }
               title="Rating"
               value={`${provider.rating || 0}/5`}
@@ -1218,9 +1153,7 @@ export default function ProviderDashboardPage() {
 
             <InfoCard
               icon={
-                <BadgeCheck
-                  size={22}
-                />
+                <BadgeCheck size={22} />
               }
               title="Verification"
               value={
@@ -1231,7 +1164,6 @@ export default function ProviderDashboardPage() {
             />
 
           </div>
-
         </div>
 
         {/* ================================================= */}

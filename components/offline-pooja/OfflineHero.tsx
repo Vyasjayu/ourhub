@@ -72,7 +72,7 @@ export default function OfflineHero() {
 
           {/* CTA */}
           <button
-            onClick={() => router.push("/offline-pooja/select-temple")}
+            onClick={() => router.push("/pooja/offline/book")}
             className="mt-5 flex h-12 items-center justify-center gap-2 rounded-xl bg-yellow-400 px-5 text-sm font-bold text-black shadow-lg shadow-yellow-500/10"
           >
             Book Offline Pooja

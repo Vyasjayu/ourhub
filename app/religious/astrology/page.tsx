@@ -238,6 +238,66 @@ export default function JyotishPage() {
         ================================================= */}
 
         <div className="px-3">
+
+
+           {/* =================================================
+              5. QUICK ASTROLOGY SERVICES
+          ================================================= */}
+
+          <section className="pt-7">
+            <div className="grid grid-cols-4 gap-2">
+              {quickServices.map((service) => {
+                const Icon = service.icon;
+
+                return (
+                  <Link
+                    key={service.title}
+                    href={service.href}
+                    className="flex flex-col items-center text-center"
+                  >
+                    <div className="flex h-[66px] w-[66px] items-center justify-center rounded-2xl bg-[#101C30] text-[#FFD400]">
+                      <Icon
+                        size={34}
+                        strokeWidth={1.8}
+                      />
+                    </div>
+
+                    <p className="mt-2 line-clamp-2 text-[11px] font-semibold text-white">
+                      {service.title}
+                    </p>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+
+          <section className="pt-7">
+            <div className="grid grid-cols-4 gap-2">
+              {problemServices.map((service) => {
+                const Icon = service.icon;
+
+                return (
+                  <Link
+                    key={service.title}
+                    href={service.href}
+                    className="flex flex-col items-center text-center"
+                  >
+                    <div className="flex h-[62px] w-[62px] items-center justify-center rounded-2xl bg-[#101C30] text-[#FFD400]">
+                      <Icon
+                        size={31}
+                        strokeWidth={1.8}
+                      />
+                    </div>
+
+                    <p className="mt-2 line-clamp-2 text-[11px] font-semibold text-white">
+                      {service.title}
+                    </p>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+
           {/* =================================================
               1. CALL & CHAT
           ================================================= */}
@@ -318,65 +378,9 @@ export default function JyotishPage() {
             </div>
           </section>
 
-          {/* =================================================
-              4. REPORTS
-          ================================================= */}
+        
 
-          <section className="pt-7">
-            <SectionHeading
-              title="रिपोर्ट्स"
-              href="/religious/astrology/reports"
-            />
-
-            <div className="grid grid-cols-4 gap-2">
-              {reportServices.map((report) => (
-                <Link
-                  key={report.title}
-                  href={report.href}
-                  className="flex min-h-[92px] flex-col items-center justify-center rounded-xl border border-[#1E2A3D] bg-[#101C30] px-1 text-center"
-                >
-                  <div className="text-3xl">
-                    {report.icon}
-                  </div>
-
-                  <p className="mt-2 line-clamp-2 text-[10px] font-semibold text-white">
-                    {report.title}
-                  </p>
-                </Link>
-              ))}
-            </div>
-          </section>
-
-          {/* =================================================
-              5. QUICK ASTROLOGY SERVICES
-          ================================================= */}
-
-          <section className="pt-7">
-            <div className="grid grid-cols-4 gap-2">
-              {quickServices.map((service) => {
-                const Icon = service.icon;
-
-                return (
-                  <Link
-                    key={service.title}
-                    href={service.href}
-                    className="flex flex-col items-center text-center"
-                  >
-                    <div className="flex h-[66px] w-[66px] items-center justify-center rounded-2xl bg-[#101C30] text-[#FFD400]">
-                      <Icon
-                        size={34}
-                        strokeWidth={1.8}
-                      />
-                    </div>
-
-                    <p className="mt-2 line-clamp-2 text-[11px] font-semibold text-white">
-                      {service.title}
-                    </p>
-                  </Link>
-                );
-              })}
-            </div>
-          </section>
+         
 
           {/* =================================================
               6. DECISION BANNER
@@ -407,30 +411,34 @@ export default function JyotishPage() {
               7. LIFE PROBLEMS
           ================================================= */}
 
+          
+
+            {/* =================================================
+              4. REPORTS
+          ================================================= */}
+
           <section className="pt-7">
+            <SectionHeading
+              title="रिपोर्ट्स"
+              href="/religious/astrology/reports"
+            />
+
             <div className="grid grid-cols-4 gap-2">
-              {problemServices.map((service) => {
-                const Icon = service.icon;
+              {reportServices.map((report) => (
+                <Link
+                  key={report.title}
+                  href={report.href}
+                  className="flex min-h-[92px] flex-col items-center justify-center rounded-xl border border-[#1E2A3D] bg-[#101C30] px-1 text-center"
+                >
+                  <div className="text-3xl">
+                    {report.icon}
+                  </div>
 
-                return (
-                  <Link
-                    key={service.title}
-                    href={service.href}
-                    className="flex flex-col items-center text-center"
-                  >
-                    <div className="flex h-[62px] w-[62px] items-center justify-center rounded-2xl bg-[#101C30] text-[#FFD400]">
-                      <Icon
-                        size={31}
-                        strokeWidth={1.8}
-                      />
-                    </div>
-
-                    <p className="mt-2 line-clamp-2 text-[11px] font-semibold text-white">
-                      {service.title}
-                    </p>
-                  </Link>
-                );
-              })}
+                  <p className="mt-2 line-clamp-2 text-[10px] font-semibold text-white">
+                    {report.title}
+                  </p>
+                </Link>
+              ))}
             </div>
           </section>
 

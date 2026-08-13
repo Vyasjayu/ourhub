@@ -285,251 +285,155 @@ export default function AstrologyDetailPage({
   // =========================================================
 
   async function handleChat() {
-    if (chatLoading) {
-      return;
-    }
-
-    // ---------------------------------------------
-    // LOGIN CHECK
-    // ---------------------------------------------
-
-    if (!user) {
-      router.push(
-        `/auth/login?redirect=${encodeURIComponent(
-          `/religious/astrology/${id}`
-        )}`
-      );
-
-      return;
-    }
-
-    // ---------------------------------------------
-    // ID CHECK
-    // ---------------------------------------------
-
-    if (!id) {
-      alert(
-        "Astrologer information is missing."
-      );
-
-      return;
-    }
-
-    if (!user.id) {
-      alert(
-        "User information is missing. Please login again."
-      );
-
-      return;
-    }
-
-    if (!astrologer) {
-      alert(
-        "Astrologer information is loading."
-      );
-
-      return;
-    }
-
-    // ---------------------------------------------
-    // PRICE CHECK
-    // ---------------------------------------------
-
-    if (
-      !Number.isFinite(pricePerMinute) ||
-      pricePerMinute <= 0
-    ) {
-      alert(
-        "This astrologer has not set a valid consultation price."
-      );
-
-      return;
-    }
-
-    try {
-      setChatLoading(true);
-
-      console.log(
-        "===================================="
-      );
-
-      console.log(
-        "📤 CREATE CHAT CONSULTATION"
-      );
-
-      console.log(
-        "User ID:",
-        user.id
-      );
-
-      console.log(
-        "Provider ID:",
-        id
-      );
-
-      console.log(
-        "Astrologer:",
-        astrologerName
-      );
-
-      console.log(
-        "Price:",
-        pricePerMinute
-      );
-
-      console.log(
-        "===================================="
-      );
-
-      // ---------------------------------------------
-      // CREATE CONSULTATION
-      // ---------------------------------------------
-
-      const res = await fetch(
-        "/api/provider/consultations",
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-
-          credentials: "include",
-
-          body: JSON.stringify({
-            userId: user.id,
-
-            providerId: id,
-
-            astrologerId: id,
-
-            type: "chat",
-
-            consultationType: "chat",
-
-            amount: pricePerMinute,
-
-            providerName: astrologerName,
-
-            providerMobile: phone,
-
-            pricePerMinute,
-          }),
-        }
-      );
-
-      const data = await res.json();
-
-      console.log(
-        "📥 CONSULTATION RESPONSE:",
-        data
-      );
-
-      // ---------------------------------------------
-      // API ERROR
-      // ---------------------------------------------
-
-      if (
-        !res.ok ||
-        !data.success
-      ) {
-        alert(
-          data.message ||
-            "Unable to start chat consultation."
-        );
-
-        return;
-      }
-
-      // ---------------------------------------------
-      // CONSULTATION ID
-      // ---------------------------------------------
-
-      const consultationId =
-        data.consultationId ||
-        data.consultation?._id ||
-        data.consultation?.id ||
-        data.id;
-
-      if (!consultationId) {
-        console.error(
-          "❌ Consultation created but ID missing:",
-          data
-        );
-
-        alert(
-          "Consultation created but ID is missing."
-        );
-
-        return;
-      }
-
-      // ---------------------------------------------
-      // PROVIDER ID
-      // ---------------------------------------------
-
-      const panditId =
-        data.consultation?.panditId ||
-        data.consultation?.providerId ||
-        id;
-
-      if (!panditId) {
-        alert(
-          "Astrologer ID is missing."
-        );
-
-        return;
-      }
-
-      console.log(
-        "===================================="
-      );
-
-      console.log(
-        "✅ CONSULTATION ID:",
-        consultationId
-      );
-
-      console.log(
-        "✅ PANDIT ID:",
-        panditId
-      );
-
-      console.log(
-        "===================================="
-      );
-
-      // ---------------------------------------------
-      // OPEN PROVIDER CHAT
-      // ---------------------------------------------
-
-      const chatUrl =
-        `/provider/chat?consultationId=${encodeURIComponent(
-          String(consultationId)
-        )}&panditId=${encodeURIComponent(
-          String(panditId)
-        )}`;
-
-      console.log(
-        "➡️ CHAT URL:",
-        chatUrl
-      );
-
-      router.push(chatUrl);
-    } catch (error) {
-      console.error(
-        "❌ Start chat error:",
-        error
-      );
-
-      alert(
-        "Something went wrong while starting chat."
-      );
-    } finally {
-      setChatLoading(false);
-    }
+  if (chatLoading) {
+    return;
   }
+
+  // =========================================================
+  // ASTROLOGER ID CHECK
+  // =========================================================
+
+  if (!id) {
+    alert("Astrologer information is missing.");
+    return;
+  }
+
+  // =========================================================
+  // USER LOGIN CHECK
+  //
+  // user already /api/user/me se load ho raha hai.
+  // =========================================================
+
+  if (!user) {
+    const redirectPath =
+      `/religious/astrology/${id}/consultation`;
+
+    router.push(
+      `/auth/login?redirect=${encodeURIComponent(
+        redirectPath
+      )}`
+    );
+
+    return;
+  }
+
+  // =========================================================
+  // USER ID CHECK
+  // =========================================================
+
+  if (!user.id) {
+    alert(
+      "User information is missing. Please login again."
+    );
+
+    return;
+  }
+
+  // =========================================================
+  // ASTROLOGER CHECK
+  // =========================================================
+
+  if (!astrologer) {
+    alert(
+      "Astrologer information is loading."
+    );
+
+    return;
+  }
+
+  // =========================================================
+  // PRICE CHECK
+  //
+  // Abhi consultation create nahi kar rahe.
+  // Price sirf next screen par show karne ke liye
+  // available hona chahiye.
+  // =========================================================
+
+  if (
+    !Number.isFinite(pricePerMinute) ||
+    pricePerMinute <= 0
+  ) {
+    alert(
+      "This astrologer has not set a valid consultation price."
+    );
+
+    return;
+  }
+
+  // =========================================================
+  // GO TO KUNDLI / CONSULTATION FORM
+  // =========================================================
+
+  try {
+    setChatLoading(true);
+
+    console.log(
+      "===================================="
+    );
+
+    console.log(
+      "🔮 OPEN CONSULTATION FLOW"
+    );
+
+    console.log(
+      "User ID:",
+      user.id
+    );
+
+    console.log(
+      "Astrologer ID:",
+      id
+    );
+
+    console.log(
+      "Astrologer:",
+      astrologerName
+    );
+
+    console.log(
+      "Price:",
+      pricePerMinute
+    );
+
+    console.log(
+      "===================================="
+    );
+
+    /*
+     * IMPORTANT:
+     *
+     * Yahan consultation API call nahi hogi.
+     *
+     * Pehle user:
+     *
+     * Name
+     * Gender
+     * DOB
+     * Birth Time
+     * Birth Place
+     *
+     * fill karega.
+     *
+     * Form submit ke baad hi consultation create hogi.
+     */
+
+    const consultationUrl =
+      `/religious/astrology/${id}/consultation`;
+
+    router.push(consultationUrl);
+  } catch (error) {
+    console.error(
+      "❌ Consultation flow error:",
+      error
+    );
+
+    alert(
+      "Unable to open consultation."
+    );
+  } finally {
+    setChatLoading(false);
+  }
+}
 
   // =========================================================
   // PAGE

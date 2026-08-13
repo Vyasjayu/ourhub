@@ -394,7 +394,7 @@ export default function PoojaBottomSheet({
             {/* ================================================= */}
 
             <Link
-              href="/pooja"
+              href="/offline-pooja"
               onClick={onClose}
               className="
                 group

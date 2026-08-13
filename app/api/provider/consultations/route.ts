@@ -6,27 +6,28 @@ import Provider from "@/models/Provider";
 import Consultation from "@/models/Consultation";
 import User from "@/models/User";
 
-/*
-|--------------------------------------------------------------------------
-| GET
-|--------------------------------------------------------------------------
-| Provider ke pending / accepted / active consultations fetch karta hai.
-|
-| URL:
-| /api/provider/consultations?mobile=XXXXXXXXXX
-|--------------------------------------------------------------------------
-*/
+import crypto from "crypto";
 
-export async function GET(
-  req: NextRequest
-) {
+// ============================================================
+// GET
+// ============================================================
+// Provider ke requested + accepted + active consultations
+// fetch karta hai.
+//
+// URL:
+// /api/provider/consultations?mobile=XXXXXXXXXX
+// ============================================================
+
+export async function GET(req: NextRequest) {
   try {
     await connectDB();
 
+    // ========================================================
+    // PROVIDER MOBILE
+    // ========================================================
+
     const mobile =
-      req.nextUrl.searchParams.get(
-        "mobile"
-      );
+      req.nextUrl.searchParams.get("mobile");
 
     if (!mobile) {
       return NextResponse.json(
@@ -35,9 +36,7 @@ export async function GET(
           message:
             "Provider mobile is required",
         },
-        {
-          status: 400,
-        }
+        { status: 400 }
       );
     }
 
@@ -58,9 +57,9 @@ export async function GET(
       "===================================="
     );
 
-    // =====================================================
+    // ========================================================
     // FIND PROVIDER
-    // =====================================================
+    // ========================================================
 
     const provider: any =
       await Provider.findOne({
@@ -82,9 +81,7 @@ export async function GET(
           message:
             "Provider not found",
         },
-        {
-          status: 404,
-        }
+        { status: 404 }
       );
     }
 
@@ -96,13 +93,13 @@ export async function GET(
       providerId
     );
 
-    // =====================================================
+    // ========================================================
     // FIND CONSULTATIONS
-    // =====================================================
+    // ========================================================
 
     const consultations =
       await Consultation.find({
-        panditId: provider._id,
+        panditId: providerId,
 
         status: {
           $in: [
@@ -122,9 +119,9 @@ export async function GET(
       consultations.length
     );
 
-    // =====================================================
+    // ========================================================
     // USER DETAILS
-    // =====================================================
+    // ========================================================
 
     const formattedConsultations =
       await Promise.all(
@@ -154,6 +151,10 @@ export async function GET(
                 error
               );
             }
+
+            // ==================================================
+            // USER OBJECT
+            // ==================================================
 
             const user =
               userData
@@ -194,6 +195,10 @@ export async function GET(
                     profilePhoto: "",
                   };
 
+            // ==================================================
+            // RESPONSE
+            // ==================================================
+
             return {
               id: String(
                 consultation._id
@@ -212,6 +217,21 @@ export async function GET(
                 consultation.panditId ||
                   ""
               ),
+
+              panditName:
+                consultation.panditName ||
+                provider.displayName ||
+                provider.fullName ||
+                "",
+
+              panditPhone:
+                consultation.panditPhone ||
+                provider.mobile ||
+                "",
+
+              consultationType:
+                consultation.consultationType ||
+                "chat",
 
               amount: Number(
                 consultation.amount ||
@@ -258,6 +278,10 @@ export async function GET(
       formattedConsultations.length
     );
 
+    // ========================================================
+    // RESPONSE
+    // ========================================================
+
     return NextResponse.json(
       {
         success: true,
@@ -284,9 +308,7 @@ export async function GET(
         consultations:
           formattedConsultations,
       },
-      {
-        status: 200,
-      }
+      { status: 200 }
     );
   } catch (error: any) {
     console.error(
@@ -302,34 +324,57 @@ export async function GET(
           error?.message ||
           "Failed to fetch consultations",
       },
-      {
-        status: 500,
-      }
+      { status: 500 }
     );
   }
 }
 
-/*
-|--------------------------------------------------------------------------
-| POST
-|--------------------------------------------------------------------------
-| User astrologer ko chat/call consultation request bhejta hai.
-|
-| Body:
-| {
-|   userId,
-|   providerId,
-|   astrologerId,
-|   amount
-| }
-|--------------------------------------------------------------------------
-*/
+// ============================================================
+// POST
+// ============================================================
+// WALLET BASED CONSULTATION
+//
+// Frontend body:
+//
+// {
+//   userId,
+//   providerId,
+//   astrologerId,
+//   type,
+//   consultationType,
+//   amount,
+//   providerName,
+//   providerMobile,
+//   pricePerMinute
+// }
+//
+// IMPORTANT:
+//
+// Frontend amount / pricePerMinute ko trust nahi karenge.
+//
+// Server Provider.price ko actual price maanega.
+//
+// Duration:
+// - Agar frontend duration bhejta hai -> use hoga
+// - Agar duration nahi bheja -> 1 minute default
+//
+// Example:
+//
+// Provider price = ₹1/min
+// Duration = 1
+// Total = ₹1
+//
+// ============================================================
 
 export async function POST(
   req: NextRequest
 ) {
   try {
     await connectDB();
+
+    // ========================================================
+    // BODY
+    // ========================================================
 
     const body =
       await req.json();
@@ -339,7 +384,7 @@ export async function POST(
     );
 
     console.log(
-      "📥 CREATE CONSULTATION REQUEST"
+      "📥 CREATE WALLET CONSULTATION"
     );
 
     console.log(
@@ -355,11 +400,24 @@ export async function POST(
       userId,
       providerId,
       astrologerId,
+
+      // Optional
+      duration,
+
+      // Optional frontend fields
+      consultationType =
+        body?.type || "chat",
+
+      amount: frontendAmount,
+
+      providerName,
+      providerMobile,
+      pricePerMinute,
     } = body;
 
-    // =====================================================
+    // ========================================================
     // PROVIDER ID
-    // =====================================================
+    // ========================================================
 
     const finalProviderId =
       providerId ||
@@ -369,35 +427,104 @@ export async function POST(
       return NextResponse.json(
         {
           success: false,
+
           message:
             "Astrologer ID is required",
         },
-        {
-          status: 400,
-        }
+        { status: 400 }
       );
     }
 
-    // =====================================================
+    // ========================================================
     // USER ID
-    // =====================================================
+    // ========================================================
 
     if (!userId) {
       return NextResponse.json(
         {
           success: false,
+
           message:
             "User ID is required. Please login first.",
         },
-        {
-          status: 401,
-        }
+        { status: 401 }
       );
     }
 
-    // =====================================================
+    // ========================================================
+    // CONSULTATION TYPE
+    // ========================================================
+
+    const finalConsultationType =
+      String(
+        consultationType ||
+          "chat"
+      ).toLowerCase();
+
+    if (
+      ![
+        "chat",
+        "voice",
+        "video",
+      ].includes(
+        finalConsultationType
+      )
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+
+          message:
+            "Invalid consultation type.",
+        },
+        { status: 400 }
+      );
+    }
+
+    // ========================================================
+    // DURATION
+    // ========================================================
+    //
+    // IMPORTANT FIX
+    //
+    // Tumhare current frontend request me duration nahi aa raha.
+    //
+    // Isliye:
+    //
+    // duration available -> use it
+    // duration missing   -> 1 minute
+    //
+    // ========================================================
+
+    let consultationDuration =
+      Number(duration);
+
+    if (
+      !Number.isFinite(
+        consultationDuration
+      ) ||
+      consultationDuration <= 0
+    ) {
+      consultationDuration = 1;
+    }
+
+    // Integer minute
+    consultationDuration =
+      Math.max(
+        1,
+        Math.floor(
+          consultationDuration
+        )
+      );
+
+    console.log(
+      "⏱ Consultation Duration:",
+      consultationDuration
+    );
+
+    // ========================================================
     // FIND USER
-    // =====================================================
+    // ========================================================
 
     const user: any =
       await User.findById(
@@ -417,18 +544,17 @@ export async function POST(
       return NextResponse.json(
         {
           success: false,
+
           message:
             "User not found",
         },
-        {
-          status: 404,
-        }
+        { status: 404 }
       );
     }
 
-    // =====================================================
+    // ========================================================
     // FIND ASTROLOGER
-    // =====================================================
+    // ========================================================
 
     const provider: any =
       await Provider.findById(
@@ -448,12 +574,11 @@ export async function POST(
       return NextResponse.json(
         {
           success: false,
+
           message:
             "Astrologer not found",
         },
-        {
-          status: 404,
-        }
+        { status: 404 }
       );
     }
 
@@ -463,9 +588,9 @@ export async function POST(
         provider.fullName
     );
 
-    // =====================================================
+    // ========================================================
     // CATEGORY
-    // =====================================================
+    // ========================================================
 
     if (
       provider.category !==
@@ -474,52 +599,53 @@ export async function POST(
       return NextResponse.json(
         {
           success: false,
+
           message:
             "Selected provider is not an astrologer",
         },
-        {
-          status: 400,
-        }
+        { status: 400 }
       );
     }
 
-    // =====================================================
+    // ========================================================
     // VERIFIED
-    // =====================================================
+    // ========================================================
 
-    if (!provider.isVerified) {
+    if (
+      !provider.isVerified
+    ) {
       return NextResponse.json(
         {
           success: false,
+
           message:
             "This astrologer is not verified",
         },
-        {
-          status: 403,
-        }
+        { status: 403 }
       );
     }
 
-    // =====================================================
+    // ========================================================
     // ACTIVE
-    // =====================================================
+    // ========================================================
 
-    if (!provider.isActive) {
+    if (
+      !provider.isActive
+    ) {
       return NextResponse.json(
         {
           success: false,
+
           message:
             "This astrologer is currently unavailable",
         },
-        {
-          status: 403,
-        }
+        { status: 403 }
       );
     }
 
-    // =====================================================
+    // ========================================================
     // PROFILE PUBLIC
-    // =====================================================
+    // ========================================================
 
     if (
       provider.isProfilePublic ===
@@ -528,27 +654,67 @@ export async function POST(
       return NextResponse.json(
         {
           success: false,
+
           message:
             "This astrologer profile is not public",
         },
-        {
-          status: 403,
-        }
+        { status: 403 }
       );
     }
 
-    // =====================================================
+    // ========================================================
     // PRICE
-    // =====================================================
-
+    // ========================================================
+    //
     // IMPORTANT:
-    // Browser se amount nahi le rahe.
-    // Database me astrologer ki actual price use hogi.
+    //
+    // Provider.price database se aa raha hai.
+    //
+    // Frontend:
+    // amount
+    // pricePerMinute
+    //
+    // ko trust nahi karenge.
+    //
+    // ========================================================
 
-    const consultationAmount =
+    const pricePerMinuteServer =
       Number(
         provider.price || 0
       );
+
+    if (
+      !Number.isFinite(
+        pricePerMinuteServer
+      ) ||
+      pricePerMinuteServer <= 0
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+
+          message:
+            "Astrologer consultation price is not configured.",
+        },
+        { status: 400 }
+      );
+    }
+
+    // ========================================================
+    // FINAL AMOUNT
+    // ========================================================
+    //
+    // Example:
+    //
+    // ₹1/min × 1 minute = ₹1
+    //
+    // ₹10/min × 5 minutes = ₹50
+    //
+    // ========================================================
+
+    const consultationAmount =
+      pricePerMinuteServer *
+      consultationDuration;
 
     if (
       !Number.isFinite(
@@ -559,25 +725,57 @@ export async function POST(
       return NextResponse.json(
         {
           success: false,
+
           message:
-            "Astrologer consultation price is not configured.",
+            "Invalid consultation amount.",
         },
-        {
-          status: 400,
-        }
+        { status: 400 }
       );
     }
 
-    // =====================================================
-    // EXISTING CONSULTATION
-    // =====================================================
+    console.log(
+      "💰 Server Price/Minute:",
+      pricePerMinuteServer
+    );
+
+    console.log(
+      "⏱ Duration:",
+      consultationDuration
+    );
+
+    console.log(
+      "💰 Final Consultation Amount:",
+      consultationAmount
+    );
+
+    console.log(
+      "⚠️ Frontend amount:",
+      frontendAmount
+    );
+
+    console.log(
+      "⚠️ Frontend pricePerMinute:",
+      pricePerMinute
+    );
+
+    // ========================================================
+    // CHECK EXISTING CONSULTATION
+    // ========================================================
+    //
+    // Same user + same astrologer
+    // ke saath active request duplicate nahi banegi.
+    //
+    // ========================================================
 
     const existingConsultation =
       await Consultation.findOne({
-        userId: user._id,
+        userId: String(
+          user._id
+        ),
 
-        panditId:
-          provider._id,
+        panditId: String(
+          provider._id
+        ),
 
         status: {
           $in: [
@@ -594,7 +792,7 @@ export async function POST(
 
     if (existingConsultation) {
       console.log(
-        "⚠️ Existing consultation found:",
+        "⚠️ Existing consultation:",
         existingConsultation._id
       );
 
@@ -622,6 +820,17 @@ export async function POST(
               existingConsultation.panditId
             ),
 
+            panditName:
+              existingConsultation.panditName ||
+              provider.displayName ||
+              provider.fullName ||
+              "",
+
+            panditPhone:
+              existingConsultation.panditPhone ||
+              provider.mobile ||
+              "",
+
             amount: Number(
               existingConsultation.amount ||
                 0
@@ -635,6 +844,10 @@ export async function POST(
             paymentId:
               existingConsultation.paymentId ||
               "",
+
+            consultationType:
+              existingConsultation.consultationType ||
+              "chat",
 
             status:
               existingConsultation.status,
@@ -661,36 +874,238 @@ export async function POST(
               existingConsultation._id
             ),
         },
-        {
-          status: 200,
-        }
+        { status: 200 }
       );
     }
 
-    // =====================================================
+    // ========================================================
+    // CURRENT WALLET BALANCE
+    // ========================================================
+
+    const currentWalletBalance =
+      Number(
+        user.walletBalance || 0
+      );
+
+    console.log(
+      "💰 Current Wallet:",
+      currentWalletBalance
+    );
+
+    console.log(
+      "💰 Required Amount:",
+      consultationAmount
+    );
+
+    // ========================================================
+    // INSUFFICIENT WALLET
+    // ========================================================
+
+    if (
+      !Number.isFinite(
+        currentWalletBalance
+      ) ||
+      currentWalletBalance <
+        consultationAmount
+    ) {
+      const shortfall =
+        Math.max(
+          consultationAmount -
+            currentWalletBalance,
+          0
+        );
+
+      console.log(
+        "❌ Insufficient wallet"
+      );
+
+      console.log(
+        "Shortfall:",
+        shortfall
+      );
+
+      return NextResponse.json(
+        {
+          success: false,
+
+          code:
+            "INSUFFICIENT_WALLET_BALANCE",
+
+          message:
+            "Insufficient wallet balance. Please add money to your wallet.",
+
+          walletBalance:
+            currentWalletBalance,
+
+          requiredAmount:
+            consultationAmount,
+
+          shortfall,
+        },
+        { status: 402 }
+      );
+    }
+
+    // ========================================================
+    // INTERNAL PAYMENT ID
+    // ========================================================
+    //
+    // Razorpay paymentId nahi hai.
+    //
+    // Wallet transaction ke liye internal ID.
+    //
+    // ========================================================
+
+    const paymentId =
+      `wallet_${crypto.randomUUID()}`;
+
+    console.log(
+      "💳 Internal Wallet Payment ID:",
+      paymentId
+    );
+
+    // ========================================================
+    // ATOMIC WALLET DEDUCTION
+    // ========================================================
+    //
+    // MongoDB ensure karega:
+    //
+    // walletBalance >= amount
+    //
+    // Isse wallet negative nahi hoga.
+    //
+    // ========================================================
+
+   const updatedUser: any =
+  await User.findOneAndUpdate(
+    {
+      _id: user._id,
+
+      walletBalance: {
+        $gte: consultationAmount,
+      },
+    },
+    {
+      $inc: {
+        walletBalance:
+          -consultationAmount,
+      },
+    },
+    {
+      new: true,
+    }
+  ).lean();
+
+    // ========================================================
+    // WALLET DEDUCTION FAILED
+    // ========================================================
+
+    if (!updatedUser) {
+      console.log(
+        "❌ Wallet deduction failed"
+      );
+
+      return NextResponse.json(
+        {
+          success: false,
+
+          code:
+            "INSUFFICIENT_WALLET_BALANCE",
+
+          message:
+            "Insufficient wallet balance. Please add money to your wallet.",
+        },
+        { status: 402 }
+      );
+    }
+
+    console.log(
+      "✅ Wallet amount deducted:",
+      consultationAmount
+    );
+
+    console.log(
+      "💰 Remaining Wallet:",
+      updatedUser.walletBalance
+    );
+
+    // ========================================================
     // CREATE CONSULTATION
-    // =====================================================
+    // ========================================================
 
-    const consultation =
-      await Consultation.create({
-        userId: user._id,
+    let consultation: any;
 
-        panditId:
-          provider._id,
+    try {
+      consultation =
+        await Consultation.create({
+          userId: String(
+            user._id
+          ),
 
-        amount:
-          consultationAmount,
+          panditId: String(
+            provider._id
+          ),
 
-        duration: 0,
+          panditName:
+            provider.displayName ||
+            provider.fullName ||
+            null,
 
-        paymentId: "",
+          panditPhone:
+            provider.mobile ||
+            null,
 
-        status: "requested",
+          consultationType:
+            finalConsultationType,
 
-        startTime: null,
+          amount:
+            consultationAmount,
 
-        endTime: null,
-      });
+          duration:
+            consultationDuration,
+
+          paymentId,
+
+          status:
+            "requested",
+
+          startTime:
+            null,
+
+          endTime:
+            null,
+        });
+    } catch (createError: any) {
+      console.error(
+        "❌ Consultation creation failed:",
+        createError
+      );
+
+      // ======================================================
+      // REFUND WALLET
+      // ======================================================
+
+      await User.findByIdAndUpdate(
+        user._id,
+        {
+          $inc: {
+            walletBalance:
+              consultationAmount,
+          },
+        }
+      );
+
+      console.log(
+        "↩️ Wallet refunded:",
+        consultationAmount
+      );
+
+      throw createError;
+    }
+
+    // ========================================================
+    // SUCCESS LOG
+    // ========================================================
 
     console.log(
       "===================================="
@@ -721,6 +1136,26 @@ export async function POST(
     );
 
     console.log(
+      "Duration:",
+      consultation.duration
+    );
+
+    console.log(
+      "Payment ID:",
+      consultation.paymentId
+    );
+
+    console.log(
+      "Wallet Remaining:",
+      updatedUser.walletBalance
+    );
+
+    console.log(
+      "Type:",
+      consultation.consultationType
+    );
+
+    console.log(
       "Status:",
       consultation.status
     );
@@ -729,9 +1164,9 @@ export async function POST(
       "===================================="
     );
 
-    // =====================================================
+    // ========================================================
     // RESPONSE
-    // =====================================================
+    // ========================================================
 
     return NextResponse.json(
       {
@@ -739,6 +1174,27 @@ export async function POST(
 
         message:
           "Consultation request created successfully",
+
+        walletPayment:
+          true,
+
+        paymentId:
+          consultation.paymentId,
+
+        walletBalance:
+          Number(
+            updatedUser.walletBalance ||
+              0
+          ),
+
+        pricePerMinute:
+          pricePerMinuteServer,
+
+        duration:
+          consultationDuration,
+
+        amount:
+          consultationAmount,
 
         consultation: {
           id: String(
@@ -757,6 +1213,14 @@ export async function POST(
             consultation.panditId
           ),
 
+          panditName:
+            consultation.panditName ||
+            "",
+
+          panditPhone:
+            consultation.panditPhone ||
+            "",
+
           amount: Number(
             consultation.amount ||
               0
@@ -770,6 +1234,10 @@ export async function POST(
           paymentId:
             consultation.paymentId ||
             "",
+
+          consultationType:
+            consultation.consultationType ||
+            "chat",
 
           status:
             consultation.status,
@@ -791,16 +1259,12 @@ export async function POST(
             null,
         },
 
-        // VERY IMPORTANT
-        // Frontend direct ID read kar sakta hai.
         consultationId:
           String(
             consultation._id
           ),
       },
-      {
-        status: 201,
-      }
+      { status: 201 }
     );
   } catch (error: any) {
     console.error(
@@ -808,6 +1272,24 @@ export async function POST(
     );
 
     console.error(error);
+
+    // ========================================================
+    // DUPLICATE PAYMENT ID
+    // ========================================================
+
+    if (
+      error?.code === 11000
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+
+          message:
+            "This wallet payment has already been used for a consultation.",
+        },
+        { status: 409 }
+      );
+    }
 
     return NextResponse.json(
       {
@@ -817,9 +1299,7 @@ export async function POST(
           error?.message ||
           "Failed to create consultation",
       },
-      {
-        status: 500,
-      }
+      { status: 500 }
     );
   }
 }

@@ -6,255 +6,145 @@ import {
   CreditCard,
   Video,
   Gift,
-  ArrowRight,
 } from "lucide-react";
 
 const steps = [
   {
-    id: 1,
-    icon: CalendarDays,
+    number: "1",
     title: "Select Pooja",
-    desc: "Choose your desired pooja",
+    description: "Choose your desired pooja",
+    icon: CalendarDays,
   },
   {
-    id: 2,
-    icon: ClipboardList,
+    number: "2",
     title: "Fill Details",
-    desc: "Enter your name, gotra & details",
+    description: "Enter name, gotra & details",
+    icon: ClipboardList,
   },
   {
-    id: 3,
-    icon: CreditCard,
+    number: "3",
     title: "Make Payment",
-    desc: "Secure payment options",
+    description: "Secure payment options",
+    icon: CreditCard,
   },
   {
-    id: 4,
-    icon: Video,
+    number: "4",
     title: "Pooja Performed",
-    desc: "Pandit will perform pooja on time",
+    description: "Pandit performs pooja on time",
+    icon: Video,
   },
   {
-    id: 5,
-    icon: Gift,
+    number: "5",
     title: "Receive Blessings",
-    desc: "Get video & prasad at your home",
+    description: "Get video & prasad at home",
+    icon: Gift,
   },
 ];
 
 export default function HowItWorks() {
   return (
-    <section className="mt-8">
+    <section className="mt-7">
+      <div className="rounded-2xl border border-yellow-500/15 bg-[#080e14] p-3">
+      {/* Heading */}
+      <h2 className="text-center text-[18px] font-semibold text-yellow-400">
+        ✣ How Online Pooja Works? ✣
+      </h2>
 
-      {/* Card */}
+      {/* Steps */}
+      <div className="mt-5 flex justify-between">
+        {steps.map((step) => {
+          const Icon = step.icon;
 
-      <div
-        className="
-          overflow-hidden
-          rounded-[28px]
-          border
-          border-yellow-500/20
-          bg-gradient-to-b
-          from-[#101826]
-          via-[#0d1727]
-          to-[#09121f]
-          shadow-[0_0_40px_rgba(255,193,7,0.06)]
-        "
-      >
-
-        {/* Heading */}
-
-        <div className="px-5 pt-5 text-center">
-
-          <h2 className="text-[30px] font-bold text-yellow-400">
-
-            ✨ How It Works? ✨
-
-          </h2>
-
-          <div className="mx-auto mt-2 h-px w-44 bg-gradient-to-r from-transparent via-yellow-500 to-transparent" />
-
-        </div>
-
-        {/* Steps */}
-
-        <div className="grid grid-cols-5 px-2 py-8">
-                      {steps.map((step, index) => {
-            const Icon = step.icon;
-
-            return (
+          return (
+            <div
+              key={step.number}
+              className="relative flex w-[19%] flex-col items-center text-center"
+            >
+              {/* Icon */}
               <div
-                key={step.id}
-                className="relative flex flex-col items-center"
+                className="
+                  flex
+                  h-12
+                  w-12
+                  items-center
+                  justify-center
+                  rounded-full
+                  border
+                  border-yellow-500/30
+                  bg-[#0b1118]
+                  shadow-[0_0_15px_rgba(255,193,7,0.06)]
+                "
               >
-                {/* Line */}
-
-                {index !== steps.length - 1 && (
-                  <div className="absolute left-[64px] top-[34px] flex items-center">
-                    <div className="h-[2px] w-10 bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600" />
-
-                    <ArrowRight
-                      size={14}
-                      className="ml-1 text-yellow-500"
-                    />
-                  </div>
-                )}
-
-                {/* Circle */}
-
-                <div
-                  className="
-                    relative
-                    z-10
-                    flex
-                    h-16
-                    w-16
-                    items-center
-                    justify-center
-                    rounded-full
-                    border
-                    border-yellow-500/40
-                    bg-[#101826]
-                    shadow-[0_0_18px_rgba(255,193,7,0.12)]
-                  "
-                >
-                  <Icon
-                    size={28}
-                    className="text-yellow-400"
-                  />
-                </div>
-
-                {/* Number */}
-
-                <div
-                  className="
-                    -mt-2
-                    z-20
-                    flex
-                    h-7
-                    w-7
-                    items-center
-                    justify-center
-                    rounded-full
-                    border
-                    border-black
-                    bg-yellow-400
-                    text-[12px]
-                    font-bold
-                    text-black
-                  "
-                >
-                  {step.id}
-                </div>
-
-                {/* Title */}
-
-                <h3
-                  className="
-                    mt-4
-                    text-center
-                    text-[14px]
-                    font-bold
-                    leading-5
-                    text-white
-                  "
-                >
-                  {step.title}
-                </h3>
-
-                {/* Description */}
-
-                <p
-                  className="
-                    mt-2
-                    px-2
-                    text-center
-                    text-[12px]
-                    leading-5
-                    text-gray-400
-                  "
-                >
-                  {step.desc}
-                </p>
-              </div>
-            );
-          })}
-        </div>
+                <Icon
+                  size={21}
+                  strokeWidth={1.8}
+                  className="text-yellow-400"
+                />
               </div>
 
-      {/* Bottom Premium Card */}
+              {/* Step Number */}
+              <span
+                className="
+                  mt-[-5px]
+                  flex
+                  h-5
+                  w-5
+                  items-center
+                  justify-center
+                  rounded-full
+                  bg-yellow-400
+                  text-[10px]
+                  font-bold
+                  text-black
+                  shadow-[0_0_8px_rgba(255,193,7,0.2)]
+                "
+              >
+                {step.number}
+              </span>
 
-      <div
-        className="
-          mt-8
-          rounded-3xl
-          border
-          border-yellow-500/20
-          bg-gradient-to-r
-          from-yellow-500/10
-          via-orange-500/10
-          to-yellow-500/10
-          p-5
-        "
-      >
-        <div className="flex items-start gap-4">
+              {/* Title */}
+              <h3
+                className="
+                  mt-2
+                  text-[10px]
+                  font-semibold
+                  leading-3
+                  text-white
+                "
+              >
+                {step.title}
+              </h3>
 
-          <div
-            className="
-              flex
-              h-14
-              w-14
-              shrink-0
-              items-center
-              justify-center
-              rounded-2xl
-              bg-yellow-500/15
-              text-2xl
-            "
-          >
-            ✨
-          </div>
+              {/* Description */}
+              <p
+                className="
+                  mt-1
+                  text-[8px]
+                  leading-3
+                  text-gray-500
+                "
+              >
+                {step.description}
+              </p>
 
-          <div>
-
-            <h3 className="text-lg font-bold text-yellow-300">
-              Fast & Secure Booking
-            </h3>
-
-            <p className="mt-2 text-sm leading-6 text-gray-300">
-              Instant confirmation, secure payment, WhatsApp updates,
-              live pooja link, HD recording and prasad delivery after
-              pooja completion.
-            </p>
-
-          </div>
-
-        </div>
-
-        {/* Features */}
-
-        <div className="mt-5 grid grid-cols-2 gap-3">
-
-          <div className="rounded-xl bg-black/20 px-3 py-2 text-center text-xs font-medium text-yellow-300">
-            ✓ Instant Confirmation
-          </div>
-
-          <div className="rounded-xl bg-black/20 px-3 py-2 text-center text-xs font-medium text-yellow-300">
-            ✓ Secure Payment
-          </div>
-
-          <div className="rounded-xl bg-black/20 px-3 py-2 text-center text-xs font-medium text-yellow-300">
-            ✓ Live Video Link
-          </div>
-
-          <div className="rounded-xl bg-black/20 px-3 py-2 text-center text-xs font-medium text-yellow-300">
-            ✓ Prasad Delivery
-          </div>
-
-        </div>
-
+              {/* Arrow */}
+              {step.number !== "5" && (
+                <span
+                  className="
+                    absolute
+                    right-[-7px]
+                    top-6
+                    text-yellow-500/60
+                  "
+                >
+                  →
+                </span>
+              )}
+            </div>
+          );
+        })}
       </div>
-
+    </div>
     </section>
   );
 }
