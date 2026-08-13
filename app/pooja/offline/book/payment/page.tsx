@@ -467,7 +467,7 @@ I want to confirm my offline pooja booking through OurHub.
       `.trim();
 
       const whatsappUrl =
-        `https://wa.me/91YOUR_NUMBER?text=${encodeURIComponent(
+        `https://wa.me/918878632431?text=${encodeURIComponent(
           message
         )}`;
 
