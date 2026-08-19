@@ -801,7 +801,7 @@ export default function AstrologyDetailPage({
           "
         >
           {/* CALL */}
-
+{/* 
           <button
             onClick={handleCall}
             className="
@@ -826,7 +826,7 @@ export default function AstrologyDetailPage({
             />
 
             <span>कॉल</span>
-          </button>
+          </button> */}
 
           {/* CHAT */}
 

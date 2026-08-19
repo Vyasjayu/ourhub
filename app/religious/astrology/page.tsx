@@ -657,7 +657,7 @@ export default function JyotishPage() {
         =================================================== */}
 
         <div className="fixed bottom-[64px] left-1/2 z-40 flex w-full max-w-md -translate-x-1/2 gap-3 bg-[#050B14] px-3 py-2">
-          <Link
+          {/* <Link
             href="/religious/astrology/astrologers?mode=call"
             className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-[#32B85C] text-base font-bold text-white shadow-lg"
           >
@@ -667,7 +667,7 @@ export default function JyotishPage() {
             />
 
             कॉल
-          </Link>
+          </Link> */}
 
           <Link
             href="/religious/astrology/astrologers?mode=chat"
