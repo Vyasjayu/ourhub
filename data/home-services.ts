@@ -1,0 +1,323 @@
+import {
+  Bug,
+  Droplets,
+  Paintbrush,
+  ShieldCheck,
+  Snowflake,
+  Sofa,
+  WashingMachine,
+  Zap,
+} from "lucide-react";
+
+export const serviceCategories = [
+  {
+    id: "ac",
+    name: "AC Service & Repair",
+    shortName: "AC & Repair",
+    image: "/home-services/ac.jpg",
+    icon: Snowflake,
+    services: [
+      {
+        id: "ac-service",
+        name: "AC General Service",
+        description: "Complete AC cleaning and servicing",
+        price: 399,
+        duration: "45-60 min",
+      },
+      {
+        id: "ac-repair",
+        name: "AC Repair",
+        description: "AC inspection and repair",
+        price: 299,
+        duration: "45-60 min",
+      },
+      {
+        id: "ac-installation",
+        name: "AC Installation",
+        description: "Professional AC installation",
+        price: 999,
+        duration: "2-3 hrs",
+      },
+      {
+        id: "ac-gas-refill",
+        name: "AC Gas Refill",
+        description: "AC gas checking and refill",
+        price: 1499,
+        duration: "60-90 min",
+      },
+    ],
+  },
+
+  {
+    id: "cleaning-pest",
+    name: "Cleaning & Pest Control",
+    shortName: "Cleaning & Pest",
+    image: "/home-services/cleaning.jpg",
+    icon: Bug,
+    services: [
+      {
+        id: "home-cleaning",
+        name: "Home Deep Cleaning",
+        description: "Complete home deep cleaning",
+        price: 799,
+        duration: "2-4 hrs",
+      },
+      {
+        id: "bathroom-cleaning",
+        name: "Bathroom Cleaning",
+        description: "Professional bathroom cleaning",
+        price: 299,
+        duration: "45-60 min",
+      },
+      {
+        id: "kitchen-cleaning",
+        name: "Kitchen Cleaning",
+        description: "Complete kitchen cleaning",
+        price: 399,
+        duration: "60-90 min",
+      },
+      {
+        id: "cockroach-control",
+        name: "Cockroach Control",
+        description: "Professional pest treatment",
+        price: 499,
+        duration: "45-60 min",
+      },
+    ],
+  },
+
+  {
+    id: "plumbing",
+    name: "Plumbing Services",
+    shortName: "Plumbing",
+    image: "/home-services/plumbing.jpg",
+    icon: Droplets,
+    services: [
+      {
+        id: "tap-repair",
+        name: "Tap Repair",
+        description: "Tap inspection and repair",
+        price: 99,
+        duration: "30 min",
+      },
+      {
+        id: "sink-repair",
+        name: "Sink Repair",
+        description: "Kitchen and bathroom sink repair",
+        price: 149,
+        duration: "30-45 min",
+      },
+      {
+        id: "toilet-repair",
+        name: "Toilet Repair",
+        description: "Toilet inspection and repair",
+        price: 199,
+        duration: "45 min",
+      },
+      {
+        id: "pipe-leak",
+        name: "Pipe Leakage Repair",
+        description: "Leak detection and repair",
+        price: 149,
+        duration: "30-60 min",
+      },
+      {
+        id: "water-tank",
+        name: "Water Tank Service",
+        description: "Water tank related plumbing work",
+        price: 299,
+        duration: "60 min",
+      },
+    ],
+  },
+
+  {
+    id: "electrical",
+    name: "Electrical Services",
+    shortName: "Electrical",
+    image: "/home-services/electrical.jpg",
+    icon: Zap,
+    services: [
+      {
+        id: "fan-repair",
+        name: "Fan Repair",
+        description: "Fan and regulator repair",
+        price: 149,
+        duration: "30-45 min",
+      },
+      {
+        id: "switch-repair",
+        name: "Switch & Socket Repair",
+        description: "Switch and socket replacement",
+        price: 99,
+        duration: "30 min",
+      },
+      {
+        id: "light-installation",
+        name: "Light Installation",
+        description: "Ceiling and wall light installation",
+        price: 129,
+        duration: "30 min",
+      },
+      {
+        id: "mcbs",
+        name: "MCB Installation",
+        description: "MCB inspection and installation",
+        price: 199,
+        duration: "45 min",
+      },
+      {
+        id: "wiring",
+        name: "Electrical Wiring",
+        description: "Basic electrical wiring work",
+        price: 299,
+        duration: "60-90 min",
+      },
+    ],
+  },
+
+  {
+    id: "appliance",
+    name: "Appliance Repair",
+    shortName: "Appliances",
+    image: "/home-services/appliance.jpg",
+    icon: WashingMachine,
+    services: [
+      {
+        id: "washing-machine",
+        name: "Washing Machine Repair",
+        description: "Inspection and repair",
+        price: 249,
+        duration: "45-60 min",
+      },
+      {
+        id: "refrigerator",
+        name: "Refrigerator Repair",
+        description: "Refrigerator inspection and repair",
+        price: 299,
+        duration: "45-60 min",
+      },
+      {
+        id: "microwave",
+        name: "Microwave Repair",
+        description: "Microwave inspection and repair",
+        price: 249,
+        duration: "45-60 min",
+      },
+      {
+        id: "geyser",
+        name: "Geyser Repair",
+        description: "Geyser inspection and repair",
+        price: 249,
+        duration: "45-60 min",
+      },
+    ],
+  },
+
+  {
+    id: "carpentry",
+    name: "Carpentry Services",
+    shortName: "Carpentry",
+    image: "/home-services/carpentry.jpg",
+    icon: Sofa,
+    services: [
+      {
+        id: "furniture-repair",
+        name: "Furniture Repair",
+        description: "Table, chair and furniture repair",
+        price: 199,
+        duration: "60 min",
+      },
+      {
+        id: "door-repair",
+        name: "Door Repair",
+        description: "Door adjustment and repair",
+        price: 149,
+        duration: "45 min",
+      },
+      {
+        id: "bed-repair",
+        name: "Bed Repair",
+        description: "Bed frame repair",
+        price: 249,
+        duration: "60 min",
+      },
+      {
+        id: "shelf-installation",
+        name: "Shelf Installation",
+        description: "Wall shelf installation",
+        price: 199,
+        duration: "45 min",
+      },
+    ],
+  },
+
+  {
+    id: "painting",
+    name: "Painting Services",
+    shortName: "Painting",
+    image: "/home-services/painting.jpg",
+    icon: Paintbrush,
+    services: [
+      {
+        id: "wall-painting",
+        name: "Wall Painting",
+        description: "Professional wall painting",
+        price: 799,
+        duration: "3-5 hrs",
+      },
+      {
+        id: "room-painting",
+        name: "Room Painting",
+        description: "Complete room painting",
+        price: 1499,
+        duration: "5-7 hrs",
+      },
+      {
+        id: "door-painting",
+        name: "Door Painting",
+        description: "Door repainting service",
+        price: 399,
+        duration: "2-3 hrs",
+      },
+    ],
+  },
+
+  {
+    id: "sanitization",
+    name: "Home Sanitization",
+    shortName: "Sanitization",
+    image: "/home-services/sanitization.jpg",
+    icon: ShieldCheck,
+    services: [
+      {
+        id: "home-sanitization",
+        name: "Home Sanitization",
+        description: "Complete home sanitization",
+        price: 499,
+        duration: "60-90 min",
+      },
+      {
+        id: "office-sanitization",
+        name: "Office Sanitization",
+        description: "Professional office sanitization",
+        price: 799,
+        duration: "2-3 hrs",
+      },
+      {
+        id: "disinfection",
+        name: "Disinfection Service",
+        description: "Professional disinfection treatment",
+        price: 599,
+        duration: "60-90 min",
+      },
+    ],
+  },
+];
+
+export const popularServices = serviceCategories.map((category) => ({
+  id: category.id,
+  title: category.name,
+  image: category.image,
+  icon: category.icon,
+}));

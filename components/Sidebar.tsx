@@ -36,7 +36,7 @@ const menuItems = [
   {
     name: "Home Service",
     icon: Wrench,
-    href: "/home-service",
+    href: "/home-services",
   },
    {
     name: "Web Designing & Development",
