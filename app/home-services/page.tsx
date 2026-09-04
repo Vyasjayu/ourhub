@@ -37,6 +37,7 @@ interface Service {
   title: string;
   icon: React.ElementType;
   image: string;
+  link: string;
 }
 
 const services: Service[] = [
@@ -45,48 +46,49 @@ const services: Service[] = [
     title: "AC Service &\nRepair",
     image: "/home-services/ac.jpg",
     icon: Snowflake,
-  },
-  {
-    id: "cleaning",
-    title: "Cleaning &\nPest Control",
-    image: "/home-services/cleaning.jpg",
-    icon: Bug,
+    link: "/services/ac-repair",
   },
   {
     id: "plumbing",
     title: "Plumbing\nServices",
     image: "/home-services/plumbing.jpg",
     icon: Droplets,
+    link: "/services/ac-repair",
   },
   {
     id: "electrician",
     title: "Electrical\nServices",
     image: "/home-services/electrician.jpg",
     icon: Zap,
+    link: "/services/ac-repair",
   },
   {
     id: "appliance-repair",
     title: "Appliance\nRepair",
     image: "/home-services/appliance.jpg",
     icon: WashingMachine,
+    link: "/services/ac-repair",
   },
   {
     id: "carpenter",
     title: "Carpentry\nServices",
     image: "/home-services/carpentry.jpg",
     icon: Sofa,
+    link: "/services/ac-repair",
   },
   {
     id: "painting",
     title: "Painting\nServices",
     image: "/home-services/painting.jpg",
     icon: Paintbrush,
+    link: "/services/ac-repair",
   },
   {
     id: "sanitization",
     title: "Home\nSanitization",
     image: "/home-services/sanitization.jpg",
     icon: ShieldCheck,
+    link: "/services/ac-repair",
   },
 ];
 

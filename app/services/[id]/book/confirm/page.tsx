@@ -196,29 +196,83 @@ export default function ServiceConfirmPage() {
   ======================================================= */
 
   const handleConfirm = () => {
-    if (!agree) return;
+  if (!agree || !booking) return;
 
-    /*
-      Abhi temporary confirmation.
-
-      Next step mein isi jagah:
-      POST /api/services/bookings
-      call karenge.
-    */
-
-    const finalBooking = {
-      ...booking,
-      status: "pending",
-      createdAt: new Date().toISOString(),
-    };
-
-    localStorage.setItem(
-      "ourhub_service_booking",
-      JSON.stringify(finalBooking)
-    );
-
-    router.push(`/services/${booking.serviceId}/book/success`);
+  const finalBooking = {
+    ...booking,
+    status: "pending",
+    createdAt: new Date().toISOString(),
   };
+
+  // Save booking
+  localStorage.setItem(
+    "ourhub_service_booking",
+    JSON.stringify(finalBooking)
+  );
+
+  // WhatsApp number
+  const whatsappNumber = "918878632431";
+
+  // WhatsApp message
+  const whatsappMessage = `
+🔔 *NEW SERVICE BOOKING - OURHUB*
+
+━━━━━━━━━━━━━━━━━━
+
+🔧 *SERVICE DETAILS*
+
+Service: ${booking.serviceTitle}
+Service ID: ${booking.serviceId}
+
+💰 *PRICE DETAILS*
+
+Service Charge: ₹${booking.price}
+Visit Fee: ₹${booking.visitFee}
+Estimated Total: ₹${booking.total}
+
+━━━━━━━━━━━━━━━━━━
+
+👤 *CUSTOMER DETAILS*
+
+Name: ${booking.customerName}
+Mobile: ${booking.mobile}
+
+📍 *SERVICE ADDRESS*
+
+${booking.address}
+
+━━━━━━━━━━━━━━━━━━
+
+📅 *SERVICE SCHEDULE*
+
+Date: ${formattedDate}
+Time: ${booking.time}
+
+━━━━━━━━━━━━━━━━━━
+
+📌 *BOOKING STATUS*
+
+Status: Pending
+
+🕒 Booking Time:
+${new Date().toLocaleString("en-IN")}
+
+━━━━━━━━━━━━━━━━━━
+
+Booking received from *OURHUB*
+`;
+
+  // Encode WhatsApp message
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+    whatsappMessage
+  )}`;
+
+  // Open WhatsApp in new tab
+  window.open(whatsappUrl, "_blank");
+
+  // Go to success page
+  router.push(`/services/${booking.serviceId}/book/success`);
+};
 
   return (
     <div className="min-h-screen bg-[#020202]">

@@ -25,6 +25,7 @@ import {
   Truck,
   KeyRound,
   SprayCan,
+  ArrowLeft,
 } from "lucide-react";
 
 interface Service {
@@ -241,98 +242,157 @@ export default function ServicesPage() {
             HEADER
         ===================================================== */}
 
-        <header className="sticky top-0 z-50 bg-[#050505]/95 backdrop-blur-xl">
+        
+<header className="sticky top-0 z-50 bg-[#050505]/95 backdrop-blur-xl">
 
-          <div className="px-4 pb-3 pt-5">
+  <div className="px-4 pb-3 pt-5">
 
-            <div className="flex items-center justify-between">
+    {/* TOP HEADER */}
 
-              <div>
+    <div className="flex items-center gap-3">
 
-                <div className="flex items-center gap-2">
-                  <Home className="h-4 w-4 text-[#DFAE45]" />
+      {/* BACK BUTTON */}
 
-                  <span className="text-[9px] font-bold uppercase tracking-[3px] text-[#DFAE45]">
-                    OURHUB
-                  </span>
-                </div>
+      <button
+        type="button"
+        onClick={() => router.back()}
+        aria-label="Go back"
+        className="
+          flex h-10 w-10 shrink-0 items-center justify-center
+          rounded-full
+          border border-white/10
+          bg-white/[0.04]
+          text-white
+          transition
+          active:scale-95
+          hover:border-[#DFAE45]/40
+          hover:bg-[#DFAE45]/10
+        "
+      >
+        <ArrowLeft className="h-4 w-4" />
+      </button>
 
-                <h1 className="mt-1 text-[21px] font-bold tracking-tight">
-                  Home Services
-                </h1>
+      {/* TITLE */}
 
-                <p className="mt-0.5 text-[10px] text-white/40">
-                  Trusted professionals at your doorstep
-                </p>
+      <div className="min-w-0 flex-1">
 
-              </div>
+        <div className="flex items-center gap-2">
 
-              <button
-                type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-[#DFAE45]/20 bg-[#DFAE45]/10"
-              >
-                <Wrench className="h-4 w-4 text-[#DFAE45]" />
-              </button>
+          <Home className="h-4 w-4 shrink-0 text-[#DFAE45]" />
 
-            </div>
+          <span className="text-[9px] font-bold uppercase tracking-[3px] text-[#DFAE45]">
+            OURHUB
+          </span>
 
-            {/* SEARCH */}
+        </div>
 
-            <div className="relative mt-5">
+        <h1 className="mt-1 text-[21px] font-bold tracking-tight">
+          Home Services
+        </h1>
 
-              <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" />
+        <p className="mt-0.5 text-[10px] text-white/40">
+          Trusted professionals at your doorstep
+        </p>
 
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search for a service..."
-                className="h-[48px] w-full rounded-[16px] border border-white/10 bg-[#101010] pl-11 pr-4 text-[12px] text-white outline-none placeholder:text-white/30 focus:border-[#DFAE45]/40"
-              />
+      </div>
 
-              {search && (
-                <button
-                  type="button"
-                  onClick={() => setSearch("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-white/30"
-                >
-                  Clear
-                </button>
-              )}
+      {/* SERVICE ICON */}
 
-            </div>
+      <button
+        type="button"
+        className="
+          flex h-10 w-10 shrink-0 items-center justify-center
+          rounded-full
+          border border-[#DFAE45]/20
+          bg-[#DFAE45]/10
+        "
+      >
+        <Wrench className="h-4 w-4 text-[#DFAE45]" />
+      </button>
 
-          </div>
+    </div>
 
-          {/* CATEGORY */}
+    {/* SEARCH */}
 
-          <div className="overflow-x-auto border-b border-white/[0.06] px-4 pb-3 scrollbar-hide">
+    <div className="relative mt-5">
 
-            <div className="flex w-max gap-2">
+      <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" />
 
-              {categories.map((item) => {
-                const active = category === item;
+      <input
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Search for a service..."
+        className="
+          h-[48px] w-full
+          rounded-[16px]
+          border border-white/10
+          bg-[#101010]
+          pl-11 pr-14
+          text-[12px]
+          text-white
+          outline-none
+          placeholder:text-white/30
+          transition
+          focus:border-[#DFAE45]/40
+        "
+      />
 
-                return (
-                  <button
-                    type="button"
-                    key={item}
-                    onClick={() => setCategory(item)}
-                    className={`rounded-full px-4 py-2 text-[10px] font-semibold transition ${
-                      active
-                        ? "bg-[#DFAE45] text-black"
-                        : "border border-white/10 bg-[#0d0d0d] text-white/50"
-                    }`}
-                  >
-                    {item}
-                  </button>
-                );
-              })}
+      {search && (
+        <button
+          type="button"
+          onClick={() => setSearch("")}
+          className="
+            absolute right-3 top-1/2
+            -translate-y-1/2
+            rounded-md
+            px-2 py-1
+            text-[9px]
+            text-white/40
+            transition
+            hover:bg-white/[0.05]
+            hover:text-[#DFAE45]
+          "
+        >
+          Clear
+        </button>
+      )}
 
-            </div>
+    </div>
 
-          </div>
+  </div>
 
-        </header>
+  {/* CATEGORY */}
+
+  <div className="overflow-x-auto border-b border-white/[0.06] px-4 pb-3 scrollbar-hide">
+
+    <div className="flex w-max gap-2">
+
+      {categories.map((item) => {
+        const active = category === item;
+
+        return (
+          <button
+            type="button"
+            key={item}
+            onClick={() => setCategory(item)}
+            className={`rounded-full px-4 py-2 text-[10px] font-semibold transition ${
+              active
+                ? "bg-[#DFAE45] text-black shadow-[0_4px_15px_rgba(223,174,69,0.15)]"
+                : "border border-white/10 bg-[#0d0d0d] text-white/50"
+            }`}
+          >
+            {item}
+          </button>
+        );
+      })}
+
+    </div>
+
+  </div>
+
+</header>
+
+
 
         {/* =====================================================
             TRUST
