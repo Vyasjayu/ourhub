@@ -111,7 +111,7 @@ export default function Home() {
               from-[#0a1727]
               to-[#07111f]
               px-4
-              pb-4
+              pb-0
               pt-2
             "
           >
@@ -217,7 +217,7 @@ export default function Home() {
               "
             >
               <div className="border-r border-[#d8aa39]/10 px-2 py-4 text-center">
-                <p className="text-[15px]">✦</p>
+                <p className="text-[15px] text-white">✦</p>
 
                 <p className="mt-1 text-[10px] font-bold text-white">
                   Verified Experts
@@ -229,7 +229,7 @@ export default function Home() {
               </div>
 
               <div className="border-r border-[#d8aa39]/10 px-2 py-4 text-center">
-                <p className="text-[15px]">◆</p>
+                <p className="text-[15px] text-white">◆</p>
 
                 <p className="mt-1 text-[10px] font-bold text-white">
                   Premium Quality
@@ -241,7 +241,7 @@ export default function Home() {
               </div>
 
               <div className="px-2 py-4 text-center">
-                <p className="text-[15px]">✦</p>
+                <p className="text-[15px] text-white">✦</p>
 
                 <p className="mt-1 text-[10px] font-bold text-white">
                   Fast Booking
