@@ -1,11 +1,17 @@
 "use client";
 
 import {
+  Check,
+  CheckCircle2,
   Code2,
+  Cpu,
   Database,
   Globe,
+  Layers3,
   Server,
   Smartphone,
+  Sparkles,
+  Zap,
 } from "lucide-react";
 
 interface Service {
@@ -19,114 +25,302 @@ interface Props {
 export default function Technology({
   service,
 }: Props) {
-
   const getIcon = (tech: string) => {
-
     const value = tech.toLowerCase();
 
     if (
       value.includes("react") ||
-      value.includes("next")
+      value.includes("next") ||
+      value.includes("javascript") ||
+      value.includes("typescript") ||
+      value.includes("html") ||
+      value.includes("css")
     ) {
-      return <Code2 size={22} />;
+      return <Code2 size={19} strokeWidth={1.8} />;
     }
 
     if (
       value.includes("mongo") ||
-      value.includes("firebase")
+      value.includes("firebase") ||
+      value.includes("mysql") ||
+      value.includes("postgres") ||
+      value.includes("database")
     ) {
-      return <Database size={22} />;
+      return <Database size={19} strokeWidth={1.8} />;
     }
 
     if (
       value.includes("node") ||
-      value.includes("express")
+      value.includes("express") ||
+      value.includes("api") ||
+      value.includes("server")
     ) {
-      return <Server size={22} />;
+      return <Server size={19} strokeWidth={1.8} />;
     }
 
     if (
       value.includes("android") ||
       value.includes("ios") ||
-      value.includes("react native")
+      value.includes("react native") ||
+      value.includes("mobile")
     ) {
-      return <Smartphone size={22} />;
+      return <Smartphone size={19} strokeWidth={1.8} />;
     }
 
-    return <Globe size={22} />;
+    if (
+      value.includes("cloud") ||
+      value.includes("aws") ||
+      value.includes("azure") ||
+      value.includes("vercel")
+    ) {
+      return <Globe size={19} strokeWidth={1.8} />;
+    }
+
+    return <Cpu size={19} strokeWidth={1.8} />;
   };
 
   return (
+    <section className="relative mt-10 overflow-hidden px-4">
+      {/* =====================================================
+          AMBIENT GLOW
+      ===================================================== */}
 
-    <section className="px-4 mt-10">
+      <div className="pointer-events-none absolute -left-24 top-20 h-60 w-60 rounded-full bg-[#DFAE45]/[0.04] blur-[100px]" />
 
-      {/* Heading */}
+      <div className="pointer-events-none absolute -right-24 bottom-10 h-60 w-60 rounded-full bg-blue-500/[0.025] blur-[100px]" />
 
-      <div>
+      <div className="relative">
+        {/* ===================================================
+            HEADER
+        =================================================== */}
 
-        <h2 className="text-2xl font-bold text-white">
-          Technology Stack
-        </h2>
-
-        <p className="mt-2 text-sm text-gray-400">
-          Latest technologies used to build your project.
-        </p>
-
-      </div>
-
-      {/* Cards */}
-
-      <div className="mt-6 grid grid-cols-2 gap-4">
-
-        {service.technologies.map((tech) => (
-
-          <div
-            key={tech}
-            className="
-            rounded-2xl
-            border
-            border-yellow-500/20
-            bg-[#111C30]
-            p-5
-            transition
-            hover:border-yellow-400
-            hover:scale-[1.02]
-            "
-          >
-
-            <div
-              className="
-              flex
-              h-12
-              w-12
-              items-center
-              justify-center
-              rounded-xl
-              bg-yellow-400/10
-              text-yellow-400
-              "
-            >
-
-              {getIcon(tech)}
-
+        <div className="mb-5">
+          <div className="mb-3 flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-[#DFAE45]/20 bg-[#DFAE45]/10">
+              <Layers3
+                size={15}
+                strokeWidth={1.9}
+                className="text-[#DFAE45]"
+              />
             </div>
 
-            <h3 className="mt-4 text-base font-semibold text-white">
-              {tech}
-            </h3>
-
-            <p className="mt-1 text-xs text-gray-400">
-              Industry Standard Technology
-            </p>
-
+            <span className="text-[9px] font-extrabold uppercase tracking-[1.8px] text-[#DFAE45]">
+              Our Technology
+            </span>
           </div>
 
-        ))}
+          <div className="flex items-center gap-2">
+            <span className="h-8 w-1 rounded-full bg-gradient-to-b from-[#FFD86A] to-[#DFAE45]" />
 
+            <div>
+              <h2 className="text-[24px] font-extrabold tracking-tight text-white">
+                Technology Stack
+              </h2>
+
+              <p className="mt-1 text-[10px] leading-4 text-gray-500">
+                Modern technologies built for performance and scalability.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* ===================================================
+            STACK SUMMARY
+        =================================================== */}
+
+        <div className="relative overflow-hidden rounded-[24px] border border-[#DFAE45]/15 bg-gradient-to-br from-[#111F30] via-[#0C1827] to-[#08121E] p-4">
+          {/* Glow */}
+          <div className="pointer-events-none absolute -right-12 -top-14 h-36 w-36 rounded-full bg-[#DFAE45]/10 blur-3xl" />
+
+          {/* Top line */}
+          <div className="pointer-events-none absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-[#DFAE45]/40 to-transparent" />
+
+          <div className="relative flex items-center gap-3">
+            {/* Icon */}
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[16px] border border-[#DFAE45]/15 bg-[#DFAE45]/10">
+              <Cpu
+                size={19}
+                strokeWidth={1.8}
+                className="text-[#DFAE45]"
+              />
+            </div>
+
+            {/* Text */}
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2">
+                <p className="text-[12px] font-extrabold text-white">
+                  Modern Tech Stack
+                </p>
+
+                <span className="rounded-full border border-green-400/10 bg-green-400/[0.06] px-2 py-1 text-[6px] font-extrabold uppercase tracking-[0.7px] text-green-400">
+                  Updated
+                </span>
+              </div>
+
+              <p className="mt-1 text-[8px] leading-4 text-gray-600">
+                Carefully selected tools for reliable digital products.
+              </p>
+            </div>
+
+            {/* Count */}
+            <div className="shrink-0 text-right">
+              <p className="text-[21px] font-black leading-none text-[#DFAE45]">
+                {service.technologies.length}+
+              </p>
+
+              <p className="mt-1 text-[6px] font-bold uppercase tracking-[0.8px] text-gray-600">
+                Technologies
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* ===================================================
+            TECHNOLOGY CARDS
+        =================================================== */}
+
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          {service.technologies.map((tech, index) => (
+            <div
+              key={tech}
+              className="
+                group relative overflow-hidden
+                rounded-[23px]
+                border border-white/[0.07]
+                bg-gradient-to-br
+                from-[#101D2D]
+                via-[#0B1726]
+                to-[#08121F]
+                p-4
+                shadow-[0_12px_35px_rgba(0,0,0,0.18)]
+                transition-all duration-300
+                hover:-translate-y-1
+                hover:border-[#DFAE45]/25
+                hover:shadow-[0_18px_40px_rgba(0,0,0,0.28)]
+                active:scale-[0.98]
+              "
+            >
+              {/* Card glow */}
+              <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-[#DFAE45]/[0.045] blur-3xl transition-all duration-500 group-hover:bg-[#DFAE45]/[0.11]" />
+
+              {/* Gold top line */}
+              <div className="pointer-events-none absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-[#DFAE45]/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+              <div className="relative">
+                {/* Icon + number */}
+                <div className="flex items-start justify-between">
+                  <div className="relative flex h-[46px] w-[46px] items-center justify-center overflow-hidden rounded-[16px] border border-[#DFAE45]/15 bg-[#DFAE45]/[0.07] text-[#DFAE45] transition-all duration-300 group-hover:scale-105 group-hover:border-[#DFAE45]/30 group-hover:bg-[#DFAE45]/10">
+                    {/* Shine */}
+                    <span className="pointer-events-none absolute -left-8 top-0 h-full w-6 rotate-[25deg] bg-white/15 blur-sm transition-all duration-700 group-hover:left-[120%]" />
+
+                    <span className="relative z-10">
+                      {getIcon(tech)}
+                    </span>
+                  </div>
+
+                  <span className="text-[7px] font-extrabold tracking-[1px] text-gray-700">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </div>
+
+                {/* Tech name */}
+                <h3 className="mt-4 line-clamp-1 text-[13px] font-extrabold text-white transition-colors duration-300 group-hover:text-[#FFD86A]">
+                  {tech}
+                </h3>
+
+                {/* Description */}
+                <p className="mt-1 text-[8px] leading-4 text-gray-600">
+                  Industry standard technology
+                </p>
+
+                {/* Status */}
+                <div className="mt-3 flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <span className="h-1.5 w-1.5 rounded-full bg-green-400 shadow-[0_0_7px_rgba(74,222,128,0.65)]" />
+
+                    <span className="text-[7px] font-bold uppercase tracking-[0.7px] text-green-400">
+                      Preferred
+                    </span>
+                  </div>
+
+                  <Check
+                    size={12}
+                    strokeWidth={2.7}
+                    className="text-green-400 opacity-60"
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* ===================================================
+            TECH PHILOSOPHY
+        =================================================== */}
+
+        <div className="relative mt-4 overflow-hidden rounded-[25px] border border-white/[0.07] bg-[#091421] p-4">
+          {/* Ambient */}
+          <div className="pointer-events-none absolute -left-12 -bottom-12 h-32 w-32 rounded-full bg-[#DFAE45]/[0.05] blur-3xl" />
+
+          <div className="relative flex items-start gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[15px] border border-[#DFAE45]/15 bg-[#DFAE45]/10">
+              <Zap
+                size={17}
+                strokeWidth={1.9}
+                className="text-[#DFAE45]"
+              />
+            </div>
+
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1.5">
+                <Sparkles
+                  size={10}
+                  strokeWidth={2}
+                  className="text-[#DFAE45]"
+                />
+
+                <span className="text-[8px] font-extrabold uppercase tracking-[1.3px] text-[#DFAE45]">
+                  Our Approach
+                </span>
+              </div>
+
+              <h3 className="mt-1 text-[13px] font-extrabold text-white">
+                Technology that works for you
+              </h3>
+
+              <p className="mt-1.5 text-[8px] leading-4 text-gray-600">
+                We choose the right technology based on your business needs,
+                performance goals and future scalability.
+              </p>
+            </div>
+          </div>
+
+          {/* Bottom trust strip */}
+          <div className="relative mt-4 flex items-center justify-center gap-2 border-t border-white/[0.05] pt-3">
+            <CheckCircle2
+              size={11}
+              strokeWidth={2.4}
+              className="text-green-400"
+            />
+
+            <span className="text-[7px] font-bold uppercase tracking-[0.8px] text-gray-600">
+              Modern Stack
+            </span>
+
+            <span className="h-1 w-1 rounded-full bg-white/10" />
+
+            <span className="text-[7px] font-bold uppercase tracking-[0.8px] text-gray-600">
+              Clean Code
+            </span>
+
+            <span className="h-1 w-1 rounded-full bg-white/10" />
+
+            <span className="text-[7px] font-bold uppercase tracking-[0.8px] text-gray-600">
+              Scalable
+            </span>
+          </div>
+        </div>
       </div>
-
     </section>
-
   );
-
 }

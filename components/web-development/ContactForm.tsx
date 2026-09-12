@@ -1,33 +1,76 @@
+
 "use client";
 
 import { useState } from "react";
+import {
+  ArrowRight,
+  CheckCircle2,
+  Mail,
+  MessageCircle,
+  Phone,
+  Send,
+  Sparkles,
+  User,
+} from "lucide-react";
+
+interface FormState {
+  name: string;
+  phone: string;
+  email: string;
+  message: string;
+}
 
 export default function ContactForm() {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<FormState>({
     name: "",
     phone: "",
     email: "",
     message: "",
   });
 
+  const [error, setError] = useState("");
+
+  const updateField = (field: keyof FormState, value: string) => {
+    setForm((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+
+    if (error) {
+      setError("");
+    }
+  };
+
   const handleSubmit = () => {
-    if (!form.name || !form.phone || !form.message) {
-      alert("Please fill all required fields.");
+    const name = form.name.trim();
+    const phone = form.phone.trim();
+    const email = form.email.trim();
+    const message = form.message.trim();
+
+    if (!name || !phone || !message) {
+      setError("Please fill in all required fields.");
       return;
     }
 
-    const phoneNumber = "+918878632431"; // Your WhatsApp Number
+    const cleanPhone = phone.replace(/\D/g, "");
+
+    if (cleanPhone.length < 10) {
+      setError("Please enter a valid 10-digit phone number.");
+      return;
+    }
+
+    const phoneNumber = "918878632431";
 
     const whatsappMessage = `💻 *New Web Development Enquiry*
 
-👤 *Name:* ${form.name}
+👤 *Name:* ${name}
 
-📞 *Phone:* +91 ${form.phone}
+📞 *Phone:* +91 ${cleanPhone}
 
-📧 *Email:* ${form.email || "Not Provided"}
+📧 *Email:* ${email || "Not Provided"}
 
 📝 *Project Details:*
-${form.message}
+${message}
 
 ━━━━━━━━━━━━━━━
 🚀 Sent from OurHub Website`;
@@ -44,91 +87,249 @@ ${form.message}
       email: "",
       message: "",
     });
+
+    setError("");
   };
 
   return (
-    <section className="px-4 mt-10">
+    <section className="relative mt-12 overflow-hidden px-4">
+      {/* ================= AMBIENT GLOW ================= */}
+      <div className="pointer-events-none absolute -left-24 top-20 h-60 w-60 rounded-full bg-[#DFAE45]/[0.05] blur-3xl" />
 
-      <h2 className="text-2xl font-bold text-white">
-        Request a Free Quote
-      </h2>
+      <div className="pointer-events-none absolute -right-24 bottom-10 h-64 w-64 rounded-full bg-green-500/[0.025] blur-3xl" />
 
-      <p className="text-gray-400 mt-2">
-        Tell us about your project.
-      </p>
+      {/* ================= HEADER ================= */}
+      <div className="relative">
+        <div className="mb-3 flex items-center gap-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-[#DFAE45]/20 bg-[#DFAE45]/10">
+            <Send
+              size={15}
+              strokeWidth={2}
+              className="text-[#DFAE45]"
+            />
+          </div>
 
-      <div className="mt-6 space-y-4">
+          <span className="text-[10px] font-bold uppercase tracking-[2px] text-[#DFAE45]">
+            Get Started
+          </span>
+        </div>
 
-        <input
-          type="text"
-          placeholder="Full Name"
-          value={form.name}
-          onChange={(e) =>
-            setForm({
-              ...form,
-              name: e.target.value,
-            })
-          }
-          className="w-full rounded-2xl bg-[#111C30] border border-yellow-500/20 px-4 py-4 text-white outline-none focus:border-yellow-400"
-        />
+        <div className="flex items-center gap-2">
+          <span className="h-7 w-1 rounded-full bg-gradient-to-b from-[#FFD86A] to-[#DFAE45]" />
 
-        <input
-          type="tel"
-          placeholder="Phone Number"
-          value={form.phone}
-          onChange={(e) =>
-            setForm({
-              ...form,
-              phone: e.target.value,
-            })
-          }
-          className="w-full rounded-2xl bg-[#111C30] border border-yellow-500/20 px-4 py-4 text-white outline-none focus:border-yellow-400"
-        />
+          <h2 className="text-[24px] font-extrabold tracking-tight text-white">
+            Request a Free Quote
+          </h2>
+        </div>
 
-        <input
-          type="email"
-          placeholder="Email Address"
-          value={form.email}
-          onChange={(e) =>
-            setForm({
-              ...form,
-              email: e.target.value,
-            })
-          }
-          className="w-full rounded-2xl bg-[#111C30] border border-yellow-500/20 px-4 py-4 text-white outline-none focus:border-yellow-400"
-        />
-
-        <textarea
-          rows={5}
-          placeholder="Project Details..."
-          value={form.message}
-          onChange={(e) =>
-            setForm({
-              ...form,
-              message: e.target.value,
-            })
-          }
-          className="w-full rounded-2xl bg-[#111C30] border border-yellow-500/20 px-4 py-4 text-white outline-none resize-none focus:border-yellow-400"
-        />
-
-        <button
-          onClick={handleSubmit}
-          className="
-            w-full
-            rounded-full
-            bg-yellow-400
-            py-4
-            font-bold
-            text-black
-            transition
-            hover:scale-105
-          "
-        >
-          Send Request
-        </button>
-
+        <p className="mt-2 pl-3 text-[13px] leading-5 text-gray-400">
+          Tell us about your project and let&apos;s turn your idea into a
+          powerful digital experience.
+        </p>
       </div>
 
+      {/* ================= INTRO CARD ================= */}
+      <div className="relative mt-5 overflow-hidden rounded-[26px] border border-[#DFAE45]/15 bg-gradient-to-br from-[#101D2D] to-[#091321] p-4">
+        <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#DFAE45]/10 blur-3xl" />
+
+        <div className="relative flex items-center gap-3">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#DFAE45]/10">
+            <Sparkles
+              size={19}
+              className="text-[#DFAE45]"
+              strokeWidth={2}
+            />
+          </div>
+
+          <div className="min-w-0">
+            <p className="text-[12px] font-bold text-white">
+              Let&apos;s build something great
+            </p>
+
+            <p className="mt-1 text-[9px] leading-4 text-gray-500">
+              Share your requirements. We&apos;ll discuss the best solution
+              for your business.
+            </p>
+          </div>
+        </div>
+
+        <div className="relative mt-4 flex items-center gap-2 border-t border-white/[0.06] pt-3">
+          <span className="flex items-center gap-1.5 text-[9px] font-medium text-gray-500">
+            <CheckCircle2 size={11} className="text-green-400" />
+            Free consultation
+          </span>
+
+          <span className="h-1 w-1 rounded-full bg-white/20" />
+
+          <span className="flex items-center gap-1.5 text-[9px] font-medium text-gray-500">
+            <CheckCircle2 size={11} className="text-green-400" />
+            No obligation
+          </span>
+        </div>
+      </div>
+
+      {/* ================= FORM ================= */}
+      <div className="relative mt-5 space-y-3.5">
+        {/* NAME */}
+        <div className="group relative">
+          <div className="pointer-events-none absolute left-4 top-1/2 z-10 flex -translate-y-1/2 items-center">
+            <User
+              size={17}
+              strokeWidth={2}
+              className="text-gray-500 transition-colors group-focus-within:text-[#DFAE45]"
+            />
+          </div>
+
+          <input
+            type="text"
+            placeholder="Full Name *"
+            value={form.name}
+            onChange={(e) => updateField("name", e.target.value)}
+            className="h-[56px] w-full rounded-2xl border border-white/[0.08] bg-[#0A1422] pl-12 pr-4 text-[13px] font-medium text-white outline-none transition-all duration-300 placeholder:text-gray-500 focus:border-[#DFAE45]/40 focus:bg-[#0C1726] focus:shadow-[0_0_0_3px_rgba(223,174,69,0.05)]"
+          />
+        </div>
+
+        {/* PHONE */}
+        <div className="group relative">
+          <div className="pointer-events-none absolute left-4 top-1/2 z-10 flex -translate-y-1/2 items-center">
+            <Phone
+              size={17}
+              strokeWidth={2}
+              className="text-gray-500 transition-colors group-focus-within:text-[#DFAE45]"
+            />
+          </div>
+
+          <div className="pointer-events-none absolute left-11 top-1/2 z-10 h-5 -translate-y-1/2 border-l border-white/[0.08]" />
+
+          <span className="pointer-events-none absolute left-[52px] top-1/2 z-10 -translate-y-1/2 text-[12px] font-semibold text-gray-500">
+            +91
+          </span>
+
+          <input
+            type="tel"
+            inputMode="numeric"
+            maxLength={10}
+            placeholder="Phone Number *"
+            value={form.phone}
+            onChange={(e) =>
+              updateField(
+                "phone",
+                e.target.value.replace(/\D/g, "").slice(0, 10)
+              )
+            }
+            className="h-[56px] w-full rounded-2xl border border-white/[0.08] bg-[#0A1422] pl-[82px] pr-4 text-[13px] font-medium text-white outline-none transition-all duration-300 placeholder:text-gray-500 focus:border-[#DFAE45]/40 focus:bg-[#0C1726] focus:shadow-[0_0_0_3px_rgba(223,174,69,0.05)]"
+          />
+        </div>
+
+        {/* EMAIL */}
+        <div className="group relative">
+          <div className="pointer-events-none absolute left-4 top-1/2 z-10 flex -translate-y-1/2 items-center">
+            <Mail
+              size={17}
+              strokeWidth={2}
+              className="text-gray-500 transition-colors group-focus-within:text-[#DFAE45]"
+            />
+          </div>
+
+          <input
+            type="email"
+            placeholder="Email Address (Optional)"
+            value={form.email}
+            onChange={(e) => updateField("email", e.target.value)}
+            className="h-[56px] w-full rounded-2xl border border-white/[0.08] bg-[#0A1422] pl-12 pr-4 text-[13px] font-medium text-white outline-none transition-all duration-300 placeholder:text-gray-500 focus:border-[#DFAE45]/40 focus:bg-[#0C1726] focus:shadow-[0_0_0_3px_rgba(223,174,69,0.05)]"
+          />
+        </div>
+
+        {/* MESSAGE */}
+        <div className="group relative">
+          <div className="pointer-events-none absolute left-4 top-4 z-10">
+            <MessageCircle
+              size={17}
+              strokeWidth={2}
+              className="text-gray-500 transition-colors group-focus-within:text-[#DFAE45]"
+            />
+          </div>
+
+          <textarea
+            rows={5}
+            placeholder="Tell us about your project *"
+            value={form.message}
+            onChange={(e) => updateField("message", e.target.value)}
+            className="min-h-[130px] w-full resize-none rounded-2xl border border-white/[0.08] bg-[#0A1422] px-4 pb-4 pl-12 pt-4 text-[13px] font-medium leading-5 text-white outline-none transition-all duration-300 placeholder:text-gray-500 focus:border-[#DFAE45]/40 focus:bg-[#0C1726] focus:shadow-[0_0_0_3px_rgba(223,174,69,0.05)]"
+          />
+
+          <span className="pointer-events-none absolute bottom-3 right-4 text-[9px] text-gray-600">
+            {form.message.length}/500
+          </span>
+        </div>
+
+        {/* ================= ERROR ================= */}
+        {error && (
+          <div className="flex items-center gap-2 rounded-2xl border border-red-500/15 bg-red-500/[0.06] px-4 py-3">
+            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-500/10 text-[10px] font-bold text-red-400">
+              !
+            </span>
+
+            <p className="text-[10px] font-medium text-red-400">
+              {error}
+            </p>
+          </div>
+        )}
+
+        {/* ================= SUBMIT BUTTON ================= */}
+        <button
+          type="button"
+          onClick={handleSubmit}
+          className="group relative flex h-[56px] w-full items-center justify-center gap-2 overflow-hidden rounded-2xl bg-gradient-to-r from-[#DFAE45] via-[#E8BC58] to-[#DFAE45] text-[13px] font-extrabold text-black shadow-[0_14px_35px_rgba(223,174,69,0.16)] transition-all duration-300 hover:shadow-[0_16px_40px_rgba(223,174,69,0.24)] active:scale-[0.98]"
+        >
+          {/* Shine */}
+          <span className="pointer-events-none absolute inset-y-0 -left-20 w-16 skew-x-[-20deg] bg-white/25 blur-sm transition-all duration-700 group-hover:left-[110%]" />
+
+          <Send size={17} strokeWidth={2.5} />
+
+          <span>Send Request on WhatsApp</span>
+
+          <ArrowRight
+            size={17}
+            strokeWidth={2.5}
+            className="transition-transform duration-300 group-hover:translate-x-1"
+          />
+        </button>
+
+        {/* ================= PRIVACY ================= */}
+        <p className="px-3 text-center text-[9px] leading-4 text-gray-600">
+          By submitting this form, you agree to be contacted regarding your
+          project. Your information is used only to respond to your enquiry.
+        </p>
+      </div>
+
+      {/* ================= TRUST FOOTER ================= */}
+      <div className="relative mt-5 grid grid-cols-3 overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02]">
+        <div className="flex flex-col items-center justify-center gap-1.5 border-r border-white/[0.06] px-2 py-3">
+          <CheckCircle2 size={14} className="text-green-400" />
+
+          <span className="text-center text-[8px] font-semibold text-gray-500">
+            Transparent
+          </span>
+        </div>
+
+        <div className="flex flex-col items-center justify-center gap-1.5 border-r border-white/[0.06] px-2 py-3">
+          <MessageCircle size={14} className="text-[#DFAE45]" />
+
+          <span className="text-center text-[8px] font-semibold text-gray-500">
+            WhatsApp Support
+          </span>
+        </div>
+
+        <div className="flex flex-col items-center justify-center gap-1.5 px-2 py-3">
+          <Sparkles size={14} className="text-[#DFAE45]" />
+
+          <span className="text-center text-[8px] font-semibold text-gray-500">
+            Premium Service
+          </span>
+        </div>
+      </div>
     </section>
   );
 }
+

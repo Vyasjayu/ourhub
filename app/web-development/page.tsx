@@ -16,44 +16,133 @@ import StickyCTA from "@/components/web-development/StickyCTA";
 
 export default function WebDevelopmentPage() {
   return (
-    <main className="min-h-screen bg-[#050B14] flex justify-center">
+    <main className="min-h-screen bg-[#02060D] text-white">
+      {/* Premium mobile canvas */}
+      <div className="relative mx-auto min-h-screen w-full max-w-[430px] overflow-hidden bg-[#050B14] shadow-[0_0_80px_rgba(0,0,0,0.45)]">
 
-      <div className="w-full max-w-[430px] bg-[#050B14] min-h-screen pb-28">
+        {/* =========================
+            BACKGROUND ATMOSPHERE
+        ========================== */}
 
-        <Header />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[520px] overflow-hidden"
+        >
+          <div className="absolute -left-[180px] -top-[180px] h-[420px] w-[420px] rounded-full bg-[#DFAE45]/[0.07] blur-[110px]" />
 
-        <Hero />
+          <div className="absolute -right-[180px] top-[80px] h-[380px] w-[380px] rounded-full bg-[#315A82]/[0.08] blur-[120px]" />
 
-        <SearchBar />
+          <div className="absolute left-1/2 top-[280px] h-[240px] w-[240px] -translate-x-1/2 rounded-full bg-[#DFAE45]/[0.035] blur-[100px]" />
+        </div>
 
-        <FeaturedServices />
+        {/* =========================
+            TOP DECORATIVE LINE
+        ========================== */}
 
-        <OfferBanner />
+        <div
+          aria-hidden="true"
+          className="absolute left-1/2 top-0 z-20 h-px w-[70%] -translate-x-1/2 bg-gradient-to-r from-transparent via-[#DFAE45]/40 to-transparent"
+        />
 
-        <WhyChooseUs />
+        {/* =========================
+            PAGE CONTENT
+        ========================== */}
 
-        <TechStack />
+        <div className="relative z-10">
 
-        <Stats />
+          {/* Header */}
+          <header className="sticky top-0 z-50">
+            <Header />
+          </header>
 
-        <Portfolio />
+          {/* Hero */}
+          <section className="relative">
+            <Hero />
+          </section>
 
-        <Testimonials />
+          {/* Search */}
+          <section className="relative z-20 -mt-1">
+            <SearchBar />
+          </section>
 
-        <Pricing />
+          {/* Featured Services */}
+          <section className="relative mt-5">
+            <FeaturedServices />
+          </section>
 
-        <FAQ />
+          {/* Offer */}
+          <section className="relative mt-5">
+            <OfferBanner />
+          </section>
 
-        <ContactForm />
+          {/* Why Choose Us */}
+          <section className="relative mt-7">
+            <WhyChooseUs />
+          </section>
 
-        <WhatsAppCTA />
+          {/* Technology */}
+          <section className="relative mt-7">
+            <TechStack />
+          </section>
 
+          {/* Stats */}
+          <section className="relative mt-7">
+            <Stats />
+          </section>
+
+          {/* Portfolio */}
+          <section className="relative mt-7">
+            <Portfolio />
+          </section>
+
+          {/* Testimonials */}
+          <section className="relative mt-7">
+            <Testimonials />
+          </section>
+
+          {/* Pricing */}
+          <section className="relative mt-7">
+            <Pricing />
+          </section>
+
+          {/* FAQ */}
+          <section className="relative mt-7">
+            <FAQ />
+          </section>
+
+          {/* Contact */}
+          <section className="relative mt-7">
+            <ContactForm />
+          </section>
+
+          {/* WhatsApp CTA */}
+          <section className="relative mt-7">
+            <WhatsAppCTA />
+          </section>
+
+          {/* Bottom breathing space */}
+          <div className="h-28" />
+        </div>
+
+        {/* =========================
+            BOTTOM FADE
+        ========================== */}
+
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-0 left-0 right-0 z-30 h-32 bg-gradient-to-t from-[#050B14] via-[#050B14]/70 to-transparent"
+        />
       </div>
 
-      {/* Fixed Bottom CTA */}
+      {/* =========================
+          FIXED CTA
+      ========================== */}
 
-      <StickyCTA />
-
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[100] flex justify-center">
+        <div className="pointer-events-auto w-full max-w-[430px] px-3 pb-3">
+          <StickyCTA />
+        </div>
+      </div>
     </main>
   );
 }
