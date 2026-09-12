@@ -1,45 +1,152 @@
+
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Bell } from "lucide-react";
+import {
+  ArrowLeft,
+  Bell,
+  Sparkles,
+} from "lucide-react";
 
 export default function Header() {
   return (
-    <header className="flex items-center justify-between pt-4">
+    <header className="relative pt-4">
+      {/* Ambient Glow */}
+      <div className="pointer-events-none absolute left-1/2 top-0 h-24 w-52 -translate-x-1/2 rounded-full bg-[#DFAE45]/[0.06] blur-[45px]" />
 
-      {/* Back */}
+      <div className="relative flex items-center justify-between">
+        {/* =========================================
+            BACK BUTTON
+        ========================================== */}
+        <Link
+          href="/pooja"
+          aria-label="Back to Pooja"
+          className="
+            group
+            flex
+            h-11
+            w-11
+            shrink-0
+            items-center
+            justify-center
+            rounded-2xl
+            border
+            border-white/[0.08]
+            bg-white/[0.035]
+            text-white/65
+            shadow-[0_8px_25px_rgba(0,0,0,0.18)]
+            backdrop-blur-xl
+            transition-all
+            duration-300
+            hover:border-[#DFAE45]/30
+            hover:bg-[#DFAE45]/[0.07]
+            hover:text-[#E7B94F]
+            active:scale-90
+          "
+        >
+          <ArrowLeft
+            size={20}
+            strokeWidth={1.8}
+            className="transition-transform duration-300 group-hover:-translate-x-0.5"
+          />
+        </Link>
 
-      <Link
-        href="/pooja"
-        className="flex h-11 w-11 items-center justify-center rounded-2xl border border-yellow-500/30 bg-[#101827] text-yellow-400 transition active:scale-95"
-      >
-        <ArrowLeft size={22} />
-      </Link>
+        {/* =========================================
+            CENTER BRANDING
+        ========================================== */}
+        <div className="absolute left-1/2 -translate-x-1/2 text-center">
+          {/* Brand */}
+          <div className="flex items-center justify-center gap-1.5">
+            <Sparkles
+              size={10}
+              strokeWidth={1.7}
+              className="text-[#DFAE45]/70"
+            />
 
-      {/* Title */}
+            <p className="text-[9px] font-bold tracking-[0.38em] text-[#DFAE45]">
+              OURHUB
+            </p>
 
-      <div className="text-center">
+            <Sparkles
+              size={10}
+              strokeWidth={1.7}
+              className="text-[#DFAE45]/70"
+            />
+          </div>
 
-        <p className="text-[10px] tracking-[5px] text-yellow-500">
-          OURHUB
-        </p>
+          {/* Title */}
+          <h1 className="mt-1 whitespace-nowrap text-[17px] font-bold tracking-[-0.02em] text-white">
+            Online Pooja
+          </h1>
 
-        <h1 className="mt-1 text-xl font-bold text-yellow-400">
-          Online Pooja Booking
-        </h1>
+          {/* Subtitle */}
+          <div className="mt-1 flex items-center justify-center gap-1.5">
+            <span className="h-px w-4 bg-gradient-to-r from-transparent to-[#DFAE45]/60" />
 
+            <span className="text-[8px] font-medium tracking-[0.12em] text-white/35">
+              BOOK WITH FAITH
+            </span>
+
+            <span className="h-px w-4 bg-gradient-to-l from-transparent to-[#DFAE45]/60" />
+          </div>
+        </div>
+
+        {/* =========================================
+            NOTIFICATION
+        ========================================== */}
+        <button
+          type="button"
+          aria-label="Notifications"
+          className="
+            group
+            relative
+            flex
+            h-11
+            w-11
+            shrink-0
+            items-center
+            justify-center
+            rounded-2xl
+            border
+            border-white/[0.08]
+            bg-white/[0.035]
+            text-white/65
+            shadow-[0_8px_25px_rgba(0,0,0,0.18)]
+            backdrop-blur-xl
+            transition-all
+            duration-300
+            hover:border-[#DFAE45]/30
+            hover:bg-[#DFAE45]/[0.07]
+            hover:text-[#E7B94F]
+            active:scale-90
+          "
+        >
+          <Bell
+            size={19}
+            strokeWidth={1.8}
+            className="transition-transform duration-300 group-hover:rotate-[-8deg]"
+          />
+
+          {/* Notification Dot */}
+          <span className="absolute right-[8px] top-[7px] flex h-[10px] w-[10px] items-center justify-center">
+            <span className="absolute h-full w-full animate-ping rounded-full bg-red-500/40" />
+
+            <span className="relative h-[6px] w-[6px] rounded-full bg-red-500 ring-2 ring-[#071424]" />
+          </span>
+        </button>
       </div>
 
-      {/* Notification */}
+      {/* =========================================
+          BOTTOM ACCENT
+      ========================================== */}
+      <div className="mt-4 flex items-center justify-center gap-2">
+        <span className="h-px w-10 bg-gradient-to-r from-transparent to-[#DFAE45]/20" />
 
-      <button className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-yellow-500/30 bg-[#101827] text-yellow-400">
+        <span className="h-1 w-1 rounded-full bg-[#DFAE45]/50 shadow-[0_0_8px_rgba(223,174,69,0.5)]" />
 
-        <Bell size={22} />
-
-        <span className="absolute right-2 top-2 h-3 w-3 rounded-full bg-red-500 ring-2 ring-[#071424]" />
-
-      </button>
-
+        <span className="h-px w-10 bg-gradient-to-l from-transparent to-[#DFAE45]/20" />
+      </div>
     </header>
   );
 }
+

@@ -1,93 +1,350 @@
 "use client";
 
+import Link from "next/link";
 import {
-  Phone,
-  MessageCircle,
-  ShieldCheck,
+  ArrowRight,
+  CheckCircle2,
   Headphones,
+  MessageCircle,
+  Phone,
+  ShieldCheck,
+  Sparkles,
 } from "lucide-react";
 
 export default function HelpFooter() {
   return (
-    <section className="mt-8 mb-8">
+    <section className="relative mt-8 mb-8 overflow-hidden">
+      {/* Ambient Glows */}
+      <div className="pointer-events-none absolute -left-20 top-10 h-40 w-40 rounded-full bg-[#DFAE45]/10 blur-3xl" />
 
-      <div className="rounded-[28px] border border-yellow-500/20 bg-gradient-to-br from-[#111827] via-[#0d1726] to-[#08121f] p-5 shadow-xl">
+      <div className="pointer-events-none absolute -right-20 bottom-0 h-40 w-40 rounded-full bg-[#7C3AED]/10 blur-3xl" />
 
-        {/* Heading */}
+      <div
+        className="
+          relative
+          overflow-hidden
+          rounded-[28px]
+          border
+          border-[#DFAE45]/15
+          bg-gradient-to-br
+          from-[#0D1A2B]
+          via-[#091421]
+          to-[#050A12]
+          p-4
+          shadow-[0_20px_60px_rgba(0,0,0,0.4)]
+        "
+      >
+        {/* Top Gold Line */}
+        <div className="absolute left-1/2 top-0 h-[2px] w-24 -translate-x-1/2 bg-gradient-to-r from-transparent via-[#DFAE45] to-transparent" />
 
-        <div className="flex items-center gap-3">
+        {/* Decorative Glow */}
+        <div className="pointer-events-none absolute right-[-35px] top-[-35px] h-28 w-28 rounded-full bg-[#DFAE45]/5 blur-2xl" />
 
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-yellow-500/15">
-
+        {/* ================= HEADER ================= */}
+        <div className="relative flex items-center gap-3">
+          {/* Icon */}
+          <div
+            className="
+              relative
+              flex
+              h-12
+              w-12
+              shrink-0
+              items-center
+              justify-center
+              rounded-[16px]
+              border
+              border-[#DFAE45]/20
+              bg-gradient-to-br
+              from-[#DFAE45]/15
+              to-[#DFAE45]/5
+              shadow-[0_8px_25px_rgba(223,174,69,0.08)]
+            "
+          >
             <Headphones
-              className="text-yellow-400"
-              size={24}
+              size={22}
+              strokeWidth={1.8}
+              className="text-[#DFAE45]"
             />
 
+            {/* Live Dot */}
+            <span className="absolute right-0.5 top-0.5 flex h-3 w-3 items-center justify-center rounded-full border-2 border-[#0B1627] bg-emerald-400">
+              <span className="h-1 w-1 animate-pulse rounded-full bg-white" />
+            </span>
           </div>
 
-          <div>
+          <div className="min-w-0">
+            {/* Eyebrow */}
+            <div className="mb-0.5 flex items-center gap-1.5">
+              <Sparkles
+                size={10}
+                className="text-[#DFAE45]"
+              />
 
-            <h2 className="text-lg font-bold text-white">
+              <span className="text-[8px] font-semibold uppercase tracking-[0.18em] text-[#DFAE45]">
+                We're Here For You
+              </span>
+            </div>
+
+            <h2 className="text-[18px] font-bold text-white">
               Need Help?
             </h2>
 
-            <p className="text-sm text-gray-400">
-              Our support team is always available.
+            <p className="mt-0.5 text-[9px] text-gray-500">
+              Our support team is available whenever you need us.
             </p>
+          </div>
+        </div>
 
+        {/* 24x7 Badge */}
+        <div className="relative mt-3 flex items-center gap-2">
+          <div className="flex items-center gap-1.5 rounded-full border border-emerald-400/15 bg-emerald-400/5 px-2.5 py-1">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
+
+            <span className="text-[8px] font-semibold text-emerald-400">
+              SUPPORT ONLINE
+            </span>
           </div>
 
+          <span className="text-[8px] text-gray-600">
+            •
+          </span>
+
+          <span className="text-[8px] font-medium text-gray-500">
+            24×7 Assistance
+          </span>
         </div>
 
-        {/* Buttons */}
+        {/* ================= ACTION BUTTONS ================= */}
+        <div className="relative mt-4 grid grid-cols-2 gap-2.5">
+          {/* Call */}
+          <a
+            href="tel:+918878632431"
+            className="
+              group
+              relative
+              flex
+              items-center
+              justify-center
+              gap-2
+              overflow-hidden
+              rounded-[16px]
+              bg-gradient-to-r
+              from-[#DFAE45]
+              to-[#F3C75F]
+              px-3
+              py-3
+              text-[10px]
+              font-bold
+              text-[#080B10]
+              shadow-[0_8px_24px_rgba(223,174,69,0.15)]
+              transition-all
+              duration-300
+              hover:shadow-[0_10px_30px_rgba(223,174,69,0.28)]
+              active:scale-[0.97]
+            "
+          >
+            {/* Shine */}
+            <span className="absolute inset-y-0 -left-10 w-8 rotate-12 bg-white/30 blur-sm transition-all duration-700 group-hover:left-[120%]" />
 
-        <div className="mt-6 grid grid-cols-2 gap-3">
-
-          <button className="flex items-center justify-center gap-2 rounded-2xl bg-green-500 py-3 font-semibold text-white">
-
-            <Phone size={18} />
-
-            Call Now
-
-          </button>
-
-          <button className="flex items-center justify-center gap-2 rounded-2xl bg-[#202d40] py-3 font-semibold text-white">
-
-            <MessageCircle size={18} />
-
-            WhatsApp
-
-          </button>
-
-        </div>
-
-        {/* Trust */}
-
-        <div className="mt-6 rounded-2xl border border-yellow-500/20 bg-yellow-500/10 p-4">
-
-          <div className="flex items-center gap-2">
-
-            <ShieldCheck
-              className="text-yellow-400"
-              size={20}
+            <Phone
+              size={15}
+              strokeWidth={2.2}
             />
 
-            <span className="font-semibold text-yellow-300">
-              Safe & Trusted Booking
-            </span>
+            <span>Call Now</span>
+          </a>
 
-          </div>
+          {/* WhatsApp */}
+          <a
+            href="https://wa.me/918878632431"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="
+              group
+              flex
+              items-center
+              justify-center
+              gap-2
+              rounded-[16px]
+              border
+              border-white/[0.08]
+              bg-white/[0.035]
+              px-3
+              py-3
+              text-[10px]
+              font-semibold
+              text-white
+              backdrop-blur-md
+              transition-all
+              duration-300
+              hover:border-emerald-400/25
+              hover:bg-emerald-400/5
+              active:scale-[0.97]
+            "
+          >
+            <MessageCircle
+              size={15}
+              strokeWidth={2}
+              className="text-emerald-400"
+            />
 
-          <p className="mt-2 text-sm leading-6 text-gray-300">
-            All Pandits are verified. Secure payment,
-            live support and 100% transparent booking.
-          </p>
+            <span>WhatsApp</span>
 
+            <ArrowRight
+              size={11}
+              className="text-gray-500 transition-transform duration-300 group-hover:translate-x-0.5"
+            />
+          </a>
         </div>
 
-      </div>
+        {/* ================= TRUST CARD ================= */}
+        <div
+          className="
+            relative
+            mt-3
+            overflow-hidden
+            rounded-[19px]
+            border
+            border-[#DFAE45]/15
+            bg-[#DFAE45]/[0.035]
+            p-3.5
+          "
+        >
+          {/* Glow */}
+          <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-[#DFAE45]/8 blur-2xl" />
 
+          <div className="relative flex items-start gap-3">
+            {/* Shield */}
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#DFAE45]/20 bg-[#DFAE45]/10">
+              <ShieldCheck
+                size={18}
+                strokeWidth={1.8}
+                className="text-[#DFAE45]"
+              />
+            </div>
+
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1.5">
+                <h3 className="text-[11px] font-semibold text-white">
+                  Safe & Trusted Booking
+                </h3>
+
+                <CheckCircle2
+                  size={11}
+                  className="text-emerald-400"
+                />
+              </div>
+
+              <p className="mt-1 text-[9px] leading-4 text-gray-500">
+                Verified Pandits, secure payments, transparent
+                booking and dedicated support for every ritual.
+              </p>
+            </div>
+          </div>
+
+          {/* Trust Points */}
+          <div className="relative mt-3 grid grid-cols-3 gap-1.5">
+            <div className="rounded-xl border border-white/[0.05] bg-black/15 px-2 py-2 text-center">
+              <p className="text-[8px] font-semibold text-[#DFAE45]">
+                Verified
+              </p>
+
+              <p className="mt-0.5 text-[7px] text-gray-600">
+                Pandits
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-white/[0.05] bg-black/15 px-2 py-2 text-center">
+              <p className="text-[8px] font-semibold text-[#DFAE45]">
+                Secure
+              </p>
+
+              <p className="mt-0.5 text-[7px] text-gray-600">
+                Payments
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-white/[0.05] bg-black/15 px-2 py-2 text-center">
+              <p className="text-[8px] font-semibold text-[#DFAE45]">
+                24×7
+              </p>
+
+              <p className="mt-0.5 text-[7px] text-gray-600">
+                Support
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Help Center */}
+        <Link
+          href="/help"
+          className="
+            group
+            relative
+            mt-3
+            flex
+            items-center
+            justify-between
+            rounded-[16px]
+            border
+            border-white/[0.06]
+            bg-white/[0.02]
+            px-3.5
+            py-3
+            transition-all
+            duration-300
+            hover:border-[#DFAE45]/20
+            hover:bg-white/[0.035]
+          "
+        >
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/[0.04]">
+              <Headphones
+                size={13}
+                className="text-gray-400"
+              />
+            </div>
+
+            <div>
+              <p className="text-[9px] font-semibold text-white">
+                Visit Help Center
+              </p>
+
+              <p className="mt-0.5 text-[7px] text-gray-600">
+                FAQs & booking assistance
+              </p>
+            </div>
+          </div>
+
+          <ArrowRight
+            size={13}
+            className="text-gray-500 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-[#DFAE45]"
+          />
+        </Link>
+
+        {/* Bottom Branding */}
+        <div className="mt-4 flex items-center justify-center gap-2">
+          <div className="h-px w-12 bg-gradient-to-r from-transparent to-[#DFAE45]/20" />
+
+          <Sparkles
+            size={10}
+            className="text-[#DFAE45]/60"
+          />
+
+          <span className="text-[7px] font-medium uppercase tracking-[0.2em] text-gray-600">
+            Divine • Authentic • Trusted
+          </span>
+
+          <Sparkles
+            size={10}
+            className="text-[#DFAE45]/60"
+          />
+
+          <div className="h-px w-12 bg-gradient-to-l from-transparent to-[#DFAE45]/20" />
+        </div>
+      </div>
     </section>
   );
 }

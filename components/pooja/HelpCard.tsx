@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -6,175 +7,327 @@ import {
   MessageCircle,
   Headphones,
   ChevronRight,
+  Sparkles,
+  ShieldCheck,
+  Clock3,
+  ArrowUpRight,
 } from "lucide-react";
 
 export default function HelpCard() {
   return (
-    <section className="mt-7">
-
+    <section className="mt-9">
       <div
         className="
+          group
           relative
           overflow-hidden
           rounded-[30px]
           border
-          border-yellow-500/20
+          border-[#DFAE45]/25
           bg-gradient-to-br
-          from-[#13233B]
-          via-[#0E1B2E]
-          to-[#08111C]
-          p-6
-          shadow-[0_0_35px_rgba(250,204,21,.08)]
+          from-[#0D1A2B]
+          via-[#091422]
+          to-[#050B14]
+          p-5
+          shadow-[0_20px_60px_rgba(0,0,0,0.45)]
         "
       >
-        {/* Background Glow */}
+        {/* =====================================================
+            AMBIENT GLOW
+        ====================================================== */}
 
-        <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-yellow-500/10 blur-3xl" />
+        <div className="pointer-events-none absolute -right-20 -top-20 h-52 w-52 rounded-full bg-[#DFAE45]/10 blur-3xl" />
 
-        <div className="absolute -left-10 bottom-0 h-32 w-32 rounded-full bg-orange-500/10 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-20 -left-20 h-48 w-48 rounded-full bg-[#DFAE45]/5 blur-3xl" />
 
-        {/* Header */}
+        {/* Top Gold Line */}
+        <div className="absolute left-1/2 top-0 h-px w-[65%] -translate-x-1/2 bg-gradient-to-r from-transparent via-[#DFAE45]/70 to-transparent" />
 
-        <div className="relative flex items-center gap-4">
+        {/* =====================================================
+            HEADER
+        ====================================================== */}
 
-          <div
-            className="
-              flex
-              h-16
-              w-16
-              items-center
-              justify-center
-              rounded-2xl
-              bg-yellow-500/15
-            "
-          >
-            <Headphones
-              size={32}
-              className="text-yellow-400"
+        <div className="relative z-10 flex items-center justify-between gap-4">
+
+          <div className="flex items-center gap-3.5">
+
+            {/* Headphone Icon */}
+            <div
+              className="
+                relative
+                flex
+                h-14
+                w-14
+                shrink-0
+                items-center
+                justify-center
+                rounded-[18px]
+                border
+                border-[#DFAE45]/30
+                bg-gradient-to-br
+                from-[#DFAE45]/15
+                to-transparent
+                shadow-inner
+              "
+            >
+              <Headphones
+                size={25}
+                strokeWidth={1.8}
+                className="text-[#F3C75F]"
+              />
+
+              {/* Live Dot */}
+              <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+            </div>
+
+            <div>
+              {/* Eyebrow */}
+              <div className="mb-1 flex items-center gap-1.5">
+                <Sparkles
+                  size={11}
+                  className="text-[#DFAE45]"
+                />
+
+                <span className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#DFAE45]">
+                  We're Here For You
+                </span>
+              </div>
+
+              <h2 className="text-[21px] font-bold tracking-tight text-white">
+                Need Help?
+              </h2>
+
+              <p className="mt-0.5 text-[11px] text-gray-500">
+                Our support team is available 24×7
+              </p>
+            </div>
+          </div>
+
+          {/* 24/7 Badge */}
+          <div className="hidden shrink-0 items-center gap-1.5 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2.5 py-1.5 sm:flex">
+            <Clock3
+              size={11}
+              className="text-emerald-400"
             />
+
+            <span className="text-[9px] font-bold text-emerald-400">
+              24×7
+            </span>
           </div>
-
-          <div>
-
-            <h2 className="text-xl font-bold text-white">
-              Need Help?
-            </h2>
-
-            <p className="mt-1 text-sm text-slate-400">
-              Our support team is available 24×7
-            </p>
-
-          </div>
-
         </div>
 
-        {/* Info */}
+        {/* =====================================================
+            INFO CARD
+        ====================================================== */}
 
         <div
           className="
+            relative
+            z-10
             mt-5
-            rounded-2xl
+            overflow-hidden
+            rounded-[20px]
             border
-            border-yellow-500/15
-            bg-white/5
+            border-white/[0.07]
+            bg-white/[0.035]
             p-4
+            backdrop-blur-xl
           "
         >
-          <p className="text-sm leading-6 text-slate-300">
-            Need assistance with booking a pooja or finding the right
-            pandit? Contact us anytime. Our team will help you complete
-            your booking quickly and securely.
-          </p>
+          {/* Decorative Glow */}
+          <div className="absolute -right-8 -top-8 h-20 w-20 rounded-full bg-[#DFAE45]/10 blur-2xl" />
+
+          <div className="relative flex gap-3">
+
+            {/* Shield */}
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#DFAE45]/20 bg-[#DFAE45]/10">
+              <ShieldCheck
+                size={17}
+                className="text-[#F3C75F]"
+              />
+            </div>
+
+            <div>
+              <p className="text-[12px] font-semibold text-white">
+                Your booking, our responsibility.
+              </p>
+
+              <p className="mt-1.5 text-[11px] leading-[18px] text-gray-500">
+                Need assistance with a pooja booking or finding
+                the right Pandit? Our team is ready to help you
+                quickly and securely.
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Buttons */}
+        {/* =====================================================
+            CONTACT BUTTONS
+        ====================================================== */}
 
-        <div className="mt-6 grid grid-cols-2 gap-4">
+        <div className="relative z-10 mt-4 grid grid-cols-2 gap-3">
 
-          {/* Call */}
-
+          {/* CALL */}
           <Link
             href="tel:+918878632431"
             className="
+              group/call
+              relative
               flex
+              h-[52px]
               items-center
               justify-center
               gap-2
-              rounded-2xl
+              overflow-hidden
+              rounded-[17px]
               bg-gradient-to-r
-              from-yellow-400
-              to-yellow-500
-              py-3.5
-              font-semibold
-              text-[#071424]
-              transition
-              hover:scale-[1.02]
+              from-[#DFAE45]
+              to-[#F3C75F]
+              font-bold
+              text-[#050B14]
+              shadow-[0_10px_25px_rgba(223,174,69,0.12)]
+              transition-all
+              duration-300
+              hover:-translate-y-0.5
+              hover:shadow-[0_12px_30px_rgba(223,174,69,0.22)]
             "
           >
-            <Phone size={18} />
+            {/* Shine */}
+            <div className="absolute inset-y-0 -left-20 w-16 rotate-12 bg-white/20 blur-md transition-transform duration-700 group-hover/call:translate-x-[280px]" />
 
-            Call Now
+            <Phone
+              size={17}
+              strokeWidth={2}
+              className="relative z-10"
+            />
+
+            <span className="relative z-10 text-[12px]">
+              Call Now
+            </span>
           </Link>
 
-          {/* WhatsApp */}
-
+          {/* WHATSAPP */}
           <Link
             href="https://wa.me/918878632431"
             target="_blank"
+            rel="noopener noreferrer"
             className="
+              group/wa
+              relative
               flex
+              h-[52px]
               items-center
               justify-center
               gap-2
-              rounded-2xl
+              rounded-[17px]
               border
-              border-green-500/30
-              bg-green-500/10
-              py-3.5
-              font-semibold
-              text-green-400
-              transition
-              hover:border-green-400
-              hover:bg-green-500/20
+              border-emerald-400/25
+              bg-emerald-400/[0.07]
+              font-bold
+              text-emerald-400
+              backdrop-blur-xl
+              transition-all
+              duration-300
+              hover:-translate-y-0.5
+              hover:border-emerald-400/50
+              hover:bg-emerald-400/10
             "
           >
-            <MessageCircle size={18} />
+            <MessageCircle
+              size={18}
+              strokeWidth={1.9}
+              className="transition-transform duration-300 group-hover/wa:scale-110"
+            />
 
-            WhatsApp
+            <span className="text-[12px]">
+              WhatsApp
+            </span>
+
+            <ArrowUpRight
+              size={13}
+              className="opacity-50 transition-all duration-300 group-hover/wa:translate-x-0.5 group-hover/wa:-translate-y-0.5 group-hover/wa:opacity-100"
+            />
           </Link>
+        </div>
+
+        {/* =====================================================
+            HELP CENTER
+        ====================================================== */}
+
+        <Link
+          href="/help"
+          className="
+            group/help
+            relative
+            z-10
+            mt-4
+            flex
+            h-[48px]
+            w-full
+            items-center
+            justify-between
+            rounded-[17px]
+            border
+            border-[#DFAE45]/15
+            bg-white/[0.025]
+            px-4
+            backdrop-blur-xl
+            transition-all
+            duration-300
+            hover:border-[#DFAE45]/40
+            hover:bg-[#DFAE45]/[0.06]
+          "
+        >
+          <div className="flex items-center gap-2.5">
+
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#DFAE45]/10">
+              <Headphones
+                size={14}
+                className="text-[#DFAE45]"
+              />
+            </div>
+
+            <span className="text-[11px] font-semibold text-gray-300 transition-colors group-hover/help:text-white">
+              Visit Help Center
+            </span>
+          </div>
+
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-white/[0.07] bg-white/[0.025] transition-all group-hover/help:border-[#DFAE45]/30 group-hover/help:bg-[#DFAE45]/10">
+
+            <ChevronRight
+              size={15}
+              className="text-gray-500 transition-all duration-300 group-hover/help:translate-x-0.5 group-hover/help:text-[#F3C75F]"
+            />
+
+          </div>
+        </Link>
+
+        {/* =====================================================
+            BOTTOM TRUST
+        ====================================================== */}
+
+        <div className="relative z-10 mt-4 flex items-center justify-center gap-2">
+
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent to-white/[0.06]" />
+
+          <div className="flex items-center gap-1.5">
+            <ShieldCheck
+              size={10}
+              className="text-[#DFAE45]"
+            />
+
+            <span className="text-[8px] font-semibold uppercase tracking-[0.16em] text-gray-600">
+              Secure Support
+            </span>
+          </div>
+
+          <div className="h-px flex-1 bg-gradient-to-l from-transparent to-white/[0.06]" />
 
         </div>
 
-        {/* Bottom CTA */}
-
-        <button
-          className="
-            mt-5
-            flex
-            w-full
-            items-center
-            justify-center
-            gap-2
-            rounded-2xl
-            border
-            border-yellow-500/20
-            bg-white/5
-            py-3
-            text-sm
-            font-semibold
-            text-yellow-400
-            transition
-            hover:border-yellow-400
-            hover:bg-yellow-500/10
-          "
-        >
-          View Help Center
-
-          <ChevronRight size={18} />
-        </button>
-
+        {/* Bottom Gold Accent */}
+        <div className="absolute bottom-0 left-1/2 h-px w-[45%] -translate-x-1/2 bg-gradient-to-r from-transparent via-[#DFAE45]/40 to-transparent" />
       </div>
-
     </section>
   );
 }

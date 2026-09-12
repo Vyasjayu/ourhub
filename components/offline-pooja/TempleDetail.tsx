@@ -1,560 +1,1183 @@
 "use client";
 
 import Image from "next/image";
-import { useParams, useRouter } from "next/navigation";
+import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   ArrowLeft,
+  ArrowRight,
+  BadgeCheck,
   Bell,
-  CalendarDays,
-  CheckCircle2,
+  Check,
+  ChevronDown,
   ChevronRight,
-  Clock3,
+  Landmark,
   MapPin,
+  Search,
   ShieldCheck,
+  Sparkles,
   Star,
-  UserRoundCheck,
+  X,
 } from "lucide-react";
 
 import {
   offlineTemples,
+  type TempleCategory,
 } from "@/data/offlineTempleData";
 
-const poojas = [
-  {
-    id: 1,
-    name: "Mahakal Abhishek",
-    price: "₹2,501",
-    duration: "60–90 Minutes",
-    image: "/images/pooja/mahakal-abhishek.jpg",
-    benefits: [
-      "Complete Abhishek",
-      "Sankalp",
-      "Prasad",
-      "Pooja Photo",
-    ],
-  },
-  {
-    id: 2,
-    name: "Rudrabhishek",
-    price: "₹3,501",
-    duration: "90–120 Minutes",
-    image: "/images/pooja/rudrabhishek.jpg",
-    benefits: [
-      "Vedic Rudrabhishek",
-      "Sankalp",
-      "Prasad",
-      "Pooja Photo",
-    ],
-  },
-  {
-    id: 3,
-    name: "Maha Mrityunjaya Pooja",
-    price: "₹1,501",
-    duration: "45–60 Minutes",
-    image: "/images/pooja/maha-mrityunjaya.jpg",
-    benefits: [
-      "Mantra Jaap",
-      "Sankalp",
-      "Prasad",
-      "Blessings",
-    ],
-  },
-  {
-    id: 4,
-    name: "Navgrah Shanti Pooja",
-    price: "₹2,101",
-    duration: "90 Minutes",
-    image: "/images/pooja/navgrah.jpg",
-    benefits: [
-      "Navgrah Pooja",
-      "Sankalp",
-      "Prasad",
-      "Pooja Photo",
-    ],
-  },
+const locations = ["Indore", "Ujjain", "Ratlam"] as const;
+
+const categories: TempleCategory[] = [
+  "All Temples",
+  "Shiva Temple",
+  "Vishnu Temple",
+  "Devi Temple",
+  "Ganesh Temple",
 ];
 
-export default function TempleDetail() {
+export default function SelectTemple() {
   const router = useRouter();
-  const params = useParams();
 
-  const templeId = Number(params.id);
+  const [selectedLocation, setSelectedLocation] =
+    useState<(typeof locations)[number]>("Indore");
 
-  const temple = offlineTemples.find(
-    (item) => item.id === templeId
-  );
+  const [locationOpen, setLocationOpen] = useState(false);
 
-  if (!temple) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-[#03070b] px-5 text-white">
-        <div className="text-center">
-          <div className="text-5xl">🛕</div>
+  const [selectedCategory, setSelectedCategory] =
+    useState<TempleCategory>("All Temples");
 
-          <h1 className="mt-4 text-xl font-semibold">
-            Temple Not Found
-          </h1>
+  const [search, setSearch] = useState("");
 
-          <p className="mt-2 text-sm text-gray-500">
-            The selected temple could not be found.
-          </p>
+  const filteredTemples = useMemo(() => {
+    const searchText = search.trim().toLowerCase();
 
-          <button
-            type="button"
-            onClick={() =>
-              router.push(
-                "/offline-pooja/select-temple"
-              )
-            }
-            className="mt-5 rounded-xl bg-yellow-400 px-5 py-3 text-sm font-bold text-black"
-          >
-            Back to Temples
-          </button>
-        </div>
-      </main>
-    );
-  }
+    return offlineTemples.filter((temple) => {
+      const locationMatch =
+        temple.location === selectedLocation;
+
+      const categoryMatch =
+        selectedCategory === "All Temples" ||
+        temple.category === selectedCategory;
+
+      const searchMatch =
+        !searchText ||
+        temple.name.toLowerCase().includes(searchText) ||
+        temple.city.toLowerCase().includes(searchText);
+
+      return (
+        locationMatch &&
+        categoryMatch &&
+        searchMatch
+      );
+    });
+  }, [selectedLocation, selectedCategory, search]);
 
   return (
-    <main className="min-h-screen bg-[#03070b] text-white">
-      <div className="mx-auto min-h-screen w-full max-w-[480px] overflow-x-hidden pb-28">
+    <main className="min-h-screen bg-[#02060A] text-white">
+      <div className="relative mx-auto min-h-screen w-full max-w-[480px] overflow-x-hidden bg-[#07111B] pb-28">
+
+        {/* ================================================= */}
+        {/* AMBIENT BACKGROUND */}
+        {/* ================================================= */}
+
+        <div className="pointer-events-none fixed left-1/2 top-0 h-64 w-96 -translate-x-1/2 rounded-full bg-[#DFAE45]/[0.045] blur-3xl" />
+
+        <div className="pointer-events-none absolute right-[-100px] top-[420px] h-72 w-72 rounded-full bg-[#DFAE45]/[0.025] blur-3xl" />
+
+        {/* ================================================= */}
         {/* HEADER */}
-        <header className="flex items-center justify-between px-4 pb-3 pt-4">
-          <button
-            type="button"
-            onClick={() => router.back()}
-            className="flex h-10 w-10 items-center justify-center"
-          >
-            <ArrowLeft
-              size={27}
-              className="text-yellow-400"
-            />
-          </button>
+        {/* ================================================= */}
 
-          <div className="text-center">
-            <p className="text-[10px] font-semibold tracking-[4px] text-gray-300">
-              OURHUB
-            </p>
+        <header className="relative z-40 px-4 pb-3 pt-4">
+          <div className="relative flex h-[66px] items-center justify-between overflow-hidden rounded-[23px] border border-white/[0.07] bg-[#0A1522]/85 px-3 shadow-[0_12px_40px_rgba(0,0,0,0.25)] backdrop-blur-2xl">
 
-            <h1 className="mt-1 text-[17px] font-semibold text-yellow-400">
-              Temple Details
-            </h1>
-          </div>
+            {/* Header glow */}
+            <div className="pointer-events-none absolute left-1/2 top-[-45px] h-32 w-52 -translate-x-1/2 rounded-full bg-[#DFAE45]/[0.08] blur-3xl" />
 
-          <button
-            type="button"
-            className="relative flex h-10 w-10 items-center justify-center"
-          >
-            <Bell
-              size={26}
-              className="text-yellow-400"
-            />
-
-            <span className="absolute right-[5px] top-[5px] h-2.5 w-2.5 rounded-full bg-red-500" />
-          </button>
-        </header>
-
-        {/* TEMPLE IMAGE */}
-        <section className="px-4 pt-2">
-          <div className="relative h-[245px] overflow-hidden rounded-[22px] border border-yellow-500/20">
-            <Image
-              src={temple.image}
-              alt={temple.name}
-              fill
-              priority
-              className="object-cover"
-            />
-
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-
-            {/* VERIFIED */}
-            <div className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full border border-green-500/30 bg-black/60 px-3 py-1.5 backdrop-blur-sm">
-              <ShieldCheck
-                size={14}
-                className="text-green-400"
+            {/* Back */}
+            <button
+              type="button"
+              onClick={() => router.back()}
+              aria-label="Go back"
+              className="group relative z-10 flex h-11 w-11 items-center justify-center rounded-2xl border border-white/[0.07] bg-white/[0.035] text-slate-300 transition-all duration-300 hover:border-[#DFAE45]/30 hover:bg-[#DFAE45]/[0.07] hover:text-[#F3C75F] active:scale-90"
+            >
+              <ArrowLeft
+                size={21}
+                strokeWidth={2.2}
+                className="transition-transform duration-300 group-hover:-translate-x-0.5"
               />
+            </button>
 
-              <span className="text-[10px] font-medium text-green-400">
-                Verified Temple
-              </span>
-            </div>
+            {/* Center Branding */}
+            <div className="absolute left-1/2 top-1/2 w-[230px] -translate-x-1/2 -translate-y-1/2 text-center">
+              <div className="flex items-center justify-center gap-1.5">
+                <span className="h-px w-5 bg-gradient-to-r from-transparent to-[#DFAE45]/50" />
 
-            {/* POPULAR */}
-            {temple.popular && (
-              <div className="absolute right-4 top-4 rounded-full bg-yellow-400 px-3 py-1.5 text-[9px] font-bold text-black">
-                Popular
-              </div>
-            )}
-
-            {/* IMAGE BOTTOM */}
-            <div className="absolute bottom-4 left-4 right-4">
-              <h2 className="text-[24px] font-semibold leading-tight text-white">
-                {temple.name}
-              </h2>
-
-              <div className="mt-2 flex items-center gap-2">
-                <MapPin
-                  size={14}
-                  className="text-yellow-400"
-                />
-
-                <span className="text-[12px] text-gray-200">
-                  {temple.city}, {temple.state}
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* RATING / DISTANCE */}
-        <section className="px-4 pt-4">
-          <div className="grid grid-cols-3 gap-2">
-            <InfoBox
-              icon={
-                <Star
-                  size={17}
+                <Sparkles
+                  size={10}
+                  className="text-[#DFAE45]"
                   fill="currentColor"
                 />
-              }
-              value={temple.rating}
-              label="Rating"
-            />
 
-            <InfoBox
-              icon={<MapPin size={17} />}
-              value={temple.distance}
-              label="Distance"
-            />
+                <span className="text-[9px] font-extrabold tracking-[0.32em] text-[#DFAE45]">
+                  OURHUB
+                </span>
 
-            <InfoBox
-              icon={<ShieldCheck size={17} />}
-              value="Verified"
-              label="Temple"
-            />
-          </div>
-        </section>
-
-        {/* ABOUT */}
-        <section className="mt-5 px-4">
-          <SectionTitle title="About Temple" />
-
-          <div className="rounded-2xl border border-white/5 bg-[#0b1118] p-4">
-            <p className="text-[12px] leading-6 text-gray-400">
-              {temple.description}
-            </p>
-
-            <p className="mt-3 text-[12px] leading-6 text-gray-400">
-              OurHub helps devotees book authentic
-              pooja services at verified temples with
-              experienced pandits and complete booking
-              support.
-            </p>
-          </div>
-        </section>
-
-        {/* TEMPLE TIMINGS */}
-        <section className="mt-5 px-4">
-          <SectionTitle title="Temple Timings" />
-
-          <div className="rounded-2xl border border-white/5 bg-[#0b1118] p-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-yellow-400/10">
-                <Clock3
-                  size={19}
-                  className="text-yellow-400"
+                <Sparkles
+                  size={10}
+                  className="text-[#DFAE45]"
+                  fill="currentColor"
                 />
+
+                <span className="h-px w-5 bg-gradient-to-l from-transparent to-[#DFAE45]/50" />
               </div>
 
-              <div>
-                <p className="text-[12px] font-semibold text-white">
-                  Temple Opening Hours
-                </p>
+              <h1 className="mt-1 text-[16px] font-bold text-white">
+                Select Temple
+              </h1>
 
-                <p className="mt-1 text-[11px] text-gray-500">
-                  5:00 AM – 11:00 PM
-                </p>
-              </div>
-            </div>
+              <div className="mt-0.5 flex items-center justify-center gap-1.5">
+                <span className="h-1 w-1 rounded-full bg-[#DFAE45]" />
 
-            <div className="mt-4 border-t border-white/5 pt-4">
-              <div className="flex justify-between text-[11px]">
-                <span className="text-gray-500">
-                  Morning Pooja
+                <span className="text-[7px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                  Sacred • Authentic • Trusted
                 </span>
 
-                <span className="text-gray-200">
-                  6:00 AM – 11:00 AM
-                </span>
-              </div>
-
-              <div className="mt-3 flex justify-between text-[11px]">
-                <span className="text-gray-500">
-                  Evening Pooja
-                </span>
-
-                <span className="text-gray-200">
-                  5:00 PM – 9:00 PM
-                </span>
+                <span className="h-1 w-1 rounded-full bg-[#DFAE45]" />
               </div>
             </div>
+
+            {/* Notification */}
+            <button
+              type="button"
+              aria-label="Notifications"
+              className="group relative z-10 flex h-11 w-11 items-center justify-center rounded-2xl border border-white/[0.07] bg-white/[0.035] text-slate-300 transition-all duration-300 hover:border-[#DFAE45]/30 hover:bg-[#DFAE45]/[0.07] hover:text-[#F3C75F] active:scale-90"
+            >
+              <Bell
+                size={20}
+                strokeWidth={2}
+                className="transition-transform duration-300 group-hover:rotate-[-8deg]"
+              />
+
+              <span className="absolute right-[7px] top-[7px] flex h-2.5 w-2.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#E7B94F] opacity-50" />
+
+                <span className="relative h-2.5 w-2.5 rounded-full border-2 border-[#0A1522] bg-[#E7B94F] shadow-[0_0_8px_rgba(231,185,79,0.8)]" />
+              </span>
+            </button>
+
+            {/* Bottom line */}
+            <div className="absolute bottom-[-1px] left-1/2 h-px w-24 -translate-x-1/2 bg-gradient-to-r from-transparent via-[#DFAE45] to-transparent opacity-70" />
           </div>
-        </section>
+        </header>
 
-        {/* WHY CHOOSE */}
-        <section className="mt-5 px-4">
-          <SectionTitle title="Why Book Through OurHub?" />
+        {/* ================================================= */}
+        {/* LOCATION + SEARCH */}
+        {/* ================================================= */}
 
-          <div className="grid grid-cols-2 gap-3">
-            <BenefitCard
-              icon={<UserRoundCheck size={19} />}
-              title="Verified Pandits"
-              description="Experienced pandits"
+        <section className="relative z-30 px-4 pt-1">
+          <div className="mb-2 flex items-center gap-1.5">
+            <MapPin
+              size={11}
+              className="text-[#DFAE45]"
             />
 
-            <BenefitCard
-              icon={<ShieldCheck size={19} />}
-              title="Authentic Pooja"
-              description="As per Vedic rituals"
-            />
-
-            <BenefitCard
-              icon={<CheckCircle2 size={19} />}
-              title="Prasad Included"
-              description="Receive prasad"
-            />
-
-            <BenefitCard
-              icon={<CalendarDays size={19} />}
-              title="Easy Booking"
-              description="Choose your slot"
-            />
-          </div>
-        </section>
-
-        {/* AVAILABLE POOJAS */}
-        <section className="mt-6 px-4">
-          <div className="flex items-center justify-between">
-            <SectionTitle title="Available Poojas" />
-
-            <span className="text-[10px] text-yellow-400">
-              {poojas.length} Poojas
+            <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-[#DFAE45]">
+              Find Your Sacred Temple
             </span>
           </div>
 
-          <div className="mt-3 space-y-3">
-            {poojas.map((pooja) => (
-              <PoojaCard
-                key={pooja.id}
-                pooja={pooja}
+          <div className="grid grid-cols-[0.9fr_1.1fr] gap-2.5">
+
+            {/* Location */}
+            <div className="relative">
+              <button
+                type="button"
                 onClick={() =>
-                  router.push(
-                    `/offline-pooja/pooja/${pooja.id}?select-temple=${temple.id}`
-                  )
+                  setLocationOpen((prev) => !prev)
                 }
-              />
-            ))}
-          </div>
-        </section>
+                className={`flex h-[56px] w-full items-center gap-2 rounded-[19px] border px-3 text-left transition-all duration-300 ${
+                  locationOpen
+                    ? "border-[#DFAE45]/40 bg-[#0D1927] shadow-[0_0_25px_rgba(223,174,69,0.07)]"
+                    : "border-white/[0.07] bg-[#0A141F] hover:border-[#DFAE45]/25"
+                }`}
+              >
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-[#DFAE45]/15 bg-[#DFAE45]/[0.06]">
+                  <MapPin
+                    size={15}
+                    className="text-[#F3C75F]"
+                  />
+                </span>
 
-        {/* ADDRESS */}
-        <section className="mt-6 px-4">
-          <SectionTitle title="Temple Location" />
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[7px] uppercase tracking-[0.12em] text-slate-600">
+                    Location
+                  </span>
 
-          <div className="rounded-2xl border border-white/5 bg-[#0b1118] p-4">
-            <div className="flex gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-yellow-400/10">
-                <MapPin
-                  size={19}
-                  className="text-yellow-400"
+                  <span className="mt-0.5 block truncate text-[11px] font-semibold text-slate-200">
+                    {selectedLocation}, MP
+                  </span>
+                </span>
+
+                <ChevronDown
+                  size={15}
+                  className={`shrink-0 text-[#DFAE45] transition-transform duration-300 ${
+                    locationOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {/* Location Dropdown */}
+              {locationOpen && (
+                <div className="absolute left-0 right-0 top-[62px] z-[100] overflow-hidden rounded-[22px] border border-[#DFAE45]/20 bg-[#09131F]/[0.98] shadow-[0_25px_60px_rgba(0,0,0,0.55)] backdrop-blur-2xl">
+
+                  <div className="flex items-center justify-between border-b border-white/[0.06] px-3.5 py-3">
+                    <div>
+                      <p className="text-[10px] font-bold text-white">
+                        Service Location
+                      </p>
+
+                      <p className="mt-0.5 text-[7px] text-slate-600">
+                        Choose your preferred city
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setLocationOpen(false)
+                      }
+                      className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/[0.04] text-slate-500"
+                    >
+                      <X size={13} />
+                    </button>
+                  </div>
+
+                  <div className="p-2">
+                    {locations.map((location) => {
+                      const active =
+                        location === selectedLocation;
+
+                      return (
+                        <button
+                          key={location}
+                          type="button"
+                          onClick={() => {
+                            setSelectedLocation(location);
+                            setLocationOpen(false);
+                          }}
+                          className={`flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2.5 text-left transition ${
+                            active
+                              ? "bg-[#DFAE45]/[0.08]"
+                              : "hover:bg-white/[0.03]"
+                          }`}
+                        >
+                          <span
+                            className={`flex h-8 w-8 items-center justify-center rounded-xl border ${
+                              active
+                                ? "border-[#DFAE45]/25 bg-[#DFAE45]/[0.09]"
+                                : "border-white/[0.06] bg-white/[0.025]"
+                            }`}
+                          >
+                            <MapPin
+                              size={13}
+                              className={
+                                active
+                                  ? "text-[#F3C75F]"
+                                  : "text-slate-500"
+                              }
+                            />
+                          </span>
+
+                          <span className="min-w-0 flex-1">
+                            <span
+                              className={`block text-[10px] font-semibold ${
+                                active
+                                  ? "text-[#F3C75F]"
+                                  : "text-slate-300"
+                              }`}
+                            >
+                              {location}, MP
+                            </span>
+
+                            <span className="mt-0.5 block text-[7px] text-slate-600">
+                              Offline pooja available
+                            </span>
+                          </span>
+
+                          {active && (
+                            <Check
+                              size={15}
+                              className="text-[#F3C75F]"
+                            />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Search */}
+            <div className="flex h-[56px] min-w-0 items-center gap-2 rounded-[19px] border border-white/[0.07] bg-[#0A141F] px-3 transition-all duration-300 focus-within:border-[#DFAE45]/35 focus-within:shadow-[0_0_25px_rgba(223,174,69,0.06)]">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-white/[0.05] bg-white/[0.025]">
+                <Search
+                  size={15}
+                  className="text-[#DFAE45]"
+                />
+              </span>
+
+              <div className="min-w-0 flex-1">
+                <span className="block text-[7px] uppercase tracking-[0.12em] text-slate-600">
+                  Discover
+                </span>
+
+                <input
+                  value={search}
+                  onChange={(e) =>
+                    setSearch(e.target.value)
+                  }
+                  type="text"
+                  placeholder="Temple..."
+                  className="mt-0.5 w-full min-w-0 bg-transparent text-[11px] font-medium text-white outline-none placeholder:text-slate-600"
                 />
               </div>
 
-              <div>
-                <p className="text-sm font-semibold text-white">
-                  {temple.name}
+              {search && (
+                <button
+                  type="button"
+                  onClick={() => setSearch("")}
+                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-white/[0.04] text-slate-500"
+                >
+                  <X size={12} />
+                </button>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* ================================================= */}
+        {/* HERO */}
+        {/* ================================================= */}
+
+        <section className="relative px-4 pt-4">
+          <div className="group relative h-[190px] overflow-hidden rounded-[27px] border border-[#DFAE45]/20 bg-[#0A141F] shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+
+            <Image
+              src="/images/offline-pooja/temple-select.jpg"
+              alt="Choose a sacred temple"
+              fill
+              sizes="(max-width: 480px) 100vw, 480px"
+              className="object-cover transition-transform duration-1000 group-hover:scale-[1.04]"
+            />
+
+            {/* Cinematic overlay */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/65 to-black/15" />
+
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/10" />
+
+            {/* Glow */}
+            <div className="pointer-events-none absolute -right-12 top-0 h-40 w-40 rounded-full bg-[#DFAE45]/[0.10] blur-3xl" />
+
+            {/* Hero content */}
+            <div className="absolute inset-y-0 left-0 flex max-w-[290px] flex-col justify-center p-5">
+
+              <div className="mb-2 flex items-center gap-1.5">
+                <Sparkles
+                  size={11}
+                  className="text-[#F3C75F]"
+                  fill="currentColor"
+                />
+
+                <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-[#F3C75F]">
+                  Sacred Destination
+                </span>
+              </div>
+
+              <h2 className="text-[25px] font-extrabold leading-[1.08] tracking-[-0.02em] text-white">
+                Choose a Sacred
+                <br />
+                <span className="bg-gradient-to-r from-[#F7D77A] via-[#DFAE45] to-[#B98222] bg-clip-text text-transparent">
+                  Temple
+                </span>
+              </h2>
+
+              <p className="mt-2 max-w-[235px] text-[10px] leading-[1.6] text-slate-300">
+                Select where you want your pooja performed
+                with trusted local temple services.
+              </p>
+
+              {/* Mini trust row */}
+              <div className="mt-3 flex items-center gap-2">
+                <div className="flex items-center gap-1 rounded-full border border-white/10 bg-black/30 px-2 py-1 backdrop-blur-md">
+                  <BadgeCheck
+                    size={10}
+                    className="text-[#F3C75F]"
+                  />
+
+                  <span className="text-[7px] font-semibold text-slate-200">
+                    Verified
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-1 rounded-full border border-white/10 bg-black/30 px-2 py-1 backdrop-blur-md">
+                  <Landmark
+                    size={10}
+                    className="text-[#F3C75F]"
+                  />
+
+                  <span className="text-[7px] font-semibold text-slate-200">
+                    Authentic
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right icon */}
+            <div className="absolute bottom-5 right-5 flex h-14 w-14 items-center justify-center rounded-full border border-[#DFAE45]/30 bg-black/40 backdrop-blur-xl">
+              <Landmark
+                size={25}
+                strokeWidth={1.6}
+                className="text-[#F3C75F]"
+              />
+
+              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-[#07111B] bg-[#DFAE45]">
+                <Sparkles
+                  size={9}
+                  className="text-black"
+                  fill="currentColor"
+                />
+              </span>
+            </div>
+
+            {/* Bottom line */}
+            <div className="absolute bottom-0 left-1/2 h-px w-28 -translate-x-1/2 bg-gradient-to-r from-transparent via-[#DFAE45] to-transparent" />
+          </div>
+        </section>
+
+        {/* ================================================= */}
+        {/* CATEGORIES */}
+        {/* ================================================= */}
+
+        <section className="relative mt-4">
+          <div className="mb-2 flex items-center justify-between px-4">
+            <div>
+              <p className="text-[8px] font-bold uppercase tracking-[0.18em] text-[#DFAE45]">
+                Browse By Type
+              </p>
+
+              <p className="mt-0.5 text-[10px] text-slate-500">
+                Find your preferred temple
+              </p>
+            </div>
+
+            <span className="rounded-full border border-white/[0.06] bg-white/[0.025] px-2.5 py-1 text-[7px] font-semibold text-slate-500">
+              {filteredTemples.length} Results
+            </span>
+          </div>
+
+          <div className="flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {categories.map((category) => {
+              const active =
+                selectedCategory === category;
+
+              return (
+                <button
+                  key={category}
+                  type="button"
+                  onClick={() =>
+                    setSelectedCategory(category)
+                  }
+                  className={`group relative shrink-0 overflow-hidden rounded-full px-4 py-2.5 text-[9px] font-bold transition-all duration-300 active:scale-95 ${
+                    active
+                      ? "bg-gradient-to-r from-[#F3C75F] to-[#B98222] text-black shadow-[0_6px_18px_rgba(223,174,69,0.18)]"
+                      : "border border-white/[0.07] bg-[#0A141F] text-slate-400 hover:border-[#DFAE45]/25 hover:text-slate-200"
+                  }`}
+                >
+                  {active && (
+                    <span className="mr-1.5 inline-flex">
+                      <Check size={10} strokeWidth={3} />
+                    </span>
+                  )}
+
+                  {category}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* ================================================= */}
+        {/* RESULT HEADER */}
+        {/* ================================================= */}
+
+        <section className="px-4 pt-6">
+          <div className="flex items-end justify-between">
+            <div>
+              <div className="mb-1 flex items-center gap-1.5">
+                <span className="h-1 w-1 rounded-full bg-[#DFAE45]" />
+
+                <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-[#DFAE45]">
+                  Available Temples
+                </span>
+              </div>
+
+              <h2 className="text-[19px] font-extrabold tracking-tight text-white">
+                Temples in {selectedLocation}
+              </h2>
+            </div>
+
+            <div className="flex items-center gap-1 rounded-full border border-white/[0.06] bg-white/[0.025] px-2.5 py-1.5">
+              <Landmark
+                size={10}
+                className="text-[#DFAE45]"
+              />
+
+              <span className="text-[8px] font-bold text-slate-400">
+                {filteredTemples.length} temples
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-3 h-px bg-gradient-to-r from-[#DFAE45]/40 via-white/[0.06] to-transparent" />
+        </section>
+
+        {/* ================================================= */}
+        {/* TEMPLE LIST */}
+        {/* ================================================= */}
+
+        <section className="space-y-3 px-4 pt-4">
+          {filteredTemples.length > 0 ? (
+            filteredTemples.map((temple, index) => (
+              <button
+                key={temple.id}
+                type="button"
+                onClick={() =>
+                  router.push(
+                    `/offline-pooja/select-temple/${temple.id}`
+                  )
+                }
+                className="group relative flex w-full items-center gap-3 overflow-hidden rounded-[23px] border border-white/[0.07] bg-gradient-to-r from-[#0C1724] to-[#08111B] p-2.5 text-left shadow-[0_12px_32px_rgba(0,0,0,0.2)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#DFAE45]/25 hover:shadow-[0_18px_38px_rgba(0,0,0,0.3)] active:scale-[0.99]"
+              >
+                {/* Card glow */}
+                <div className="pointer-events-none absolute -right-12 top-1/2 h-28 w-28 -translate-y-1/2 rounded-full bg-[#DFAE45]/[0.035] blur-2xl" />
+
+                {/* Image */}
+                <div className="relative h-[102px] w-[96px] shrink-0 overflow-hidden rounded-[17px] bg-[#111C29]">
+                  <Image
+                    src={temple.image}
+                    alt={temple.name}
+                    fill
+                    sizes="96px"
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/10" />
+
+                  {/* Number */}
+                  <span className="absolute left-2 top-2 flex h-5 min-w-5 items-center justify-center rounded-full border border-white/10 bg-black/45 px-1 text-[7px] font-bold text-white backdrop-blur-md">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+
+                  {/* Verified */}
+                  <span className="absolute bottom-2 left-2 flex items-center gap-1 rounded-full border border-emerald-400/15 bg-black/50 px-1.5 py-1 backdrop-blur-md">
+                    <BadgeCheck
+                      size={9}
+                      className="text-emerald-400"
+                    />
+
+                    <span className="text-[6px] font-bold uppercase text-emerald-300">
+                      Verified
+                    </span>
+                  </span>
+                </div>
+
+                {/* Content */}
+                <div className="relative z-10 min-w-0 flex-1 py-1">
+
+                  <div className="flex items-start gap-2">
+                    <h3 className="line-clamp-2 flex-1 text-[14px] font-extrabold leading-[18px] text-white">
+                      {temple.name}
+                    </h3>
+
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/[0.06] bg-white/[0.025]">
+                      <ChevronRight
+                        size={14}
+                        className="text-[#DFAE45] transition-transform duration-300 group-hover:translate-x-0.5"
+                      />
+                    </span>
+                  </div>
+
+                  {/* City */}
+                  <div className="mt-1 flex items-center gap-1">
+                    <MapPin
+                      size={10}
+                      className="text-[#DFAE45]"
+                    />
+
+                    <p className="truncate text-[9px] font-medium text-slate-500">
+                      {temple.city}, {temple.state}
+                    </p>
+                  </div>
+
+                  {/* Meta */}
+                  <div className="mt-3 flex flex-wrap items-center gap-1.5">
+
+                    <span className="flex items-center gap-1 rounded-lg border border-white/[0.06] bg-white/[0.025] px-2 py-1">
+                      <MapPin
+                        size={9}
+                        className="text-slate-500"
+                      />
+
+                      <span className="text-[7px] font-semibold text-slate-400">
+                        {temple.distance}
+                      </span>
+                    </span>
+
+                    <span className="flex items-center gap-1 rounded-lg border border-[#DFAE45]/10 bg-[#DFAE45]/[0.04] px-2 py-1">
+                      <Star
+                        size={9}
+                        className="text-[#F3C75F]"
+                        fill="currentColor"
+                      />
+
+                      <span className="text-[7px] font-bold text-[#F3C75F]">
+                        {temple.rating}
+                      </span>
+                    </span>
+
+                    {temple.popular && (
+                      <span className="flex items-center gap-1 rounded-lg border border-emerald-400/10 bg-emerald-400/[0.05] px-2 py-1">
+                        <Sparkles
+                          size={8}
+                          className="text-emerald-400"
+                        />
+
+                        <span className="text-[7px] font-bold text-emerald-300">
+                          Popular
+                        </span>
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Bottom Accent */}
+                <div className="absolute bottom-0 left-8 h-px w-16 bg-gradient-to-r from-[#DFAE45]/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              </button>
+            ))
+          ) : (
+            /* Empty State */
+            <div className="relative overflow-hidden rounded-[25px] border border-[#DFAE45]/15 bg-gradient-to-b from-[#0D1825] to-[#08111B] px-5 py-12 text-center">
+
+              <div className="pointer-events-none absolute left-1/2 top-0 h-32 w-32 -translate-x-1/2 rounded-full bg-[#DFAE45]/[0.07] blur-3xl" />
+
+              <div className="relative mx-auto flex h-16 w-16 items-center justify-center rounded-[22px] border border-[#DFAE45]/20 bg-[#DFAE45]/[0.07]">
+                <Landmark
+                  size={28}
+                  strokeWidth={1.5}
+                  className="text-[#F3C75F]"
+                />
+              </div>
+
+              <h3 className="relative mt-4 text-[15px] font-bold text-white">
+                No temple found
+              </h3>
+
+              <p className="relative mx-auto mt-1.5 max-w-[240px] text-[10px] leading-5 text-slate-500">
+                Try another location, temple category or search
+                for a different sacred place.
+              </p>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setSearch("");
+                  setSelectedCategory("All Temples");
+                }}
+                className="relative mt-5 rounded-full bg-gradient-to-r from-[#F3C75F] to-[#B98222] px-5 py-2.5 text-[9px] font-bold text-black shadow-[0_8px_20px_rgba(223,174,69,0.15)] active:scale-95"
+              >
+                Reset Filters
+              </button>
+            </div>
+          )}
+        </section>
+
+        {/* ================================================= */}
+        {/* REQUEST TEMPLE */}
+        {/* ================================================= */}
+
+        <section className="relative mt-6 px-4">
+          <div className="group relative overflow-hidden rounded-[25px] border border-[#DFAE45]/18 bg-gradient-to-br from-[#101C2A] via-[#0B1622] to-[#08111B] p-4 shadow-[0_15px_35px_rgba(0,0,0,0.2)]">
+
+            {/* Ambient glow */}
+            <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#DFAE45]/[0.07] blur-3xl" />
+
+            <div className="relative flex items-center gap-3">
+
+              {/* Icon */}
+              <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-[19px] border border-[#DFAE45]/20 bg-[#DFAE45]/[0.07]">
+                <Landmark
+                  size={25}
+                  strokeWidth={1.5}
+                  className="text-[#F3C75F]"
+                />
+
+                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-[#0B1622] bg-[#DFAE45]">
+                  <Sparkles
+                    size={9}
+                    className="text-black"
+                    fill="currentColor"
+                  />
+                </span>
+              </div>
+
+              {/* Text */}
+              <div className="min-w-0 flex-1">
+                <p className="text-[8px] font-bold uppercase tracking-[0.18em] text-[#DFAE45]">
+                  Can't find your temple?
                 </p>
 
-                <p className="mt-1 text-[11px] leading-5 text-gray-500">
-                  {temple.city}, {temple.state},
-                  India
+                <h3 className="mt-1 text-[14px] font-extrabold text-white">
+                  Request a Temple
+                </h3>
+
+                <p className="mt-1 text-[9px] leading-4 text-slate-500">
+                  Tell us your preferred temple and we'll try
+                  to arrange the service for you.
                 </p>
               </div>
             </div>
 
+            {/* Request Button */}
             <button
               type="button"
-              className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-yellow-500/30 py-3 text-[12px] font-semibold text-yellow-400"
+              onClick={() =>
+                router.push("/pooja/offline/book")
+              }
+              className="group/request relative mt-4 flex h-11 w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#F3C75F] via-[#DFAE45] to-[#B98222] text-[10px] font-extrabold text-black shadow-[0_8px_25px_rgba(223,174,69,0.18)] transition-all duration-300 active:scale-[0.98]"
             >
-              <MapPin size={15} />
-              View on Map
+              <span className="absolute inset-y-0 -left-20 w-16 rotate-12 bg-white/30 blur-md transition-all duration-700 group-hover/request:left-[110%]" />
+
+              <Landmark
+                size={14}
+                className="relative z-10"
+              />
+
+              <span className="relative z-10">
+                Request This Temple
+              </span>
+
+              <ArrowRight
+                size={13}
+                className="relative z-10 transition-transform duration-300 group-hover/request:translate-x-0.5"
+              />
             </button>
           </div>
         </section>
 
-        {/* BOTTOM CTA */}
-        <div className="fixed bottom-0 left-1/2 z-50 w-full max-w-[480px] -translate-x-1/2 border-t border-white/5 bg-[#080e14]/95 p-3 backdrop-blur-xl">
-          <button
-            type="button"
-            onClick={() =>
-              document
-                .getElementById("available-poojas")
-                ?.scrollIntoView({
-                  behavior: "smooth",
-                })
-            }
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-yellow-400 text-sm font-bold text-black shadow-lg shadow-yellow-400/10"
-          >
-            Select Pooja
-            <ChevronRight size={19} />
-          </button>
+        {/* ================================================= */}
+        {/* TRUST STRIP */}
+        {/* ================================================= */}
+
+        <section className="mt-4 px-4">
+          <div className="grid grid-cols-3 gap-2">
+            <TrustItem
+              icon={<BadgeCheck size={14} />}
+              title="Verified"
+              subtitle="Temples"
+            />
+
+            <TrustItem
+              icon={<ShieldCheck size={14} />}
+              title="Trusted"
+              subtitle="Pandits"
+            />
+
+            <TrustItem
+              icon={<Star size={14} />}
+              title="Top Rated"
+              subtitle="Services"
+            />
+          </div>
+        </section>
+
+        {/* ================================================= */}
+        {/* FOOTER BRAND */}
+        {/* ================================================= */}
+
+        <div className="mt-6 flex items-center justify-center gap-2">
+          <span className="h-px w-10 bg-gradient-to-r from-transparent to-[#DFAE45]/25" />
+
+          <Sparkles
+            size={9}
+            className="text-[#DFAE45]/60"
+            fill="currentColor"
+          />
+
+          <span className="text-[7px] font-semibold uppercase tracking-[0.2em] text-slate-700">
+            Divine • Authentic • Trusted
+          </span>
+
+          <Sparkles
+            size={9}
+            className="text-[#DFAE45]/60"
+            fill="currentColor"
+          />
+
+          <span className="h-px w-10 bg-gradient-to-l from-transparent to-[#DFAE45]/25" />
         </div>
+
+        {/* ================================================= */}
+        {/* PREMIUM BOTTOM NAV */}
+        {/* ================================================= */}
+
+        <nav className="fixed bottom-0 left-1/2 z-50 w-full max-w-[480px] -translate-x-1/2 px-2 pb-2">
+          <div className="relative overflow-hidden rounded-[24px] border border-white/[0.08] bg-[#07111B]/[0.97] px-1.5 pt-2 shadow-[0_-10px_40px_rgba(0,0,0,0.38)] backdrop-blur-2xl">
+
+            {/* Top Gold Highlight */}
+            <div className="pointer-events-none absolute left-1/2 top-0 h-px w-32 -translate-x-1/2 bg-gradient-to-r from-transparent via-[#DFAE45]/70 to-transparent" />
+
+            <div className="relative grid grid-cols-5">
+              <BottomItem
+                label="Home"
+                icon={HomeIcon}
+                active={false}
+                onClick={() =>
+                  router.push("/offline-pooja")
+                }
+              />
+
+              <BottomItem
+                label="Categories"
+                icon={GridIcon}
+                active={true}
+                onClick={() =>
+                  router.push(
+                    "/offline-pooja/select-temple"
+                  )
+                }
+              />
+
+              <BottomItem
+                label="Bookings"
+                icon={CalendarIcon}
+                active={false}
+                onClick={() =>
+                  router.push(
+                    "/offline-pooja/bookings"
+                  )
+                }
+              />
+
+              <BottomItem
+                label="Wallet"
+                icon={WalletIcon}
+                active={false}
+                onClick={() =>
+                  router.push("/wallet")
+                }
+              />
+
+              <BottomItem
+                label="Profile"
+                icon={ProfileIcon}
+                active={false}
+                onClick={() =>
+                  router.push("/profile")
+                }
+              />
+            </div>
+
+            <div className="pointer-events-none absolute bottom-0 left-1/2 h-px w-20 -translate-x-1/2 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+          </div>
+        </nav>
       </div>
     </main>
   );
 }
 
-/* -------------------------------- */
-/* INFO BOX */
-/* -------------------------------- */
+/* ===================================================== */
+/* TRUST ITEM */
+/* ===================================================== */
 
-function InfoBox({
+function TrustItem({
   icon,
-  value,
+  title,
+  subtitle,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  subtitle: string;
+}) {
+  return (
+    <div className="flex items-center gap-2 rounded-[17px] border border-white/[0.06] bg-[#0A141F] px-2.5 py-2.5">
+      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-[#DFAE45]/15 bg-[#DFAE45]/[0.06] text-[#DFAE45]">
+        {icon}
+      </div>
+
+      <div className="min-w-0">
+        <p className="text-[8px] font-bold text-slate-300">
+          {title}
+        </p>
+
+        <p className="mt-0.5 truncate text-[7px] text-slate-600">
+          {subtitle}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ===================================================== */
+/* BOTTOM NAV ITEM */
+/* ===================================================== */
+
+function BottomItem({
   label,
-}: {
-  icon: React.ReactNode;
-  value: string;
-  label: string;
-}) {
-  return (
-    <div className="rounded-2xl border border-white/5 bg-[#0b1118] p-3 text-center">
-      <div className="flex justify-center text-yellow-400">
-        {icon}
-      </div>
-
-      <p className="mt-2 text-[13px] font-semibold text-white">
-        {value}
-      </p>
-
-      <p className="mt-1 text-[9px] text-gray-500">
-        {label}
-      </p>
-    </div>
-  );
-}
-
-/* -------------------------------- */
-/* SECTION TITLE */
-/* -------------------------------- */
-
-function SectionTitle({
-  title,
-}: {
-  title: string;
-}) {
-  return (
-    <h2 className="mb-3 text-[16px] font-semibold text-yellow-400">
-      {title}
-    </h2>
-  );
-}
-
-/* -------------------------------- */
-/* BENEFIT CARD */
-/* -------------------------------- */
-
-function BenefitCard({
-  icon,
-  title,
-  description,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}) {
-  return (
-    <div className="rounded-2xl border border-white/5 bg-[#0b1118] p-4">
-      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-yellow-400/10 text-yellow-400">
-        {icon}
-      </div>
-
-      <h3 className="mt-3 text-[12px] font-semibold text-white">
-        {title}
-      </h3>
-
-      <p className="mt-1 text-[10px] text-gray-500">
-        {description}
-      </p>
-    </div>
-  );
-}
-
-/* -------------------------------- */
-/* POOJA CARD */
-/* -------------------------------- */
-
-function PoojaCard({
-  pooja,
+  icon: Icon,
+  active,
   onClick,
 }: {
-  pooja: {
-    id: number;
-    name: string;
-    price: string;
-    duration: string;
-    image: string;
-    benefits: string[];
-  };
+  label: string;
+  icon: React.ElementType;
+  active: boolean;
   onClick: () => void;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="flex w-full gap-3 rounded-2xl border border-white/5 bg-[#0b1118] p-3 text-left"
+      aria-label={label}
+      className="group relative flex min-h-[62px] flex-col items-center justify-center"
     >
-      {/* IMAGE */}
-      <div className="relative h-[95px] w-[92px] shrink-0 overflow-hidden rounded-xl">
-        <Image
-          src={pooja.image}
-          alt={pooja.name}
-          fill
-          className="object-cover"
+      {/* Active glow */}
+      {active && (
+        <span className="pointer-events-none absolute top-0 h-8 w-12 rounded-full bg-[#DFAE45]/[0.10] blur-xl" />
+      )}
+
+      {/* Top indicator */}
+      <span
+        className={`absolute top-0 h-[2px] rounded-full bg-gradient-to-r from-transparent via-[#DFAE45] to-transparent transition-all duration-300 ${
+          active
+            ? "w-9 opacity-100"
+            : "w-0 opacity-0"
+        }`}
+      />
+
+      {/* Icon */}
+      <span
+        className={`relative flex h-9 w-10 items-center justify-center rounded-2xl border transition-all duration-300 ${
+          active
+            ? "border-[#DFAE45]/20 bg-[#DFAE45]/[0.08]"
+            : "border-transparent bg-transparent group-hover:border-white/[0.05] group-hover:bg-white/[0.025]"
+        }`}
+      >
+        <Icon
+          size={20}
+          strokeWidth={active ? 2.3 : 1.7}
+          className={`transition-all duration-300 ${
+            active
+              ? "text-[#F3C75F] drop-shadow-[0_0_8px_rgba(243,199,95,0.35)]"
+              : "text-slate-500 group-hover:text-slate-300"
+          }`}
         />
-      </div>
 
-      {/* CONTENT */}
-      <div className="min-w-0 flex-1">
-        <div className="flex items-start justify-between gap-2">
-          <h3 className="text-[14px] font-semibold leading-5 text-white">
-            {pooja.name}
-          </h3>
+        {active && (
+          <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-[#07111B] bg-[#DFAE45]" />
+        )}
+      </span>
 
-          <ChevronRight
-            size={18}
-            className="shrink-0 text-yellow-400"
-          />
-        </div>
+      {/* Label */}
+      <span
+        className={`mt-1 text-[8px] tracking-tight transition-all ${
+          active
+            ? "font-bold text-[#F3C75F]"
+            : "font-medium text-slate-500 group-hover:text-slate-300"
+        }`}
+      >
+        {label}
+      </span>
 
-        <div className="mt-1 flex items-center gap-1 text-[10px] text-gray-500">
-          <Clock3 size={11} />
-          {pooja.duration}
-        </div>
-
-        <div className="mt-2 flex flex-wrap gap-1">
-          {pooja.benefits.slice(0, 3).map((benefit) => (
-            <span
-              key={benefit}
-              className="rounded-full bg-white/5 px-2 py-1 text-[8px] text-gray-400"
-            >
-              {benefit}
-            </span>
-          ))}
-        </div>
-
-        <p className="mt-2 text-[15px] font-bold text-yellow-400">
-          {pooja.price}
-        </p>
-      </div>
+      {/* Active dot */}
+      <span
+        className={`mt-1 h-1 rounded-full bg-[#DFAE45] transition-all ${
+          active
+            ? "w-1 opacity-100 shadow-[0_0_7px_rgba(223,174,69,0.7)]"
+            : "w-0 opacity-0"
+        }`}
+      />
     </button>
+  );
+}
+
+/* ===================================================== */
+/* NAV ICONS */
+/* ===================================================== */
+
+function HomeIcon(props: {
+  size?: number;
+  strokeWidth?: number;
+  className?: string;
+}) {
+  return (
+    <svg
+      {...props}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M3 10.5L12 3L21 10.5V20H14.5V14H9.5V20H3V10.5Z"
+        stroke="currentColor"
+        strokeWidth={props.strokeWidth ?? 1.8}
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function GridIcon(props: {
+  size?: number;
+  strokeWidth?: number;
+  className?: string;
+}) {
+  return (
+    <svg
+      {...props}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        x="4"
+        y="4"
+        width="6"
+        height="6"
+        rx="1"
+        stroke="currentColor"
+        strokeWidth={props.strokeWidth ?? 1.8}
+      />
+      <rect
+        x="14"
+        y="4"
+        width="6"
+        height="6"
+        rx="1"
+        stroke="currentColor"
+        strokeWidth={props.strokeWidth ?? 1.8}
+      />
+      <rect
+        x="4"
+        y="14"
+        width="6"
+        height="6"
+        rx="1"
+        stroke="currentColor"
+        strokeWidth={props.strokeWidth ?? 1.8}
+      />
+      <rect
+        x="14"
+        y="14"
+        width="6"
+        height="6"
+        rx="1"
+        stroke="currentColor"
+        strokeWidth={props.strokeWidth ?? 1.8}
+      />
+    </svg>
+  );
+}
+
+function CalendarIcon(props: {
+  size?: number;
+  strokeWidth?: number;
+  className?: string;
+}) {
+  return (
+    <svg
+      {...props}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        x="3.5"
+        y="5"
+        width="17"
+        height="15"
+        rx="2"
+        stroke="currentColor"
+        strokeWidth={props.strokeWidth ?? 1.8}
+      />
+      <path
+        d="M7 3.5V7M17 3.5V7M3.5 10H20.5"
+        stroke="currentColor"
+        strokeWidth={props.strokeWidth ?? 1.8}
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function WalletIcon(props: {
+  size?: number;
+  strokeWidth?: number;
+  className?: string;
+}) {
+  return (
+    <svg
+      {...props}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M4 6.5C4 5.4 4.9 4.5 6 4.5H19C19.55 4.5 20 4.95 20 5.5V18.5C20 19.05 19.55 19.5 19 19.5H6C4.9 19.5 4 18.6 4 17.5V6.5Z"
+        stroke="currentColor"
+        strokeWidth={props.strokeWidth ?? 1.8}
+      />
+      <path
+        d="M4 8H20M15 13H20"
+        stroke="currentColor"
+        strokeWidth={props.strokeWidth ?? 1.8}
+        strokeLinecap="round"
+      />
+      <circle
+        cx="15"
+        cy="13"
+        r="1"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+function ProfileIcon(props: {
+  size?: number;
+  strokeWidth?: number;
+  className?: string;
+}) {
+  return (
+    <svg
+      {...props}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle
+        cx="12"
+        cy="8"
+        r="3.5"
+        stroke="currentColor"
+        strokeWidth={props.strokeWidth ?? 1.8}
+      />
+      <path
+        d="M5 20C5.7 16.6 8.1 14.5 12 14.5C15.9 14.5 18.3 16.6 19 20"
+        stroke="currentColor"
+        strokeWidth={props.strokeWidth ?? 1.8}
+        strokeLinecap="round"
+      />
+    </svg>
   );
 }

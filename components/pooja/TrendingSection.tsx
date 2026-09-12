@@ -1,8 +1,15 @@
+
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight, Star, Flame } from "lucide-react";
+import {
+  ChevronRight,
+  Star,
+  Flame,
+  ArrowUpRight,
+  Sparkles,
+} from "lucide-react";
 
 const items = [
   {
@@ -41,106 +48,198 @@ const items = [
 
 export default function TrendingSection() {
   return (
-    <section className="mt-8">
+    <section className="mt-9">
 
-      {/* Heading */}
-
-      <div className="mb-5 flex items-center justify-between px-4">
+      {/* Section Header */}
+      <div className="mb-5 flex items-end justify-between px-4">
 
         <div>
+          {/* Eyebrow */}
+          <div className="mb-2 flex items-center gap-2">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-orange-400/20 bg-orange-400/10">
+              <Flame
+                size={15}
+                className="text-orange-400"
+                fill="currentColor"
+              />
+            </div>
 
-          <h2 className="flex items-center gap-2 text-2xl font-bold text-white">
+            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-orange-400">
+              Most Loved
+            </span>
+          </div>
 
-            <Flame className="text-orange-500" size={24} />
-
+          <h2 className="text-[23px] font-bold tracking-tight text-white">
             Trending Poojas
-
           </h2>
 
-          <p className="mt-1 text-sm text-gray-400">
+          <p className="mt-1 text-[12px] text-gray-500">
             Most booked poojas this week
           </p>
-
         </div>
 
+        {/* View All */}
         <Link
-          href=""
-          className="flex items-center gap-1 text-sm font-semibold text-yellow-400"
+          href="/pooja/online"
+          className="group flex items-center gap-1 rounded-full border border-[#DFAE45]/20 bg-[#DFAE45]/5 px-3 py-2 text-[11px] font-semibold text-[#F3C75F] transition hover:border-[#DFAE45]/50 hover:bg-[#DFAE45]/10"
         >
           View All
 
-          <ChevronRight size={18} />
+          <ChevronRight
+            size={15}
+            className="transition-transform duration-300 group-hover:translate-x-0.5"
+          />
         </Link>
-
       </div>
 
-      {/* Horizontal Scroll */}
-
-      <div className="flex gap-4 overflow-x-auto px-4 pb-3 scrollbar-hide">
+      {/* Horizontal Cards */}
+      <div className="scrollbar-hide flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-4 pb-4">
 
         {items.map((item) => (
-
           <Link
             key={item.title}
             href="/pooja/details"
-            className="min-w-[185px] overflow-hidden rounded-[26px] border border-yellow-500/20 bg-[#111827] shadow-lg transition duration-300 hover:-translate-y-1 hover:border-yellow-400"
+            className="group/card relative min-w-[188px] snap-start overflow-hidden rounded-[25px] border border-white/[0.08] bg-[#0A111D] shadow-[0_15px_40px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-[#DFAE45]/40 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
           >
 
-            {/* Image */}
+            {/* Card Ambient Glow */}
+            <div className="pointer-events-none absolute -right-10 -top-10 z-10 h-24 w-24 rounded-full bg-[#DFAE45]/10 blur-2xl opacity-0 transition duration-500 group-hover/card:opacity-100" />
 
-            <div className="relative h-44 w-full">
+            {/* Image */}
+            <div className="relative h-[178px] w-full overflow-hidden">
 
               <Image
                 src={item.image}
                 alt={item.title}
                 fill
-                className="object-cover"
+                sizes="188px"
+                className="object-cover transition duration-700 group-hover/card:scale-110"
               />
 
-              <div className="absolute left-3 top-3 rounded-full bg-orange-500 px-3 py-1 text-xs font-bold text-white">
-                🔥 {item.badge}
+              {/* Cinematic Image Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050B14] via-[#050B14]/20 to-transparent" />
+
+              {/* Top Glow */}
+              <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/40 to-transparent" />
+
+              {/* Badge */}
+              <div className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full border border-orange-300/20 bg-black/55 px-2.5 py-1.5 shadow-lg backdrop-blur-md">
+                <Flame
+                  size={11}
+                  className="text-orange-400"
+                  fill="currentColor"
+                />
+
+                <span className="text-[9px] font-bold uppercase tracking-wider text-white">
+                  {item.badge}
+                </span>
               </div>
 
+              {/* Premium Badge */}
+              <div className="absolute bottom-3 left-3 flex items-center gap-1 rounded-full border border-[#DFAE45]/25 bg-black/45 px-2 py-1 backdrop-blur-md">
+                <Sparkles
+                  size={10}
+                  className="text-[#F3C75F]"
+                />
+
+                <span className="text-[8px] font-semibold uppercase tracking-wider text-gray-200">
+                  Sacred
+                </span>
+              </div>
+
+              {/* Arrow */}
+              <div className="absolute bottom-3 right-3 flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-black/40 opacity-0 backdrop-blur-md transition-all duration-300 group-hover/card:opacity-100">
+                <ArrowUpRight
+                  size={15}
+                  className="text-white"
+                />
+              </div>
             </div>
 
             {/* Content */}
+            <div className="relative p-3.5">
 
-            <div className="p-4">
+              {/* Rating */}
+              <div className="flex items-center gap-1">
 
-              <div className="flex items-center gap-1 text-yellow-400">
+                <Star
+                  size={12}
+                  className="text-[#F3C75F]"
+                  fill="currentColor"
+                />
 
-                <Star size={14} fill="currentColor" />
-
-                <span className="text-sm font-semibold">
+                <span className="text-[11px] font-bold text-white">
                   {item.rating}
                 </span>
 
-                <span className="text-xs text-gray-400">
-                  ({item.booked})
+                <span className="text-[10px] text-gray-500">
+                  • {item.booked} booked
                 </span>
-
               </div>
 
-              <h3 className="mt-2 text-lg font-bold text-white">
+              {/* Title */}
+              <h3 className="mt-2.5 truncate text-[16px] font-bold text-white">
                 {item.title}
               </h3>
 
-              <p className="mt-2 text-xl font-bold text-yellow-400">
-                {item.price}
-              </p>
+              {/* Divider */}
+              <div className="my-3 h-px bg-gradient-to-r from-[#DFAE45]/20 via-white/5 to-transparent" />
 
-              <button className="mt-4 w-full rounded-xl bg-gradient-to-r from-yellow-400 to-yellow-500 py-3 text-sm font-bold text-black transition hover:scale-[1.02]">
+              {/* Price + CTA */}
+              <div className="flex items-center justify-between gap-2">
+
+                <div>
+                  <p className="text-[8px] font-medium uppercase tracking-wider text-gray-500">
+                    Starting from
+                  </p>
+
+                  <p className="mt-0.5 text-[17px] font-bold text-[#F3C75F]">
+                    {item.price}
+                  </p>
+                </div>
+
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#DFAE45]/30 bg-[#DFAE45]/10 transition-all duration-300 group-hover/card:border-[#DFAE45] group-hover/card:bg-[#DFAE45]">
+                  <ArrowUpRight
+                    size={16}
+                    className="text-[#F3C75F] transition-colors group-hover/card:text-black"
+                  />
+                </div>
+              </div>
+
+              {/* Book CTA */}
+              <div className="mt-3 flex h-10 items-center justify-center rounded-xl bg-gradient-to-r from-[#DFAE45] to-[#F3C75F] text-[11px] font-bold text-[#080B10] shadow-[0_8px_20px_rgba(223,174,69,0.12)] transition-all duration-300 group-hover/card:shadow-[0_8px_25px_rgba(223,174,69,0.25)]">
                 Book Now
-              </button>
+              </div>
 
             </div>
 
-          </Link>
+            {/* Bottom Gold Line */}
+            <div className="absolute bottom-0 left-1/2 h-[2px] w-0 -translate-x-1/2 bg-gradient-to-r from-transparent via-[#DFAE45] to-transparent transition-all duration-500 group-hover/card:w-[70%]" />
 
+          </Link>
         ))}
+
+      </div>
+
+      {/* Swipe Hint */}
+      <div className="mt-1 flex items-center justify-center gap-2 px-4">
+
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent to-white/5" />
+
+        <span className="text-[9px] font-medium uppercase tracking-[0.16em] text-gray-600">
+          Swipe to explore
+        </span>
+
+        <ChevronRight
+          size={12}
+          className="text-gray-600"
+        />
+
+        <div className="h-px flex-1 bg-gradient-to-l from-transparent to-white/5" />
 
       </div>
 
     </section>
   );
 }
+

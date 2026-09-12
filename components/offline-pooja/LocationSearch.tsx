@@ -1,99 +1,541 @@
+
 "use client";
 
-import { useState } from "react";
-import { ChevronDown, MapPin, Search, Check } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import {
+  Check,
+  ChevronDown,
+  MapPin,
+  Search,
+  Sparkles,
+  X,
+} from "lucide-react";
 
-const locations = ["Indore, MP", "Ujjain, MP", "Ratlam, MP"];
+const locations = [
+  "Indore, MP",
+  "Ujjain, MP",
+  "Ratlam, MP",
+];
 
 export default function LocationSearch() {
-  const [selectedLocation, setSelectedLocation] = useState("Indore, MP");
+  const [selectedLocation, setSelectedLocation] =
+    useState("Indore, MP");
+
   const [isOpen, setIsOpen] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  /* =========================================================
+     CLOSE DROPDOWN WHEN CLICKING OUTSIDE
+  ========================================================= */
+
+  useEffect(() => {
+    function handleOutsideClick(event: MouseEvent) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener(
+      "mousedown",
+      handleOutsideClick
+    );
+
+    return () => {
+      document.removeEventListener(
+        "mousedown",
+        handleOutsideClick
+      );
+    };
+  }, []);
+
+  const filteredLocations = locations.filter((location) =>
+    location
+      .toLowerCase()
+      .includes(search.toLowerCase())
+  );
 
   return (
-    <div className="px-4">
-      <div className="flex gap-3">
-        {/* Location */}
-        <div className="relative min-w-0 flex-1">
+    <section
+      ref={wrapperRef}
+      className="relative z-50 px-4 pt-1"
+    >
+      {/* =====================================================
+          SECTION LABEL
+      ====================================================== */}
+
+      <div className="mb-2.5 flex items-center justify-between px-1">
+        <div className="flex items-center gap-1.5">
+          <Sparkles
+            size={11}
+            className="text-[#DFAE45]"
+          />
+
+          <span className="text-[9px] font-bold uppercase tracking-[0.18em] text-slate-500">
+            Find Your Pooja
+          </span>
+        </div>
+
+        <span className="text-[8px] font-medium text-slate-700">
+          Select your city
+        </span>
+      </div>
+
+      {/* =====================================================
+          SEARCH ROW
+      ====================================================== */}
+
+      <div className="grid grid-cols-[0.95fr_1.05fr] gap-2.5">
+        {/* =================================================
+            LOCATION SELECTOR
+        ================================================== */}
+
+        <div className="relative">
           <button
             type="button"
-            onClick={() => setIsOpen(!isOpen)}
-            className="flex h-12 w-full items-center gap-2 rounded-2xl border border-yellow-500/20 bg-[#0b1118] px-3"
+            onClick={() => setIsOpen((prev) => !prev)}
+            aria-expanded={isOpen}
+            aria-haspopup="listbox"
+            className={`
+              group
+              flex
+              h-[54px]
+              w-full
+              items-center
+              gap-2.5
+              rounded-[20px]
+              border
+              px-3
+              text-left
+              shadow-[0_8px_30px_rgba(0,0,0,0.16)]
+              backdrop-blur-xl
+              transition-all
+              duration-300
+              ${
+                isOpen
+                  ? "border-[#DFAE45]/45 bg-[#0E1A29] shadow-[0_0_25px_rgba(223,174,69,0.08)]"
+                  : "border-white/[0.07] bg-[#0A1521]/90 hover:border-[#DFAE45]/25"
+              }
+            `}
           >
-            <MapPin
-              size={19}
-              className="shrink-0 text-yellow-400"
-            />
+            {/* Icon */}
 
-            <span className="truncate text-sm text-gray-200">
-              {selectedLocation}
+            <span
+              className={`
+                flex
+                h-9
+                w-9
+                shrink-0
+                items-center
+                justify-center
+                rounded-xl
+                transition-all
+                ${
+                  isOpen
+                    ? "bg-[#DFAE45]/15"
+                    : "bg-[#DFAE45]/[0.07]"
+                }
+              `}
+            >
+              <MapPin
+                size={17}
+                strokeWidth={2}
+                className="text-[#E7B94F]"
+              />
             </span>
 
+            {/* Location */}
+
+            <span className="min-w-0 flex-1">
+              <span className="block text-[8px] font-semibold uppercase tracking-[0.12em] text-slate-600">
+                Location
+              </span>
+
+              <span className="mt-0.5 block truncate text-[12px] font-bold text-slate-200">
+                {selectedLocation}
+              </span>
+            </span>
+
+            {/* Arrow */}
+
             <ChevronDown
-              size={17}
-              className={`ml-auto shrink-0 text-yellow-400 transition-transform ${
-                isOpen ? "rotate-180" : ""
-              }`}
+              size={16}
+              className={`
+                shrink-0
+                text-[#DFAE45]
+                transition-transform
+                duration-300
+                ${isOpen ? "rotate-180" : ""}
+              `}
+            />
+
+            {/* Bottom Highlight */}
+
+            <span
+              className={`
+                absolute
+                bottom-0
+                left-6
+                right-6
+                h-px
+                bg-gradient-to-r
+                from-transparent
+                via-[#DFAE45]
+                to-transparent
+                transition-opacity
+                ${
+                  isOpen
+                    ? "opacity-60"
+                    : "opacity-0"
+                }
+              `}
             />
           </button>
 
-          {/* Location Dropdown */}
-          {isOpen && (
-            <div className="absolute left-0 right-0 top-[56px] z-50 overflow-hidden rounded-2xl border border-yellow-500/20 bg-[#0b1118] shadow-2xl shadow-black/50">
-              {locations.map((location) => {
-                const isSelected = selectedLocation === location;
+          {/* =================================================
+              LOCATION DROPDOWN
+          ================================================== */}
 
-                return (
+          {isOpen && (
+            <div
+              className="
+                absolute
+                left-0
+                right-0
+                top-[61px]
+                z-[100]
+                overflow-hidden
+                rounded-[23px]
+                border
+                border-[#DFAE45]/20
+                bg-[#07121F]/98
+                shadow-[0_25px_60px_rgba(0,0,0,0.55)]
+                backdrop-blur-2xl
+              "
+            >
+              {/* Dropdown Header */}
+
+              <div className="border-b border-white/[0.06] p-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#DFAE45]">
+                      Service Location
+                    </p>
+
+                    <p className="mt-0.5 text-[11px] text-slate-500">
+                      Choose where you need the service
+                    </p>
+                  </div>
+
                   <button
-                    key={location}
                     type="button"
-                    onClick={() => {
-                      setSelectedLocation(location);
-                      setIsOpen(false);
-                    }}
-                    className="flex w-full items-center gap-3 border-b border-white/5 px-4 py-3 text-left last:border-b-0"
+                    onClick={() => setIsOpen(false)}
+                    className="
+                      flex
+                      h-8
+                      w-8
+                      items-center
+                      justify-center
+                      rounded-xl
+                      bg-white/[0.04]
+                      text-slate-500
+                      transition
+                      hover:text-white
+                      active:scale-90
+                    "
+                    aria-label="Close locations"
                   >
+                    <X size={14} />
+                  </button>
+                </div>
+
+                {/* Dropdown Search */}
+
+                <div className="mt-3 flex h-10 items-center gap-2 rounded-xl border border-white/[0.06] bg-black/20 px-3">
+                  <Search
+                    size={14}
+                    className="text-slate-500"
+                  />
+
+                  <input
+                    autoFocus
+                    value={search}
+                    onChange={(e) =>
+                      setSearch(e.target.value)
+                    }
+                    placeholder="Search city..."
+                    className="
+                      min-w-0
+                      flex-1
+                      bg-transparent
+                      text-[11px]
+                      text-white
+                      outline-none
+                      placeholder:text-slate-600
+                    "
+                  />
+
+                  {search && (
+                    <button
+                      type="button"
+                      onClick={() => setSearch("")}
+                      className="text-slate-500"
+                    >
+                      <X size={13} />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Locations */}
+
+              <div className="max-h-[190px] overflow-y-auto p-2">
+                {filteredLocations.length > 0 ? (
+                  filteredLocations.map((location) => {
+                    const isSelected =
+                      selectedLocation === location;
+
+                    return (
+                      <button
+                        key={location}
+                        type="button"
+                        onClick={() => {
+                          setSelectedLocation(location);
+                          setIsOpen(false);
+                          setSearch("");
+                        }}
+                        className={`
+                          group
+                          relative
+                          flex
+                          w-full
+                          items-center
+                          gap-3
+                          rounded-2xl
+                          px-3
+                          py-3
+                          text-left
+                          transition-all
+                          duration-200
+                          ${
+                            isSelected
+                              ? "bg-[#DFAE45]/[0.08]"
+                              : "hover:bg-white/[0.035]"
+                          }
+                        `}
+                      >
+                        {/* Location Icon */}
+
+                        <span
+                          className={`
+                            flex
+                            h-9
+                            w-9
+                            shrink-0
+                            items-center
+                            justify-center
+                            rounded-xl
+                            ${
+                              isSelected
+                                ? "bg-[#DFAE45]/15"
+                                : "bg-white/[0.04]"
+                            }
+                          `}
+                        >
+                          <MapPin
+                            size={15}
+                            className={
+                              isSelected
+                                ? "text-[#E7B94F]"
+                                : "text-slate-500"
+                            }
+                          />
+                        </span>
+
+                        {/* Text */}
+
+                        <div className="min-w-0 flex-1">
+                          <p
+                            className={`
+                              truncate
+                              text-[12px]
+                              font-semibold
+                              ${
+                                isSelected
+                                  ? "text-[#F3C75F]"
+                                  : "text-slate-300"
+                              }
+                            `}
+                          >
+                            {location}
+                          </p>
+
+                          <p className="mt-0.5 text-[8px] text-slate-600">
+                            Offline pooja available
+                          </p>
+                        </div>
+
+                        {/* Selected */}
+
+                        {isSelected && (
+                          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#DFAE45]/15">
+                            <Check
+                              size={14}
+                              strokeWidth={2.5}
+                              className="text-[#F3C75F]"
+                            />
+                          </span>
+                        )}
+
+                        {/* Hover Arrow */}
+
+                        {!isSelected && (
+                          <span className="text-[13px] text-slate-700 transition group-hover:translate-x-0.5 group-hover:text-[#DFAE45]">
+                            →
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })
+                ) : (
+                  <div className="px-4 py-7 text-center">
                     <MapPin
-                      size={17}
-                      className="text-yellow-400"
+                      size={22}
+                      className="mx-auto text-slate-700"
                     />
 
-                    <span
-                      className={`flex-1 text-sm ${
-                        isSelected
-                          ? "font-semibold text-yellow-400"
-                          : "text-gray-200"
-                      }`}
-                    >
-                      {location}
-                    </span>
+                    <p className="mt-2 text-[11px] font-semibold text-slate-400">
+                      No location found
+                    </p>
 
-                    {isSelected && (
-                      <Check
-                        size={17}
-                        className="text-yellow-400"
-                      />
-                    )}
-                  </button>
-                );
-              })}
+                    <p className="mt-1 text-[9px] text-slate-600">
+                      Try another city name.
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Bottom Accent */}
+
+              <div className="h-px bg-gradient-to-r from-transparent via-[#DFAE45]/30 to-transparent" />
             </div>
           )}
         </div>
 
-        {/* Search */}
-        <div className="flex h-12 min-w-0 flex-1 items-center gap-2 rounded-2xl border border-yellow-500/20 bg-[#0b1118] px-3">
-          <Search
-            size={19}
-            className="shrink-0 text-gray-400"
-          />
+        {/* =================================================
+            SEARCH BOX
+        ================================================== */}
 
-          <input
-            type="text"
-            placeholder="Search Temple, Pooja..."
-            className="w-full min-w-0 bg-transparent text-sm text-white outline-none placeholder:text-gray-500"
-          />
+        <div
+          className="
+            group
+            relative
+            flex
+            h-[54px]
+            min-w-0
+            items-center
+            gap-2.5
+            rounded-[20px]
+            border
+            border-white/[0.07]
+            bg-[#0A1521]/90
+            px-3
+            shadow-[0_8px_30px_rgba(0,0,0,0.16)]
+            backdrop-blur-xl
+            transition-all
+            duration-300
+            focus-within:border-[#DFAE45]/40
+            focus-within:bg-[#0E1A29]
+            focus-within:shadow-[0_0_25px_rgba(223,174,69,0.07)]
+          "
+        >
+          {/* Search Icon */}
+
+          <span
+            className="
+              flex
+              h-9
+              w-9
+              shrink-0
+              items-center
+              justify-center
+              rounded-xl
+              bg-white/[0.035]
+            "
+          >
+            <Search
+              size={17}
+              strokeWidth={2}
+              className="text-slate-400 transition-colors group-focus-within:text-[#DFAE45]"
+            />
+          </span>
+
+          {/* Input */}
+
+          <div className="min-w-0 flex-1">
+            <span className="block text-[8px] font-semibold uppercase tracking-[0.12em] text-slate-600">
+              Discover
+            </span>
+
+            <input
+              type="text"
+              placeholder="Temple, Pooja..."
+              className="
+                mt-0.5
+                w-full
+                min-w-0
+                bg-transparent
+                text-[11px]
+                font-medium
+                text-white
+                outline-none
+                placeholder:text-slate-600
+              "
+            />
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* =====================================================
+          QUICK SEARCH CHIPS
+      ====================================================== */}
+
+      <div className="mt-2.5 flex gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {[
+          "Ganesh Pooja",
+          "Rudrabhishek",
+          "Griha Pravesh",
+          "Satyanarayan",
+        ].map((item) => (
+          <button
+            key={item}
+            type="button"
+            className="
+              shrink-0
+              rounded-full
+              border
+              border-white/[0.06]
+              bg-white/[0.025]
+              px-3
+              py-1.5
+              text-[9px]
+              font-medium
+              text-slate-500
+              transition
+              hover:border-[#DFAE45]/20
+              hover:bg-[#DFAE45]/[0.05]
+              hover:text-[#DFAE45]
+              active:scale-95
+            "
+          >
+            {item}
+          </button>
+        ))}
+      </div>
+    </section>
   );
 }
