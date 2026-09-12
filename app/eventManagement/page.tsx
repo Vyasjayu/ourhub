@@ -97,39 +97,60 @@ const characterServices = [
     icon: WandSparkles,
   },
   {
-    title: "Blue Robot Cat",
-    image: "/images/events/robot-cat.jpg",
-    description: "Fun cartoon-style character entertainment.",
-    href: "/eventManagement/characters/robot-cat",
-    icon: Gift,
-  },
-  {
-    title: "Funny Family Character",
+    title: "Chhota bheem",
     image: "/images/events/funny-character.jpg",
     description: "Comedy-style character entertainment.",
-    href: "/eventManagement/characters/funny-family",
+    href: "/eventManagement/characters/chhotabheem",
     icon: PartyPopper,
   },
   {
-    title: "Superhero Characters",
-    image: "/images/events/superhero.jpg",
+    title: "Motu Patlu",
+    image: "/images/events/motupatlu.jpg",
     description: "Action-packed entertainment for kids.",
-    href: "/eventManagement/characters/superhero",
+    href: "/eventManagement/characters/motupatlu",
     icon: Crown,
   },
   {
-    title: "Princess & Fairy",
-    image: "/images/events/princess.jpg",
+    title: "Elephant",
+    image: "/images/events/elephant.jpg",
     description: "Magical princess and fairy entertainment.",
-    href: "/eventManagement/characters/princess",
+    href: "/eventManagement/characters/elephant",
+    icon: Sparkles,
+  },
+];
+
+/* =========================================================
+   WEDDING ENTRY DECORATIONS
+========================================================= */
+
+const entryServices = [
+  {
+    title: "Bridal Entry Decoration",
+    image: "/images/events/bridal-entry.jpg",
+    description: "Floral tunnels, dreamy walkways & elegant bridal entries.",
+    href: "/eventManagement/bridal-entry",
+    icon: Heart,
+  },
+  {
+    title: "Grand Floral Bridal Entry",
+    image: "/images/events/FloralBridalEntry.jpg",
+    description: "Royal groom entries with lights, flowers & premium setups.",
+    href: "/eventManagement/floralBridal-entry",
+    icon: Crown,
+  },
+  {
+    title: "Couple Entry Decoration",
+    image: "/images/events/couple-entry.jpg",
+    description: "Romantic couple entry concepts for a memorable moment.",
+    href: "/eventManagement/wedding-event/couple-entry",
     icon: Sparkles,
   },
   {
-    title: "Mascot Characters",
-    image: "/images/events/mascot.jpg",
-    description: "Colourful mascot characters for celebrations.",
-    href: "/eventManagement/characters/mascot",
-    icon: Gift,
+    title: "Varmala Entry Decoration",
+    image: "/images/events/varmala-entry.jpg",
+    description: "Beautiful varmala entry setups with flowers & grand decor.",
+    href: "/eventManagement/wedding-event/varmala-entry",
+    icon: PartyPopper,
   },
 ];
 
@@ -167,7 +188,13 @@ const features = [
 function ServiceGrid({
   services,
 }: {
-  services: typeof eventServices;
+  services: Array<{
+    title: string;
+    image: string;
+    description: string;
+    href: string;
+    icon: typeof Heart;
+  }>;
 }) {
   return (
     <div className="mt-4 grid grid-cols-2 gap-3">
@@ -384,7 +411,7 @@ export default function EventManagementPage() {
 
             {/* CTA */}
             <Link
-              href="/eventManagement/wedding"
+              href="/eventManagement"
               className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#DFAE45] px-5 py-3.5 text-[14px] font-bold text-black shadow-[0_8px_30px_rgba(223,174,69,0.18)] transition active:scale-[0.98]"
             >
               Explore Events
@@ -424,7 +451,7 @@ export default function EventManagementPage() {
 
           <div className="rounded-2xl border border-white/[0.07] bg-white/[0.035] px-3 py-3 text-center">
             <p className="text-lg font-extrabold text-[#DFAE45]">
-              15+
+              19+
             </p>
 
             <p className="mt-0.5 text-[10px] text-gray-400">
@@ -465,7 +492,7 @@ export default function EventManagementPage() {
         =================================================== */}
 
         <Link
-          href="/eventManagement/wedding"
+          href="/eventManagement/wedding-event"
           className="group mt-5 block"
         >
           <section className="relative overflow-hidden rounded-[23px] border border-[#DFAE45]/25 bg-gradient-to-br from-[#DFAE45]/10 via-[#0A111D] to-[#0A111D]">
@@ -494,7 +521,7 @@ export default function EventManagementPage() {
 
                 <p className="mt-1 text-[10px] leading-4 text-gray-500">
                   Mehndi, Haldi, Sangeet, Baraat, Bridal Entry,
-                  Reception & more — all in one place.
+                  Varmala, Reception & more — all in one place.
                 </p>
 
               </div>
@@ -507,6 +534,20 @@ export default function EventManagementPage() {
             </div>
           </section>
         </Link>
+
+        {/* ===================================================
+            WEDDING ENTRY DECORATIONS
+        =================================================== */}
+
+        <section className="mt-10">
+          <SectionHeader
+            eyebrow="Wedding Entries"
+            title="Make Your Entry Grand"
+            description="Choose a beautiful entry setup for the bride, groom or couple."
+          />
+
+          <ServiceGrid services={entryServices} />
+        </section>
 
         {/* ===================================================
             CHARACTER ENTERTAINMENT
@@ -891,7 +932,7 @@ export default function EventManagementPage() {
             </p>
 
             <Link
-              href="/eventManagement/wedding"
+              href="/eventManagement/wedding-event"
               className="mt-5 flex items-center justify-center gap-2 rounded-xl bg-[#DFAE45] py-3 text-[13px] font-bold text-black transition active:scale-[0.98]"
             >
               Start Planning
