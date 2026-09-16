@@ -74,34 +74,6 @@ export default function PopularServices({
       <section className="px-5 pt-8">
         {/* HEADER */}
 
-        <div className="mb-5 flex items-center justify-between">
-          <h2 className="text-[23px] font-bold tracking-[-0.5px]">
-            Popular Services
-          </h2>
-
-          <button
-            type="button"
-            onClick={() => setShowAll(true)}
-            className="
-              flex
-              items-center
-              gap-1
-              text-[15px]
-              font-medium
-              text-[#E7B94F]
-              transition
-              active:scale-95
-            "
-          >
-            View All
-
-            <ChevronRight
-              size={19}
-              strokeWidth={2}
-            />
-          </button>
-        </div>
-
         {/* =====================================================
             HORIZONTAL SERVICE SCROLL
         ===================================================== */}
