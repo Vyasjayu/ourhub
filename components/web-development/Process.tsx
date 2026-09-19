@@ -1,4 +1,3 @@
-
 "use client";
 
 import {
@@ -12,51 +11,154 @@ import {
   Sparkles,
   Zap,
 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const process = [
   {
     step: "01",
-    title: "Requirement Analysis",
-    description:
-      "We understand your business goals, audience and project requirements before starting development.",
+    title: {
+      en: "Requirement Analysis",
+      hi: "रिक्वायरमेंट एनालिसिस",
+    },
+    description: {
+      en: "We understand your business goals, audience and project requirements before starting development.",
+      hi: "डेवलपमेंट शुरू करने से पहले हम आपके बिज़नेस गोल्स, ऑडियंस और प्रोजेक्ट की जरूरतों को समझते हैं।",
+    },
     icon: Search,
     color: "from-cyan-400 to-blue-500",
   },
   {
     step: "02",
-    title: "UI / UX Design",
-    description:
-      "Beautiful wireframes and modern user interfaces focused on conversion, usability and experience.",
+    title: {
+      en: "UI / UX Design",
+      hi: "UI / UX डिजाइन",
+    },
+    description: {
+      en: "Beautiful wireframes and modern user interfaces focused on conversion, usability and experience.",
+      hi: "कन्वर्ज़न, यूज़ेबिलिटी और बेहतर एक्सपीरियंस पर फोकस करते हुए खूबसूरत वायरफ्रेम और मॉडर्न UI तैयार किए जाते हैं।",
+    },
     icon: PenTool,
     color: "from-pink-400 to-rose-500",
   },
   {
     step: "03",
-    title: "Development",
-    description:
-      "We build secure, scalable and high-performance websites using modern technologies.",
+    title: {
+      en: "Development",
+      hi: "डेवलपमेंट",
+    },
+    description: {
+      en: "We build secure, scalable and high-performance websites using modern technologies.",
+      hi: "हम मॉडर्न टेक्नोलॉजी का उपयोग करके सिक्योर, स्केलेबल और हाई-परफॉर्मेंस वेबसाइट्स बनाते हैं।",
+    },
     icon: Code2,
     color: "from-[#FFD86A] to-[#DFAE45]",
   },
   {
     step: "04",
-    title: "Testing",
-    description:
-      "Complete quality assurance, speed optimization and responsive testing across devices.",
+    title: {
+      en: "Testing",
+      hi: "टेस्टिंग",
+    },
+    description: {
+      en: "Complete quality assurance, speed optimization and responsive testing across devices.",
+      hi: "सभी डिवाइसेज़ पर क्वालिटी चेक, स्पीड ऑप्टिमाइज़ेशन और रिस्पॉन्सिव टेस्टिंग की जाती है।",
+    },
     icon: ShieldCheck,
     color: "from-green-400 to-emerald-500",
   },
   {
     step: "05",
-    title: "Launch & Support",
-    description:
-      "Deployment, SEO setup, maintenance and ongoing technical support after your website goes live.",
+    title: {
+      en: "Launch & Support",
+      hi: "लॉन्च और सपोर्ट",
+    },
+    description: {
+      en: "Deployment, SEO setup, maintenance and ongoing technical support after your website goes live.",
+      hi: "वेबसाइट लाइव होने के बाद डिप्लॉयमेंट, SEO सेटअप, मेंटेनेंस और लगातार टेक्निकल सपोर्ट दिया जाता है।",
+    },
     icon: Rocket,
     color: "from-violet-400 to-purple-500",
   },
 ];
 
 export default function Process() {
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
+  const t = {
+    developmentProcess: isHindi
+      ? "डेवलपमेंट प्रोसेस"
+      : "Development Process",
+
+    howWeWork: isHindi
+      ? "हम कैसे काम करते हैं"
+      : "How We Work",
+
+    description: isHindi
+      ? "एक आसान और पारदर्शी प्रक्रिया, जो आपके प्रोजेक्ट को आइडिया से लॉन्च तक व्यवस्थित तरीके से आगे बढ़ाती है।"
+      : "A streamlined process designed to keep your project clear, transparent and moving forward from idea to launch.",
+
+    fromIdeaToLaunch: isHindi
+      ? "आइडिया से लॉन्च तक"
+      : "From idea to launch",
+
+    everyStage: isHindi
+      ? "हर स्टेज को ध्यानपूर्वक प्लान और प्रोफेशनली एग्जीक्यूट किया जाता है।"
+      : "Every stage is carefully planned and professionally executed.",
+
+    steps: isHindi
+      ? "स्टेप्स"
+      : "Steps",
+
+    step: isHindi
+      ? "स्टेप"
+      : "Step",
+
+    core: isHindi
+      ? "मुख्य"
+      : "Core",
+
+    qualityChecked: isHindi
+      ? "क्वालिटी चेक्ड"
+      : "Quality checked",
+
+    averageDelivery: isHindi
+      ? "औसत प्रोजेक्ट डिलीवरी"
+      : "Average Project Delivery",
+
+    timelineDescription: isHindi
+      ? "प्रोजेक्ट की जरूरतों के अनुसार टाइमलाइन अलग हो सकती है।"
+      : "Timelines vary depending on project requirements.",
+
+    businessWebsite: isHindi
+      ? "बिज़नेस वेबसाइट"
+      : "Business Website",
+
+    webApplication: isHindi
+      ? "वेब एप्लिकेशन"
+      : "Web Application",
+
+    workingDays: isHindi
+      ? "वर्किंग डेज़"
+      : "Working days",
+
+    builtCarefully: isHindi
+      ? "ध्यान से तैयार। पूरी तरह टेस्टेड। भरोसे के साथ लॉन्च।"
+      : "Built carefully. Tested thoroughly. Launched confidently.",
+
+    transparentProcess: isHindi
+      ? "पारदर्शी प्रोसेस"
+      : "Transparent process",
+
+    regularUpdates: isHindi
+      ? "रेगुलर अपडेट्स"
+      : "Regular updates",
+
+    dedicatedSupport: isHindi
+      ? "डेडिकेटेड सपोर्ट"
+      : "Dedicated support",
+  };
+
   return (
     <section className="relative mt-12 overflow-hidden px-4">
       {/* Ambient Glows */}
@@ -77,7 +179,7 @@ export default function Process() {
             </div>
 
             <span className="text-[10px] font-bold uppercase tracking-[2px] text-[#DFAE45]">
-              Development Process
+              {t.developmentProcess}
             </span>
           </div>
 
@@ -85,13 +187,12 @@ export default function Process() {
             <span className="h-8 w-1 rounded-full bg-gradient-to-b from-[#FFD86A] to-[#DFAE45]" />
 
             <h2 className="text-[25px] font-extrabold tracking-tight text-white">
-              How We Work
+              {t.howWeWork}
             </h2>
           </div>
 
           <p className="mt-2 pl-3 text-[13px] leading-5 text-gray-400">
-            A streamlined process designed to keep your project clear,
-            transparent and moving forward from idea to launch.
+            {t.description}
           </p>
         </div>
 
@@ -110,11 +211,11 @@ export default function Process() {
 
             <div className="min-w-0 flex-1">
               <p className="text-[12px] font-extrabold text-white">
-                From idea to launch
+                {t.fromIdeaToLaunch}
               </p>
 
               <p className="mt-0.5 text-[9px] leading-4 text-gray-500">
-                Every stage is carefully planned and professionally executed.
+                {t.everyStage}
               </p>
             </div>
 
@@ -124,7 +225,7 @@ export default function Process() {
               </p>
 
               <p className="text-[8px] font-semibold uppercase tracking-[1px] text-gray-600">
-                Steps
+                {t.steps}
               </p>
             </div>
           </div>
@@ -214,18 +315,18 @@ export default function Process() {
                         <div className="min-w-0">
                           <div className="mb-1.5 flex items-center gap-1.5">
                             <span className="text-[8px] font-bold uppercase tracking-[1.4px] text-[#DFAE45]">
-                              Step {item.step}
+                              {t.step} {item.step}
                             </span>
 
                             {index === 2 && (
                               <span className="rounded-full border border-green-400/10 bg-green-400/[0.06] px-1.5 py-0.5 text-[6px] font-bold uppercase tracking-[0.8px] text-green-400">
-                                Core
+                                {t.core}
                               </span>
                             )}
                           </div>
 
                           <h3 className="text-[14px] font-extrabold leading-5 text-white transition-colors duration-300 group-hover:text-[#FFD86A]">
-                            {item.title}
+                            {item.title[language]}
                           </h3>
                         </div>
 
@@ -240,7 +341,7 @@ export default function Process() {
 
                       {/* Description */}
                       <p className="mt-2.5 text-[10px] leading-[17px] text-gray-500">
-                        {item.description}
+                        {item.description[language]}
                       </p>
 
                       {/* Status */}
@@ -252,7 +353,7 @@ export default function Process() {
                         />
 
                         <span className="text-[8px] font-semibold text-gray-600">
-                          Quality checked
+                          {t.qualityChecked}
                         </span>
 
                         <span className="ml-auto text-[8px] font-bold tracking-wider text-gray-700">
@@ -279,7 +380,7 @@ export default function Process() {
               />
 
               <h3 className="text-[14px] font-extrabold text-white">
-                Average Project Delivery
+                {t.averageDelivery}
               </h3>
 
               <Sparkles
@@ -289,7 +390,7 @@ export default function Process() {
             </div>
 
             <p className="mt-1 text-center text-[9px] text-gray-600">
-              Timelines vary depending on project requirements.
+              {t.timelineDescription}
             </p>
 
             {/* Delivery Stats */}
@@ -302,7 +403,7 @@ export default function Process() {
                 </p>
 
                 <p className="relative mt-2 text-[9px] font-bold uppercase tracking-[1px] text-gray-500">
-                  Business Website
+                  {t.businessWebsite}
                 </p>
 
                 <div className="relative mt-2 flex items-center justify-center gap-1">
@@ -310,8 +411,9 @@ export default function Process() {
                     size={10}
                     className="text-green-400"
                   />
+
                   <span className="text-[7px] text-gray-600">
-                    Working days
+                    {t.workingDays}
                   </span>
                 </div>
               </div>
@@ -324,7 +426,7 @@ export default function Process() {
                 </p>
 
                 <p className="relative mt-2 text-[9px] font-bold uppercase tracking-[1px] text-gray-500">
-                  Web Application
+                  {t.webApplication}
                 </p>
 
                 <div className="relative mt-2 flex items-center justify-center gap-1">
@@ -332,8 +434,9 @@ export default function Process() {
                     size={10}
                     className="text-green-400"
                   />
+
                   <span className="text-[7px] text-gray-600">
-                    Working days
+                    {t.workingDays}
                   </span>
                 </div>
               </div>
@@ -347,7 +450,7 @@ export default function Process() {
               />
 
               <span className="text-[9px] font-semibold text-gray-500">
-                Built carefully. Tested thoroughly. Launched confidently.
+                {t.builtCarefully}
               </span>
             </div>
           </div>
@@ -361,12 +464,12 @@ export default function Process() {
             className="text-green-400"
           />
 
-          <span className="text-[9px] font-semibold text-gray-500">
-            Transparent process • Regular updates • Dedicated support
+          <span className="text-center text-[9px] font-semibold text-gray-500">
+            {t.transparentProcess} • {t.regularUpdates} •{" "}
+            {t.dedicatedSupport}
           </span>
         </div>
       </div>
     </section>
   );
 }
-

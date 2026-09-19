@@ -12,6 +12,8 @@ import {
   Zap,
 } from "lucide-react";
 
+import { useLanguage } from "@/context/LanguageContext";
+
 interface Service {
   title: string;
   subtitle: string;
@@ -28,9 +30,101 @@ export default function ServiceHero({
   service,
   onStartProject,
 }: Props) {
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
+  const t = {
+    premiumService: isHindi
+      ? "प्रीमियम सर्विस"
+      : "Premium Service",
+
+    excellent: isHindi
+      ? "उत्कृष्ट"
+      : "Excellent",
+
+    ourHubDigitalStudio: "OurHub Digital Studio",
+
+    projects: isHindi
+      ? "प्रोजेक्ट्स"
+      : "Projects",
+
+    rating: isHindi
+      ? "रेटिंग"
+      : "Rating",
+
+    support: isHindi
+      ? "सपोर्ट"
+      : "Support",
+
+    startingInvestment: isHindi
+      ? "शुरुआती निवेश"
+      : "Starting Investment",
+
+    onwards: isHindi
+      ? "से"
+      : "onwards",
+
+    transparent: isHindi
+      ? "पारदर्शी"
+      : "Transparent",
+
+    oneTimePayment: isHindi
+      ? "वन-टाइम पेमेंट • कोई छुपे हुए चार्ज नहीं"
+      : "One-time payment • No hidden charges",
+
+    includedWithProject: isHindi
+      ? "आपके प्रोजेक्ट में शामिल"
+      : "Included with your project",
+
+    ourHubStandard: "OurHub Standard",
+
+    mobileResponsive: isHindi
+      ? "100% मोबाइल रिस्पॉन्सिव"
+      : "100% Mobile Responsive",
+
+    mobileResponsiveDescription: isHindi
+      ? "हर स्क्रीन साइज के लिए ऑप्टिमाइज़्ड"
+      : "Optimized for every screen size",
+
+    seoOptimized: isHindi
+      ? "SEO ऑप्टिमाइज़्ड वेबसाइट"
+      : "SEO Optimized Website",
+
+    seoDescription: isHindi
+      ? "सर्च विज़िबिलिटी के लिए तैयार"
+      : "Built for search visibility",
+
+    freeSupport: isHindi
+      ? "फ्री सपोर्ट शामिल"
+      : "Free Support Included",
+
+    supportDescription: isHindi
+      ? "प्रोफेशनल पोस्ट-लॉन्च सहायता"
+      : "Professional post-launch assistance",
+
+    startYourProject: isHindi
+      ? "अपना प्रोजेक्ट शुरू करें"
+      : "Start Your Project",
+
+    freeConsultation: isHindi
+      ? "फ्री कंसल्टेशन"
+      : "Free consultation",
+
+    quickResponse: isHindi
+      ? "त्वरित रिस्पॉन्स"
+      : "Quick response",
+
+    noObligation: isHindi
+      ? "कोई बाध्यता नहीं"
+      : "No obligation",
+  };
+
   return (
     <section className="relative px-4 pt-4">
-      {/* Ambient glow */}
+      {/* =====================================================
+          AMBIENT GLOW
+      ===================================================== */}
+
       <div className="pointer-events-none absolute -left-20 top-20 h-52 w-52 rounded-full bg-[#DFAE45]/[0.055] blur-[90px]" />
 
       <div
@@ -62,12 +156,14 @@ export default function ServiceHero({
             className="object-cover transition-transform duration-700 group-hover:scale-[1.035]"
           />
 
-          {/* cinematic overlay */}
+          {/* Cinematic overlay */}
+
           <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/10 to-[#07111D]" />
 
           <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#07111D] to-transparent" />
 
           {/* Image shine */}
+
           <div className="pointer-events-none absolute -left-32 top-0 h-full w-24 rotate-[20deg] bg-white/[0.07] blur-md transition-all duration-1000 group-hover:left-[120%]" />
 
           {/* =================================================
@@ -83,7 +179,7 @@ export default function ServiceHero({
               />
 
               <span className="text-[8px] font-extrabold uppercase tracking-[1.3px] text-white">
-                Premium Service
+                {t.premiumService}
               </span>
             </div>
           </div>
@@ -108,7 +204,7 @@ export default function ServiceHero({
                 </p>
 
                 <p className="mt-1 text-[7px] font-semibold uppercase tracking-[0.6px] text-gray-500">
-                  Excellent
+                  {t.excellent}
                 </p>
               </div>
             </div>
@@ -122,7 +218,7 @@ export default function ServiceHero({
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-[8px] font-bold uppercase tracking-[1.5px] text-[#DFAE45]">
-                  OurHub Digital Studio
+                  {t.ourHubDigitalStudio}
                 </p>
 
                 <h1 className="mt-1 max-w-[300px] text-[25px] font-black leading-[1.08] tracking-tight text-white">
@@ -147,6 +243,7 @@ export default function ServiceHero({
 
         <div className="relative p-4 pt-3">
           {/* Subtitle */}
+
           <p className="text-[11px] leading-5 text-gray-400">
             {service.subtitle}
           </p>
@@ -156,15 +253,19 @@ export default function ServiceHero({
           ================================================= */}
 
           <div className="mt-4 grid grid-cols-3 overflow-hidden rounded-[20px] border border-white/[0.06] bg-white/[0.025]">
+            {/* Projects */}
+
             <div className="px-2 py-3 text-center">
               <p className="text-[11px] font-extrabold text-white">
                 250+
               </p>
 
               <p className="mt-1 text-[7px] font-semibold uppercase tracking-[0.7px] text-gray-600">
-                Projects
+                {t.projects}
               </p>
             </div>
+
+            {/* Rating */}
 
             <div className="border-x border-white/[0.06] px-2 py-3 text-center">
               <p className="text-[11px] font-extrabold text-[#DFAE45]">
@@ -172,9 +273,11 @@ export default function ServiceHero({
               </p>
 
               <p className="mt-1 text-[7px] font-semibold uppercase tracking-[0.7px] text-gray-600">
-                Rating
+                {t.rating}
               </p>
             </div>
+
+            {/* Support */}
 
             <div className="px-2 py-3 text-center">
               <p className="text-[11px] font-extrabold text-green-400">
@@ -182,7 +285,7 @@ export default function ServiceHero({
               </p>
 
               <p className="mt-1 text-[7px] font-semibold uppercase tracking-[0.7px] text-gray-600">
-                Support
+                {t.support}
               </p>
             </div>
           </div>
@@ -192,10 +295,12 @@ export default function ServiceHero({
           ================================================= */}
 
           <div className="relative mt-4 overflow-hidden rounded-[23px] border border-[#DFAE45]/20 bg-gradient-to-br from-[#172438] via-[#0E1A2A] to-[#09131F] p-4">
-            {/* glow */}
+            {/* Glow */}
+
             <div className="pointer-events-none absolute -right-14 -top-14 h-36 w-36 rounded-full bg-[#DFAE45]/10 blur-3xl" />
 
-            {/* top line */}
+            {/* Top line */}
+
             <div className="pointer-events-none absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-[#DFAE45]/40 to-transparent" />
 
             <div className="relative flex items-end justify-between gap-3">
@@ -208,7 +313,7 @@ export default function ServiceHero({
                   />
 
                   <p className="text-[8px] font-extrabold uppercase tracking-[1.5px] text-gray-500">
-                    Starting Investment
+                    {t.startingInvestment}
                   </p>
                 </div>
 
@@ -218,14 +323,14 @@ export default function ServiceHero({
                   </h2>
 
                   <span className="pb-0.5 text-[8px] font-medium text-gray-600">
-                    onwards
+                    {t.onwards}
                   </span>
                 </div>
               </div>
 
               <div className="rounded-full border border-green-400/15 bg-green-400/[0.06] px-2.5 py-1.5">
                 <span className="text-[7px] font-extrabold uppercase tracking-[0.8px] text-green-400">
-                  Transparent
+                  {t.transparent}
                 </span>
               </div>
             </div>
@@ -238,7 +343,7 @@ export default function ServiceHero({
               />
 
               <span className="text-[8px] font-medium text-gray-500">
-                One-time payment • No hidden charges
+                {t.oneTimePayment}
               </span>
             </div>
           </div>
@@ -250,16 +355,17 @@ export default function ServiceHero({
           <div className="mt-5">
             <div className="mb-3 flex items-center justify-between">
               <p className="text-[8px] font-extrabold uppercase tracking-[1.5px] text-gray-600">
-                Included with your project
+                {t.includedWithProject}
               </p>
 
               <span className="text-[7px] font-bold uppercase tracking-[0.8px] text-[#DFAE45]">
-                OurHub Standard
+                {t.ourHubStandard}
               </span>
             </div>
 
             <div className="grid grid-cols-1 gap-2.5">
               {/* Feature 1 */}
+
               <div className="group/feature flex items-center gap-3 rounded-2xl border border-white/[0.055] bg-white/[0.025] p-3 transition-all duration-300 hover:border-green-400/15 hover:bg-green-400/[0.025]">
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-green-400/[0.07]">
                   <CheckCircle2
@@ -271,11 +377,11 @@ export default function ServiceHero({
 
                 <div className="min-w-0">
                   <p className="text-[10px] font-bold text-white">
-                    100% Mobile Responsive
+                    {t.mobileResponsive}
                   </p>
 
                   <p className="mt-0.5 text-[8px] text-gray-600">
-                    Optimized for every screen size
+                    {t.mobileResponsiveDescription}
                   </p>
                 </div>
 
@@ -287,6 +393,7 @@ export default function ServiceHero({
               </div>
 
               {/* Feature 2 */}
+
               <div className="group/feature flex items-center gap-3 rounded-2xl border border-white/[0.055] bg-white/[0.025] p-3 transition-all duration-300 hover:border-green-400/15 hover:bg-green-400/[0.025]">
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-green-400/[0.07]">
                   <ShieldCheck
@@ -298,11 +405,11 @@ export default function ServiceHero({
 
                 <div className="min-w-0">
                   <p className="text-[10px] font-bold text-white">
-                    SEO Optimized Website
+                    {t.seoOptimized}
                   </p>
 
                   <p className="mt-0.5 text-[8px] text-gray-600">
-                    Built for search visibility
+                    {t.seoDescription}
                   </p>
                 </div>
 
@@ -314,6 +421,7 @@ export default function ServiceHero({
               </div>
 
               {/* Feature 3 */}
+
               <div className="group/feature flex items-center gap-3 rounded-2xl border border-white/[0.055] bg-white/[0.025] p-3 transition-all duration-300 hover:border-green-400/15 hover:bg-green-400/[0.025]">
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-green-400/[0.07]">
                   <Clock3
@@ -325,11 +433,11 @@ export default function ServiceHero({
 
                 <div className="min-w-0">
                   <p className="text-[10px] font-bold text-white">
-                    Free Support Included
+                    {t.freeSupport}
                   </p>
 
                   <p className="mt-0.5 text-[8px] text-gray-600">
-                    Professional post-launch assistance
+                    {t.supportDescription}
                   </p>
                 </div>
 
@@ -362,6 +470,7 @@ export default function ServiceHero({
             "
           >
             {/* Shine */}
+
             <span className="pointer-events-none absolute -left-14 top-0 h-full w-10 rotate-[20deg] bg-white/30 blur-sm transition-all duration-700 group-hover/cta:left-[120%]" />
 
             <Sparkles
@@ -371,7 +480,7 @@ export default function ServiceHero({
             />
 
             <span className="relative z-10">
-              Start Your Project
+              {t.startYourProject}
             </span>
 
             <ArrowRight
@@ -382,6 +491,7 @@ export default function ServiceHero({
           </button>
 
           {/* CTA trust */}
+
           <div className="mt-3 flex items-center justify-center gap-2">
             <CheckCircle2
               size={11}
@@ -390,12 +500,14 @@ export default function ServiceHero({
             />
 
             <span className="text-[7px] font-semibold uppercase tracking-[0.9px] text-gray-600">
-              Free consultation • Quick response • No obligation
+              {t.freeConsultation} • {t.quickResponse} •{" "}
+              {t.noObligation}
             </span>
           </div>
         </div>
 
         {/* Bottom highlight */}
+
         <div className="pointer-events-none absolute bottom-0 left-1/2 h-px w-1/2 -translate-x-1/2 bg-gradient-to-r from-transparent via-[#DFAE45]/30 to-transparent" />
       </div>
     </section>

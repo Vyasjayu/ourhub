@@ -1,4 +1,3 @@
-
 "use client";
 
 import {
@@ -8,12 +7,47 @@ import {
   Sparkles,
 } from "lucide-react";
 
+import { useLanguage } from "@/context/LanguageContext";
+
 export default function StickyCTA() {
   const phone = "918878632431";
 
-  const message = encodeURIComponent(
-    "Hi OurHub, I want to start a Web Development project. Please share the details."
-  );
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
+  const t = {
+    readyToBuild: isHindi
+      ? "बनाने के लिए तैयार"
+      : "Ready to build",
+
+    journey: isHindi
+      ? "OurHub के साथ अपनी डिजिटल जर्नी शुरू करें"
+      : "Start your digital journey with OurHub",
+
+    chatWhatsapp: isHindi
+      ? "व्हाट्सऐप पर OurHub से चैट करें"
+      : "Chat with OurHub on WhatsApp",
+
+    startProject: isHindi
+      ? "अपना प्रोजेक्ट शुरू करें"
+      : "Start Your Project",
+
+    freeConsultation: isHindi
+      ? "फ्री कंसल्टेशन"
+      : "Free Consultation",
+
+    quickResponse: isHindi
+      ? "त्वरित रिस्पॉन्स"
+      : "Quick Response",
+
+    ourHub: "OurHub",
+
+    whatsappMessage: isHindi
+      ? "नमस्ते OurHub, मैं एक वेब डेवलपमेंट प्रोजेक्ट शुरू करना चाहता हूं। कृपया इसकी पूरी जानकारी साझा करें।"
+      : "Hi OurHub, I want to start a Web Development project. Please share the details.",
+  };
+
+  const message = encodeURIComponent(t.whatsappMessage);
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-[100] flex justify-center pointer-events-none">
@@ -42,12 +76,12 @@ export default function StickyCTA() {
                 <span className="h-1.5 w-1.5 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.8)]" />
 
                 <span className="text-[8px] font-bold uppercase tracking-[1.3px] text-green-400">
-                  Ready to build
+                  {t.readyToBuild}
                 </span>
               </div>
 
               <p className="mt-0.5 text-[10px] font-semibold text-gray-400">
-                Start your digital journey with OurHub
+                {t.journey}
               </p>
             </div>
 
@@ -56,7 +90,7 @@ export default function StickyCTA() {
               href={`https://wa.me/${phone}?text=${message}`}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Chat with OurHub on WhatsApp"
+              aria-label={t.chatWhatsapp}
               className="
                 flex h-[48px] w-[48px] shrink-0 items-center justify-center
                 rounded-[17px]
@@ -80,6 +114,7 @@ export default function StickyCTA() {
               href={`https://wa.me/${phone}?text=${message}`}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={t.startProject}
               className="
                 group/cta relative flex h-[48px] flex-1
                 items-center justify-center gap-2
@@ -104,7 +139,7 @@ export default function StickyCTA() {
               />
 
               <span className="relative z-10">
-                Start Your Project
+                {t.startProject}
               </span>
 
               <ArrowRight
@@ -124,19 +159,19 @@ export default function StickyCTA() {
             />
 
             <span className="text-[7px] font-semibold uppercase tracking-[0.8px] text-gray-600">
-              Free Consultation
+              {t.freeConsultation}
             </span>
 
             <span className="h-1 w-1 rounded-full bg-white/10" />
 
             <span className="text-[7px] font-semibold uppercase tracking-[0.8px] text-gray-600">
-              Quick Response
+              {t.quickResponse}
             </span>
 
             <span className="h-1 w-1 rounded-full bg-white/10" />
 
             <span className="text-[7px] font-semibold uppercase tracking-[0.8px] text-gray-600">
-              OurHub
+              {t.ourHub}
             </span>
           </div>
 
@@ -147,4 +182,3 @@ export default function StickyCTA() {
     </div>
   );
 }
-

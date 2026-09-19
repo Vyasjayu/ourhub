@@ -20,122 +20,269 @@ import {
   Utensils,
   Users,
 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const whatsappNumber = "918878632431";
+
+type Localized = {
+  en: string;
+  hi: string;
+};
 
 const services = [
   {
     icon: Sparkles,
-    title: "Romantic Decoration",
-    description:
-      "Elegant floral backdrops, candles, balloons and personalized anniversary styling.",
+    title: {
+      en: "Romantic Decoration",
+      hi: "रोमांटिक डेकोरेशन",
+    },
+    description: {
+      en: "Elegant floral backdrops, candles, balloons and personalized anniversary styling.",
+      hi: "एलिगेंट फ्लोरल बैकड्रॉप, कैंडल्स, गुब्बारों और पर्सनलाइज़्ड एनिवर्सरी स्टाइलिंग के साथ खूबसूरत सजावट।",
+    },
   },
   {
     icon: Camera,
-    title: "Photography",
-    description:
-      "Capture beautiful couple portraits, family moments and memories from your celebration.",
+    title: {
+      en: "Photography",
+      hi: "फोटोग्राफी",
+    },
+    description: {
+      en: "Capture beautiful couple portraits, family moments and memories from your celebration.",
+      hi: "आपके सेलिब्रेशन के खूबसूरत कपल पोर्ट्रेट, फैमिली मोमेंट्स और यादों को कैप्चर करें।",
+    },
   },
   {
     icon: Heart,
-    title: "Couple Setup",
-    description:
-      "Special couple seating, stage styling and personalized arrangements for your special day.",
+    title: {
+      en: "Couple Setup",
+      hi: "कपल सेटअप",
+    },
+    description: {
+      en: "Special couple seating, stage styling and personalized arrangements for your special day.",
+      hi: "आपके खास दिन के लिए स्पेशल कपल सीटिंग, स्टेज स्टाइलिंग और पर्सनलाइज़्ड अरेंजमेंट।",
+    },
   },
   {
     icon: Music,
-    title: "Music & Entertainment",
-    description:
-      "Romantic music, live entertainment and fun activities for couples and families.",
+    title: {
+      en: "Music & Entertainment",
+      hi: "म्यूजिक और एंटरटेनमेंट",
+    },
+    description: {
+      en: "Romantic music, live entertainment and fun activities for couples and families.",
+      hi: "कपल्स और परिवार के लिए रोमांटिक म्यूजिक, लाइव एंटरटेनमेंट और मजेदार एक्टिविटीज़।",
+    },
   },
   {
     icon: Utensils,
-    title: "Dinner & Catering",
-    description:
-      "Customized food and dining arrangements for intimate or large anniversary celebrations.",
+    title: {
+      en: "Dinner & Catering",
+      hi: "डिनर और कैटरिंग",
+    },
+    description: {
+      en: "Customized food and dining arrangements for intimate or large anniversary celebrations.",
+      hi: "छोटे या बड़े एनिवर्सरी सेलिब्रेशन के लिए कस्टमाइज़्ड फूड और डाइनिंग अरेंजमेंट।",
+    },
   },
   {
     icon: Gift,
-    title: "Surprise Planning",
-    description:
-      "Thoughtful surprise moments, cake setup, gifts and personalized experiences.",
+    title: {
+      en: "Surprise Planning",
+      hi: "सरप्राइज़ प्लानिंग",
+    },
+    description: {
+      en: "Thoughtful surprise moments, cake setup, gifts and personalized experiences.",
+      hi: "खास सरप्राइज़ मोमेंट्स, केक सेटअप, गिफ्ट्स और पर्सनलाइज़्ड एक्सपीरियंस।",
+    },
   },
 ];
 
 const packages = [
   {
-    name: "Romantic Moments",
+    id: "romantic-moments",
+    name: {
+      en: "Romantic Moments",
+      hi: "रोमांटिक मोमेंट्स",
+    },
     price: "₹7,999",
-    description:
-      "Perfect for a beautiful and intimate anniversary celebration.",
+    description: {
+      en: "Perfect for a beautiful and intimate anniversary celebration.",
+      hi: "एक खूबसूरत और इंटिमेट एनिवर्सरी सेलिब्रेशन के लिए परफेक्ट।",
+    },
     features: [
-      "Romantic backdrop",
-      "Balloon & floral styling",
-      "Couple seating",
-      "Cake table setup",
-      "Welcome board",
+      {
+        en: "Romantic backdrop",
+        hi: "रोमांटिक बैकड्रॉप",
+      },
+      {
+        en: "Balloon & floral styling",
+        hi: "बैलून और फ्लोरल स्टाइलिंग",
+      },
+      {
+        en: "Couple seating",
+        hi: "कपल सीटिंग",
+      },
+      {
+        en: "Cake table setup",
+        hi: "केक टेबल सेटअप",
+      },
+      {
+        en: "Welcome board",
+        hi: "वेलकम बोर्ड",
+      },
     ],
   },
   {
-    name: "Golden Anniversary",
+    id: "golden-anniversary",
+    name: {
+      en: "Golden Anniversary",
+      hi: "गोल्डन एनिवर्सरी",
+    },
     price: "₹14,999",
     popular: true,
-    description:
-      "A premium anniversary experience designed for memorable moments.",
+    description: {
+      en: "A premium anniversary experience designed for memorable moments.",
+      hi: "यादगार पलों के लिए तैयार किया गया प्रीमियम एनिवर्सरी एक्सपीरियंस।",
+    },
     features: [
-      "Premium decoration",
-      "Floral couple stage",
-      "Cake & celebration setup",
-      "Photography coverage",
-      "Music & entertainment",
-      "Personalized couple setup",
+      {
+        en: "Premium decoration",
+        hi: "प्रीमियम डेकोरेशन",
+      },
+      {
+        en: "Floral couple stage",
+        hi: "फ्लोरल कपल स्टेज",
+      },
+      {
+        en: "Cake & celebration setup",
+        hi: "केक और सेलिब्रेशन सेटअप",
+      },
+      {
+        en: "Photography coverage",
+        hi: "फोटोग्राफी कवरेज",
+      },
+      {
+        en: "Music & entertainment",
+        hi: "म्यूजिक और एंटरटेनमेंट",
+      },
+      {
+        en: "Personalized couple setup",
+        hi: "पर्सनलाइज़्ड कपल सेटअप",
+      },
     ],
   },
   {
-    name: "Grand Celebration",
+    id: "grand-celebration",
+    name: {
+      en: "Grand Celebration",
+      hi: "ग्रैंड सेलिब्रेशन",
+    },
     price: "₹29,999",
-    description:
-      "Complete event management for a grand family anniversary.",
+    description: {
+      en: "Complete event management for a grand family anniversary.",
+      hi: "एक शानदार फैमिली एनिवर्सरी के लिए कम्प्लीट इवेंट मैनेजमेंट।",
+    },
     features: [
-      "Luxury event styling",
-      "Premium floral decoration",
-      "Professional photography",
-      "Entertainment & music",
-      "Dinner & catering coordination",
-      "Complete event management",
+      {
+        en: "Luxury event styling",
+        hi: "लक्ज़री इवेंट स्टाइलिंग",
+      },
+      {
+        en: "Premium floral decoration",
+        hi: "प्रीमियम फ्लोरल डेकोरेशन",
+      },
+      {
+        en: "Professional photography",
+        hi: "प्रोफेशनल फोटोग्राफी",
+      },
+      {
+        en: "Entertainment & music",
+        hi: "एंटरटेनमेंट और म्यूजिक",
+      },
+      {
+        en: "Dinner & catering coordination",
+        hi: "डिनर और कैटरिंग कोऑर्डिनेशन",
+      },
+      {
+        en: "Complete event management",
+        hi: "कम्प्लीट इवेंट मैनेजमेंट",
+      },
     ],
   },
 ];
 
-const anniversaryTypes = [
-  "1st Anniversary",
-  "5th Anniversary",
-  "10th Anniversary",
-  "25th Anniversary",
-  "50th Anniversary",
-  "Family Celebration",
+const anniversaryTypes: Localized[] = [
+  {
+    en: "1st Anniversary",
+    hi: "पहली एनिवर्सरी",
+  },
+  {
+    en: "5th Anniversary",
+    hi: "5वीं एनिवर्सरी",
+  },
+  {
+    en: "10th Anniversary",
+    hi: "10वीं एनिवर्सरी",
+  },
+  {
+    en: "25th Anniversary",
+    hi: "25वीं एनिवर्सरी",
+  },
+  {
+    en: "50th Anniversary",
+    hi: "50वीं एनिवर्सरी",
+  },
+  {
+    en: "Family Celebration",
+    hi: "फैमिली सेलिब्रेशन",
+  },
 ];
 
 const faqs = [
   {
-    question: "Can you plan a surprise anniversary celebration?",
-    answer:
-      "Yes. OurHub can coordinate romantic decoration, cake setup, music, photography and surprise arrangements.",
+    id: "surprise",
+    question: {
+      en: "Can you plan a surprise anniversary celebration?",
+      hi: "क्या आप सरप्राइज़ एनिवर्सरी सेलिब्रेशन प्लान कर सकते हैं?",
+    },
+    answer: {
+      en: "Yes. OurHub can coordinate romantic decoration, cake setup, music, photography and surprise arrangements.",
+      hi: "हाँ। OurHub रोमांटिक डेकोरेशन, केक सेटअप, म्यूजिक, फोटोग्राफी और सरप्राइज़ अरेंजमेंट कोऑर्डिनेट कर सकता है।",
+    },
   },
   {
-    question: "Can I customize the decoration theme?",
-    answer:
-      "Yes. You can choose your preferred colors, flowers, theme, photographs and decoration style.",
+    id: "decoration",
+    question: {
+      en: "Can I customize the decoration theme?",
+      hi: "क्या मैं डेकोरेशन थीम को कस्टमाइज़ कर सकता/सकती हूँ?",
+    },
+    answer: {
+      en: "Yes. You can choose your preferred colors, flowers, theme, photographs and decoration style.",
+      hi: "हाँ। आप अपनी पसंद के कलर्स, फूल, थीम, फोटोग्राफ्स और डेकोरेशन स्टाइल चुन सकते हैं।",
+    },
   },
   {
-    question: "Do you arrange milestone anniversaries?",
-    answer:
-      "Yes. We can plan special celebrations for 5th, 10th, 25th, 50th and other important milestones.",
+    id: "milestone",
+    question: {
+      en: "Do you arrange milestone anniversaries?",
+      hi: "क्या आप खास माइलस्टोन एनिवर्सरी भी अरेंज करते हैं?",
+    },
+    answer: {
+      en: "Yes. We can plan special celebrations for 5th, 10th, 25th, 50th and other important milestones.",
+      hi: "हाँ। हम 5वीं, 10वीं, 25वीं, 50वीं और अन्य खास माइलस्टोन के लिए स्पेशल सेलिब्रेशन प्लान कर सकते हैं।",
+    },
   },
   {
-    question: "Can you manage the complete anniversary event?",
-    answer:
-      "Yes. OurHub can coordinate decoration, photography, entertainment, catering and other event requirements.",
+    id: "complete-event",
+    question: {
+      en: "Can you manage the complete anniversary event?",
+      hi: "क्या आप पूरा एनिवर्सरी इवेंट मैनेज कर सकते हैं?",
+    },
+    answer: {
+      en: "Yes. OurHub can coordinate decoration, photography, entertainment, catering and other event requirements.",
+      hi: "हाँ। OurHub डेकोरेशन, फोटोग्राफी, एंटरटेनमेंट, कैटरिंग और इवेंट की अन्य जरूरतों का कोऑर्डिनेशन कर सकता है।",
+    },
   },
 ];
 
@@ -143,8 +290,12 @@ const whatsappLink = (message: string) =>
   `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 
 export default function AnniversaryPage() {
+  const { language } = useLanguage();
+
   const enquiryMessage =
-    "Hello OurHub, I want to plan an Anniversary celebration. Please share packages and complete details.";
+    language === "hi"
+      ? "नमस्ते OurHub, मैं एनिवर्सरी सेलिब्रेशन प्लान करना चाहता/चाहती हूँ। कृपया पैकेज और पूरी जानकारी साझा करें।"
+      : "Hello OurHub, I want to plan an Anniversary celebration. Please share packages and complete details.";
 
   return (
     <main className="min-h-screen bg-[#05070B] pb-28 text-white">
@@ -164,7 +315,7 @@ export default function AnniversaryPage() {
             </p>
 
             <h1 className="mt-0.5 text-[15px] font-semibold">
-              Anniversary
+              {language === "hi" ? "एनिवर्सरी" : "Anniversary"}
             </h1>
           </div>
 
@@ -185,7 +336,11 @@ export default function AnniversaryPage() {
           <div className="relative min-h-[500px] overflow-hidden rounded-[30px] border border-[#DFAE45]/20 bg-[#0B0D11]">
             <img
               src="/images/events/anniversary.jpg"
-              alt="Anniversary Event"
+              alt={
+                language === "hi"
+                  ? "एनिवर्सरी इवेंट"
+                  : "Anniversary Event"
+              }
               className="absolute inset-0 h-full w-full object-cover"
             />
 
@@ -199,33 +354,56 @@ export default function AnniversaryPage() {
                 />
 
                 <span className="text-[11px] font-semibold tracking-wide text-[#F5D98B]">
-                  ANNIVERSARY • LOVE • MEMORIES
+                  {language === "hi"
+                    ? "एनिवर्सरी • प्यार • यादें"
+                    : "ANNIVERSARY • LOVE • MEMORIES"}
                 </span>
               </div>
 
               <h2 className="max-w-[380px] text-[39px] font-bold leading-[1.02] tracking-[-1.6px]">
-                Celebrate Your
-                <span className="block text-[#E7B94F]">
-                  Beautiful Journey.
-                </span>
+                {language === "hi" ? (
+                  <>
+                    अपने खूबसूरत
+                    <span className="block text-[#E7B94F]">
+                      सफर को सेलिब्रेट करें।
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    Celebrate Your
+                    <span className="block text-[#E7B94F]">
+                      Beautiful Journey.
+                    </span>
+                  </>
+                )}
               </h2>
 
               <p className="mt-4 max-w-[370px] text-[14px] leading-6 text-white/70">
-                Elegant anniversary celebrations crafted around your love
-                story, special memories and the people who matter most.
+                {language === "hi"
+                  ? "आपकी लव स्टोरी, खास यादों और उन लोगों के लिए एलिगेंट एनिवर्सरी सेलिब्रेशन तैयार करें जो आपके लिए सबसे खास हैं।"
+                  : "Elegant anniversary celebrations crafted around your love story, special memories and the people who matter most."}
               </p>
 
               <div className="mt-6 flex flex-wrap gap-2">
                 <span className="rounded-full border border-white/10 bg-white/[0.07] px-3 py-2 text-[11px] text-white/75">
-                  ✦ Romantic Decor
+                  ✦{" "}
+                  {language === "hi"
+                    ? "रोमांटिक डेकोर"
+                    : "Romantic Decor"}
                 </span>
 
                 <span className="rounded-full border border-white/10 bg-white/[0.07] px-3 py-2 text-[11px] text-white/75">
-                  ✦ Photography
+                  ✦{" "}
+                  {language === "hi"
+                    ? "फोटोग्राफी"
+                    : "Photography"}
                 </span>
 
                 <span className="rounded-full border border-white/10 bg-white/[0.07] px-3 py-2 text-[11px] text-white/75">
-                  ✦ Surprise Planning
+                  ✦{" "}
+                  {language === "hi"
+                    ? "सरप्राइज़ प्लानिंग"
+                    : "Surprise Planning"}
                 </span>
               </div>
             </div>
@@ -242,7 +420,9 @@ export default function AnniversaryPage() {
               />
 
               <p className="mt-2 text-[10px] font-medium text-white/65">
-                Trusted Team
+                {language === "hi"
+                  ? "भरोसेमंद टीम"
+                  : "Trusted Team"}
               </p>
             </div>
 
@@ -253,7 +433,9 @@ export default function AnniversaryPage() {
               />
 
               <p className="mt-2 text-[10px] font-medium text-white/65">
-                Premium Styling
+                {language === "hi"
+                  ? "प्रीमियम स्टाइलिंग"
+                  : "Premium Styling"}
               </p>
             </div>
 
@@ -264,7 +446,9 @@ export default function AnniversaryPage() {
               />
 
               <p className="mt-2 text-[10px] font-medium text-white/65">
-                On-time Setup
+                {language === "hi"
+                  ? "समय पर सेटअप"
+                  : "On-time Setup"}
               </p>
             </div>
           </div>
@@ -273,32 +457,50 @@ export default function AnniversaryPage() {
         {/* ================= INTRO ================= */}
         <section className="px-5 pt-12">
           <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#DFAE45]">
-            Celebrate Your Story
+            {language === "hi"
+              ? "अपनी कहानी सेलिब्रेट करें"
+              : "Celebrate Your Story"}
           </p>
 
           <h3 className="mt-3 text-[29px] font-bold leading-tight tracking-[-0.8px]">
-            Years Of Love.
-            <br />
-            <span className="text-white/45">
-              One Beautiful Celebration.
-            </span>
+            {language === "hi" ? (
+              <>
+                सालों का प्यार।
+                <br />
+                <span className="text-white/45">
+                  एक खूबसूरत सेलिब्रेशन।
+                </span>
+              </>
+            ) : (
+              <>
+                Years Of Love.
+                <br />
+                <span className="text-white/45">
+                  One Beautiful Celebration.
+                </span>
+              </>
+            )}
           </h3>
 
           <p className="mt-4 text-[14px] leading-7 text-white/60">
-            Every anniversary is a reminder of the memories, laughter and
-            journey shared together. OurHub helps you turn that journey into
-            an elegant celebration your family will remember.
+            {language === "hi"
+              ? "हर एनिवर्सरी उन यादों, हंसी और साथ बिताए सफर की याद दिलाती है। OurHub उस खूबसूरत सफर को एक एलिगेंट सेलिब्रेशन में बदलने में आपकी मदद करता है जिसे आपका परिवार हमेशा याद रखेगा।"
+              : "Every anniversary is a reminder of the memories, laughter and journey shared together. OurHub helps you turn that journey into an elegant celebration your family will remember."}
           </p>
         </section>
 
         {/* ================= SERVICES ================= */}
         <section className="px-5 pt-12">
           <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#DFAE45]">
-            What We Handle
+            {language === "hi"
+              ? "हम क्या संभालते हैं"
+              : "What We Handle"}
           </p>
 
           <h3 className="mt-2 text-[25px] font-bold">
-            Everything For Your Celebration
+            {language === "hi"
+              ? "आपके सेलिब्रेशन के लिए सब कुछ"
+              : "Everything For Your Celebration"}
           </h3>
 
           <div className="mt-6 space-y-3">
@@ -307,7 +509,7 @@ export default function AnniversaryPage() {
 
               return (
                 <div
-                  key={service.title}
+                  key={service.title.en}
                   className="rounded-[22px] border border-white/[0.07] bg-gradient-to-br from-white/[0.055] to-white/[0.015] p-4 transition-all duration-300 hover:border-[#DFAE45]/30"
                 >
                   <div className="flex gap-4">
@@ -320,11 +522,11 @@ export default function AnniversaryPage() {
 
                     <div>
                       <h4 className="text-[15px] font-semibold">
-                        {service.title}
+                        {service.title[language]}
                       </h4>
 
                       <p className="mt-1.5 text-[12px] leading-5 text-white/50">
-                        {service.description}
+                        {service.description[language]}
                       </p>
                     </div>
                   </div>
@@ -337,20 +539,24 @@ export default function AnniversaryPage() {
         {/* ================= ANNIVERSARY TYPES ================= */}
         <section className="px-5 pt-12">
           <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#DFAE45]">
-            Every Milestone Matters
+            {language === "hi"
+              ? "हर माइलस्टोन खास है"
+              : "Every Milestone Matters"}
           </p>
 
           <h3 className="mt-2 text-[25px] font-bold">
-            Celebrate Every Chapter
+            {language === "hi"
+              ? "हर चैप्टर को सेलिब्रेट करें"
+              : "Celebrate Every Chapter"}
           </h3>
 
           <div className="mt-5 flex flex-wrap gap-2">
             {anniversaryTypes.map((type) => (
               <span
-                key={type}
+                key={type.en}
                 className="rounded-full border border-white/10 bg-white/[0.035] px-4 py-2.5 text-[11px] font-medium text-white/65"
               >
-                {type}
+                {type[language]}
               </span>
             ))}
           </div>
@@ -370,35 +576,59 @@ export default function AnniversaryPage() {
               </div>
 
               <h3 className="mt-5 text-[25px] font-bold leading-tight">
-                Make Your Love Story
-                <br />
-                <span className="text-[#E7B94F]">
-                  Part Of The Celebration
-                </span>
+                {language === "hi" ? (
+                  <>
+                    अपनी लव स्टोरी को
+                    <br />
+                    <span className="text-[#E7B94F]">
+                      सेलिब्रेशन का हिस्सा बनाएं
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    Make Your Love Story
+                    <br />
+                    <span className="text-[#E7B94F]">
+                      Part Of The Celebration
+                    </span>
+                  </>
+                )}
               </h3>
 
               <p className="mt-3 text-[13px] leading-6 text-white/55">
-                Add your favorite photographs, meaningful dates, special
-                messages and personal touches to create an anniversary event
-                that feels uniquely yours.
+                {language === "hi"
+                  ? "अपनी पसंदीदा तस्वीरें, खास तारीखें, स्पेशल मैसेज और पर्सनल टच जोड़कर ऐसा एनिवर्सरी इवेंट बनाएं जो बिल्कुल आपके जैसा हो।"
+                  : "Add your favorite photographs, meaningful dates, special messages and personal touches to create an anniversary event that feels uniquely yours."}
               </p>
 
               <div className="mt-5 grid grid-cols-2 gap-3">
                 {[
-                  "Couple Photos",
-                  "Memory Wall",
-                  "Special Message",
-                  "Custom Decor",
+                  {
+                    en: "Couple Photos",
+                    hi: "कपल फोटोज़",
+                  },
+                  {
+                    en: "Memory Wall",
+                    hi: "मेमोरी वॉल",
+                  },
+                  {
+                    en: "Special Message",
+                    hi: "स्पेशल मैसेज",
+                  },
+                  {
+                    en: "Custom Decor",
+                    hi: "कस्टम डेकोर",
+                  },
                 ].map((item) => (
                   <div
-                    key={item}
+                    key={item.en}
                     className="rounded-xl border border-white/[0.07] bg-black/20 px-3 py-3 text-[11px] text-white/65"
                   >
                     <span className="mr-2 text-[#DFAE45]">
                       ✦
                     </span>
 
-                    {item}
+                    {item[language]}
                   </div>
                 ))}
               </div>
@@ -409,17 +639,21 @@ export default function AnniversaryPage() {
         {/* ================= PACKAGES ================= */}
         <section className="px-5 pt-12">
           <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#DFAE45]">
-            Anniversary Packages
+            {language === "hi"
+              ? "एनिवर्सरी पैकेज"
+              : "Anniversary Packages"}
           </p>
 
           <h3 className="mt-2 text-[25px] font-bold">
-            Choose Your Experience
+            {language === "hi"
+              ? "अपना एक्सपीरियंस चुनें"
+              : "Choose Your Experience"}
           </h3>
 
           <div className="mt-6 space-y-4">
             {packages.map((pkg) => (
               <div
-                key={pkg.name}
+                key={pkg.id}
                 className={`relative overflow-hidden rounded-[25px] border p-5 ${
                   pkg.popular
                     ? "border-[#DFAE45]/45 bg-gradient-to-br from-[#DFAE45]/10 via-white/[0.04] to-transparent"
@@ -428,18 +662,20 @@ export default function AnniversaryPage() {
               >
                 {pkg.popular && (
                   <div className="absolute right-4 top-4 rounded-full bg-[#DFAE45] px-3 py-1 text-[9px] font-bold uppercase tracking-wider text-black">
-                    Most Popular
+                    {language === "hi"
+                      ? "सबसे लोकप्रिय"
+                      : "Most Popular"}
                   </div>
                 )}
 
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <h4 className="text-[18px] font-bold">
-                      {pkg.name}
+                      {pkg.name[language]}
                     </h4>
 
                     <p className="mt-1.5 max-w-[250px] text-[12px] leading-5 text-white/50">
-                      {pkg.description}
+                      {pkg.description[language]}
                     </p>
                   </div>
 
@@ -449,7 +685,9 @@ export default function AnniversaryPage() {
                     </p>
 
                     <p className="text-[9px] text-white/35">
-                      starting from
+                      {language === "hi"
+                        ? "से शुरू"
+                        : "starting from"}
                     </p>
                   </div>
                 </div>
@@ -458,7 +696,7 @@ export default function AnniversaryPage() {
                   <div className="space-y-2.5">
                     {pkg.features.map((feature) => (
                       <div
-                        key={feature}
+                        key={feature.en}
                         className="flex items-center gap-2.5"
                       >
                         <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#DFAE45]/10">
@@ -469,7 +707,7 @@ export default function AnniversaryPage() {
                         </div>
 
                         <span className="text-[12px] text-white/65">
-                          {feature}
+                          {feature[language]}
                         </span>
                       </div>
                     ))}
@@ -478,13 +716,18 @@ export default function AnniversaryPage() {
 
                 <a
                   href={whatsappLink(
-                    `Hello OurHub, I am interested in the ${pkg.name} Anniversary package priced at ${pkg.price}. Please share complete details.`
+                    language === "hi"
+                      ? `नमस्ते OurHub, मुझे ${pkg.name.hi} एनिवर्सरी पैकेज (${pkg.price}) में रुचि है। कृपया पूरी जानकारी साझा करें।`
+                      : `Hello OurHub, I am interested in the ${pkg.name.en} Anniversary package priced at ${pkg.price}. Please share complete details.`
                   )}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-5 flex h-11 items-center justify-center gap-2 rounded-xl border border-[#DFAE45]/25 bg-[#DFAE45]/10 text-[12px] font-semibold text-[#F0CC73]"
                 >
-                  Enquire About This Package
+                  {language === "hi"
+                    ? "इस पैकेज की जानकारी लें"
+                    : "Enquire About This Package"}
+
                   <ArrowRight size={15} />
                 </a>
               </div>
@@ -505,11 +748,15 @@ export default function AnniversaryPage() {
 
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#DFAE45]">
-                  Capture The Moment
+                  {language === "hi"
+                    ? "पल को कैप्चर करें"
+                    : "Capture The Moment"}
                 </p>
 
                 <h4 className="mt-1 text-[16px] font-semibold">
-                  Memories That Stay Forever
+                  {language === "hi"
+                    ? "यादें जो हमेशा साथ रहें"
+                    : "Memories That Stay Forever"}
                 </h4>
               </div>
             </div>
@@ -522,11 +769,15 @@ export default function AnniversaryPage() {
                 />
 
                 <p className="mt-3 text-[12px] font-semibold">
-                  Couple Portraits
+                  {language === "hi"
+                    ? "कपल पोर्ट्रेट्स"
+                    : "Couple Portraits"}
                 </p>
 
                 <p className="mt-1 text-[10px] leading-5 text-white/40">
-                  Beautifully captured moments for your special day.
+                  {language === "hi"
+                    ? "आपके खास दिन के खूबसूरत पलों को शानदार तरीके से कैप्चर करें।"
+                    : "Beautifully captured moments for your special day."}
                 </p>
               </div>
 
@@ -537,11 +788,15 @@ export default function AnniversaryPage() {
                 />
 
                 <p className="mt-3 text-[12px] font-semibold">
-                  Family Moments
+                  {language === "hi"
+                    ? "फैमिली मोमेंट्स"
+                    : "Family Moments"}
                 </p>
 
                 <p className="mt-1 text-[10px] leading-5 text-white/40">
-                  Celebrate the people who made your journey special.
+                  {language === "hi"
+                    ? "उन लोगों के साथ सेलिब्रेट करें जिन्होंने आपके सफर को खास बनाया।"
+                    : "Celebrate the people who made your journey special."}
                 </p>
               </div>
             </div>
@@ -551,34 +806,62 @@ export default function AnniversaryPage() {
         {/* ================= PROCESS ================= */}
         <section className="px-5 pt-12">
           <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#DFAE45]">
-            Simple Process
+            {language === "hi"
+              ? "आसान प्रक्रिया"
+              : "Simple Process"}
           </p>
 
           <h3 className="mt-2 text-[25px] font-bold">
-            From Plan To Celebration
+            {language === "hi"
+              ? "प्लान से सेलिब्रेशन तक"
+              : "From Plan To Celebration"}
           </h3>
 
           <div className="mt-6 space-y-3">
             {[
               {
                 number: "01",
-                title: "Share Your Vision",
-                text: "Tell us your anniversary date, venue, guest count and celebration idea.",
+                title: {
+                  en: "Share Your Vision",
+                  hi: "अपनी पसंद बताएं",
+                },
+                text: {
+                  en: "Tell us your anniversary date, venue, guest count and celebration idea.",
+                  hi: "अपनी एनिवर्सरी की तारीख, वेन्यू, मेहमानों की संख्या और सेलिब्रेशन आइडिया बताएं।",
+                },
               },
               {
                 number: "02",
-                title: "Choose Your Style",
-                text: "Select your preferred decoration, colors and celebration experience.",
+                title: {
+                  en: "Choose Your Style",
+                  hi: "अपनी स्टाइल चुनें",
+                },
+                text: {
+                  en: "Select your preferred decoration, colors and celebration experience.",
+                  hi: "अपनी पसंद की डेकोरेशन, कलर्स और सेलिब्रेशन एक्सपीरियंस चुनें।",
+                },
               },
               {
                 number: "03",
-                title: "We Plan Everything",
-                text: "Our team coordinates the decoration, photography and required arrangements.",
+                title: {
+                  en: "We Plan Everything",
+                  hi: "हम सब कुछ प्लान करेंगे",
+                },
+                text: {
+                  en: "Our team coordinates the decoration, photography and required arrangements.",
+                  hi: "हमारी टीम डेकोरेशन, फोटोग्राफी और सभी जरूरी व्यवस्थाओं का कोऑर्डिनेशन करती है।",
+                },
               },
               {
                 number: "04",
-                title: "Celebrate Together",
-                text: "Enjoy your special day while our team takes care of the details.",
+                title: {
+                  en: "Celebrate Together",
+                  hi: "साथ मिलकर सेलिब्रेट करें",
+                },
+                text: {
+                  en: "Enjoy your special day while our team takes care of the details.",
+                  hi: "आप अपने खास दिन का आनंद लें, बाकी सभी डिटेल्स हमारी टीम संभालेगी।",
+                },
               },
             ].map((step) => (
               <div
@@ -591,11 +874,11 @@ export default function AnniversaryPage() {
 
                 <div>
                   <h4 className="text-[14px] font-semibold">
-                    {step.title}
+                    {step.title[language]}
                   </h4>
 
                   <p className="mt-1 text-[11px] leading-5 text-white/45">
-                    {step.text}
+                    {step.text[language]}
                   </p>
                 </div>
               </div>
@@ -608,11 +891,15 @@ export default function AnniversaryPage() {
           <div className="flex items-end justify-between">
             <div>
               <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#DFAE45]">
-                Inspiration
+                {language === "hi"
+                  ? "इंस्पिरेशन"
+                  : "Inspiration"}
               </p>
 
               <h3 className="mt-2 text-[25px] font-bold">
-                Anniversary Moments
+                {language === "hi"
+                  ? "एनिवर्सरी मोमेंट्स"
+                  : "Anniversary Moments"}
               </h3>
             </div>
 
@@ -626,21 +913,31 @@ export default function AnniversaryPage() {
             <div className="relative col-span-2 h-[220px] overflow-hidden rounded-[23px] border border-white/[0.08]">
               <img
                 src="/images/events/anniversary-1.jpg"
-                alt="Anniversary decoration"
+                alt={
+                  language === "hi"
+                    ? "एनिवर्सरी डेकोरेशन"
+                    : "Anniversary decoration"
+                }
                 className="h-full w-full object-cover"
               />
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
 
               <span className="absolute bottom-4 left-4 text-[11px] font-medium text-white/80">
-                Romantic Anniversary Decor
+                {language === "hi"
+                  ? "रोमांटिक एनिवर्सरी डेकोर"
+                  : "Romantic Anniversary Decor"}
               </span>
             </div>
 
             <div className="relative h-[155px] overflow-hidden rounded-[21px] border border-white/[0.08]">
               <img
                 src="/images/events/anniversary-2.jpg"
-                alt="Anniversary celebration"
+                alt={
+                  language === "hi"
+                    ? "एनिवर्सरी सेलिब्रेशन"
+                    : "Anniversary celebration"
+                }
                 className="h-full w-full object-cover"
               />
 
@@ -650,7 +947,11 @@ export default function AnniversaryPage() {
             <div className="relative h-[155px] overflow-hidden rounded-[21px] border border-white/[0.08]">
               <img
                 src="/images/events/anniversary-3.jpg"
-                alt="Anniversary couple celebration"
+                alt={
+                  language === "hi"
+                    ? "एनिवर्सरी कपल सेलिब्रेशन"
+                    : "Anniversary couple celebration"
+                }
                 className="h-full w-full object-cover"
               />
 
@@ -674,8 +975,9 @@ export default function AnniversaryPage() {
             </div>
 
             <p className="mt-5 text-[17px] font-medium leading-7 text-white/80">
-              “The decoration looked beautiful and every little detail made
-              our anniversary feel incredibly special.”
+              {language === "hi"
+                ? "“डेकोरेशन बहुत खूबसूरत था और हर छोटी डिटेल ने हमारी एनिवर्सरी को बेहद खास बना दिया।”"
+                : "“The decoration looked beautiful and every little detail made our anniversary feel incredibly special.”"}
             </p>
 
             <div className="mt-5 flex items-center gap-3">
@@ -688,11 +990,15 @@ export default function AnniversaryPage() {
 
               <div>
                 <p className="text-[12px] font-semibold">
-                  OurHub Couple
+                  {language === "hi"
+                    ? "OurHub कपल"
+                    : "OurHub Couple"}
                 </p>
 
                 <p className="text-[10px] text-white/40">
-                  Anniversary Celebration
+                  {language === "hi"
+                    ? "एनिवर्सरी सेलिब्रेशन"
+                    : "Anniversary Celebration"}
                 </p>
               </div>
             </div>
@@ -712,7 +1018,9 @@ export default function AnniversaryPage() {
 
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#DFAE45]">
-                  Service Areas
+                  {language === "hi"
+                    ? "सर्विस एरिया"
+                    : "Service Areas"}
                 </p>
 
                 <h4 className="mt-1 text-[15px] font-semibold">
@@ -720,8 +1028,9 @@ export default function AnniversaryPage() {
                 </h4>
 
                 <p className="mt-1 text-[11px] leading-5 text-white/45">
-                  Anniversary event planning available in nearby areas as
-                  well.
+                  {language === "hi"
+                    ? "एनिवर्सरी इवेंट प्लानिंग आसपास के क्षेत्रों में भी उपलब्ध है।"
+                    : "Anniversary event planning available in nearby areas as well."}
                 </p>
               </div>
             </div>
@@ -731,21 +1040,25 @@ export default function AnniversaryPage() {
         {/* ================= FAQ ================= */}
         <section className="px-5 pt-12">
           <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#DFAE45]">
-            Questions
+            {language === "hi"
+              ? "सवाल"
+              : "Questions"}
           </p>
 
           <h3 className="mt-2 text-[25px] font-bold">
-            Frequently Asked
+            {language === "hi"
+              ? "अक्सर पूछे जाने वाले सवाल"
+              : "Frequently Asked"}
           </h3>
 
           <div className="mt-5 space-y-3">
             {faqs.map((faq) => (
               <details
-                key={faq.question}
+                key={faq.id}
                 className="group rounded-[19px] border border-white/[0.07] bg-white/[0.025]"
               >
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-4 text-[12px] font-semibold">
-                  <span>{faq.question}</span>
+                  <span>{faq.question[language]}</span>
 
                   <ChevronDown
                     size={16}
@@ -755,7 +1068,7 @@ export default function AnniversaryPage() {
 
                 <div className="border-t border-white/[0.06] px-4 pb-4 pt-3">
                   <p className="text-[11px] leading-5 text-white/45">
-                    {faq.answer}
+                    {faq.answer[language]}
                   </p>
                 </div>
               </details>
@@ -779,18 +1092,31 @@ export default function AnniversaryPage() {
               </div>
 
               <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.25em] text-[#DFAE45]">
-                Make It Memorable
+                {language === "hi"
+                  ? "इसे यादगार बनाएं"
+                  : "Make It Memorable"}
               </p>
 
               <h3 className="mt-2 text-[28px] font-bold leading-tight">
-                Celebrate Your
-                <br />
-                Anniversary
+                {language === "hi" ? (
+                  <>
+                    अपनी एनिवर्सरी
+                    <br />
+                    सेलिब्रेट करें
+                  </>
+                ) : (
+                  <>
+                    Celebrate Your
+                    <br />
+                    Anniversary
+                  </>
+                )}
               </h3>
 
               <p className="mx-auto mt-3 max-w-[320px] text-[12px] leading-5 text-white/50">
-                Tell us your anniversary idea and let OurHub create a
-                celebration filled with love, elegance and memories.
+                {language === "hi"
+                  ? "हमें अपने एनिवर्सरी आइडिया के बारे में बताएं और OurHub प्यार, एलिगेंस और यादों से भरा खूबसूरत सेलिब्रेशन तैयार करेगा।"
+                  : "Tell us your anniversary idea and let OurHub create a celebration filled with love, elegance and memories."}
               </p>
 
               <a
@@ -800,7 +1126,11 @@ export default function AnniversaryPage() {
                 className="mt-6 flex h-13 items-center justify-center gap-2 rounded-2xl bg-[#DFAE45] px-5 text-[13px] font-bold text-black shadow-[0_10px_35px_rgba(223,174,69,0.18)]"
               >
                 <MessageCircle size={18} />
-                Plan My Anniversary
+
+                {language === "hi"
+                  ? "मेरी एनिवर्सरी प्लान करें"
+                  : "Plan My Anniversary"}
+
                 <ArrowRight size={16} />
               </a>
             </div>
@@ -816,7 +1146,9 @@ export default function AnniversaryPage() {
           </p>
 
           <p className="mt-1 text-[10px] text-white/25">
-            All Services, One Hub
+            {language === "hi"
+              ? "सभी सेवाएं, एक ही हब"
+              : "All Services, One Hub"}
           </p>
         </footer>
       </div>
@@ -840,7 +1172,10 @@ export default function AnniversaryPage() {
             rel="noopener noreferrer"
             className="flex h-12 flex-[1.6] items-center justify-center gap-2 rounded-xl bg-[#DFAE45] text-[12px] font-bold text-black"
           >
-            Plan Your Event
+            {language === "hi"
+              ? "इवेंट प्लान करें"
+              : "Plan Your Event"}
+
             <ArrowRight size={16} />
           </a>
         </div>

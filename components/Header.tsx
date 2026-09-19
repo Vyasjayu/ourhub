@@ -8,26 +8,86 @@ import {
   Crown,
 } from "lucide-react";
 
+import { useLanguage } from "@/context/LanguageContext";
+
 interface HeaderProps {
   onMenuClick: () => void;
 }
 
-export default function Header({ onMenuClick }: HeaderProps) {
+export default function Header({
+  onMenuClick,
+}: HeaderProps) {
+  const { language } = useLanguage();
+
+  const isHindi = language === "hi";
+
+  const t = {
+    openMenu: isHindi
+      ? "मेन्यू खोलें"
+      : "Open menu",
+
+    partner: isHindi
+      ? "पार्टनर"
+      : "Partner",
+
+    premiumServices: isHindi
+      ? "प्रीमियम सर्विसेज"
+      : "PREMIUM SERVICES",
+
+    premiumHomeServices: isHindi
+      ? "प्रीमियम होम सर्विसेज"
+      : "PREMIUM HOME SERVICES",
+  };
+
   return (
     <header className="sticky top-0 z-50 bg-[#07111f]/90 backdrop-blur-xl">
-      {/* Premium top glow */}
-      <div className="pointer-events-none absolute left-1/2 top-0 h-[90px] w-[70%] -translate-x-1/2 bg-[#f6bd28]/[0.06] blur-[45px]" />
+      {/* ========================================================
+          PREMIUM TOP GLOW
+      ======================================================== */}
 
-      <div className="relative mx-auto max-w-md px-4 pt-4 pb-4">
-        {/* Gold top line */}
-        <div className="absolute left-1/2 top-0 h-px w-[55%] -translate-x-1/2 bg-gradient-to-r from-transparent via-[#f6bd28]/60 to-transparent" />
+      <div
+        className="
+          pointer-events-none
+          absolute
+          left-1/2
+          top-0
+          h-[90px]
+          w-[70%]
+          -translate-x-1/2
+          bg-[#f6bd28]/[0.06]
+          blur-[45px]
+        "
+      />
+
+      <div className="relative mx-auto max-w-md px-4 pb-4 pt-4">
+        {/* ======================================================
+            GOLD TOP LINE
+        ====================================================== */}
+
+        <div
+          className="
+            absolute
+            left-1/2
+            top-0
+            h-px
+            w-[55%]
+            -translate-x-1/2
+            bg-gradient-to-r
+            from-transparent
+            via-[#f6bd28]/60
+            to-transparent
+          "
+        />
 
         <div className="flex items-center justify-between">
-          {/* ================= MENU BUTTON ================= */}
+          {/* ====================================================
+              MENU BUTTON
+          ==================================================== */}
 
           <button
+            type="button"
             onClick={onMenuClick}
-            aria-label="Open menu"
+            aria-label={t.openMenu}
             className="
               group
               relative
@@ -49,24 +109,65 @@ export default function Header({ onMenuClick }: HeaderProps) {
               active:scale-95
             "
           >
-            {/* Inner glow */}
-            <span className="absolute inset-0 bg-gradient-to-br from-[#f6bd28]/[0.08] to-transparent opacity-0 transition group-hover:opacity-100" />
+            {/* Inner Glow */}
+
+            <span
+              className="
+                absolute
+                inset-0
+                bg-gradient-to-br
+                from-[#f6bd28]/[0.08]
+                to-transparent
+                opacity-0
+                transition
+                group-hover:opacity-100
+              "
+            />
 
             <Menu
-              className="relative h-[21px] w-[21px] text-[#f6bd28]"
+              className="
+                relative
+                h-[21px]
+                w-[21px]
+                text-[#f6bd28]
+              "
               strokeWidth={2.2}
             />
           </button>
 
-          {/* ================= CENTER LOGO ================= */}
+          {/* ====================================================
+              CENTER LOGO
+          ==================================================== */}
 
-          <div className="absolute left-1/2 top-[13px] -translate-x-1/2 text-center">
+          <div
+            className="
+              absolute
+              left-1/2
+              top-[13px]
+              -translate-x-1/2
+              text-center
+            "
+          >
             <div className="flex items-center justify-center gap-1">
-              <span className="text-[24px] font-black tracking-[-1px] text-white">
+              <span
+                className="
+                  text-[24px]
+                  font-black
+                  tracking-[-1px]
+                  text-white
+                "
+              >
                 Our
               </span>
 
-              <span className="text-[24px] font-black tracking-[-1px] text-[#f6bd28]">
+              <span
+                className="
+                  text-[24px]
+                  font-black
+                  tracking-[-1px]
+                  text-[#f6bd28]
+                "
+              >
                 Hub
               </span>
 
@@ -77,7 +178,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
               />
             </div>
 
-            {/* Premium subtitle */}
+            {/* Premium Subtitle */}
 
             <div className="-mt-1 flex items-center justify-center gap-1">
               <span className="h-px w-3 bg-[#f6bd28]/50" />
@@ -88,18 +189,28 @@ export default function Header({ onMenuClick }: HeaderProps) {
                 fill="currentColor"
               />
 
-              <span className="text-[8px] font-semibold tracking-[1.3px] text-slate-400">
-                PREMIUM SERVICES
+              <span
+                className="
+                  text-[8px]
+                  font-semibold
+                  tracking-[1.3px]
+                  text-slate-400
+                "
+              >
+                {t.premiumServices}
               </span>
 
               <span className="h-px w-3 bg-[#f6bd28]/50" />
             </div>
           </div>
 
-          {/* ================= PARTNER BUTTON ================= */}
+          {/* ====================================================
+              PARTNER BUTTON
+          ==================================================== */}
 
           <Link
             href="/provider"
+            aria-label={t.partner}
             className="
               group
               relative
@@ -126,9 +237,23 @@ export default function Header({ onMenuClick }: HeaderProps) {
               active:scale-95
             "
           >
-            {/* Shine effect */}
+            {/* Shine Effect */}
 
-            <span className="absolute -left-10 top-0 h-full w-8 -skew-x-12 bg-white/30 blur-md transition-all duration-700 group-hover:left-[110%]" />
+            <span
+              className="
+                absolute
+                -left-10
+                top-0
+                h-full
+                w-8
+                -skew-x-12
+                bg-white/30
+                blur-md
+                transition-all
+                duration-700
+                group-hover:left-[110%]
+              "
+            />
 
             <UserPlus
               size={15}
@@ -137,29 +262,90 @@ export default function Header({ onMenuClick }: HeaderProps) {
             />
 
             <span className="relative">
-              Partner
+              {t.partner}
             </span>
           </Link>
         </div>
 
-        {/* ================= PREMIUM STATUS ================= */}
+        {/* ======================================================
+            PREMIUM STATUS
+        ====================================================== */}
 
         <div className="mt-4 flex items-center justify-center gap-2">
-          <span className="h-px flex-1 bg-gradient-to-r from-transparent via-[#d8aa39]/30 to-[#d8aa39]/10" />
+          <span
+            className="
+              h-px
+              flex-1
+              bg-gradient-to-r
+              from-transparent
+              via-[#d8aa39]/30
+              to-[#d8aa39]/10
+            "
+          />
 
-          <div className="flex items-center gap-1.5 rounded-full border border-[#d8aa39]/20 bg-[#f6bd28]/[0.04] px-3 py-1">
+          <div
+            className="
+              flex
+              items-center
+              gap-1.5
+              rounded-full
+              border
+              border-[#d8aa39]/20
+              bg-[#f6bd28]/[0.04]
+              px-3
+              py-1
+            "
+          >
+            {/* Live Dot */}
+
             <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#f6bd28] opacity-60" />
+              <span
+                className="
+                  absolute
+                  inline-flex
+                  h-full
+                  w-full
+                  animate-ping
+                  rounded-full
+                  bg-[#f6bd28]
+                  opacity-60
+                "
+              />
 
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#f6bd28]" />
+              <span
+                className="
+                  relative
+                  inline-flex
+                  h-1.5
+                  w-1.5
+                  rounded-full
+                  bg-[#f6bd28]
+                "
+              />
             </span>
 
-            <span className="text-[8px] font-bold tracking-[1.5px] text-[#e9b934]">
-              PREMIUM HOME SERVICES
+            <span
+              className="
+                text-[8px]
+                font-bold
+                tracking-[1.5px]
+                text-[#e9b934]
+              "
+            >
+              {t.premiumHomeServices}
             </span>
           </div>
 
-          <span className="h-px flex-1 bg-gradient-to-l from-transparent via-[#d8aa39]/30 to-[#d8aa39]/10" />
+          <span
+            className="
+              h-px
+              flex-1
+              bg-gradient-to-l
+              from-transparent
+              via-[#d8aa39]/30
+              to-[#d8aa39]/10
+            "
+          />
         </div>
       </div>
     </header>

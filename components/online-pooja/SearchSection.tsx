@@ -7,9 +7,54 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function SearchSection() {
   const [search, setSearch] = useState("");
+
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
+  const text = {
+    placeholder: isHindi
+      ? "पूजा, मंदिर, अनुष्ठान खोजें..."
+      : "Search pooja, temple, ritual...",
+
+    ariaLabel: isHindi
+      ? "पूजा खोजें"
+      : "Search pooja",
+
+    discover: isHindi
+      ? "पवित्र सेवाएं खोजें"
+      : "Discover sacred services",
+
+    clear: isHindi
+      ? "खोज साफ करें"
+      : "Clear search",
+
+    popular: isHindi
+      ? "लोकप्रिय"
+      : "Popular",
+
+    suggestions: [
+      {
+        en: "Ganesh Pooja",
+        hi: "गणेश पूजा",
+      },
+      {
+        en: "Lakshmi Pooja",
+        hi: "लक्ष्मी पूजा",
+      },
+      {
+        en: "Rudrabhishek",
+        hi: "रुद्राभिषेक",
+      },
+      {
+        en: "Griha Pravesh",
+        hi: "गृह प्रवेश",
+      },
+    ],
+  };
 
   return (
     <section className="relative mt-5">
@@ -78,8 +123,8 @@ export default function SearchSection() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             type="text"
-            placeholder="Search pooja, temple, ritual..."
-            aria-label="Search pooja"
+            placeholder={text.placeholder}
+            aria-label={text.ariaLabel}
             className="
               w-full
               bg-transparent
@@ -93,7 +138,7 @@ export default function SearchSection() {
 
           {/* Small Label */}
           <p className="mt-0.5 text-[8px] font-medium tracking-wide text-white/20">
-            Discover sacred services
+            {text.discover}
           </p>
         </div>
 
@@ -102,7 +147,7 @@ export default function SearchSection() {
           <button
             type="button"
             onClick={() => setSearch("")}
-            aria-label="Clear search"
+            aria-label={text.clear}
             className="
               mr-1
               flex
@@ -148,31 +193,72 @@ export default function SearchSection() {
       </div>
 
       {/* Quick Suggestions */}
-      <div className="mt-2.5 flex items-center gap-2 overflow-x-auto px-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <div className="flex shrink-0 items-center gap-1 text-[8px] font-semibold uppercase tracking-[0.12em] text-[#DFAE45]/60">
+      <div
+        className="
+          mt-2.5
+          flex
+          items-center
+          gap-2
+          overflow-x-auto
+          px-1
+          [-ms-overflow-style:none]
+          [scrollbar-width:none]
+          [&::-webkit-scrollbar]:hidden
+        "
+      >
+        {/* Popular Label */}
+        <div
+          className="
+            flex
+            shrink-0
+            items-center
+            gap-1
+            text-[8px]
+            font-semibold
+            uppercase
+            tracking-[0.12em]
+            text-[#DFAE45]/60
+          "
+        >
           <Sparkles size={10} />
-          Popular
+          {text.popular}
         </div>
 
         <span className="h-3 w-px shrink-0 bg-white/[0.08]" />
 
-        <span className="shrink-0 rounded-full border border-white/[0.06] bg-white/[0.025] px-2.5 py-1 text-[9px] text-white/35">
-          Ganesh Pooja
-        </span>
-
-        <span className="shrink-0 rounded-full border border-white/[0.06] bg-white/[0.025] px-2.5 py-1 text-[9px] text-white/35">
-          Lakshmi Pooja
-        </span>
-
-        <span className="shrink-0 rounded-full border border-white/[0.06] bg-white/[0.025] px-2.5 py-1 text-[9px] text-white/35">
-          Rudrabhishek
-        </span>
-
-        <span className="shrink-0 rounded-full border border-white/[0.06] bg-white/[0.025] px-2.5 py-1 text-[9px] text-white/35">
-          Griha Pravesh
-        </span>
+        {/* Suggestions */}
+        {text.suggestions.map((item) => (
+          <button
+            key={item.en}
+            type="button"
+            onClick={() =>
+              setSearch(isHindi ? item.hi : item.en)
+            }
+            className="
+              shrink-0
+              rounded-full
+              border
+              border-white/[0.06]
+              bg-white/[0.025]
+              px-2.5
+              py-1
+              text-[9px]
+              text-white/35
+              transition-all
+              duration-200
+              hover:border-[#DFAE45]/20
+              hover:bg-[#DFAE45]/[0.06]
+              hover:text-[#DFAE45]
+              active:scale-95
+            "
+          >
+            {isHindi ? item.hi : item.en}
+          </button>
+        ))}
       </div>
     </section>
   );
 }
+
+
 

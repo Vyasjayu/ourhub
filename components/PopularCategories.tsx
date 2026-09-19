@@ -9,6 +9,7 @@ import {
   Sparkles,
   ArrowUpRight,
 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface Props {
   search?: string;
@@ -70,9 +71,98 @@ export default function PopularCategories({
   search = "",
   onMoreClick,
 }: Props) {
-  const filteredCategories = categories.filter((category) =>
-    category.title.toLowerCase().includes(search.toLowerCase())
-  );
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
+  const t = {
+    eyebrow: isHindi
+      ? "हमारी सेवाएं देखें"
+      : "EXPLORE OUR SERVICES",
+
+    popular: isHindi ? "लोकप्रिय" : "Popular",
+
+    categories: isHindi
+      ? "कैटेगरी"
+      : "Categories",
+
+    subtitle: isHindi
+      ? "आपकी रोज़मर्रा की जरूरतों के लिए चुनी गई सेवाएं"
+      : "Handpicked services for your everyday needs",
+
+    viewAll: isHindi
+      ? "सभी देखें"
+      : "View All",
+
+    topRated: isHindi
+      ? "टॉप रेटेड"
+      : "Top Rated",
+
+    premiumService: isHindi
+      ? "प्रीमियम सर्विस"
+      : "PREMIUM SERVICE",
+
+    verifiedQuality: isHindi
+      ? "वेरिफाइड प्रोफेशनल्स • क्वालिटी सर्विस"
+      : "Verified professionals • Quality service",
+
+    explore: isHindi
+      ? "सेवा देखें"
+      : "Explore service",
+
+    noServices: isHindi
+      ? "कोई सेवा नहीं मिली"
+      : "No Services Found",
+
+    tryAnother: isHindi
+      ? "किसी अन्य कीवर्ड से खोजने का प्रयास करें।"
+      : "Try searching with another keyword.",
+  };
+
+  const getCategoryTitle = (category: {
+    id: number;
+    title: string;
+  }) => {
+    if (!isHindi) return category.title;
+
+    const hindiTitles: Record<number, string> = {
+      1: "पूजा बुकिंग",
+      2: "इलेक्ट्रीशियन",
+      3: "एसी रिपेयर",
+      4: "इवेंट मैनेजमेंट",
+      5: "वेब डेवलपमेंट",
+      6: "कंस्ट्रक्शन",
+    };
+
+    return hindiTitles[category.id] || category.title;
+  };
+
+  const getCategoryTag = (tag: string) => {
+    if (!isHindi) return tag;
+
+    const hindiTags: Record<string, string> = {
+      Sacred: "पवित्र",
+      Expert: "एक्सपर्ट",
+      Trending: "ट्रेंडिंग",
+      Premium: "प्रीमियम",
+      Popular: "लोकप्रिय",
+      Trusted: "भरोसेमंद",
+    };
+
+    return hindiTags[tag] || tag;
+  };
+
+  const filteredCategories = categories.filter((category) => {
+    const categoryTitle = getCategoryTitle(category);
+
+    return (
+      category.title
+        .toLowerCase()
+        .includes(search.toLowerCase()) ||
+      categoryTitle
+        .toLowerCase()
+        .includes(search.toLowerCase())
+    );
+  });
 
   return (
     <section className="relative mb-7">
@@ -86,25 +176,30 @@ export default function PopularCategories({
             <span className="h-[2px] w-6 bg-[#F4C542]" />
 
             <span className="text-[9px] font-bold tracking-[2px] text-[#F4C542]">
-              EXPLORE OUR SERVICES
+              {t.eyebrow}
             </span>
           </div>
 
+          {/* Heading */}
+
           <h2 className="mt-2 text-[22px] font-bold tracking-tight text-white">
-            Popular{" "}
+            {t.popular}{" "}
             <span className="text-[#F4C542]">
-              Categories
+              {t.categories}
             </span>
           </h2>
 
+          {/* Subtitle */}
+
           <p className="mt-1 text-[11px] text-slate-500">
-            Handpicked services for your everyday needs
+            {t.subtitle}
           </p>
         </div>
 
-        {/* View all */}
+        {/* View All */}
 
         <button
+          type="button"
           onClick={onMoreClick}
           className="
             group
@@ -128,11 +223,15 @@ export default function PopularCategories({
             active:scale-95
           "
         >
-          View All
+          {t.viewAll}
 
           <ChevronRight
             size={15}
-            className="transition-transform duration-300 group-hover:translate-x-1"
+            className="
+              transition-transform
+              duration-300
+              group-hover:translate-x-1
+            "
           />
         </button>
       </div>
@@ -142,158 +241,247 @@ export default function PopularCategories({
       {filteredCategories.length > 0 ? (
         <>
           <div className="flex gap-4 overflow-x-auto pb-3 scrollbar-hide">
-            {filteredCategories.map((category, index) => (
-              <Link
-                key={category.id}
-                href={category.link}
-                className="
-                  group
-                  relative
-                  min-w-[205px]
-                  overflow-hidden
-                  rounded-[24px]
-                  border
-                  border-[#D8AA39]/20
-                  bg-[#091624]
-                  shadow-[0_12px_35px_rgba(0,0,0,0.25)]
-                  transition-all
-                  duration-300
-                  hover:-translate-y-1
-                  hover:border-[#F4C542]/55
-                  hover:shadow-[0_18px_45px_rgba(0,0,0,0.4)]
-                "
-              >
-                {/* Premium gold glow */}
+            {filteredCategories.map(
+              (category, index) => (
+                <Link
+                  key={category.id}
+                  href={category.link}
+                  className="
+                    group
+                    relative
+                    min-w-[205px]
+                    overflow-hidden
+                    rounded-[24px]
+                    border
+                    border-[#D8AA39]/20
+                    bg-[#091624]
+                    shadow-[0_12px_35px_rgba(0,0,0,0.25)]
+                    transition-all
+                    duration-300
+                    hover:-translate-y-1
+                    hover:border-[#F4C542]/55
+                    hover:shadow-[0_18px_45px_rgba(0,0,0,0.4)]
+                  "
+                >
+                  {/* Premium gold glow */}
 
-                <div className="pointer-events-none absolute -right-12 -top-12 z-0 h-28 w-28 rounded-full bg-[#F4C542]/[0.08] blur-3xl transition duration-500 group-hover:bg-[#F4C542]/[0.14]" />
-
-                {/* ================= IMAGE ================= */}
-
-                <div className="relative z-10 h-[150px] overflow-hidden">
-                  <Image
-                    src={category.image}
-                    alt={category.title}
-                    fill
-                    sizes="205px"
+                  <div
                     className="
-                      object-cover
-                      transition-transform
-                      duration-700
-                      group-hover:scale-110
+                      pointer-events-none
+                      absolute
+                      -right-12
+                      -top-12
+                      z-0
+                      h-28
+                      w-28
+                      rounded-full
+                      bg-[#F4C542]/[0.08]
+                      blur-3xl
+                      transition
+                      duration-500
+                      group-hover:bg-[#F4C542]/[0.14]
                     "
                   />
 
-                  {/* Premium overlays */}
+                  {/* ================= IMAGE ================= */}
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#091624] via-[#091624]/15 to-transparent" />
-
-                  <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/35 to-transparent" />
-
-                  {/* Category number */}
-
-                  <div className="absolute left-3 top-3 flex h-7 w-7 items-center justify-center rounded-full border border-white/15 bg-black/40 text-[9px] font-bold text-white backdrop-blur-md">
-                    0{index + 1}
-                  </div>
-
-                  {/* Premium Tag */}
-
-                  <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full border border-[#F4C542]/30 bg-[#07111f]/75 px-2.5 py-1 backdrop-blur-md">
-                    <Crown
-                      size={10}
-                      fill="currentColor"
-                      className="text-[#F4C542]"
+                  <div className="relative z-10 h-[150px] overflow-hidden">
+                    <Image
+                      src={category.image}
+                      alt={getCategoryTitle(category)}
+                      fill
+                      sizes="205px"
+                      className="
+                        object-cover
+                        transition-transform
+                        duration-700
+                        group-hover:scale-110
+                      "
                     />
 
-                    <span className="text-[9px] font-bold text-[#F4C542]">
-                      {category.tag}
-                    </span>
-                  </div>
+                    {/* Premium overlays */}
 
-                  {/* Rating */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#091624] via-[#091624]/15 to-transparent" />
 
-                  <div className="absolute bottom-3 left-3 flex items-center gap-1 rounded-full border border-white/10 bg-black/45 px-2.5 py-1.5 backdrop-blur-md">
-                    <Star
-                      size={11}
-                      fill="currentColor"
-                      className="text-[#F4C542]"
-                    />
+                    <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/35 to-transparent" />
 
-                    <span className="text-[10px] font-bold text-white">
-                      {category.rating}
-                    </span>
-
-                    <span className="text-[9px] text-slate-300">
-                      Top Rated
-                    </span>
-                  </div>
-                </div>
-
-                {/* ================= CONTENT ================= */}
-
-                <div className="relative z-10 p-4">
-                  {/* Premium small label */}
-
-                  <div className="flex items-center gap-1.5">
-                    <Sparkles
-                      size={11}
-                      className="text-[#F4C542]"
-                    />
-
-                    <span className="text-[9px] font-bold tracking-[1.5px] text-[#F4C542]/80">
-                      PREMIUM SERVICE
-                    </span>
-                  </div>
-
-                  {/* Title */}
-
-                  <h3 className="mt-2 line-clamp-1 text-[17px] font-bold tracking-tight text-white">
-                    {category.title}
-                  </h3>
-
-                  <p className="mt-1 text-[10px] text-slate-500">
-                    Verified professionals • Quality service
-                  </p>
-
-                  {/* Bottom divider */}
-
-                  <div className="my-3 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
-
-                  {/* CTA */}
-
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-semibold text-slate-400">
-                      Explore service
-                    </span>
+                    {/* Category number */}
 
                     <div
                       className="
+                        absolute
+                        left-3
+                        top-3
                         flex
-                        h-9
-                        w-9
+                        h-7
+                        w-7
                         items-center
                         justify-center
-                        rounded-xl
+                        rounded-full
                         border
-                        border-[#F4C542]/40
-                        bg-[#F4C542]/[0.08]
-                        text-[#F4C542]
-                        transition-all
-                        duration-300
-                        group-hover:bg-[#F4C542]
-                        group-hover:text-[#07111f]
-                        group-hover:shadow-[0_8px_20px_rgba(244,197,66,0.22)]
+                        border-white/15
+                        bg-black/40
+                        text-[9px]
+                        font-bold
+                        text-white
+                        backdrop-blur-md
                       "
                     >
-                      <ArrowUpRight size={17} />
+                      {String(index + 1).padStart(
+                        2,
+                        "0"
+                      )}
+                    </div>
+
+                    {/* Premium Tag */}
+
+                    <div
+                      className="
+                        absolute
+                        right-3
+                        top-3
+                        flex
+                        items-center
+                        gap-1
+                        rounded-full
+                        border
+                        border-[#F4C542]/30
+                        bg-[#07111f]/75
+                        px-2.5
+                        py-1
+                        backdrop-blur-md
+                      "
+                    >
+                      <Crown
+                        size={10}
+                        fill="currentColor"
+                        className="text-[#F4C542]"
+                      />
+
+                      <span className="text-[9px] font-bold text-[#F4C542]">
+                        {getCategoryTag(
+                          category.tag
+                        )}
+                      </span>
+                    </div>
+
+                    {/* Rating */}
+
+                    <div
+                      className="
+                        absolute
+                        bottom-3
+                        left-3
+                        flex
+                        items-center
+                        gap-1
+                        rounded-full
+                        border
+                        border-white/10
+                        bg-black/45
+                        px-2.5
+                        py-1.5
+                        backdrop-blur-md
+                      "
+                    >
+                      <Star
+                        size={11}
+                        fill="currentColor"
+                        className="text-[#F4C542]"
+                      />
+
+                      <span className="text-[10px] font-bold text-white">
+                        {category.rating}
+                      </span>
+
+                      <span className="text-[9px] text-slate-300">
+                        {t.topRated}
+                      </span>
                     </div>
                   </div>
-                </div>
 
-                {/* Bottom premium line */}
+                  {/* ================= CONTENT ================= */}
 
-                <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[#F4C542]/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              </Link>
-            ))}
+                  <div className="relative z-10 p-4">
+                    {/* Premium small label */}
+
+                    <div className="flex items-center gap-1.5">
+                      <Sparkles
+                        size={11}
+                        className="text-[#F4C542]"
+                      />
+
+                      <span className="text-[9px] font-bold tracking-[1.5px] text-[#F4C542]/80">
+                        {t.premiumService}
+                      </span>
+                    </div>
+
+                    {/* Title */}
+
+                    <h3 className="mt-2 line-clamp-1 text-[17px] font-bold tracking-tight text-white">
+                      {getCategoryTitle(category)}
+                    </h3>
+
+                    {/* Description */}
+
+                    <p className="mt-1 text-[10px] text-slate-500">
+                      {t.verifiedQuality}
+                    </p>
+
+                    {/* Bottom divider */}
+
+                    <div className="my-3 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+
+                    {/* CTA */}
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-semibold text-slate-400">
+                        {t.explore}
+                      </span>
+
+                      <div
+                        className="
+                          flex
+                          h-9
+                          w-9
+                          items-center
+                          justify-center
+                          rounded-xl
+                          border
+                          border-[#F4C542]/40
+                          bg-[#F4C542]/[0.08]
+                          text-[#F4C542]
+                          transition-all
+                          duration-300
+                          group-hover:bg-[#F4C542]
+                          group-hover:text-[#07111f]
+                          group-hover:shadow-[0_8px_20px_rgba(244,197,66,0.22)]
+                        "
+                      >
+                        <ArrowUpRight size={17} />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bottom premium line */}
+
+                  <div
+                    className="
+                      h-[2px]
+                      w-full
+                      bg-gradient-to-r
+                      from-transparent
+                      via-[#F4C542]/60
+                      to-transparent
+                      opacity-0
+                      transition-opacity
+                      duration-300
+                      group-hover:opacity-100
+                    "
+                  />
+                </Link>
+              )
+            )}
           </div>
 
           {/* Scroll hint */}
@@ -311,6 +499,8 @@ export default function PopularCategories({
           )}
         </>
       ) : (
+        /* ================= EMPTY STATE ================= */
+
         <div
           className="
             rounded-[24px]
@@ -322,7 +512,20 @@ export default function PopularCategories({
             text-center
           "
         >
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-[#F4C542]/20 bg-[#F4C542]/[0.06]">
+          <div
+            className="
+              mx-auto
+              flex
+              h-12
+              w-12
+              items-center
+              justify-center
+              rounded-2xl
+              border
+              border-[#F4C542]/20
+              bg-[#F4C542]/[0.06]
+            "
+          >
             <Sparkles
               size={21}
               className="text-[#F4C542]"
@@ -330,11 +533,11 @@ export default function PopularCategories({
           </div>
 
           <h3 className="mt-4 text-sm font-bold text-white">
-            No Services Found
+            {t.noServices}
           </h3>
 
           <p className="mt-2 text-[11px] text-slate-500">
-            Try searching with another keyword.
+            {t.tryAnother}
           </p>
         </div>
       )}

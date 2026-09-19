@@ -1,8 +1,10 @@
+
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import "./globals.css";
 
 import Footer from "@/components/Footer";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 export const metadata: Metadata = {
   title: "OurHub Services",
@@ -24,17 +26,29 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen overflow-x-hidden bg-white">
-        {children}
 
-        {/* Global Footer */}
-        <Footer />
+        {/* =================================================
+            GLOBAL LANGUAGE PROVIDER
+        ================================================= */}
 
-        {/* Razorpay Checkout Script */}
+        <LanguageProvider>
+          {children}
+
+          {/* Global Footer */}
+          <Footer />
+        </LanguageProvider>
+
+        {/* =================================================
+            RAZORPAY CHECKOUT SCRIPT
+        ================================================= */}
+
         <Script
           src="https://checkout.razorpay.com/v1/checkout.js"
           strategy="beforeInteractive"
         />
+
       </body>
     </html>
   );
 }
+

@@ -11,13 +11,24 @@ import {
   X,
 } from "lucide-react";
 
+import { useLanguage } from "@/context/LanguageContext";
+
 const locations = [
   "Indore, MP",
   "Ujjain, MP",
   "Ratlam, MP",
 ];
 
+const locationHindiNames: Record<string, string> = {
+  "Indore, MP": "इंदौर, MP",
+  "Ujjain, MP": "उज्जैन, MP",
+  "Ratlam, MP": "रतलाम, MP",
+};
+
 export default function LocationSearch() {
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
   const [selectedLocation, setSelectedLocation] =
     useState("Indore, MP");
 
@@ -53,11 +64,33 @@ export default function LocationSearch() {
     };
   }, []);
 
-  const filteredLocations = locations.filter((location) =>
-    location
-      .toLowerCase()
-      .includes(search.toLowerCase())
-  );
+  /* =========================================================
+     FILTER LOCATIONS
+     Supports English + Hindi search
+  ========================================================= */
+
+  const filteredLocations = locations.filter((location) => {
+    const englishName = location.toLowerCase();
+    const hindiName =
+      locationHindiNames[location]?.toLowerCase() || "";
+
+    const query = search.toLowerCase().trim();
+
+    return (
+      englishName.includes(query) ||
+      hindiName.includes(query)
+    );
+  });
+
+  /* =========================================================
+     DISPLAY LOCATION
+  ========================================================= */
+
+  const getLocationName = (location: string) => {
+    return isHindi
+      ? locationHindiNames[location] || location
+      : location;
+  };
 
   return (
     <section
@@ -76,12 +109,16 @@ export default function LocationSearch() {
           />
 
           <span className="text-[9px] font-bold uppercase tracking-[0.18em] text-slate-500">
-            Find Your Pooja
+            {isHindi
+              ? "अपनी पूजा खोजें"
+              : "Find Your Pooja"}
           </span>
         </div>
 
         <span className="text-[8px] font-medium text-slate-700">
-          Select your city
+          {isHindi
+            ? "अपना शहर चुनें"
+            : "Select your city"}
         </span>
       </div>
 
@@ -152,11 +189,11 @@ export default function LocationSearch() {
 
             <span className="min-w-0 flex-1">
               <span className="block text-[8px] font-semibold uppercase tracking-[0.12em] text-slate-600">
-                Location
+                {isHindi ? "स्थान" : "Location"}
               </span>
 
               <span className="mt-0.5 block truncate text-[12px] font-bold text-slate-200">
-                {selectedLocation}
+                {getLocationName(selectedLocation)}
               </span>
             </span>
 
@@ -223,11 +260,15 @@ export default function LocationSearch() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#DFAE45]">
-                      Service Location
+                      {isHindi
+                        ? "सेवा का स्थान"
+                        : "Service Location"}
                     </p>
 
                     <p className="mt-0.5 text-[11px] text-slate-500">
-                      Choose where you need the service
+                      {isHindi
+                        ? "जहाँ आपको सेवा चाहिए, वह स्थान चुनें"
+                        : "Choose where you need the service"}
                     </p>
                   </div>
 
@@ -247,7 +288,11 @@ export default function LocationSearch() {
                       hover:text-white
                       active:scale-90
                     "
-                    aria-label="Close locations"
+                    aria-label={
+                      isHindi
+                        ? "स्थान बंद करें"
+                        : "Close locations"
+                    }
                   >
                     <X size={14} />
                   </button>
@@ -267,7 +312,11 @@ export default function LocationSearch() {
                     onChange={(e) =>
                       setSearch(e.target.value)
                     }
-                    placeholder="Search city..."
+                    placeholder={
+                      isHindi
+                        ? "शहर खोजें..."
+                        : "Search city..."
+                    }
                     className="
                       min-w-0
                       flex-1
@@ -284,6 +333,11 @@ export default function LocationSearch() {
                       type="button"
                       onClick={() => setSearch("")}
                       className="text-slate-500"
+                      aria-label={
+                        isHindi
+                          ? "खोज साफ करें"
+                          : "Clear search"
+                      }
                     >
                       <X size={13} />
                     </button>
@@ -371,11 +425,13 @@ export default function LocationSearch() {
                               }
                             `}
                           >
-                            {location}
+                            {getLocationName(location)}
                           </p>
 
                           <p className="mt-0.5 text-[8px] text-slate-600">
-                            Offline pooja available
+                            {isHindi
+                              ? "ऑफलाइन पूजा उपलब्ध है"
+                              : "Offline pooja available"}
                           </p>
                         </div>
 
@@ -409,11 +465,15 @@ export default function LocationSearch() {
                     />
 
                     <p className="mt-2 text-[11px] font-semibold text-slate-400">
-                      No location found
+                      {isHindi
+                        ? "कोई स्थान नहीं मिला"
+                        : "No location found"}
                     </p>
 
                     <p className="mt-1 text-[9px] text-slate-600">
-                      Try another city name.
+                      {isHindi
+                        ? "किसी दूसरे शहर का नाम आज़माएं।"
+                        : "Try another city name."}
                     </p>
                   </div>
                 )}
@@ -478,12 +538,16 @@ export default function LocationSearch() {
 
           <div className="min-w-0 flex-1">
             <span className="block text-[8px] font-semibold uppercase tracking-[0.12em] text-slate-600">
-              Discover
+              {isHindi ? "खोजें" : "Discover"}
             </span>
 
             <input
               type="text"
-              placeholder="Temple, Pooja..."
+              placeholder={
+                isHindi
+                  ? "मंदिर, पूजा..."
+                  : "Temple, Pooja..."
+              }
               className="
                 mt-0.5
                 w-full
@@ -506,13 +570,25 @@ export default function LocationSearch() {
 
       <div className="mt-2.5 flex gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {[
-          "Ganesh Pooja",
-          "Rudrabhishek",
-          "Griha Pravesh",
-          "Satyanarayan",
+          {
+            en: "Ganesh Pooja",
+            hi: "गणेश पूजा",
+          },
+          {
+            en: "Rudrabhishek",
+            hi: "रुद्राभिषेक",
+          },
+          {
+            en: "Griha Pravesh",
+            hi: "गृह प्रवेश",
+          },
+          {
+            en: "Satyanarayan",
+            hi: "सत्यनारायण",
+          },
         ].map((item) => (
           <button
-            key={item}
+            key={item.en}
             type="button"
             className="
               shrink-0
@@ -532,10 +608,13 @@ export default function LocationSearch() {
               active:scale-95
             "
           >
-            {item}
+            {isHindi ? item.hi : item.en}
           </button>
         ))}
       </div>
     </section>
   );
 }
+
+
+

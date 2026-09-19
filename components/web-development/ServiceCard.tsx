@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -7,6 +6,8 @@ import {
   CheckCircle2,
   Sparkles,
 } from "lucide-react";
+
+import { useLanguage } from "@/context/LanguageContext";
 
 interface Props {
   slug: string;
@@ -23,11 +24,36 @@ export default function ServiceCard({
   icon,
   color,
 }: Props) {
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
+  const t = {
+    premiumService: isHindi
+      ? "प्रीमियम सर्विस"
+      : "Premium Service",
+
+    startingFrom: isHindi
+      ? "शुरुआत"
+      : "Starting from",
+
+    professionalBusinessReady: isHindi
+      ? "प्रोफेशनल और बिज़नेस-रेडी"
+      : "Professional & business-ready",
+
+    viewDetails: isHindi
+      ? "डिटेल्स देखें"
+      : "View Details",
+
+    ariaLabel: isHindi
+      ? `${title} की डिटेल्स देखें`
+      : `View details for ${title}`,
+  };
+
   return (
     <Link
       href={`/web-development/service/${slug}`}
       className="group block h-full"
-      aria-label={`View details for ${title}`}
+      aria-label={t.ariaLabel}
     >
       <article
         className="
@@ -75,7 +101,23 @@ export default function ServiceCard({
         />
 
         {/* ================= TOP ACCENT ================= */}
-        <div className="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-[#DFAE45]/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+        <div
+          className="
+            absolute
+            left-0
+            right-0
+            top-0
+            h-px
+            bg-gradient-to-r
+            from-transparent
+            via-[#DFAE45]/30
+            to-transparent
+            opacity-0
+            transition-opacity
+            duration-300
+            group-hover:opacity-100
+          "
+        />
 
         {/* ================= TOP ROW ================= */}
         <div className="relative flex items-start justify-between">
@@ -101,9 +143,26 @@ export default function ServiceCard({
             `}
           >
             {/* Icon Shine */}
-            <span className="pointer-events-none absolute -left-10 top-0 h-full w-8 rotate-[25deg] bg-white/20 blur-sm transition-all duration-700 group-hover:left-[120%]" />
+            <span
+              className="
+                pointer-events-none
+                absolute
+                -left-10
+                top-0
+                h-full
+                w-8
+                rotate-[25deg]
+                bg-white/20
+                blur-sm
+                transition-all
+                duration-700
+                group-hover:left-[120%]
+              "
+            />
 
-            <span className="relative z-10">{icon}</span>
+            <span className="relative z-10">
+              {icon}
+            </span>
           </div>
 
           {/* Arrow */}
@@ -127,7 +186,14 @@ export default function ServiceCard({
             <ArrowUpRight
               size={16}
               strokeWidth={2.2}
-              className="text-gray-500 transition-all duration-300 group-hover:text-[#DFAE45] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              className="
+                text-gray-500
+                transition-all
+                duration-300
+                group-hover:text-[#DFAE45]
+                group-hover:translate-x-0.5
+                group-hover:-translate-y-0.5
+              "
             />
           </div>
         </div>
@@ -141,7 +207,7 @@ export default function ServiceCard({
           />
 
           <span className="text-[8px] font-bold uppercase tracking-[1.5px] text-[#DFAE45]">
-            Premium Service
+            {t.premiumService}
           </span>
         </div>
 
@@ -168,7 +234,7 @@ export default function ServiceCard({
         {/* ================= PRICE ================= */}
         <div className="relative mt-3">
           <p className="text-[8px] font-medium uppercase tracking-[1.2px] text-gray-600">
-            Starting from
+            {t.startingFrom}
           </p>
 
           <p className="mt-0.5 text-[17px] font-extrabold tracking-tight text-[#DFAE45]">
@@ -189,7 +255,7 @@ export default function ServiceCard({
             />
 
             <span className="text-[9px] font-medium text-gray-500">
-              Professional &amp; business-ready
+              {t.professionalBusinessReady}
             </span>
           </div>
 
@@ -215,20 +281,40 @@ export default function ServiceCard({
               group-hover:text-black
             "
           >
-            <span>View Details</span>
+            <span>{t.viewDetails}</span>
 
             <ArrowUpRight
               size={14}
               strokeWidth={2.5}
-              className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              className="
+                transition-transform
+                duration-300
+                group-hover:translate-x-0.5
+                group-hover:-translate-y-0.5
+              "
             />
           </div>
         </div>
 
         {/* ================= BOTTOM GLOW ================= */}
-        <div className="pointer-events-none absolute -bottom-16 left-1/2 h-24 w-32 -translate-x-1/2 rounded-full bg-[#DFAE45]/[0.04] blur-2xl transition-all duration-500 group-hover:bg-[#DFAE45]/[0.08]" />
+        <div
+          className="
+            pointer-events-none
+            absolute
+            -bottom-16
+            left-1/2
+            h-24
+            w-32
+            -translate-x-1/2
+            rounded-full
+            bg-[#DFAE45]/[0.04]
+            blur-2xl
+            transition-all
+            duration-500
+            group-hover:bg-[#DFAE45]/[0.08]
+          "
+        />
       </article>
     </Link>
   );
 }
-

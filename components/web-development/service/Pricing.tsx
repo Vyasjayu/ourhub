@@ -11,6 +11,8 @@ import {
   Zap,
 } from "lucide-react";
 
+import { useLanguage } from "@/context/LanguageContext";
+
 interface Service {
   price: string;
 }
@@ -20,6 +22,99 @@ interface Props {
 }
 
 export default function Pricing({ service }: Props) {
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
+  const t = {
+    investment: isHindi ? "निवेश" : "Investment",
+
+    simpleTransparent: isHindi
+      ? "सिंपल और पारदर्शी"
+      : "Simple & Transparent",
+
+    pricing: isHindi ? "प्राइसिंग" : "Pricing",
+
+    description: isHindi
+      ? "बिना छुपे हुए चार्ज या अनावश्यक सरप्राइज़ के प्रीमियम डेवलपमेंट।"
+      : "Premium development without hidden charges or unnecessary surprises.",
+
+    premiumPackage: isHindi
+      ? "प्रीमियम पैकेज"
+      : "Premium Package",
+
+    transparent: isHindi
+      ? "पारदर्शी"
+      : "Transparent",
+
+    startingInvestment: isHindi
+      ? "शुरुआती निवेश"
+      : "Starting Investment",
+
+    finalQuote: isHindi
+      ? "अंतिम कोटेशन आपकी प्रोजेक्ट जरूरतों पर निर्भर करता है"
+      : "Final quote depends on project requirements",
+
+    noHiddenCharges: isHindi
+      ? "कोई छुपे हुए डेवलपमेंट चार्ज नहीं"
+      : "No hidden development charges",
+
+    included: isHindi
+      ? "शामिल"
+      : "Included",
+
+    everythingYouNeed: isHindi
+      ? "आपकी जरूरत का सब कुछ"
+      : "Everything You Need",
+
+    startYourProject: isHindi
+      ? "अपना प्रोजेक्ट शुरू करें"
+      : "Start Your Project",
+
+    freeConsultation: isHindi
+      ? "फ्री कंसल्टेशन"
+      : "Free consultation",
+
+    noObligation: isHindi
+      ? "कोई बाध्यता नहीं"
+      : "No obligation",
+
+    secure: isHindi
+      ? "सिक्योर"
+      : "Secure",
+
+    reliable: isHindi
+      ? "भरोसेमंद"
+      : "Reliable",
+
+    quality: isHindi
+      ? "क्वालिटी"
+      : "Quality",
+
+    fastDelivery: isHindi
+      ? "फास्ट डिलीवरी"
+      : "Fast Delivery",
+
+    fastDeliveryDescription: isHindi
+      ? "आमतौर पर 7–15 दिनों में डिलीवर"
+      : "Typically delivered in 7–15 days",
+
+    unlimitedRevisions: isHindi
+      ? "अनलिमिटेड रिविज़न"
+      : "Unlimited Revisions",
+
+    unlimitedRevisionsDescription: isHindi
+      ? "आपके संतुष्ट होने तक वेबसाइट में सुधार"
+      : "Refine your website until you're satisfied",
+
+    freeSupport: isHindi
+      ? "30 दिनों का फ्री सपोर्ट"
+      : "30 Days Free Support",
+
+    freeSupportDescription: isHindi
+      ? "लॉन्च के बाद टेक्निकल सहायता शामिल"
+      : "Post-launch technical assistance included",
+  };
+
   const startProject = () => {
     document.getElementById("contact-form")?.scrollIntoView({
       behavior: "smooth",
@@ -30,69 +125,104 @@ export default function Pricing({ service }: Props) {
   const benefits = [
     {
       icon: Clock3,
-      title: "Fast Delivery",
-      description: "Typically delivered in 7–15 days",
+      title: t.fastDelivery,
+      description: t.fastDeliveryDescription,
       iconClass: "text-blue-400",
       bgClass: "bg-blue-400/10 border-blue-400/15",
     },
     {
       icon: RefreshCcw,
-      title: "Unlimited Revisions",
-      description: "Refine your website until you're satisfied",
+      title: t.unlimitedRevisions,
+      description: t.unlimitedRevisionsDescription,
       iconClass: "text-purple-400",
       bgClass: "bg-purple-400/10 border-purple-400/15",
     },
     {
       icon: ShieldCheck,
-      title: "30 Days Free Support",
-      description: "Post-launch technical assistance included",
+      title: t.freeSupport,
+      description: t.freeSupportDescription,
       iconClass: "text-green-400",
       bgClass: "bg-green-400/10 border-green-400/15",
     },
   ];
 
+  const trustItems = [
+    {
+      label: t.secure,
+      icon: ShieldCheck,
+    },
+    {
+      label: t.reliable,
+      icon: Zap,
+    },
+    {
+      label: t.quality,
+      icon: Check,
+    },
+  ];
+
   return (
     <section className="relative mt-12 overflow-hidden px-4">
-      {/* Ambient glow */}
+      {/* =====================================================
+          AMBIENT GLOW
+      ===================================================== */}
+
       <div className="pointer-events-none absolute -left-20 top-16 h-44 w-44 rounded-full bg-[#DFAE45]/[0.07] blur-[80px]" />
+
       <div className="pointer-events-none absolute -right-20 bottom-10 h-48 w-48 rounded-full bg-blue-500/[0.04] blur-[90px]" />
 
-      {/* Section heading */}
+      {/* =====================================================
+          SECTION HEADING
+      ===================================================== */}
+
       <div className="relative">
         <div className="mb-3 flex items-center gap-2">
           <span className="h-px w-7 bg-gradient-to-r from-transparent to-[#DFAE45]" />
 
           <span className="text-[10px] font-black uppercase tracking-[2px] text-[#DFAE45]">
-            Investment
+            {t.investment}
           </span>
 
           <span className="h-px w-7 bg-gradient-to-r from-[#DFAE45] to-transparent" />
         </div>
 
         <h2 className="text-[27px] font-black tracking-tight text-white">
-          Simple & Transparent
-          <span className="block text-[#DFAE45]">Pricing</span>
+          {t.simpleTransparent}
+
+          <span className="block text-[#DFAE45]">
+            {t.pricing}
+          </span>
         </h2>
 
         <p className="mt-2 max-w-[330px] text-[13px] leading-6 text-gray-500">
-          Premium development without hidden charges or unnecessary surprises.
+          {t.description}
         </p>
       </div>
 
-      {/* Main pricing card */}
+      {/* =====================================================
+          MAIN PRICING CARD
+      ===================================================== */}
+
       <div className="group relative mt-7 overflow-hidden rounded-[30px] border border-[#DFAE45]/20 bg-gradient-to-b from-[#101D30] via-[#0B1728] to-[#07111D] shadow-[0_25px_70px_rgba(0,0,0,0.35)]">
         {/* Top gold highlight */}
+
         <div className="absolute left-8 right-8 top-0 h-px bg-gradient-to-r from-transparent via-[#DFAE45]/80 to-transparent" />
 
         {/* Decorative glow */}
+
         <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-[#DFAE45]/10 blur-[65px]" />
 
         {/* Decorative rings */}
+
         <div className="pointer-events-none absolute -right-20 top-12 h-40 w-40 rounded-full border border-[#DFAE45]/[0.06]" />
-        <div className="pointer-events-none absolute -right-14 top-18 h-28 w-28 rounded-full border border-[#DFAE45]/[0.05]" />
+
+        <div className="pointer-events-none absolute -right-14 top-[72px] h-28 w-28 rounded-full border border-[#DFAE45]/[0.05]" />
 
         <div className="relative p-5">
-          {/* Popular badge */}
+          {/* =================================================
+              BADGES
+          ================================================= */}
+
           <div className="flex items-center justify-between">
             <div className="inline-flex items-center gap-1.5 rounded-full border border-[#DFAE45]/20 bg-[#DFAE45]/[0.08] px-3 py-1.5">
               <Sparkles
@@ -102,7 +232,7 @@ export default function Pricing({ service }: Props) {
               />
 
               <span className="text-[9px] font-black uppercase tracking-[1.2px] text-[#DFAE45]">
-                Premium Package
+                {t.premiumPackage}
               </span>
             </div>
 
@@ -110,22 +240,28 @@ export default function Pricing({ service }: Props) {
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.8)]" />
 
               <span className="text-[8px] font-bold uppercase tracking-[1px] text-gray-500">
-                Transparent
+                {t.transparent}
               </span>
             </div>
           </div>
 
-          {/* Price area */}
+          {/* =================================================
+              PRICE AREA
+          ================================================= */}
+
           <div className="mt-6 rounded-[24px] border border-white/[0.06] bg-black/20 p-5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-[1.5px] text-gray-500">
-                  Starting Investment
+                  {t.startingInvestment}
                 </p>
 
                 <div className="mt-2 flex items-center">
                   <span className="mr-1 text-gray-500">
-                    <IndianRupee size={22} strokeWidth={2.5} />
+                    <IndianRupee
+                      size={22}
+                      strokeWidth={2.5}
+                    />
                   </span>
 
                   <h3 className="text-[34px] font-black leading-none tracking-tight text-[#FFD86A]">
@@ -134,7 +270,7 @@ export default function Pricing({ service }: Props) {
                 </div>
 
                 <p className="mt-2 text-[10px] font-medium text-gray-600">
-                  Final quote depends on project requirements
+                  {t.finalQuote}
                 </p>
               </div>
 
@@ -148,6 +284,7 @@ export default function Pricing({ service }: Props) {
             </div>
 
             {/* Price trust */}
+
             <div className="mt-5 flex items-center gap-2 border-t border-white/[0.06] pt-4">
               <ShieldCheck
                 size={13}
@@ -156,21 +293,24 @@ export default function Pricing({ service }: Props) {
               />
 
               <span className="text-[10px] font-semibold text-gray-400">
-                No hidden development charges
+                {t.noHiddenCharges}
               </span>
             </div>
           </div>
 
-          {/* What's included */}
+          {/* =================================================
+              WHAT'S INCLUDED
+          ================================================= */}
+
           <div className="mt-6">
             <div className="mb-4 flex items-center justify-between">
               <div>
                 <p className="text-[10px] font-black uppercase tracking-[1.5px] text-gray-500">
-                  Included
+                  {t.included}
                 </p>
 
                 <h4 className="mt-1 text-[15px] font-extrabold text-white">
-                  Everything You Need
+                  {t.everythingYouNeed}
                 </h4>
               </div>
 
@@ -223,13 +363,17 @@ export default function Pricing({ service }: Props) {
             </div>
           </div>
 
-          {/* CTA */}
+          {/* =================================================
+              CTA
+          ================================================= */}
+
           <button
             type="button"
             onClick={startProject}
             className="group/cta relative mt-6 flex h-[55px] w-full items-center justify-center gap-2.5 overflow-hidden rounded-[18px] bg-gradient-to-r from-[#DFAE45] via-[#E7B94F] to-[#FFD86A] text-[13px] font-black text-black shadow-[0_14px_35px_rgba(223,174,69,0.18)] transition-all duration-300 hover:shadow-[0_16px_45px_rgba(223,174,69,0.30)] active:scale-[0.98]"
           >
             {/* Shine */}
+
             <span className="pointer-events-none absolute -left-16 top-0 h-full w-10 rotate-[22deg] bg-white/35 blur-sm transition-all duration-700 group-hover/cta:left-[120%]" />
 
             <Sparkles
@@ -238,7 +382,9 @@ export default function Pricing({ service }: Props) {
               className="relative z-10"
             />
 
-            <span className="relative z-10">Start Your Project</span>
+            <span className="relative z-10">
+              {t.startYourProject}
+            </span>
 
             <ArrowRight
               size={17}
@@ -247,32 +393,35 @@ export default function Pricing({ service }: Props) {
             />
           </button>
 
-          {/* CTA note */}
+          {/* =================================================
+              CTA NOTE
+          ================================================= */}
+
           <div className="mt-3 flex items-center justify-center gap-2">
             <span className="h-1.5 w-1.5 rounded-full bg-green-400 shadow-[0_0_7px_rgba(74,222,128,0.7)]" />
 
             <p className="text-[9px] font-semibold text-gray-600">
-              Free consultation • No obligation
+              {t.freeConsultation} • {t.noObligation}
             </p>
           </div>
         </div>
 
         {/* Bottom highlight */}
+
         <div className="absolute bottom-0 left-1/2 h-px w-2/3 -translate-x-1/2 bg-gradient-to-r from-transparent via-[#DFAE45]/25 to-transparent" />
       </div>
 
-      {/* Mini trust strip */}
+      {/* =====================================================
+          MINI TRUST STRIP
+      ===================================================== */}
+
       <div className="mt-3 grid grid-cols-3 gap-2">
-        {[
-          ["Secure", ShieldCheck],
-          ["Reliable", Zap],
-          ["Quality", Check],
-        ].map(([label, Icon]) => {
-          const TrustIcon = Icon as typeof Check;
+        {trustItems.map((item) => {
+          const TrustIcon = item.icon;
 
           return (
             <div
-              key={label as string}
+              key={item.label}
               className="flex items-center justify-center gap-1.5 rounded-xl border border-white/[0.045] bg-white/[0.018] py-2.5"
             >
               <TrustIcon
@@ -282,7 +431,7 @@ export default function Pricing({ service }: Props) {
               />
 
               <span className="text-[8px] font-bold uppercase tracking-[0.7px] text-gray-600">
-                {label as string}
+                {item.label}
               </span>
             </div>
           );

@@ -1,4 +1,3 @@
-
 "use client";
 
 import {
@@ -11,53 +10,172 @@ import {
   Sparkles,
   Zap,
 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const plans = [
   {
-    name: "Starter",
+    name: {
+      en: "Starter",
+      hi: "स्टार्टर",
+    },
     price: "₹9,999",
-    description: "Perfect for individuals & small businesses.",
+    description: {
+      en: "Perfect for individuals & small businesses.",
+      hi: "व्यक्तियों और छोटे बिज़नेसेज़ के लिए परफेक्ट।",
+    },
     icon: Rocket,
-    features: [
-      "5 Pages",
-      "Responsive Design",
-      "Basic SEO",
-      "1 Month Support",
-    ],
+    popular: false,
+    features: {
+      en: [
+        "5 Pages",
+        "Responsive Design",
+        "Basic SEO",
+        "1 Month Support",
+      ],
+      hi: [
+        "5 पेज",
+        "रिस्पॉन्सिव डिजाइन",
+        "बेसिक SEO",
+        "1 महीने का सपोर्ट",
+      ],
+    },
   },
   {
-    name: "Professional",
+    name: {
+      en: "Professional",
+      hi: "प्रोफेशनल",
+    },
     price: "₹24,999",
-    description: "A complete solution for growing businesses.",
+    description: {
+      en: "A complete solution for growing businesses.",
+      hi: "बढ़ते हुए बिज़नेसेज़ के लिए कम्प्लीट सॉल्यूशन।",
+    },
     icon: Crown,
     popular: true,
-    features: [
-      "15 Pages",
-      "Admin Panel",
-      "Advanced SEO",
-      "6 Month Support",
-    ],
+    features: {
+      en: [
+        "15 Pages",
+        "Admin Panel",
+        "Advanced SEO",
+        "6 Month Support",
+      ],
+      hi: [
+        "15 पेज",
+        "एडमिन पैनल",
+        "एडवांस्ड SEO",
+        "6 महीने का सपोर्ट",
+      ],
+    },
   },
   {
-    name: "Enterprise",
+    name: {
+      en: "Enterprise",
+      hi: "एंटरप्राइज",
+    },
     price: "Custom",
-    description: "Powerful solutions built around your requirements.",
+    description: {
+      en: "Powerful solutions built around your requirements.",
+      hi: "आपकी जरूरतों के अनुसार तैयार किए गए पावरफुल सॉल्यूशंस।",
+    },
     icon: Zap,
-    features: [
-      "Unlimited Pages",
-      "Custom Dashboard",
-      "API Integration",
-      "Priority Support",
-    ],
+    popular: false,
+    features: {
+      en: [
+        "Unlimited Pages",
+        "Custom Dashboard",
+        "API Integration",
+        "Priority Support",
+      ],
+      hi: [
+        "अनलिमिटेड पेज",
+        "कस्टम डैशबोर्ड",
+        "API इंटीग्रेशन",
+        "प्रायोरिटी सपोर्ट",
+      ],
+    },
   },
 ];
 
 export default function Pricing() {
-  const handleChoosePlan = (planName: string) => {
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
+  const t = {
+    simplePricing: isHindi
+      ? "सिंपल प्राइसिंग"
+      : "Simple Pricing",
+
+    pricingPlans: isHindi
+      ? "प्राइसिंग प्लान्स"
+      : "Pricing Plans",
+
+    description: isHindi
+      ? "आज आपके बिज़नेस के लिए सही प्लान चुनें और जरूरत पड़ने पर आसानी से स्केल करें।"
+      : "Choose a plan that fits your business today and scale when you are ready.",
+
+    transparentPricing: isHindi
+      ? "पारदर्शी प्राइसिंग"
+      : "Transparent pricing",
+
+    pricingDescription: isHindi
+      ? "कोई कन्फ्यूज़िंग पैकेज नहीं। वही चुनें जिसकी आपके बिज़नेस को वास्तव में जरूरत है।"
+      : "No confusing packages. Pick what your business actually needs.",
+
+    mostPopular: isHindi
+      ? "सबसे लोकप्रिय"
+      : "Most Popular",
+
+    startingInvestment: isHindi
+      ? "शुरुआती निवेश"
+      : "Starting investment",
+
+    onwards: isHindi
+      ? "से"
+      : "onwards",
+
+    whatsIncluded: isHindi
+      ? "क्या शामिल है"
+      : "What's included",
+
+    discussProject: isHindi
+      ? "अपने प्रोजेक्ट पर चर्चा करें"
+      : "Discuss Your Project",
+
+    choosePlan: isHindi
+      ? "प्लान चुनें"
+      : "Choose Plan",
+
+    freeConsultation: isHindi
+      ? "फ्री कंसल्टेशन उपलब्ध"
+      : "Free consultation available",
+
+    needSomethingDifferent: isHindi
+      ? "कुछ अलग चाहिए?"
+      : "Need something different?",
+
+    customDescription: isHindi
+      ? "अपनी जरूरत बताएं और हम आपके लिए कस्टम सॉल्यूशन तैयार करेंगे।"
+      : "Tell us your requirements and we'll create a custom solution.",
+
+    custom: isHindi
+      ? "कस्टम"
+      : "Custom",
+  };
+
+  const handleChoosePlan = (
+    planName: string,
+    planNameHindi: string
+  ) => {
     const phone = "918878632431";
 
+    const selectedPlan = isHindi
+      ? planNameHindi
+      : planName;
+
     const message = encodeURIComponent(
-      `Hi OurHub, I'm interested in the ${planName} Web Development plan. Please share more details.`
+      isHindi
+        ? `नमस्ते OurHub, मुझे ${selectedPlan} वेब डेवलपमेंट प्लान में रुचि है। कृपया इसकी पूरी जानकारी साझा करें।`
+        : `Hi OurHub, I'm interested in the ${selectedPlan} Web Development plan. Please share more details.`
     );
 
     window.open(
@@ -71,6 +189,7 @@ export default function Pricing() {
     <section className="relative mt-12 overflow-hidden px-4">
       {/* Ambient Glows */}
       <div className="pointer-events-none absolute -left-24 top-20 h-60 w-60 rounded-full bg-[#DFAE45]/[0.045] blur-3xl" />
+
       <div className="pointer-events-none absolute -right-24 bottom-20 h-64 w-64 rounded-full bg-blue-500/[0.025] blur-3xl" />
 
       <div className="relative">
@@ -86,7 +205,7 @@ export default function Pricing() {
             </div>
 
             <span className="text-[10px] font-bold uppercase tracking-[2px] text-[#DFAE45]">
-              Simple Pricing
+              {t.simplePricing}
             </span>
           </div>
 
@@ -94,13 +213,12 @@ export default function Pricing() {
             <span className="h-8 w-1 rounded-full bg-gradient-to-b from-[#FFD86A] to-[#DFAE45]" />
 
             <h2 className="text-[25px] font-extrabold tracking-tight text-white">
-              Pricing Plans
+              {t.pricingPlans}
             </h2>
           </div>
 
           <p className="mt-2 pl-3 text-[13px] leading-5 text-gray-400">
-            Choose a plan that fits your business today and scale when you are
-            ready.
+            {t.description}
           </p>
         </div>
 
@@ -119,11 +237,11 @@ export default function Pricing() {
 
             <div className="min-w-0 flex-1">
               <p className="text-[12px] font-extrabold text-white">
-                Transparent pricing
+                {t.transparentPricing}
               </p>
 
               <p className="mt-0.5 text-[9px] leading-4 text-gray-500">
-                No confusing packages. Pick what your business actually needs.
+                {t.pricingDescription}
               </p>
             </div>
 
@@ -142,7 +260,7 @@ export default function Pricing() {
 
             return (
               <div
-                key={plan.name}
+                key={plan.name.en}
                 className={`
                   group relative overflow-hidden rounded-[28px]
                   border p-5
@@ -167,7 +285,7 @@ export default function Pricing() {
                     />
 
                     <span className="text-[7px] font-extrabold uppercase tracking-[1px] text-[#DFAE45]">
-                      Most Popular
+                      {t.mostPopular}
                     </span>
                   </div>
                 )}
@@ -191,7 +309,11 @@ export default function Pricing() {
                   className={`
                     absolute left-0 right-0 top-0 h-px
                     bg-gradient-to-r from-transparent via-[#DFAE45]/50 to-transparent
-                    ${plan.popular ? "opacity-100" : "opacity-0 group-hover:opacity-100"}
+                    ${
+                      plan.popular
+                        ? "opacity-100"
+                        : "opacity-0 group-hover:opacity-100"
+                    }
                     transition-opacity duration-300
                   `}
                 />
@@ -227,7 +349,7 @@ export default function Pricing() {
                     <div className="min-w-0 flex-1 pr-20">
                       <div className="flex items-center gap-2">
                         <h3 className="text-[17px] font-extrabold text-white">
-                          {plan.name}
+                          {plan.name[language]}
                         </h3>
 
                         <span className="text-[7px] font-bold uppercase tracking-[1px] text-gray-600">
@@ -236,7 +358,7 @@ export default function Pricing() {
                       </div>
 
                       <p className="mt-1 text-[9px] leading-4 text-gray-500">
-                        {plan.description}
+                        {plan.description[language]}
                       </p>
                     </div>
                   </div>
@@ -244,26 +366,17 @@ export default function Pricing() {
                   {/* Price */}
                   <div className="mt-5 rounded-[20px] border border-white/[0.06] bg-white/[0.025] p-4">
                     <p className="text-[8px] font-bold uppercase tracking-[1.5px] text-gray-600">
-                      Starting investment
+                      {t.startingInvestment}
                     </p>
 
                     <div className="mt-1 flex items-end gap-2">
-                      <span
-                        className={`
-                          text-[30px] font-black leading-none tracking-tight
-                          ${
-                            plan.price === "Custom"
-                              ? "text-[#DFAE45]"
-                              : "text-[#DFAE45]"
-                          }
-                        `}
-                      >
+                      <span className="text-[30px] font-black leading-none tracking-tight text-[#DFAE45]">
                         {plan.price}
                       </span>
 
                       {plan.price !== "Custom" && (
                         <span className="pb-0.5 text-[8px] font-medium text-gray-600">
-                          onwards
+                          {t.onwards}
                         </span>
                       )}
                     </div>
@@ -272,35 +385,42 @@ export default function Pricing() {
                   {/* Features */}
                   <div className="mt-5">
                     <p className="mb-3 text-[8px] font-bold uppercase tracking-[1.5px] text-gray-600">
-                      What&apos;s included
+                      {t.whatsIncluded}
                     </p>
 
                     <div className="grid grid-cols-2 gap-x-3 gap-y-2.5">
-                      {plan.features.map((feature) => (
-                        <div
-                          key={feature}
-                          className="flex min-w-0 items-center gap-2"
-                        >
-                          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-lg bg-green-400/[0.08]">
-                            <Check
-                              size={11}
-                              strokeWidth={2.8}
-                              className="text-green-400"
-                            />
-                          </span>
+                      {plan.features[language].map(
+                        (feature) => (
+                          <div
+                            key={feature}
+                            className="flex min-w-0 items-center gap-2"
+                          >
+                            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-lg bg-green-400/[0.08]">
+                              <Check
+                                size={11}
+                                strokeWidth={2.8}
+                                className="text-green-400"
+                              />
+                            </span>
 
-                          <span className="truncate text-[9px] font-medium text-gray-400">
-                            {feature}
-                          </span>
-                        </div>
-                      ))}
+                            <span className="truncate text-[9px] font-medium text-gray-400">
+                              {feature}
+                            </span>
+                          </div>
+                        )
+                      )}
                     </div>
                   </div>
 
                   {/* CTA */}
                   <button
                     type="button"
-                    onClick={() => handleChoosePlan(plan.name)}
+                    onClick={() =>
+                      handleChoosePlan(
+                        plan.name.en,
+                        plan.name.hi
+                      )
+                    }
                     className={`
                       group/button relative mt-5 flex h-[45px] w-full
                       items-center justify-center gap-2
@@ -321,8 +441,8 @@ export default function Pricing() {
 
                     <span className="relative z-10">
                       {plan.price === "Custom"
-                        ? "Discuss Your Project"
-                        : "Choose Plan"}
+                        ? t.discussProject
+                        : t.choosePlan}
                     </span>
 
                     <ArrowRight
@@ -341,7 +461,7 @@ export default function Pricing() {
                     />
 
                     <span className="text-[7px] font-semibold uppercase tracking-[0.8px] text-gray-600">
-                      Free consultation available
+                      {t.freeConsultation}
                     </span>
                   </div>
                 </div>
@@ -362,18 +482,17 @@ export default function Pricing() {
 
             <div className="min-w-0">
               <p className="text-[11px] font-extrabold text-white">
-                Need something different?
+                {t.needSomethingDifferent}
               </p>
 
               <p className="mt-0.5 text-[8px] leading-4 text-gray-600">
-                Tell us your requirements and we&apos;ll create a custom
-                solution.
+                {t.customDescription}
               </p>
             </div>
 
             <div className="ml-auto shrink-0 rounded-full border border-green-400/10 bg-green-400/[0.05] px-2 py-1">
               <span className="text-[7px] font-bold text-green-400">
-                Custom
+                {t.custom}
               </span>
             </div>
           </div>
@@ -382,4 +501,3 @@ export default function Pricing() {
     </section>
   );
 }
-

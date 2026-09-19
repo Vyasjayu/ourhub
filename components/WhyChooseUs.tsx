@@ -11,42 +11,126 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
+import { useLanguage } from "@/context/LanguageContext";
+
 const features = [
   {
     id: 1,
     icon: BadgeCheck,
-    title: "Verified Experts",
-    description:
-      "Background-verified professionals selected for reliable service.",
-    label: "TRUSTED",
+    title: {
+      en: "Verified Experts",
+      hi: "वेरिफाइड एक्सपर्ट्स",
+    },
+    description: {
+      en: "Background-verified professionals selected for reliable service.",
+      hi: "विश्वसनीय सेवा के लिए बैकग्राउंड-वेरिफाइड प्रोफेशनल्स।",
+    },
+    label: {
+      en: "TRUSTED",
+      hi: "भरोसेमंद",
+    },
   },
   {
     id: 2,
     icon: ShieldCheck,
-    title: "Secure Payments",
-    description:
-      "Safe and protected payments through trusted payment partners.",
-    label: "SECURE",
+    title: {
+      en: "Secure Payments",
+      hi: "सुरक्षित भुगतान",
+    },
+    description: {
+      en: "Safe and protected payments through trusted payment partners.",
+      hi: "भरोसेमंद पेमेंट पार्टनर्स के माध्यम से सुरक्षित भुगतान।",
+    },
+    label: {
+      en: "SECURE",
+      hi: "सुरक्षित",
+    },
   },
   {
     id: 3,
     icon: Clock3,
-    title: "Instant Booking",
-    description:
-      "Find your service and complete your booking in just a few steps.",
-    label: "FAST",
+    title: {
+      en: "Instant Booking",
+      hi: "तुरंत बुकिंग",
+    },
+    description: {
+      en: "Find your service and complete your booking in just a few steps.",
+      hi: "अपनी सर्विस चुनें और कुछ आसान स्टेप्स में बुकिंग पूरी करें।",
+    },
+    label: {
+      en: "FAST",
+      hi: "तेज़",
+    },
   },
   {
     id: 4,
     icon: Headphones,
-    title: "24×7 Support",
-    description:
-      "Our dedicated support team is always ready to assist you.",
-    label: "SUPPORT",
+    title: {
+      en: "24×7 Support",
+      hi: "24×7 सपोर्ट",
+    },
+    description: {
+      en: "Our dedicated support team is always ready to assist you.",
+      hi: "हमारी सपोर्ट टीम आपकी मदद के लिए हमेशा तैयार है।",
+    },
+    label: {
+      en: "SUPPORT",
+      hi: "सहायता",
+    },
   },
 ];
 
 export default function WhyChooseUs() {
+  const { language } = useLanguage();
+
+  const isHindi = language === "hi";
+
+  const t = {
+    eyebrow: isHindi
+      ? "OURHUB की खासियत"
+      : "THE OURHUB DIFFERENCE",
+
+    title: isHindi
+      ? "OurHub को क्यों चुनें?"
+      : "Why choose OurHub?",
+
+    description: isHindi
+      ? "प्रोफेशनल सर्विसेज खोजने का एक स्मार्ट और भरोसेमंद तरीका।"
+      : "A smarter and more reliable way to discover professional services.",
+
+    verified: isHindi
+      ? "वेरिफाइड"
+      : "VERIFIED",
+
+    secure: isHindi
+      ? "सुरक्षित"
+      : "SECURE",
+
+    reliable: isHindi
+      ? "भरोसेमंद"
+      : "RELIABLE",
+
+    onePlatform: isHindi
+      ? "एक प्लेटफॉर्म"
+      : "ONE PLATFORM",
+
+    everything: isHindi
+      ? "आपकी हर जरूरत।"
+      : "Everything You Need.",
+
+    allInOne: isHindi
+      ? "एक ही हब में।"
+      : "All In One Hub.",
+
+    bannerDescription: isHindi
+      ? "पूजा और होम सर्विसेज से लेकर ऑटोमोबाइल, इवेंट्स, कंस्ट्रक्शन और डिजिटल सॉल्यूशंस तक — एक भरोसेमंद प्लेटफॉर्म पर प्रोफेशनल्स खोजें।"
+      : "From spiritual and home services to automobile, events, construction and digital solutions — discover professionals from one trusted platform.",
+
+    exploreServices: isHindi
+      ? "सर्विसेज देखें"
+      : "Explore Services",
+  };
+
   return (
     <section className="relative mt-10 overflow-hidden py-2">
       {/* ================= BACKGROUND GLOWS ================= */}
@@ -70,7 +154,7 @@ export default function WhyChooseUs() {
             />
 
             <span className="text-[9px] font-bold tracking-[2.5px] text-[#F4C542]">
-              THE OURHUB DIFFERENCE
+              {t.eyebrow}
             </span>
           </div>
 
@@ -80,14 +164,25 @@ export default function WhyChooseUs() {
         {/* Title */}
 
         <h2 className="mt-3 text-[25px] font-bold tracking-tight text-white">
-          Why choose{" "}
-          <span className="text-[#F4C542]">
-            OurHub?
-          </span>
+          {isHindi ? (
+            <>
+              {t.title.split(" ")[0]}{" "}
+              <span className="text-[#F4C542]">
+                {t.title.split(" ").slice(1).join(" ")}
+              </span>
+            </>
+          ) : (
+            <>
+              Why choose{" "}
+              <span className="text-[#F4C542]">
+                OurHub?
+              </span>
+            </>
+          )}
         </h2>
 
         <p className="mx-auto mt-2 max-w-[290px] text-[11px] leading-5 text-slate-500">
-          A smarter and more reliable way to discover professional services.
+          {t.description}
         </p>
       </div>
 
@@ -169,20 +264,20 @@ export default function WhyChooseUs() {
                 <span className="h-1 w-1 rounded-full bg-[#F4C542]" />
 
                 <span className="text-[7px] font-bold tracking-[1.4px] text-[#F4C542]/70">
-                  {item.label}
+                  {item.label[language]}
                 </span>
               </div>
 
               {/* Title */}
 
               <h3 className="mt-1.5 text-[13px] font-bold leading-tight text-white">
-                {item.title}
+                {item.title[language]}
               </h3>
 
               {/* Description */}
 
               <p className="mt-2 text-[9px] leading-[1.65] text-slate-500">
-                {item.description}
+                {item.description[language]}
               </p>
 
               {/* Bottom Premium Line */}
@@ -217,7 +312,7 @@ export default function WhyChooseUs() {
           />
 
           <span className="text-[9px] font-bold tracking-[1px] text-slate-400">
-            VERIFIED • SECURE • RELIABLE
+            {t.verified} • {t.secure} • {t.reliable}
           </span>
         </div>
       </div>
@@ -265,27 +360,25 @@ export default function WhyChooseUs() {
             />
 
             <span className="text-[8px] font-bold tracking-[2px] text-[#F4C542]">
-              ONE PLATFORM
+              {t.onePlatform}
             </span>
           </div>
 
           {/* Heading */}
 
           <h3 className="mt-3 max-w-[260px] text-[20px] font-bold leading-tight text-white">
-            Everything You Need.
+            {t.everything}
             <br />
 
             <span className="text-[#F4C542]">
-              All In One Hub.
+              {t.allInOne}
             </span>
           </h3>
 
           {/* Description */}
 
           <p className="mt-3 max-w-[310px] text-[10px] leading-5 text-slate-400">
-            From spiritual and home services to automobile, events,
-            construction and digital solutions — discover professionals
-            from one trusted platform.
+            {t.bannerDescription}
           </p>
 
           {/* CTA */}
@@ -316,7 +409,7 @@ export default function WhyChooseUs() {
             "
           >
             <span className="relative z-10">
-              Explore Services
+              {t.exploreServices}
             </span>
 
             <ArrowRight

@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -9,12 +8,71 @@ import {
   Code2,
   Sparkles,
 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Hero() {
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
+  const t = {
+    premiumDigitalStudio: isHindi
+      ? "प्रीमियम डिजिटल स्टूडियो"
+      : "Premium Digital Studio",
+
+    buildDigitalPresence: isHindi
+      ? "अपनी डिजिटल पहचान बनाएं"
+      : "Build Your Digital Presence",
+
+    websitesThat: isHindi
+      ? "ऐसी वेबसाइट्स जो"
+      : "Websites That",
+
+    growBusiness: isHindi
+      ? "आपका बिज़नेस बढ़ाएं।"
+      : "Grow Your Business.",
+
+    description: isHindi
+      ? "मॉडर्न बिज़नेस के लिए प्रीमियम वेबसाइट्स, ई-कॉमर्स स्टोर्स और कस्टम वेब सॉल्यूशंस।"
+      : "Premium websites, e-commerce stores and custom web solutions built for modern businesses.",
+
+    mobileFirst: isHindi
+      ? "मोबाइल फर्स्ट"
+      : "Mobile First",
+
+    seoReady: isHindi
+      ? "SEO रेडी"
+      : "SEO Ready",
+
+    fastDelivery: isHindi
+      ? "फास्ट डिलीवरी"
+      : "Fast Delivery",
+
+    startingFrom: isHindi
+      ? "शुरुआत"
+      : "Starting from",
+
+    onwards: isHindi
+      ? "से"
+      : "onwards",
+
+    exploreServices: isHindi
+      ? "सर्विसेज देखें"
+      : "Explore Services",
+
+    expertsAvailable: isHindi
+      ? "एक्सपर्ट्स उपलब्ध हैं"
+      : "Experts Available",
+
+    letsBuild: isHindi
+      ? "आइए बनाएं"
+      : "Let's build",
+  };
+
   return (
     <section className="relative mx-4 mt-5">
       <Link
         href="/web-development"
+        aria-label={t.exploreServices}
         className="
           group
           relative
@@ -32,15 +90,18 @@ export default function Hero() {
           active:scale-[0.985]
         "
       >
-        {/* =========================
+        {/* =====================================================
             HERO IMAGE
-        ========================== */}
-
+        ====================================================== */}
         <div className="relative h-[310px] overflow-hidden">
 
           <Image
             src="/services/web/banner.jpg"
-            alt="Premium Website Development Services"
+            alt={
+              isHindi
+                ? "प्रीमियम वेबसाइट डेवलपमेंट सर्विसेज"
+                : "Premium Website Development Services"
+            }
             fill
             priority
             sizes="(max-width: 430px) 100vw, 430px"
@@ -66,11 +127,11 @@ export default function Hero() {
           {/* Bottom fade */}
           <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#050B14] to-transparent" />
 
-          {/* =========================
+          {/* =================================================
               TOP BADGE
-          ========================== */}
-
-         /* <div className="absolute left-4 top-4">
+          ================================================== */}
+          {/*
+          <div className="absolute left-4 top-4">
             <div
               className="
                 flex
@@ -92,15 +153,15 @@ export default function Hero() {
               />
 
               <span className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-[#F2C866]">
-                Premium Digital Studio
+                {t.premiumDigitalStudio}
               </span>
             </div>
-          </div> */ {}
+          </div>
+          */}
 
-          {/* =========================
+          {/* =================================================
               CODE ICON
-          ========================== */}
-
+          ================================================== */}
           <div
             className="
               absolute
@@ -124,20 +185,21 @@ export default function Hero() {
             />
           </div>
 
-          {/* =========================
+          {/* =================================================
               HERO CONTENT
-          ========================== */}
-
+          ================================================== */}
           <div className="absolute inset-x-0 bottom-0 px-5 pb-5">
 
+            {/* Eyebrow */}
             <div className="mb-2 flex items-center gap-2">
               <span className="h-px w-7 bg-[#DFAE45]" />
 
               <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#DFAE45]">
-                Build Your Digital Presence
+                {t.buildDigitalPresence}
               </span>
-            </div> 
+            </div>
 
+            {/* Heading */}
             <h2
               className="
                 max-w-[330px]
@@ -148,22 +210,24 @@ export default function Hero() {
                 text-white
               "
             >
-              Websites That
+              {t.websitesThat}
+
               <span className="block text-[#E7B94F]">
-                Grow Your Business.
+                {t.growBusiness}
               </span>
             </h2>
 
+            {/* Description */}
             <p className="mt-2 max-w-[340px] text-[11px] font-medium leading-5 text-slate-300">
-              Premium websites, e-commerce stores and custom web solutions
-              built for modern businesses.
+              {t.description}
             </p>
 
-            {/* =========================
+            {/* =================================================
                 TRUST POINTS
-            ========================== */}
-
+            ================================================== */}
             <div className="mt-4 flex flex-wrap gap-x-3 gap-y-2">
+
+              {/* Mobile First */}
               <div className="flex items-center gap-1.5">
                 <CheckCircle2
                   size={13}
@@ -171,10 +235,11 @@ export default function Hero() {
                 />
 
                 <span className="text-[9px] font-semibold text-slate-200">
-                  Mobile First
+                  {t.mobileFirst}
                 </span>
               </div>
 
+              {/* SEO Ready */}
               <div className="flex items-center gap-1.5">
                 <CheckCircle2
                   size={13}
@@ -182,10 +247,11 @@ export default function Hero() {
                 />
 
                 <span className="text-[9px] font-semibold text-slate-200">
-                  SEO Ready
+                  {t.seoReady}
                 </span>
               </div>
 
+              {/* Fast Delivery */}
               <div className="flex items-center gap-1.5">
                 <CheckCircle2
                   size={13}
@@ -193,30 +259,33 @@ export default function Hero() {
                 />
 
                 <span className="text-[9px] font-semibold text-slate-200">
-                  Fast Delivery
+                  {t.fastDelivery}
                 </span>
               </div>
+
             </div>
 
-            {/* =========================
-                CTA
-            ========================== */}
-
+            {/* =================================================
+                CTA / PRICE
+            ================================================== */}
             <div className="mt-5 flex items-center justify-between">
 
+              {/* Price */}
               <div>
                 <p className="text-[8px] font-medium uppercase tracking-[0.15em] text-slate-500">
-                  Starting from
+                  {t.startingFrom}
                 </p>
 
                 <p className="mt-0.5 text-sm font-extrabold text-white">
                   ₹4,999
+
                   <span className="ml-1 text-[9px] font-medium text-slate-400">
-                    onwards
+                    {t.onwards}
                   </span>
                 </p>
               </div>
 
+              {/* CTA */}
               <div
                 className="
                   flex
@@ -236,7 +305,9 @@ export default function Hero() {
                   group-hover:shadow-[0_12px_35px_rgba(223,174,69,0.30)]
                 "
               >
-                <span>Explore Services</span>
+                <span>
+                  {t.exploreServices}
+                </span>
 
                 <ArrowRight
                   size={15}
@@ -248,7 +319,9 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Image shine */}
+          {/* =================================================
+              IMAGE SHINE
+          ================================================== */}
           <div
             aria-hidden="true"
             className="
@@ -269,10 +342,9 @@ export default function Hero() {
           />
         </div>
 
-        {/* =========================
+        {/* =====================================================
             BOTTOM INFO STRIP
-        ========================== */}
-
+        ====================================================== */}
         <div
           className="
             flex
@@ -285,20 +357,23 @@ export default function Hero() {
             py-3
           "
         >
+          {/* Experts Available */}
           <div className="flex items-center gap-2">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-50" />
+
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
             </span>
 
             <span className="text-[9px] font-semibold text-slate-300">
-              Experts Available
+              {t.expertsAvailable}
             </span>
           </div>
 
+          {/* Let's build */}
           <div className="flex items-center gap-1.5">
             <span className="text-[9px] font-semibold text-slate-500">
-              Let's build
+              {t.letsBuild}
             </span>
 
             <ArrowRight
@@ -311,4 +386,3 @@ export default function Hero() {
     </section>
   );
 }
-

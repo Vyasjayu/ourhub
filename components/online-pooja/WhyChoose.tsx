@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -8,53 +9,105 @@ import {
   Sparkles,
   CheckCircle2,
 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const features = [
   {
     number: "01",
-    title: "Perform Pooja",
-    description:
-      "Perform sacred pooja from the comfort of your home.",
+    title: {
+      en: "Perform Pooja",
+      hi: "पूजा करें",
+    },
+    description: {
+      en: "Perform sacred pooja from the comfort of your home.",
+      hi: "अपने घर के आराम से पवित्र पूजा संपन्न करें।",
+    },
     icon: Home,
   },
   {
     number: "02",
-    title: "Book Anytime",
-    description:
-      "Choose your preferred pooja, date & time with ease.",
+    title: {
+      en: "Book Anytime",
+      hi: "कभी भी बुक करें",
+    },
+    description: {
+      en: "Choose your preferred pooja, date & time with ease.",
+      hi: "अपनी पसंद की पूजा, तारीख और समय आसानी से चुनें।",
+    },
     icon: CalendarDays,
   },
   {
     number: "03",
-    title: "Verified Pandits",
-    description:
-      "Experienced & verified pandits perform your pooja.",
+    title: {
+      en: "Verified Pandits",
+      hi: "प्रमाणित पंडित",
+    },
+    description: {
+      en: "Experienced & verified pandits perform your pooja.",
+      hi: "अनुभवी और प्रमाणित पंडित आपकी पूजा संपन्न करते हैं।",
+    },
     icon: Users,
   },
   {
     number: "04",
-    title: "Secure Booking",
-    description:
-      "Safe payments with instant booking confirmation.",
+    title: {
+      en: "Secure Booking",
+      hi: "सुरक्षित बुकिंग",
+    },
+    description: {
+      en: "Safe payments with instant booking confirmation.",
+      hi: "सुरक्षित भुगतान और तुरंत बुकिंग की पुष्टि।",
+    },
     icon: ShieldCheck,
   },
 ];
 
 export default function WhyChoose() {
+  const { language } = useLanguage();
+
+  const text = {
+    badge: language === "hi" ? "OurHub क्यों" : "Why OurHub",
+
+    headingStart:
+      language === "hi"
+        ? "ऑनलाइन पूजा"
+        : "Why Choose",
+
+    headingHighlight:
+      language === "hi"
+        ? "क्यों चुनें?"
+        : "Online Pooja?",
+
+    description:
+      language === "hi"
+        ? "हर अनुष्ठान को सरल, प्रामाणिक और शांतिपूर्ण बनाने के लिए एक विश्वसनीय आध्यात्मिक अनुभव।"
+        : "A trusted spiritual experience designed to make every ritual simple, authentic and peaceful.",
+
+    trusted:
+      language === "hi"
+        ? "भक्तों का भरोसा"
+        : "Trusted by Devotees",
+
+    trustDescription:
+      language === "hi"
+        ? "प्रामाणिक • सुरक्षित • प्रमाणित"
+        : "Authentic • Secure • Verified",
+  };
+
   return (
     <section className="relative mt-8 overflow-hidden">
       {/* Ambient Glow */}
       <div className="pointer-events-none absolute -left-20 top-10 h-40 w-40 rounded-full bg-[#DFAE45]/10 blur-3xl" />
+
       <div className="pointer-events-none absolute -right-20 bottom-0 h-44 w-44 rounded-full bg-[#8B5CF6]/10 blur-3xl" />
 
       <div className="relative overflow-hidden rounded-[26px] border border-[#DFAE45]/15 bg-gradient-to-br from-[#0B1627] via-[#080F1A] to-[#050A12] p-4 shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
-
         {/* Top Gold Line */}
         <div className="absolute left-1/2 top-0 h-[2px] w-24 -translate-x-1/2 bg-gradient-to-r from-transparent via-[#DFAE45] to-transparent" />
 
         {/* Heading */}
         <div className="relative text-center">
-
+          {/* Badge */}
           <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-[#DFAE45]/20 bg-[#DFAE45]/5 px-3 py-1.5">
             <Sparkles
               size={12}
@@ -63,24 +116,40 @@ export default function WhyChoose() {
             />
 
             <span className="text-[9px] font-semibold uppercase tracking-[0.2em] text-[#DFAE45]">
-              Why OurHub
+              {text.badge}
             </span>
           </div>
 
+          {/* Heading */}
           <h2 className="text-[19px] font-bold tracking-tight text-white">
-            Why Choose{" "}
-            <span className="text-[#DFAE45]">Online Pooja?</span>
+            {language === "hi" ? (
+              <>
+                {text.headingStart}{" "}
+                <span className="text-[#DFAE45]">
+                  {text.headingHighlight}
+                </span>
+              </>
+            ) : (
+              <>
+                {text.headingStart}{" "}
+                <span className="text-[#DFAE45]">
+                  {text.headingHighlight}
+                </span>
+              </>
+            )}
           </h2>
 
+          {/* Description */}
           <p className="mx-auto mt-1.5 max-w-[290px] text-[10px] leading-4 text-gray-400">
-            A trusted spiritual experience designed to make every ritual
-            simple, authentic and peaceful.
+            {text.description}
           </p>
 
           {/* Decorative Divider */}
           <div className="mx-auto mt-3 flex items-center justify-center gap-2">
             <div className="h-px w-10 bg-gradient-to-r from-transparent to-[#DFAE45]/40" />
+
             <div className="h-1 w-1 rotate-45 bg-[#DFAE45]" />
+
             <div className="h-px w-10 bg-gradient-to-l from-transparent to-[#DFAE45]/40" />
           </div>
         </div>
@@ -92,7 +161,7 @@ export default function WhyChoose() {
 
             return (
               <div
-                key={item.title}
+                key={item.number}
                 className="
                   group
                   relative
@@ -148,11 +217,11 @@ export default function WhyChoose() {
                 {/* Content */}
                 <div className="relative mt-3">
                   <h3 className="text-[11px] font-semibold leading-4 text-white">
-                    {item.title}
+                    {item.title[language]}
                   </h3>
 
                   <p className="mt-1.5 text-[9px] leading-[1.45] text-gray-400">
-                    {item.description}
+                    {item.description[language]}
                   </p>
                 </div>
 
@@ -166,6 +235,7 @@ export default function WhyChoose() {
         {/* Trust Footer */}
         <div className="relative mt-4 rounded-[17px] border border-[#DFAE45]/10 bg-black/20 px-3 py-2.5">
           <div className="flex items-center justify-center gap-2.5">
+            {/* Trust Icons */}
             <div className="flex -space-x-1.5">
               <div className="flex h-6 w-6 items-center justify-center rounded-full border border-[#071424] bg-[#DFAE45]/15">
                 <CheckCircle2
@@ -191,13 +261,14 @@ export default function WhyChoose() {
 
             <div className="h-5 w-px bg-white/10" />
 
+            {/* Trust Text */}
             <div>
               <p className="text-[9px] font-semibold text-white">
-                Trusted by Devotees
+                {text.trusted}
               </p>
 
               <p className="text-[8px] text-gray-500">
-                Authentic • Secure • Verified
+                {text.trustDescription}
               </p>
             </div>
           </div>
@@ -206,13 +277,16 @@ export default function WhyChoose() {
         {/* Bottom Accent */}
         <div className="mt-4 flex items-center justify-center gap-2">
           <div className="h-px w-14 bg-gradient-to-r from-transparent to-[#DFAE45]/20" />
+
           <Sparkles
             size={11}
             className="text-[#DFAE45]/60"
           />
+
           <div className="h-px w-14 bg-gradient-to-l from-transparent to-[#DFAE45]/20" />
         </div>
       </div>
     </section>
   );
 }
+

@@ -21,64 +21,131 @@ import {
   Users,
 } from "lucide-react";
 
+import { useLanguage } from "@/context/LanguageContext";
+
+/* =========================================================
+   TYPES
+========================================================= */
+
+type LanguageText = {
+  en: string;
+  hi: string;
+};
+
+type ServiceItem = {
+  title: LanguageText;
+  image: string;
+  description: LanguageText;
+  href: string;
+  icon: typeof Heart;
+};
+
 /* =========================================================
    MAIN EVENT CATEGORIES
 ========================================================= */
 
-const eventServices = [
+const eventServices: ServiceItem[] = [
   {
-    title: "Wedding & Shaadi",
+    title: {
+      en: "Wedding & Shaadi",
+      hi: "वेडिंग और शादी",
+    },
     image: "/images/events/wedding.jpg",
-    description: "Complete wedding planning from Mehndi to Reception.",
+    description: {
+      en: "Complete wedding planning from Mehndi to Reception.",
+      hi: "मेहंदी से रिसेप्शन तक पूरी वेडिंग प्लानिंग।",
+    },
     href: "/eventManagement/wedding-event",
     icon: Heart,
   },
   {
-    title: "Birthday Parties",
+    title: {
+      en: "Birthday Parties",
+      hi: "बर्थडे पार्टी",
+    },
     image: "/images/events/birthday.jpg",
-    description: "Memorable celebrations for every age.",
+    description: {
+      en: "Memorable celebrations for every age.",
+      hi: "हर उम्र के लिए यादगार सेलिब्रेशन।",
+    },
     href: "/eventManagement/birthday-parties",
     icon: Gift,
   },
   {
-    title: "Corporate Events",
+    title: {
+      en: "Corporate Events",
+      hi: "कॉरपोरेट इवेंट्स",
+    },
     image: "/images/events/corporate.jpg",
-    description: "Professional meetings & corporate events.",
+    description: {
+      en: "Professional meetings & corporate events.",
+      hi: "प्रोफेशनल मीटिंग्स और कॉरपोरेट इवेंट्स।",
+    },
     href: "/eventManagement/corporate-events",
     icon: Crown,
   },
   {
-    title: "Engagement",
+    title: {
+      en: "Engagement",
+      hi: "सगाई",
+    },
     image: "/images/events/engagement.jpg",
-    description: "Beautiful engagement planning & decor.",
+    description: {
+      en: "Beautiful engagement planning & decor.",
+      hi: "खूबसूरत सगाई प्लानिंग और डेकोर।",
+    },
     href: "/eventManagement/engagement",
     icon: Heart,
   },
   {
-    title: "Baby Shower",
+    title: {
+      en: "Baby Shower",
+      hi: "बेबी शावर",
+    },
     image: "/images/events/baby-shower.jpg",
-    description: "Creative themes & beautiful arrangements.",
+    description: {
+      en: "Creative themes & beautiful arrangements.",
+      hi: "क्रिएटिव थीम्स और खूबसूरत अरेंजमेंट्स।",
+    },
     href: "/eventManagement/baby-shower",
     icon: Baby,
   },
   {
-    title: "Anniversary",
+    title: {
+      en: "Anniversary",
+      hi: "एनिवर्सरी",
+    },
     image: "/images/events/anniversary.jpg",
-    description: "Celebrate your special moments in style.",
+    description: {
+      en: "Celebrate your special moments in style.",
+      hi: "अपने खास पलों को शानदार अंदाज में सेलिब्रेट करें।",
+    },
     href: "/eventManagement/anniversary",
     icon: Sparkles,
   },
   {
-    title: "Decoration",
+    title: {
+      en: "Decoration",
+      hi: "डेकोरेशन",
+    },
     image: "/images/events/decoration.jpg",
-    description: "Balloon, floral, stage & theme decor.",
+    description: {
+      en: "Balloon, floral, stage & theme decor.",
+      hi: "बैलून, फ्लोरल, स्टेज और थीम डेकोरेशन।",
+    },
     href: "/eventManagement/decoration",
     icon: PartyPopper,
   },
   {
-    title: "Catering",
+    title: {
+      en: "Catering",
+      hi: "कैटरिंग",
+    },
     image: "/images/events/catering.jpg",
-    description: "Delicious food for every celebration.",
+    description: {
+      en: "Delicious food for every celebration.",
+      hi: "हर सेलिब्रेशन के लिए स्वादिष्ट खाना।",
+    },
     href: "/eventManagement/catering",
     icon: Utensils,
   },
@@ -88,32 +155,56 @@ const eventServices = [
    CHARACTER ENTERTAINMENT
 ========================================================= */
 
-const characterServices = [
+const characterServices: ServiceItem[] = [
   {
-    title: "Giant Gorilla",
+    title: {
+      en: "Giant Gorilla",
+      hi: "जायंट गोरिल्ला",
+    },
     image: "/images/events/gorilla.jpg",
-    description: "Fun giant character entertainment for kids.",
+    description: {
+      en: "Fun giant character entertainment for kids.",
+      hi: "बच्चों के लिए मजेदार जायंट कैरेक्टर एंटरटेनमेंट।",
+    },
     href: "/eventManagement/characters/gorilla",
     icon: WandSparkles,
   },
   {
-    title: "Chhota bheem",
+    title: {
+      en: "Chhota Bheem",
+      hi: "छोटा भीम",
+    },
     image: "/images/events/funny-character.jpg",
-    description: "Comedy-style character entertainment.",
+    description: {
+      en: "Comedy-style character entertainment.",
+      hi: "कॉमेडी स्टाइल कैरेक्टर एंटरटेनमेंट।",
+    },
     href: "/eventManagement/characters/chhotabheem",
     icon: PartyPopper,
   },
   {
-    title: "Motu Patlu",
+    title: {
+      en: "Motu Patlu",
+      hi: "मोटू पतलू",
+    },
     image: "/images/events/motupatlu.jpg",
-    description: "Action-packed entertainment for kids.",
+    description: {
+      en: "Action-packed entertainment for kids.",
+      hi: "बच्चों के लिए मजेदार और एक्शन-पैक्ड एंटरटेनमेंट।",
+    },
     href: "/eventManagement/characters/motupatlu",
     icon: Crown,
   },
   {
-    title: "Elephant",
+    title: {
+      en: "Elephant",
+      hi: "हाथी",
+    },
     image: "/images/events/elephant.jpg",
-    description: "Magical princess and fairy entertainment.",
+    description: {
+      en: "Fun and unique character entertainment.",
+      hi: "मजेदार और यूनिक कैरेक्टर एंटरटेनमेंट।",
+    },
     href: "/eventManagement/characters/elephant",
     icon: Sparkles,
   },
@@ -123,32 +214,56 @@ const characterServices = [
    WEDDING ENTRY DECORATIONS
 ========================================================= */
 
-const entryServices = [
+const entryServices: ServiceItem[] = [
   {
-    title: "Bridal Entry Decoration",
+    title: {
+      en: "Bridal Entry Decoration",
+      hi: "ब्राइडल एंट्री डेकोरेशन",
+    },
     image: "/images/events/bridal-entry.jpg",
-    description: "Floral tunnels, dreamy walkways & elegant bridal entries.",
+    description: {
+      en: "Floral tunnels, dreamy walkways & elegant bridal entries.",
+      hi: "फ्लोरल टनल, ड्रीमी वॉकवे और एलिगेंट ब्राइडल एंट्री।",
+    },
     href: "/eventManagement/bridal-entry",
     icon: Heart,
   },
   {
-    title: "Grand Floral Bridal Entry",
+    title: {
+      en: "Grand Floral Bridal Entry",
+      hi: "ग्रैंड फ्लोरल ब्राइडल एंट्री",
+    },
     image: "/images/events/FloralBridalEntry.jpg",
-    description: "Royal groom entries with lights, flowers & premium setups.",
+    description: {
+      en: "Royal groom entries with lights, flowers & premium setups.",
+      hi: "लाइट्स, फूलों और प्रीमियम सेटअप के साथ रॉयल एंट्री।",
+    },
     href: "/eventManagement/floralBridal-entry",
     icon: Crown,
   },
   {
-    title: "Couple Entry Decoration",
+    title: {
+      en: "Couple Entry Decoration",
+      hi: "कपल एंट्री डेकोरेशन",
+    },
     image: "/images/events/couple-entry.jpg",
-    description: "Romantic couple entry concepts for a memorable moment.",
+    description: {
+      en: "Romantic couple entry concepts for a memorable moment.",
+      hi: "यादगार पलों के लिए रोमांटिक कपल एंट्री कॉन्सेप्ट।",
+    },
     href: "/eventManagement/wedding-event/couple-entry",
     icon: Sparkles,
   },
   {
-    title: "Varmala Entry Decoration",
+    title: {
+      en: "Varmala Entry Decoration",
+      hi: "वरमाला एंट्री डेकोरेशन",
+    },
     image: "/images/events/varmala-entry.jpg",
-    description: "Beautiful varmala entry setups with flowers & grand decor.",
+    description: {
+      en: "Beautiful varmala entry setups with flowers & grand decor.",
+      hi: "फूलों और ग्रैंड डेकोर के साथ खूबसूरत वरमाला एंट्री।",
+    },
     href: "/eventManagement/wedding-event/varmala-entry",
     icon: PartyPopper,
   },
@@ -161,23 +276,47 @@ const entryServices = [
 const features = [
   {
     icon: BadgeCheck,
-    title: "Verified Partners",
-    text: "Trusted event professionals",
+    title: {
+      en: "Verified Partners",
+      hi: "वेरिफाइड पार्टनर्स",
+    },
+    text: {
+      en: "Trusted event professionals",
+      hi: "भरोसेमंद इवेंट प्रोफेशनल्स",
+    },
   },
   {
     icon: ShieldCheck,
-    title: "Premium Quality",
-    text: "Quality-focused services",
+    title: {
+      en: "Premium Quality",
+      hi: "प्रीमियम क्वालिटी",
+    },
+    text: {
+      en: "Quality-focused services",
+      hi: "क्वालिटी पर फोकस्ड सर्विसेज",
+    },
   },
   {
     icon: CalendarDays,
-    title: "Easy Booking",
-    text: "Simple & hassle-free",
+    title: {
+      en: "Easy Booking",
+      hi: "आसान बुकिंग",
+    },
+    text: {
+      en: "Simple & hassle-free",
+      hi: "सिंपल और बिना परेशानी",
+    },
   },
   {
     icon: Users,
-    title: "Complete Support",
-    text: "Experts for every celebration",
+    title: {
+      en: "Complete Support",
+      hi: "कम्प्लीट सपोर्ट",
+    },
+    text: {
+      en: "Experts for every celebration",
+      hi: "हर सेलिब्रेशन के लिए एक्सपर्ट्स",
+    },
   },
 ];
 
@@ -187,14 +326,10 @@ const features = [
 
 function ServiceGrid({
   services,
+  language,
 }: {
-  services: Array<{
-    title: string;
-    image: string;
-    description: string;
-    href: string;
-    icon: typeof Heart;
-  }>;
+  services: ServiceItem[];
+  language: "en" | "hi";
 }) {
   return (
     <div className="mt-4 grid grid-cols-2 gap-3">
@@ -204,23 +339,25 @@ function ServiceGrid({
         return (
           <Link
             href={service.href}
-            key={service.title}
+            key={service.title.en}
             className="group block"
           >
             <div className="relative h-full overflow-hidden rounded-[20px] border border-[#DFAE45]/15 bg-[#0A111D] transition-all duration-300 active:scale-[0.97] hover:border-[#DFAE45]/40 hover:shadow-[0_8px_30px_rgba(223,174,69,0.08)]">
-
               {/* IMAGE */}
+
               <div className="relative h-[135px] overflow-hidden">
                 <img
                   src={service.image}
-                  alt={service.title}
+                  alt={service.title[language]}
                   className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                 />
 
                 {/* IMAGE GRADIENT */}
+
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0A111D] via-transparent to-black/10" />
 
                 {/* OURHUB BADGE */}
+
                 <div className="absolute left-2.5 top-2.5 flex items-center gap-1 rounded-full border border-[#DFAE45]/30 bg-black/60 px-2 py-1 backdrop-blur-md">
                   <Sparkles
                     size={10}
@@ -234,28 +371,32 @@ function ServiceGrid({
               </div>
 
               {/* CONTENT */}
+
               <div className="p-3.5">
                 <div className="flex items-start justify-between gap-2">
-
                   <div className="min-w-0">
                     <h3 className="truncate text-[14px] font-bold text-white">
-                      {service.title}
+                      {service.title[language]}
                     </h3>
 
                     <p className="mt-1 line-clamp-2 text-[10px] leading-4 text-gray-500">
-                      {service.description}
+                      {service.description[language]}
                     </p>
                   </div>
 
                   {/* ICON */}
+
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#DFAE45]/10 text-[#DFAE45] transition group-hover:bg-[#DFAE45]/20">
                     <Icon size={15} />
                   </div>
                 </div>
 
                 {/* EXPLORE */}
+
                 <div className="mt-3 flex items-center gap-1 text-[10px] font-bold text-[#DFAE45]">
-                  Explore Service
+                  {language === "hi"
+                    ? "सर्विस देखें"
+                    : "Explore Service"}
 
                   <ChevronRight
                     size={13}
@@ -280,22 +421,24 @@ function SectionHeader({
   title,
   description,
 }: {
-  eyebrow: string;
-  title: string;
-  description: string;
+  eyebrow: LanguageText;
+  title: LanguageText;
+  description: LanguageText;
 }) {
+  const { language } = useLanguage();
+
   return (
     <div>
       <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#DFAE45]">
-        {eyebrow}
+        {eyebrow[language]}
       </p>
 
       <h2 className="mt-1 text-[21px] font-bold tracking-tight">
-        {title}
+        {title[language]}
       </h2>
 
       <p className="mt-1 text-[11px] leading-5 text-gray-500">
-        {description}
+        {description[language]}
       </p>
     </div>
   );
@@ -306,28 +449,238 @@ function SectionHeader({
 ========================================================= */
 
 export default function EventManagementPage() {
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
+  const t = {
+    eventManagement: isHindi
+      ? "इवेंट मैनेजमेंट"
+      : "Event Management",
+
+    locations: "Ujjain • Ratlam • Indore",
+
+    celebrateWithOurHub: isHindi
+      ? "OurHub के साथ सेलिब्रेट करें"
+      : "Celebrate With OurHub",
+
+    yourEvent: isHindi
+      ? "आपका इवेंट।"
+      : "Your Event.",
+
+    ourExpertise: isHindi
+      ? "हमारी एक्सपर्टीज़।"
+      : "Our Expertise.",
+
+    heroDescription: isHindi
+      ? "छोटे सेलिब्रेशन से लेकर ग्रैंड वेडिंग तक, भरोसेमंद इवेंट सर्विसेज खोजें — सब कुछ एक ही जगह।"
+      : "From intimate celebrations to grand weddings, discover trusted event services — all in one place.",
+
+    exploreEvents: isHindi
+      ? "इवेंट्स देखें"
+      : "Explore Events",
+
+    trustedProfessionals: isHindi
+      ? "भरोसेमंद प्रोफेशनल्स • प्रीमियम सर्विस"
+      : "Trusted professionals • Premium service",
+
+    eventTypes: isHindi
+      ? "इवेंट टाइप्स"
+      : "Event Types",
+
+    services: isHindi
+      ? "सर्विसेज"
+      : "Services",
+
+    characters: isHindi
+      ? "कैरेक्टर्स"
+      : "Characters",
+
+    eventsCelebrations: isHindi
+      ? "इवेंट्स और सेलिब्रेशन"
+      : "Events & Celebrations",
+
+    chooseYourCelebration: isHindi
+      ? "अपना सेलिब्रेशन चुनें"
+      : "Choose Your Celebration",
+
+    mainDescription: isHindi
+      ? "कम्प्लीट इवेंट प्लानिंग और सेलिब्रेशन सर्विसेज एक्सप्लोर करें।"
+      : "Explore complete event planning and celebration services.",
+
+    weddingSpecial: isHindi
+      ? "वेडिंग स्पेशल"
+      : "Wedding Special",
+
+    completeWeddingPlanning: isHindi
+      ? "कम्प्लीट वेडिंग प्लानिंग"
+      : "Complete Wedding Planning",
+
+    weddingDescription: isHindi
+      ? "मेहंदी, हल्दी, संगीत, बारात, ब्राइडल एंट्री, वरमाला, रिसेप्शन और भी बहुत कुछ — सब एक ही जगह।"
+      : "Mehndi, Haldi, Sangeet, Baraat, Bridal Entry, Varmala, Reception & more — all in one place.",
+
+    weddingEntries: isHindi
+      ? "वेडिंग एंट्रीज"
+      : "Wedding Entries",
+
+    makeEntryGrand: isHindi
+      ? "अपनी एंट्री को ग्रैंड बनाएं"
+      : "Make Your Entry Grand",
+
+    entryDescription: isHindi
+      ? "दुल्हन, दूल्हे या कपल के लिए खूबसूरत एंट्री सेटअप चुनें।"
+      : "Choose a beautiful entry setup for the bride, groom or couple.",
+
+    kidsEntertainment: isHindi
+      ? "किड्स और एंटरटेनमेंट"
+      : "Kids & Entertainment",
+
+    characterEntertainment: isHindi
+      ? "कैरेक्टर एंटरटेनमेंट"
+      : "Character Entertainment",
+
+    characterDescription: isHindi
+      ? "बर्थडे पार्टी और फैमिली सेलिब्रेशन में मज़ा, एक्साइटमेंट और यादगार पल जोड़ें।"
+      : "Add fun, excitement and unforgettable moments to birthday parties and family celebrations.",
+
+    kidsPartyTitle: isHindi
+      ? "किड्स पार्टी को और मजेदार बनाएं"
+      : "Make Kids' Parties More Fun",
+
+    kidsPartyDescription: isHindi
+      ? "खास सेलिब्रेशन के लिए कैरेक्टर्स, मैस्कॉट्स और एंटरटेनमेंट।"
+      : "Characters, mascots & entertainment for special celebrations.",
+
+    whyOurHub: isHindi
+      ? "OurHub क्यों"
+      : "Why OurHub",
+
+    everythingUnderOneHub: isHindi
+      ? "सब कुछ एक ही हब में"
+      : "Everything Under One Hub",
+
+    whyDescription: isHindi
+      ? "भरोसेमंद प्रोफेशनल्स के साथ अपने पूरे सेलिब्रेशन की प्लानिंग करें।"
+      : "Plan your entire celebration with trusted professionals.",
+
+    simpleProcess: isHindi
+      ? "आसान प्रक्रिया"
+      : "Simple Process",
+
+    planBookCelebrate: isHindi
+      ? "प्लान करें। बुक करें। सेलिब्रेट करें।"
+      : "Plan. Book. Celebrate.",
+
+    chooseEvent: isHindi
+      ? "अपना इवेंट चुनें"
+      : "Choose Your Event",
+
+    chooseEventDescription: isHindi
+      ? "वेडिंग, बर्थडे, कॉरपोरेट या कोई दूसरा सेलिब्रेशन चुनें।"
+      : "Select wedding, birthday, corporate or another celebration.",
+
+    tellNeeds: isHindi
+      ? "अपनी जरूरत बताएं"
+      : "Tell Us Your Needs",
+
+    tellNeedsDescription: isHindi
+      ? "अपनी डेट, लोकेशन और इवेंट की जरूरतें शेयर करें।"
+      : "Share your date, location and event requirements.",
+
+    expertSupport: isHindi
+      ? "एक्सपर्ट सपोर्ट पाएं"
+      : "Get Expert Support",
+
+    expertSupportDescription: isHindi
+      ? "हमारे इवेंट एक्सपर्ट्स हर चीज़ की प्लानिंग में मदद करेंगे।"
+      : "Our event experts help plan everything.",
+
+    enjoyCelebration: isHindi
+      ? "अपना सेलिब्रेशन एंजॉय करें"
+      : "Enjoy Your Celebration",
+
+    enjoyCelebrationDescription: isHindi
+      ? "आराम से सेलिब्रेशन का आनंद लें, बाकी डिटेल्स हम संभालेंगे।"
+      : "Relax while we take care of the details.",
+
+    catering: isHindi
+      ? "कैटरिंग"
+      : "Catering",
+
+    cateringDescription: isHindi
+      ? "हर सेलिब्रेशन के लिए स्वादिष्ट मेन्यू।"
+      : "Delicious menus for every celebration.",
+
+    photography: isHindi
+      ? "फोटोग्राफी"
+      : "Photography",
+
+    photographyDescription: isHindi
+      ? "हर महत्वपूर्ण पल को कैप्चर करें।"
+      : "Capture every important moment.",
+
+    decoration: isHindi
+      ? "डेकोरेशन"
+      : "Decoration",
+
+    decorationDescription: isHindi
+      ? "थीम्स, बैलून, फ्लोरल और स्टेज डेकोर।"
+      : "Themes, balloons, floral & stage decor.",
+
+    entertainment: isHindi
+      ? "एंटरटेनमेंट"
+      : "Entertainment",
+
+    entertainmentDescription: isHindi
+      ? "म्यूजिक, कैरेक्टर्स और मजेदार एक्टिविटीज।"
+      : "Music, characters & fun activities.",
+
+    makeCelebration: isHindi
+      ? "अपने सेलिब्रेशन को"
+      : "Make Your Celebration",
+
+    trulySpecial: isHindi
+      ? "खास बनाएं"
+      : "Truly Special",
+
+    premiumDescription: isHindi
+      ? "बताएं कि आप क्या प्लान कर रहे हैं और OurHub आपके आइडिया को यादगार इवेंट में बदलने में मदद करेगा।"
+      : "Tell us what you are planning and let OurHub help you turn your idea into a memorable event.",
+
+    startPlanning: isHindi
+      ? "प्लानिंग शुरू करें"
+      : "Start Planning",
+
+    ourHubEvents: "OURHUB EVENTS",
+
+    footerText: isHindi
+      ? "आपकी सभी सर्विसेज। एक ही हब।"
+      : "All your services. One hub.",
+  };
+
   return (
     <main className="min-h-screen bg-[#050B14] text-white">
-
       {/* =====================================================
           HEADER
       ===================================================== */}
 
       <header className="sticky top-0 z-50 border-b border-white/[0.07] bg-[#050B14]/90 backdrop-blur-xl">
         <div className="mx-auto flex max-w-[430px] items-center gap-3 px-4 py-3.5">
-
           {/* BACK */}
+
           <Link
             href="/"
+            aria-label={isHindi ? "वापस जाएं" : "Go back"}
             className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.05] transition active:scale-95"
           >
             <ArrowLeft size={19} />
           </Link>
 
           {/* TITLE */}
+
           <div className="min-w-0 flex-1">
             <h1 className="truncate text-[17px] font-bold">
-              Event Management
+              {t.eventManagement}
             </h1>
 
             <div className="mt-0.5 flex items-center gap-1 text-[11px] text-gray-400">
@@ -336,13 +689,12 @@ export default function EventManagementPage() {
                 className="text-[#DFAE45]"
               />
 
-              <span>
-                Ujjain • Ratlam • Indore
-              </span>
+              <span>{t.locations}</span>
             </div>
           </div>
 
           {/* ICON */}
+
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#DFAE45]/20 bg-[#DFAE45]/10">
             <PartyPopper
               size={18}
@@ -357,14 +709,13 @@ export default function EventManagementPage() {
       ===================================================== */}
 
       <div className="mx-auto max-w-[430px] px-4 pb-12">
-
         {/* ===================================================
             HERO
         =================================================== */}
 
         <section className="relative mt-4 overflow-hidden rounded-[26px] border border-[#DFAE45]/20 bg-[#0A101B]">
-
           {/* BACKGROUND */}
+
           <div
             className="absolute inset-0 bg-cover bg-center opacity-40"
             style={{
@@ -374,14 +725,16 @@ export default function EventManagementPage() {
           />
 
           {/* OVERLAY */}
+
           <div className="absolute inset-0 bg-gradient-to-b from-[#050B14]/30 via-[#050B14]/70 to-[#050B14]" />
 
           {/* GOLD GLOW */}
+
           <div className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#DFAE45]/20 blur-3xl" />
 
           <div className="relative px-5 pb-6 pt-7">
-
             {/* BADGE */}
+
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#DFAE45]/30 bg-[#DFAE45]/10 px-3 py-1.5">
               <Sparkles
                 size={13}
@@ -389,46 +742,47 @@ export default function EventManagementPage() {
               />
 
               <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#F3D27A]">
-                Celebrate With OurHub
+                {t.celebrateWithOurHub}
               </span>
             </div>
 
             {/* HEADING */}
+
             <h2 className="max-w-[340px] text-[30px] font-extrabold leading-[1.08] tracking-tight">
-              Your Event.
+              {t.yourEvent}
               <br />
 
               <span className="text-[#DFAE45]">
-                Our Expertise.
+                {t.ourExpertise}
               </span>
             </h2>
 
             {/* DESCRIPTION */}
+
             <p className="mt-3 max-w-[335px] text-[13px] leading-6 text-gray-300">
-              From intimate celebrations to grand weddings,
-              discover trusted event services — all in one place.
+              {t.heroDescription}
             </p>
 
             {/* CTA */}
+
             <Link
               href="/eventManagement"
               className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#DFAE45] px-5 py-3.5 text-[14px] font-bold text-black shadow-[0_8px_30px_rgba(223,174,69,0.18)] transition active:scale-[0.98]"
             >
-              Explore Events
+              {t.exploreEvents}
 
               <ArrowRight size={17} />
             </Link>
 
             {/* TRUST */}
+
             <div className="mt-4 flex items-center gap-2 text-[10px] text-gray-400">
               <ShieldCheck
                 size={14}
                 className="text-[#DFAE45]"
               />
 
-              <span>
-                Trusted professionals • Premium service
-              </span>
+              <span>{t.trustedProfessionals}</span>
             </div>
           </div>
         </section>
@@ -438,14 +792,13 @@ export default function EventManagementPage() {
         =================================================== */}
 
         <section className="mt-4 grid grid-cols-3 gap-2.5">
-
           <div className="rounded-2xl border border-white/[0.07] bg-white/[0.035] px-3 py-3 text-center">
             <p className="text-lg font-extrabold text-[#DFAE45]">
               8+
             </p>
 
             <p className="mt-0.5 text-[10px] text-gray-400">
-              Event Types
+              {t.eventTypes}
             </p>
           </div>
 
@@ -455,7 +808,7 @@ export default function EventManagementPage() {
             </p>
 
             <p className="mt-0.5 text-[10px] text-gray-400">
-              Services
+              {t.services}
             </p>
           </div>
 
@@ -465,10 +818,9 @@ export default function EventManagementPage() {
             </p>
 
             <p className="mt-0.5 text-[10px] text-gray-400">
-              Characters
+              {t.characters}
             </p>
           </div>
-
         </section>
 
         {/* ===================================================
@@ -476,15 +828,25 @@ export default function EventManagementPage() {
         =================================================== */}
 
         <section className="mt-9">
-
           <SectionHeader
-            eyebrow="Events & Celebrations"
-            title="Choose Your Celebration"
-            description="Explore complete event planning and celebration services."
+            eyebrow={{
+              en: "Events & Celebrations",
+              hi: "इवेंट्स और सेलिब्रेशन",
+            }}
+            title={{
+              en: "Choose Your Celebration",
+              hi: "अपना सेलिब्रेशन चुनें",
+            }}
+            description={{
+              en: "Explore complete event planning and celebration services.",
+              hi: "कम्प्लीट इवेंट प्लानिंग और सेलिब्रेशन सर्विसेज एक्सप्लोर करें।",
+            }}
           />
 
-          <ServiceGrid services={eventServices} />
-
+          <ServiceGrid
+            services={eventServices}
+            language={language}
+          />
         </section>
 
         {/* ===================================================
@@ -496,12 +858,11 @@ export default function EventManagementPage() {
           className="group mt-5 block"
         >
           <section className="relative overflow-hidden rounded-[23px] border border-[#DFAE45]/25 bg-gradient-to-br from-[#DFAE45]/10 via-[#0A111D] to-[#0A111D]">
-
             {/* GLOW */}
+
             <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-[#DFAE45]/10 blur-3xl" />
 
             <div className="relative flex items-center gap-4 p-4">
-
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#DFAE45]/10">
                 <Heart
                   size={21}
@@ -510,27 +871,23 @@ export default function EventManagementPage() {
               </div>
 
               <div className="min-w-0 flex-1">
-
                 <p className="text-[10px] font-bold uppercase tracking-widest text-[#DFAE45]">
-                  Wedding Special
+                  {t.weddingSpecial}
                 </p>
 
                 <h3 className="mt-1 text-[14px] font-bold">
-                  Complete Wedding Planning
+                  {t.completeWeddingPlanning}
                 </h3>
 
                 <p className="mt-1 text-[10px] leading-4 text-gray-500">
-                  Mehndi, Haldi, Sangeet, Baraat, Bridal Entry,
-                  Varmala, Reception & more — all in one place.
+                  {t.weddingDescription}
                 </p>
-
               </div>
 
               <ChevronRight
                 size={18}
                 className="shrink-0 text-[#DFAE45] transition-transform group-hover:translate-x-1"
               />
-
             </div>
           </section>
         </Link>
@@ -541,12 +898,24 @@ export default function EventManagementPage() {
 
         <section className="mt-10">
           <SectionHeader
-            eyebrow="Wedding Entries"
-            title="Make Your Entry Grand"
-            description="Choose a beautiful entry setup for the bride, groom or couple."
+            eyebrow={{
+              en: "Wedding Entries",
+              hi: "वेडिंग एंट्रीज",
+            }}
+            title={{
+              en: "Make Your Entry Grand",
+              hi: "अपनी एंट्री को ग्रैंड बनाएं",
+            }}
+            description={{
+              en: "Choose a beautiful entry setup for the bride, groom or couple.",
+              hi: "दुल्हन, दूल्हे या कपल के लिए खूबसूरत एंट्री सेटअप चुनें।",
+            }}
           />
 
-          <ServiceGrid services={entryServices} />
+          <ServiceGrid
+            services={entryServices}
+            language={language}
+          />
         </section>
 
         {/* ===================================================
@@ -554,16 +923,13 @@ export default function EventManagementPage() {
         =================================================== */}
 
         <section className="mt-10">
-
           <div className="relative overflow-hidden rounded-[25px] border border-[#DFAE45]/20 bg-gradient-to-br from-[#17130A] via-[#0A111D] to-[#0A111D] p-5">
-
             {/* GLOW */}
+
             <div className="absolute -right-16 -top-16 h-40 w-40 rounded-full bg-[#DFAE45]/10 blur-3xl" />
 
             <div className="relative">
-
               <div className="flex items-center gap-2">
-
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#DFAE45]/10">
                   <WandSparkles
                     size={17}
@@ -573,26 +939,25 @@ export default function EventManagementPage() {
 
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#DFAE45]">
-                    Kids & Entertainment
+                    {t.kidsEntertainment}
                   </p>
 
                   <h2 className="text-[19px] font-bold">
-                    Character Entertainment
+                    {t.characterEntertainment}
                   </h2>
                 </div>
-
               </div>
 
               <p className="mt-3 text-[11px] leading-5 text-gray-500">
-                Add fun, excitement and unforgettable moments
-                to birthday parties and family celebrations.
+                {t.characterDescription}
               </p>
-
             </div>
           </div>
 
-          <ServiceGrid services={characterServices} />
-
+          <ServiceGrid
+            services={characterServices}
+            language={language}
+          />
         </section>
 
         {/* ===================================================
@@ -600,9 +965,7 @@ export default function EventManagementPage() {
         =================================================== */}
 
         <section className="mt-5 rounded-[22px] border border-white/[0.07] bg-white/[0.03] p-4">
-
           <div className="flex items-center gap-3">
-
             <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#DFAE45]/10">
               <PartyPopper
                 size={19}
@@ -611,24 +974,20 @@ export default function EventManagementPage() {
             </div>
 
             <div className="min-w-0 flex-1">
-
               <h3 className="text-[13px] font-bold">
-                Make Kids&apos; Parties More Fun
+                {t.kidsPartyTitle}
               </h3>
 
               <p className="mt-1 text-[10px] leading-4 text-gray-500">
-                Characters, mascots & entertainment for special celebrations.
+                {t.kidsPartyDescription}
               </p>
-
             </div>
 
             <ArrowRight
               size={17}
               className="text-[#DFAE45]"
             />
-
           </div>
-
         </section>
 
         {/* ===================================================
@@ -636,34 +995,29 @@ export default function EventManagementPage() {
         =================================================== */}
 
         <section className="mt-10">
-
           <div className="mb-4">
-
             <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#DFAE45]">
-              Why OurHub
+              {t.whyOurHub}
             </p>
 
             <h2 className="mt-1 text-[20px] font-bold">
-              Everything Under One Hub
+              {t.everythingUnderOneHub}
             </h2>
 
             <p className="mt-1 text-[11px] text-gray-500">
-              Plan your entire celebration with trusted professionals.
+              {t.whyDescription}
             </p>
-
           </div>
 
           <div className="space-y-2.5">
-
             {features.map((feature) => {
               const Icon = feature.icon;
 
               return (
                 <div
-                  key={feature.title}
+                  key={feature.title.en}
                   className="flex items-center gap-3 rounded-2xl border border-white/[0.07] bg-white/[0.03] p-3.5 transition hover:border-[#DFAE45]/20"
                 >
-
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#DFAE45]/15 bg-[#DFAE45]/10">
                     <Icon
                       size={19}
@@ -672,26 +1026,22 @@ export default function EventManagementPage() {
                   </div>
 
                   <div className="flex-1">
-
                     <h3 className="text-[13px] font-bold">
-                      {feature.title}
+                      {feature.title[language]}
                     </h3>
 
                     <p className="mt-0.5 text-[10px] text-gray-500">
-                      {feature.text}
+                      {feature.text[language]}
                     </p>
-
                   </div>
 
                   <ChevronRight
                     size={16}
                     className="text-gray-600"
                   />
-
                 </div>
               );
             })}
-
           </div>
         </section>
 
@@ -700,9 +1050,7 @@ export default function EventManagementPage() {
         =================================================== */}
 
         <section className="mt-8 overflow-hidden rounded-[22px] border border-white/[0.07] bg-[#0A111D] p-5">
-
           <div className="flex items-center gap-2">
-
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#DFAE45]/10">
               <CalendarDays
                 size={17}
@@ -711,105 +1059,88 @@ export default function EventManagementPage() {
             </div>
 
             <div>
-
               <p className="text-[10px] uppercase tracking-widest text-[#DFAE45]">
-                Simple Process
+                {t.simpleProcess}
               </p>
 
               <h2 className="text-[17px] font-bold">
-                Plan. Book. Celebrate.
+                {t.planBookCelebrate}
               </h2>
-
             </div>
-
           </div>
 
           <div className="mt-5 space-y-4">
-
             {/* STEP 1 */}
-            <div className="flex gap-3">
 
+            <div className="flex gap-3">
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#DFAE45]/25 bg-[#DFAE45]/10 text-[10px] font-bold text-[#DFAE45]">
                 01
               </div>
 
               <div>
-
                 <h3 className="text-[12px] font-bold">
-                  Choose Your Event
+                  {t.chooseEvent}
                 </h3>
 
                 <p className="mt-0.5 text-[10px] leading-4 text-gray-500">
-                  Select wedding, birthday, corporate or another celebration.
+                  {t.chooseEventDescription}
                 </p>
-
               </div>
-
             </div>
 
             {/* STEP 2 */}
-            <div className="flex gap-3">
 
+            <div className="flex gap-3">
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#DFAE45]/25 bg-[#DFAE45]/10 text-[10px] font-bold text-[#DFAE45]">
                 02
               </div>
 
               <div>
-
                 <h3 className="text-[12px] font-bold">
-                  Tell Us Your Needs
+                  {t.tellNeeds}
                 </h3>
 
                 <p className="mt-0.5 text-[10px] leading-4 text-gray-500">
-                  Share your date, location and event requirements.
+                  {t.tellNeedsDescription}
                 </p>
-
               </div>
-
             </div>
 
             {/* STEP 3 */}
-            <div className="flex gap-3">
 
+            <div className="flex gap-3">
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#DFAE45]/25 bg-[#DFAE45]/10 text-[10px] font-bold text-[#DFAE45]">
                 03
               </div>
 
               <div>
-
                 <h3 className="text-[12px] font-bold">
-                  Get Expert Support
+                  {t.expertSupport}
                 </h3>
 
                 <p className="mt-0.5 text-[10px] leading-4 text-gray-500">
-                  Our event experts help plan everything.
+                  {t.expertSupportDescription}
                 </p>
-
               </div>
-
             </div>
 
             {/* STEP 4 */}
-            <div className="flex gap-3">
 
+            <div className="flex gap-3">
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#DFAE45]/25 bg-[#DFAE45]/10 text-[10px] font-bold text-[#DFAE45]">
                 04
               </div>
 
               <div>
-
                 <h3 className="text-[12px] font-bold">
-                  Enjoy Your Celebration
+                  {t.enjoyCelebration}
                 </h3>
 
                 <p className="mt-0.5 text-[10px] leading-4 text-gray-500">
-                  Relax while we take care of the details.
+                  {t.enjoyCelebrationDescription}
                 </p>
-
               </div>
-
             </div>
-
           </div>
         </section>
 
@@ -818,11 +1149,10 @@ export default function EventManagementPage() {
         =================================================== */}
 
         <section className="mt-8">
-
           <div className="grid grid-cols-2 gap-3">
+            {/* CATERING */}
 
             <div className="rounded-[21px] border border-white/[0.07] bg-white/[0.03] p-4">
-
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#DFAE45]/10">
                 <Utensils
                   size={18}
@@ -831,17 +1161,17 @@ export default function EventManagementPage() {
               </div>
 
               <h3 className="mt-3 text-[13px] font-bold">
-                Catering
+                {t.catering}
               </h3>
 
               <p className="mt-1 text-[10px] leading-4 text-gray-500">
-                Delicious menus for every celebration.
+                {t.cateringDescription}
               </p>
-
             </div>
 
-            <div className="rounded-[21px] border border-white/[0.07] bg-white/[0.03] p-4">
+            {/* PHOTOGRAPHY */}
 
+            <div className="rounded-[21px] border border-white/[0.07] bg-white/[0.03] p-4">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#DFAE45]/10">
                 <Camera
                   size={18}
@@ -850,17 +1180,17 @@ export default function EventManagementPage() {
               </div>
 
               <h3 className="mt-3 text-[13px] font-bold">
-                Photography
+                {t.photography}
               </h3>
 
               <p className="mt-1 text-[10px] leading-4 text-gray-500">
-                Capture every important moment.
+                {t.photographyDescription}
               </p>
-
             </div>
 
-            <div className="rounded-[21px] border border-white/[0.07] bg-white/[0.03] p-4">
+            {/* DECORATION */}
 
+            <div className="rounded-[21px] border border-white/[0.07] bg-white/[0.03] p-4">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#DFAE45]/10">
                 <PartyPopper
                   size={18}
@@ -869,17 +1199,17 @@ export default function EventManagementPage() {
               </div>
 
               <h3 className="mt-3 text-[13px] font-bold">
-                Decoration
+                {t.decoration}
               </h3>
 
               <p className="mt-1 text-[10px] leading-4 text-gray-500">
-                Themes, balloons, floral & stage decor.
+                {t.decorationDescription}
               </p>
-
             </div>
 
-            <div className="rounded-[21px] border border-white/[0.07] bg-white/[0.03] p-4">
+            {/* ENTERTAINMENT */}
 
+            <div className="rounded-[21px] border border-white/[0.07] bg-white/[0.03] p-4">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#DFAE45]/10">
                 <WandSparkles
                   size={18}
@@ -888,15 +1218,13 @@ export default function EventManagementPage() {
               </div>
 
               <h3 className="mt-3 text-[13px] font-bold">
-                Entertainment
+                {t.entertainment}
               </h3>
 
               <p className="mt-1 text-[10px] leading-4 text-gray-500">
-                Music, characters & fun activities.
+                {t.entertainmentDescription}
               </p>
-
             </div>
-
           </div>
         </section>
 
@@ -905,11 +1233,9 @@ export default function EventManagementPage() {
         =================================================== */}
 
         <section className="relative mt-8 overflow-hidden rounded-[25px] border border-[#DFAE45]/25 bg-gradient-to-br from-[#17130A] via-[#0E1118] to-[#090D15] p-5">
-
           <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-[#DFAE45]/10 blur-3xl" />
 
           <div className="relative">
-
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#DFAE45]">
               <Sparkles
                 size={21}
@@ -918,28 +1244,26 @@ export default function EventManagementPage() {
             </div>
 
             <h2 className="mt-4 text-[21px] font-extrabold">
-              Make Your Celebration
+              {t.makeCelebration}
               <br />
 
               <span className="text-[#DFAE45]">
-                Truly Special
+                {t.trulySpecial}
               </span>
             </h2>
 
             <p className="mt-2 text-[11px] leading-5 text-gray-400">
-              Tell us what you are planning and let OurHub
-              help you turn your idea into a memorable event.
+              {t.premiumDescription}
             </p>
 
             <Link
               href="/eventManagement/wedding-event"
               className="mt-5 flex items-center justify-center gap-2 rounded-xl bg-[#DFAE45] py-3 text-[13px] font-bold text-black transition active:scale-[0.98]"
             >
-              Start Planning
+              {t.startPlanning}
 
               <ArrowRight size={16} />
             </Link>
-
           </div>
         </section>
 
@@ -948,23 +1272,18 @@ export default function EventManagementPage() {
         =================================================== */}
 
         <div className="mt-8 pb-4 text-center">
-
           <div className="flex items-center justify-center gap-2 text-[10px] text-gray-600">
-
             <div className="h-px w-8 bg-white/10" />
 
-            <span>OURHUB EVENTS</span>
+            <span>{t.ourHubEvents}</span>
 
             <div className="h-px w-8 bg-white/10" />
-
           </div>
 
           <p className="mt-2 text-[9px] text-gray-700">
-            All your services. One hub.
+            {t.footerText}
           </p>
-
         </div>
-
       </div>
     </main>
   );

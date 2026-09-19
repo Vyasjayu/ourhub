@@ -1,4 +1,3 @@
-
 "use client";
 
 import {
@@ -25,46 +24,151 @@ import {
   UserRound,
 } from "lucide-react";
 
+import { useLanguage } from "@/context/LanguageContext";
+
+type Localized = {
+  en: string;
+  hi: string;
+};
+
 const packages = {
   "Mini Appearance": {
-    duration: "30 Minutes",
+    title: {
+      en: "Mini Appearance",
+      hi: "मिनी अपीयरेंस",
+    },
+    duration: {
+      en: "30 Minutes",
+      hi: "30 मिनट",
+    },
     price: 1499,
     features: [
-      "Character entry",
-      "Guest interaction",
-      "Photo & selfie session",
+      {
+        en: "Character entry",
+        hi: "कैरेक्टर एंट्री",
+      },
+      {
+        en: "Guest interaction",
+        hi: "मेहमानों के साथ इंटरैक्शन",
+      },
+      {
+        en: "Photo & selfie session",
+        hi: "फोटो और सेल्फी सेशन",
+      },
     ],
   },
 
   "Fun Celebration": {
-    duration: "60 Minutes",
+    title: {
+      en: "Fun Celebration",
+      hi: "फन सेलिब्रेशन",
+    },
+    duration: {
+      en: "60 Minutes",
+      hi: "60 मिनट",
+    },
     price: 2499,
     features: [
-      "Grand character entry",
-      "Interactive performance",
-      "Kids interaction",
-      "Photo & selfie session",
+      {
+        en: "Grand character entry",
+        hi: "ग्रैंड कैरेक्टर एंट्री",
+      },
+      {
+        en: "Interactive performance",
+        hi: "इंटरैक्टिव परफॉर्मेंस",
+      },
+      {
+        en: "Kids interaction",
+        hi: "बच्चों के साथ इंटरैक्शन",
+      },
+      {
+        en: "Photo & selfie session",
+        hi: "फोटो और सेल्फी सेशन",
+      },
     ],
   },
 
   "Full Entertainment": {
-    duration: "90 Minutes",
+    title: {
+      en: "Full Entertainment",
+      hi: "फुल एंटरटेनमेंट",
+    },
+    duration: {
+      en: "90 Minutes",
+      hi: "90 मिनट",
+    },
     price: 3999,
     features: [
-      "Grand character entry",
-      "Extended performance",
-      "Games & interaction",
-      "Photo session",
-      "Event coordination",
+      {
+        en: "Grand character entry",
+        hi: "ग्रैंड कैरेक्टर एंट्री",
+      },
+      {
+        en: "Extended performance",
+        hi: "एक्सटेंडेड परफॉर्मेंस",
+      },
+      {
+        en: "Games & interaction",
+        hi: "गेम्स और इंटरैक्शन",
+      },
+      {
+        en: "Photo session",
+        hi: "फोटो सेशन",
+      },
+      {
+        en: "Event coordination",
+        hi: "इवेंट कोऑर्डिनेशन",
+      },
     ],
   },
 } as const;
 
 type PackageName = keyof typeof packages;
 
+const eventTypes: Localized[] = [
+  {
+    en: "Birthday Party",
+    hi: "बर्थडे पार्टी",
+  },
+  {
+    en: "Wedding Function",
+    hi: "वेडिंग फंक्शन",
+  },
+  {
+    en: "Corporate Event",
+    hi: "कॉर्पोरेट इवेंट",
+  },
+  {
+    en: "Other Celebration",
+    hi: "अन्य सेलिब्रेशन",
+  },
+];
+
+const locations: Localized[] = [
+  {
+    en: "Ujjain",
+    hi: "उज्जैन",
+  },
+  {
+    en: "Indore",
+    hi: "इंदौर",
+  },
+  {
+    en: "Ratlam",
+    hi: "रतलाम",
+  },
+  {
+    en: "Other Location",
+    hi: "अन्य लोकेशन",
+  },
+];
+
 function GorillaBookingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { language } = useLanguage();
+
+  const isHindi = language === "hi";
 
   const packageParam =
     searchParams.get("package") || "Fun Celebration";
@@ -77,6 +181,7 @@ function GorillaBookingContent() {
   const packageData = packages[selectedPackage];
 
   const [guestCount, setGuestCount] = useState(30);
+
   const [eventType, setEventType] =
     useState("Birthday Party");
 
@@ -100,7 +205,19 @@ function GorillaBookingContent() {
     return packageData.price.toLocaleString("en-IN");
   }, [packageData.price]);
 
-  const changePackage = (packageName: PackageName) => {
+  const localizedEventType =
+    eventTypes.find(
+      (item) => item.en === eventType
+    )?.[language] || eventType;
+
+  const localizedLocation =
+    locations.find(
+      (item) => item.en === location
+    )?.[language] || location;
+
+  const changePackage = (
+    packageName: PackageName
+  ) => {
     setShowPackages(false);
 
     router.push(
@@ -110,40 +227,46 @@ function GorillaBookingContent() {
     );
   };
 
-  const handleSubmit = (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-    e.preventDefault();
+  const buildWhatsAppMessage = () => {
+    if (isHindi) {
+      return `
+*OURHUB इवेंट बुकिंग रिक्वेस्ट*
 
-    setError("");
+🎭 *कैरेक्टर:* गोरिल्ला कैरेक्टर
 
-    if (
-      !name.trim() ||
-      !mobile.trim() ||
-      !eventDate ||
-      !eventTime ||
-      !location
-    ) {
-      setError(
-        "Please complete all required booking details."
-      );
-      return;
+📦 *पैकेज:* ${packageData.title.hi}
+⏱️ *अवधि:* ${packageData.duration.hi}
+💰 *शुरुआती कीमत:* ₹${packageData.price.toLocaleString(
+        "en-IN"
+      )}
+
+🎉 *इवेंट प्रकार:* ${localizedEventType}
+📅 *इवेंट तारीख:* ${eventDate}
+⏰ *इवेंट समय:* ${eventTime}
+📍 *इवेंट लोकेशन:* ${localizedLocation}
+👥 *अनुमानित मेहमान:* ${guestCount}
+
+👤 *कस्टमर डिटेल्स*
+नाम: ${name.trim()}
+मोबाइल: +91 ${mobile}
+
+📝 *विशेष आवश्यकताएं:*
+${notes.trim() || "कोई विशेष आवश्यकता नहीं"}
+
+कृपया इस बुकिंग को कन्फर्म करने के लिए मुझसे संपर्क करें।
+
+धन्यवाद,
+*OurHub Services*
+`;
     }
 
-    if (mobile.length !== 10) {
-      setError(
-        "Please enter a valid 10-digit mobile number."
-      );
-      return;
-    }
-
-    const message = `
+    return `
 *OURHUB EVENT BOOKING REQUEST*
 
 🎭 *Character:* Gorilla Character
 
-📦 *Package:* ${selectedPackage}
-⏱️ *Duration:* ${packageData.duration}
+📦 *Package:* ${packageData.title.en}
+⏱️ *Duration:* ${packageData.duration.en}
 💰 *Starting Price:* ₹${packageData.price.toLocaleString(
       "en-IN"
     )}
@@ -166,21 +289,57 @@ Please contact me to confirm this booking.
 Thank you,
 *OurHub Services*
 `;
+  };
+
+  const openWhatsApp = () => {
+    const message = buildWhatsAppMessage();
 
     const whatsappUrl =
       `https://wa.me/918878632431?text=${encodeURIComponent(
         message
       )}`;
 
-    // Mark request as submitted.
-    setSubmitted(true);
-
-    // Open WhatsApp in a new tab.
     window.open(
       whatsappUrl,
       "_blank",
       "noopener,noreferrer"
     );
+  };
+
+  const handleSubmit = (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+
+    setError("");
+
+    if (
+      !name.trim() ||
+      !mobile.trim() ||
+      !eventDate ||
+      !eventTime ||
+      !location
+    ) {
+      setError(
+        isHindi
+          ? "कृपया सभी जरूरी बुकिंग जानकारी पूरी करें।"
+          : "Please complete all required booking details."
+      );
+      return;
+    }
+
+    if (mobile.length !== 10) {
+      setError(
+        isHindi
+          ? "कृपया सही 10 अंकों का मोबाइल नंबर दर्ज करें।"
+          : "Please enter a valid 10-digit mobile number."
+      );
+      return;
+    }
+
+    setSubmitted(true);
+
+    openWhatsApp();
   };
 
   /* --------------------------------------------------
@@ -203,70 +362,87 @@ Thank you,
             </div>
 
             <p className="mt-6 text-[10px] font-bold uppercase tracking-[0.28em] text-[#DFAE45]">
-              Booking Request
+              {isHindi
+                ? "बुकिंग रिक्वेस्ट"
+                : "Booking Request"}
             </p>
 
             <h1 className="mt-2 text-[27px] font-extrabold tracking-tight">
-              Request Ready
+              {isHindi
+                ? "रिक्वेस्ट तैयार है"
+                : "Request Ready"}
             </h1>
 
             <p className="mx-auto mt-3 max-w-[320px] text-[13px] leading-6 text-white/50">
-              Your booking details are ready. WhatsApp has
-              been opened so you can send the request directly
-              to the OurHub team.
+              {isHindi
+                ? "आपकी बुकिंग डिटेल्स तैयार हैं। WhatsApp खोला गया है ताकि आप यह रिक्वेस्ट सीधे OurHub टीम को भेज सकें।"
+                : "Your booking details are ready. WhatsApp has been opened so you can send the request directly to the OurHub team."}
             </p>
 
             {/* Summary */}
             <div className="mt-7 rounded-2xl border border-white/[0.08] bg-black/20 p-4 text-left">
 
-              <div className="flex items-center justify-between gap-4">
-                <span className="text-[11px] text-white/40">
-                  Package
-                </span>
+              <SummaryRow
+                label={
+                  isHindi
+                    ? "पैकेज"
+                    : "Package"
+                }
+                value={
+                  packageData.title[language]
+                }
+              />
 
-                <span className="text-right text-xs font-bold text-white">
-                  {selectedPackage}
-                </span>
+              <div className="mt-3">
+                <SummaryRow
+                  label={
+                    isHindi
+                      ? "अवधि"
+                      : "Duration"
+                  }
+                  value={
+                    packageData.duration[
+                      language
+                    ]
+                  }
+                />
               </div>
 
-              <div className="mt-3 flex items-center justify-between gap-4">
-                <span className="text-[11px] text-white/40">
-                  Duration
-                </span>
-
-                <span className="text-xs font-bold text-white">
-                  {packageData.duration}
-                </span>
+              <div className="mt-3">
+                <SummaryRow
+                  label={
+                    isHindi
+                      ? "इवेंट"
+                      : "Event"
+                  }
+                  value={
+                    localizedEventType
+                  }
+                />
               </div>
 
-              <div className="mt-3 flex items-center justify-between gap-4">
-                <span className="text-[11px] text-white/40">
-                  Event
-                </span>
-
-                <span className="text-right text-xs font-bold text-white">
-                  {eventType}
-                </span>
+              <div className="mt-3">
+                <SummaryRow
+                  label={
+                    isHindi
+                      ? "मेहमान"
+                      : "Guests"
+                  }
+                  value={`${guestCount}`}
+                />
               </div>
 
-              <div className="mt-3 flex items-center justify-between gap-4">
-                <span className="text-[11px] text-white/40">
-                  Guests
-                </span>
-
-                <span className="text-xs font-bold text-white">
-                  {guestCount}
-                </span>
-              </div>
-
-              <div className="mt-3 flex items-center justify-between gap-4">
-                <span className="text-[11px] text-white/40">
-                  Location
-                </span>
-
-                <span className="text-xs font-bold text-white">
-                  {location}
-                </span>
+              <div className="mt-3">
+                <SummaryRow
+                  label={
+                    isHindi
+                      ? "लोकेशन"
+                      : "Location"
+                  }
+                  value={
+                    localizedLocation
+                  }
+                />
               </div>
 
               <div className="my-4 h-px bg-white/[0.08]" />
@@ -274,7 +450,9 @@ Thank you,
               <div className="flex items-end justify-between">
                 <div>
                   <p className="text-[10px] text-white/35">
-                    Starting Price
+                    {isHindi
+                      ? "शुरुआती कीमत"
+                      : "Starting Price"}
                   </p>
 
                   <p className="mt-1 text-xl font-extrabold text-[#DFAE45]">
@@ -292,51 +470,14 @@ Thank you,
             {/* WhatsApp Again */}
             <button
               type="button"
-              onClick={() => {
-                const message = `
-*OURHUB EVENT BOOKING REQUEST*
-
-🎭 *Character:* Gorilla Character
-📦 *Package:* ${selectedPackage}
-⏱️ *Duration:* ${packageData.duration}
-💰 *Starting Price:* ₹${packageData.price.toLocaleString(
-                  "en-IN"
-                )}
-
-🎉 *Event Type:* ${eventType}
-📅 *Event Date:* ${eventDate}
-⏰ *Event Time:* ${eventTime}
-📍 *Event Location:* ${location}
-👥 *Expected Guests:* ${guestCount}
-
-👤 *Customer Details*
-Name: ${name.trim()}
-Mobile: +91 ${mobile}
-
-📝 *Special Requirements:*
-${notes.trim() || "None"}
-
-Please contact me to confirm this booking.
-
-Thank you,
-*OurHub Services*
-`;
-
-                const whatsappUrl =
-                  `https://wa.me/918878632431?text=${encodeURIComponent(
-                    message
-                  )}`;
-
-                window.open(
-                  whatsappUrl,
-                  "_blank",
-                  "noopener,noreferrer"
-                );
-              }}
+              onClick={openWhatsApp}
               className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#DFAE45] text-sm font-extrabold text-black shadow-[0_12px_30px_rgba(223,174,69,0.15)] active:scale-[0.98]"
             >
               <MessageCircle size={18} />
-              Open WhatsApp
+
+              {isHindi
+                ? "WhatsApp खोलें"
+                : "Open WhatsApp"}
             </button>
 
             <button
@@ -346,17 +487,23 @@ Thank you,
               }
               className="mt-3 h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] text-xs font-semibold text-white/65 active:scale-[0.98]"
             >
-              Edit Booking
+              {isHindi
+                ? "बुकिंग एडिट करें"
+                : "Edit Booking"}
             </button>
 
             <button
               type="button"
               onClick={() =>
-                router.push("/eventManagement")
+                router.push(
+                  "/eventManagement"
+                )
               }
               className="mt-3 h-11 w-full text-xs font-semibold text-[#DFAE45]"
             >
-              Back to Event Management
+              {isHindi
+                ? "इवेंट मैनेजमेंट पर वापस जाएं"
+                : "Back to Event Management"}
             </button>
           </div>
         </div>
@@ -380,7 +527,11 @@ Thank you,
               type="button"
               onClick={() => router.back()}
               className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] transition active:scale-95"
-              aria-label="Go back"
+              aria-label={
+                isHindi
+                  ? "वापस जाएं"
+                  : "Go back"
+              }
             >
               <ArrowLeft size={20} />
             </button>
@@ -391,7 +542,9 @@ Thank you,
               </p>
 
               <h1 className="mt-0.5 text-[16px] font-bold">
-                Book Gorilla Character
+                {isHindi
+                  ? "गोरिल्ला कैरेक्टर बुक करें"
+                  : "Book Gorilla Character"}
               </h1>
             </div>
 
@@ -426,12 +579,22 @@ Thank you,
 
           <div className="mt-2 flex justify-between text-[9px] text-white/40">
             <span className="text-[#DFAE45]">
-              Event Details
+              {isHindi
+                ? "इवेंट डिटेल्स"
+                : "Event Details"}
             </span>
 
-            <span>Contact</span>
+            <span>
+              {isHindi
+                ? "कॉन्टैक्ट"
+                : "Contact"}
+            </span>
 
-            <span>Confirm</span>
+            <span>
+              {isHindi
+                ? "कन्फर्म"
+                : "Confirm"}
+            </span>
           </div>
         </section>
 
@@ -446,7 +609,11 @@ Thank you,
               <div className="h-[92px] w-[92px] shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-black/20">
                 <img
                   src="/images/events/gorilla.jpg"
-                  alt="Gorilla Character"
+                  alt={
+                    isHindi
+                      ? "गोरिल्ला कैरेक्टर"
+                      : "Gorilla Character"
+                  }
                   className="h-full w-full object-cover"
                   onError={(e) => {
                     e.currentTarget.src =
@@ -464,12 +631,16 @@ Thank you,
                   />
 
                   <span className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#DFAE45]">
-                    Character Entertainment
+                    {isHindi
+                      ? "कैरेक्टर एंटरटेनमेंट"
+                      : "Character Entertainment"}
                   </span>
                 </div>
 
                 <h2 className="mt-1 text-[18px] font-extrabold">
-                  Gorilla Character
+                  {isHindi
+                    ? "गोरिल्ला कैरेक्टर"
+                    : "Gorilla Character"}
                 </h2>
 
                 <div className="mt-2 flex items-center gap-2">
@@ -479,7 +650,11 @@ Thank you,
                   />
 
                   <span className="text-[10px] text-white/55">
-                    {packageData.duration}
+                    {
+                      packageData.duration[
+                        language
+                      ]
+                    }
                   </span>
                 </div>
 
@@ -489,7 +664,9 @@ Thank you,
                   </span>
 
                   <span className="text-[9px] text-white/35">
-                    starting
+                    {isHindi
+                      ? "से शुरू"
+                      : "starting"}
                   </span>
                 </div>
               </div>
@@ -499,17 +676,25 @@ Thank you,
             <button
               type="button"
               onClick={() =>
-                setShowPackages(!showPackages)
+                setShowPackages(
+                  !showPackages
+                )
               }
               className="flex w-full items-center justify-between border-t border-white/10 px-4 py-3.5 text-left"
             >
               <div>
                 <p className="text-[9px] uppercase tracking-wider text-white/35">
-                  Selected Package
+                  {isHindi
+                    ? "चयनित पैकेज"
+                    : "Selected Package"}
                 </p>
 
                 <p className="mt-0.5 text-xs font-bold text-[#DFAE45]">
-                  {selectedPackage}
+                  {
+                    packageData.title[
+                      language
+                    ]
+                  }
                 </p>
               </div>
 
@@ -526,61 +711,71 @@ Thank you,
             {/* Package Selector */}
             {showPackages && (
               <div className="border-t border-white/10 p-3">
-                {(Object.keys(
-                  packages
-                ) as PackageName[]).map(
-                  (packageName) => {
-                    const item =
-                      packages[packageName];
+                {(
+                  Object.keys(
+                    packages
+                  ) as PackageName[]
+                ).map((packageName) => {
+                  const item =
+                    packages[
+                      packageName
+                    ];
 
-                    const active =
-                      packageName ===
-                      selectedPackage;
+                  const active =
+                    packageName ===
+                    selectedPackage;
 
-                    return (
-                      <button
-                        type="button"
-                        key={packageName}
-                        onClick={() =>
-                          changePackage(
-                            packageName
-                          )
-                        }
-                        className={`mb-2 flex w-full items-center justify-between rounded-xl border p-3 text-left transition last:mb-0 ${
-                          active
-                            ? "border-[#DFAE45]/40 bg-[#DFAE45]/10"
-                            : "border-white/10 bg-white/[0.025]"
-                        }`}
-                      >
-                        <div className="min-w-0">
-                          <p className="text-xs font-bold">
-                            {packageName}
-                          </p>
+                  return (
+                    <button
+                      type="button"
+                      key={packageName}
+                      onClick={() =>
+                        changePackage(
+                          packageName
+                        )
+                      }
+                      className={`mb-2 flex w-full items-center justify-between rounded-xl border p-3 text-left transition last:mb-0 ${
+                        active
+                          ? "border-[#DFAE45]/40 bg-[#DFAE45]/10"
+                          : "border-white/10 bg-white/[0.025]"
+                      }`}
+                    >
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold">
+                          {
+                            item.title[
+                              language
+                            ]
+                          }
+                        </p>
 
-                          <p className="mt-1 text-[10px] text-white/40">
-                            {item.duration}
-                          </p>
-                        </div>
+                        <p className="mt-1 text-[10px] text-white/40">
+                          {
+                            item.duration[
+                              language
+                            ]
+                          }
+                        </p>
+                      </div>
 
-                        <div className="text-right">
-                          <p className="text-sm font-extrabold text-[#DFAE45]">
-                            ₹
-                            {item.price.toLocaleString(
-                              "en-IN"
-                            )}
-                          </p>
-
-                          {active && (
-                            <Check
-                              size={14}
-                              className="ml-auto mt-1 text-[#DFAE45]"
-                            />
+                      <div className="text-right">
+                        <p className="text-sm font-extrabold text-[#DFAE45]">
+                          ₹
+                          {item.price.toLocaleString(
+                            "en-IN"
                           )}
-                        </div>
-                      </button>
-                    );
-                  }
-                )}
+                        </p>
+
+                        {active && (
+                          <Check
+                            size={14}
+                            className="ml-auto mt-1 text-[#DFAE45]"
+                          />
+                        )}
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -597,36 +792,40 @@ Thank you,
 
             <div className="mb-4">
               <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#DFAE45]">
-                Step 01
+                {isHindi
+                  ? "स्टेप 01"
+                  : "Step 01"}
               </p>
 
               <h2 className="mt-1 text-[21px] font-extrabold">
-                Tell us about your event
+                {isHindi
+                  ? "अपने इवेंट के बारे में बताएं"
+                  : "Tell us about your event"}
               </h2>
             </div>
 
             {/* Event Type */}
             <div>
               <label className="mb-2 block text-[11px] font-semibold text-white/60">
-                Event Type
+                {isHindi
+                  ? "इवेंट प्रकार"
+                  : "Event Type"}
               </label>
 
               <div className="grid grid-cols-2 gap-2">
-                {[
-                  "Birthday Party",
-                  "Wedding Function",
-                  "Corporate Event",
-                  "Other Celebration",
-                ].map((type) => {
+                {eventTypes.map((type) => {
                   const active =
-                    eventType === type;
+                    eventType ===
+                    type.en;
 
                   return (
                     <button
                       type="button"
-                      key={type}
+                      key={type.en}
                       onClick={() =>
-                        setEventType(type)
+                        setEventType(
+                          type.en
+                        )
                       }
                       className={`rounded-xl border px-3 py-3 text-left text-[11px] font-semibold transition active:scale-[0.98] ${
                         active
@@ -635,7 +834,13 @@ Thank you,
                       }`}
                     >
                       <div className="flex items-center justify-between gap-2">
-                        <span>{type}</span>
+                        <span>
+                          {
+                            type[
+                              language
+                            ]
+                          }
+                        </span>
 
                         {active && (
                           <CheckCircle2
@@ -658,7 +863,9 @@ Thank you,
                   htmlFor="eventDate"
                   className="mb-2 block text-[11px] font-semibold text-white/60"
                 >
-                  Event Date
+                  {isHindi
+                    ? "इवेंट तारीख"
+                    : "Event Date"}
                 </label>
 
                 <div className="relative">
@@ -687,7 +894,9 @@ Thank you,
                   htmlFor="eventTime"
                   className="mb-2 block text-[11px] font-semibold text-white/60"
                 >
-                  Event Time
+                  {isHindi
+                    ? "इवेंट समय"
+                    : "Event Time"}
                 </label>
 
                 <div className="relative">
@@ -718,7 +927,9 @@ Thank you,
                 htmlFor="location"
                 className="mb-2 block text-[11px] font-semibold text-white/60"
               >
-                Event Location
+                {isHindi
+                  ? "इवेंट लोकेशन"
+                  : "Event Location"}
               </label>
 
               <div className="relative">
@@ -741,28 +952,36 @@ Thank you,
                     value="Ujjain"
                     className="bg-[#09121E]"
                   >
-                    Ujjain
+                    {isHindi
+                      ? "उज्जैन"
+                      : "Ujjain"}
                   </option>
 
                   <option
                     value="Indore"
                     className="bg-[#09121E]"
                   >
-                    Indore
+                    {isHindi
+                      ? "इंदौर"
+                      : "Indore"}
                   </option>
 
                   <option
                     value="Ratlam"
                     className="bg-[#09121E]"
                   >
-                    Ratlam
+                    {isHindi
+                      ? "रतलाम"
+                      : "Ratlam"}
                   </option>
 
                   <option
                     value="Other"
                     className="bg-[#09121E]"
                   >
-                    Other Location
+                    {isHindi
+                      ? "अन्य लोकेशन"
+                      : "Other Location"}
                   </option>
                 </select>
 
@@ -778,11 +997,15 @@ Thank you,
 
               <div className="mb-2 flex items-center justify-between">
                 <label className="text-[11px] font-semibold text-white/60">
-                  Expected Guests
+                  {isHindi
+                    ? "अनुमानित मेहमान"
+                    : "Expected Guests"}
                 </label>
 
                 <span className="text-[10px] text-white/35">
-                  Approximate count
+                  {isHindi
+                    ? "लगभग संख्या"
+                    : "Approximate count"}
                 </span>
               </div>
 
@@ -798,7 +1021,9 @@ Thank you,
 
                   <div>
                     <p className="text-[9px] text-white/35">
-                      Guests
+                      {isHindi
+                        ? "मेहमान"
+                        : "Guests"}
                     </p>
 
                     <p className="text-sm font-bold">
@@ -820,7 +1045,11 @@ Thank you,
                       )
                     }
                     className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] active:scale-95"
-                    aria-label="Decrease guests"
+                    aria-label={
+                      isHindi
+                        ? "मेहमान कम करें"
+                        : "Decrease guests"
+                    }
                   >
                     <Minus size={14} />
                   </button>
@@ -833,7 +1062,11 @@ Thank you,
                       )
                     }
                     className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#DFAE45]/30 bg-[#DFAE45]/10 active:scale-95"
-                    aria-label="Increase guests"
+                    aria-label={
+                      isHindi
+                        ? "मेहमान बढ़ाएं"
+                        : "Increase guests"
+                    }
                   >
                     <Plus
                       size={14}
@@ -851,16 +1084,21 @@ Thank you,
 
             <div className="mb-4">
               <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#DFAE45]">
-                Step 02
+                {isHindi
+                  ? "स्टेप 02"
+                  : "Step 02"}
               </p>
 
               <h2 className="mt-1 text-[21px] font-extrabold">
-                Your contact details
+                {isHindi
+                  ? "आपकी कॉन्टैक्ट डिटेल्स"
+                  : "Your contact details"}
               </h2>
 
               <p className="mt-1 text-[11px] text-white/40">
-                We'll use these details to confirm
-                your booking.
+                {isHindi
+                  ? "आपकी बुकिंग कन्फर्म करने के लिए हम इन डिटेल्स का उपयोग करेंगे।"
+                  : "We'll use these details to confirm your booking."}
               </p>
             </div>
 
@@ -870,7 +1108,9 @@ Thank you,
                 htmlFor="name"
                 className="mb-2 block text-[11px] font-semibold text-white/60"
               >
-                Full Name
+                {isHindi
+                  ? "पूरा नाम"
+                  : "Full Name"}
               </label>
 
               <div className="relative">
@@ -882,10 +1122,16 @@ Thank you,
                 <input
                   id="name"
                   type="text"
-                  placeholder="Enter your name"
+                  placeholder={
+                    isHindi
+                      ? "अपना नाम दर्ज करें"
+                      : "Enter your name"
+                  }
                   value={name}
                   onChange={(e) =>
-                    setName(e.target.value)
+                    setName(
+                      e.target.value
+                    )
                   }
                   required
                   className="h-12 w-full rounded-xl border border-white/10 bg-white/[0.035] pl-10 pr-3 text-xs text-white outline-none placeholder:text-white/25 focus:border-[#DFAE45]/50"
@@ -899,7 +1145,9 @@ Thank you,
                 htmlFor="mobile"
                 className="mb-2 block text-[11px] font-semibold text-white/60"
               >
-                Mobile Number
+                {isHindi
+                  ? "मोबाइल नंबर"
+                  : "Mobile Number"}
               </label>
 
               <div className="flex h-12 overflow-hidden rounded-xl border border-white/10 bg-white/[0.035] focus-within:border-[#DFAE45]/50">
@@ -920,13 +1168,20 @@ Thank you,
                   type="tel"
                   inputMode="numeric"
                   maxLength={10}
-                  placeholder="Enter mobile number"
+                  placeholder={
+                    isHindi
+                      ? "मोबाइल नंबर दर्ज करें"
+                      : "Enter mobile number"
+                  }
                   value={mobile}
                   onChange={(e) =>
                     setMobile(
                       e.target.value
                         .replace(/\D/g, "")
-                        .slice(0, 10)
+                        .slice(
+                          0,
+                          10
+                        )
                     )
                   }
                   required
@@ -941,9 +1196,14 @@ Thank you,
                 htmlFor="notes"
                 className="mb-2 block text-[11px] font-semibold text-white/60"
               >
-                Special Requirements
+                {isHindi
+                  ? "विशेष आवश्यकताएं"
+                  : "Special Requirements"}
+
                 <span className="ml-1 text-white/25">
-                  (Optional)
+                  {isHindi
+                    ? "(वैकल्पिक)"
+                    : "(Optional)"}
                 </span>
               </label>
 
@@ -952,9 +1212,15 @@ Thank you,
                 rows={4}
                 value={notes}
                 onChange={(e) =>
-                  setNotes(e.target.value)
+                  setNotes(
+                    e.target.value
+                  )
                 }
-                placeholder="Tell us anything special about your event..."
+                placeholder={
+                  isHindi
+                    ? "अपने इवेंट के बारे में कोई खास जानकारी बताएं..."
+                    : "Tell us anything special about your event..."
+                }
                 className="w-full resize-none rounded-xl border border-white/10 bg-white/[0.035] p-3 text-xs text-white outline-none placeholder:text-white/25 focus:border-[#DFAE45]/50"
               />
             </div>
@@ -971,40 +1237,82 @@ Thank you,
                 />
 
                 <h2 className="text-[15px] font-bold">
-                  Booking Summary
+                  {isHindi
+                    ? "बुकिंग सारांश"
+                    : "Booking Summary"}
                 </h2>
               </div>
 
               <div className="mt-5 space-y-3">
 
                 <SummaryRow
-                  label="Character"
-                  value="Gorilla Character"
+                  label={
+                    isHindi
+                      ? "कैरेक्टर"
+                      : "Character"
+                  }
+                  value={
+                    isHindi
+                      ? "गोरिल्ला कैरेक्टर"
+                      : "Gorilla Character"
+                  }
                 />
 
                 <SummaryRow
-                  label="Package"
-                  value={selectedPackage}
+                  label={
+                    isHindi
+                      ? "पैकेज"
+                      : "Package"
+                  }
+                  value={
+                    packageData.title[
+                      language
+                    ]
+                  }
                 />
 
                 <SummaryRow
-                  label="Duration"
-                  value={packageData.duration}
+                  label={
+                    isHindi
+                      ? "अवधि"
+                      : "Duration"
+                  }
+                  value={
+                    packageData.duration[
+                      language
+                    ]
+                  }
                 />
 
                 <SummaryRow
-                  label="Event"
-                  value={eventType}
+                  label={
+                    isHindi
+                      ? "इवेंट"
+                      : "Event"
+                  }
+                  value={
+                    localizedEventType
+                  }
                 />
 
                 <SummaryRow
-                  label="Guests"
+                  label={
+                    isHindi
+                      ? "मेहमान"
+                      : "Guests"
+                  }
                   value={`${guestCount}`}
                 />
 
                 <SummaryRow
-                  label="Location"
-                  value={location}
+                  label={
+                    isHindi
+                      ? "लोकेशन"
+                      : "Location"
+                  }
+                  value={
+                    localizedLocation
+                  }
                 />
 
                 <div className="my-2 h-px bg-white/10" />
@@ -1013,7 +1321,9 @@ Thank you,
 
                   <div>
                     <p className="text-[10px] text-white/40">
-                      Estimated starting price
+                      {isHindi
+                        ? "अनुमानित शुरुआती कीमत"
+                        : "Estimated starting price"}
                     </p>
 
                     <p className="mt-1 text-[25px] font-extrabold text-[#DFAE45]">
@@ -1022,7 +1332,9 @@ Thank you,
                   </div>
 
                   <span className="mb-1 text-right text-[9px] text-white/30">
-                    Final price may vary
+                    {isHindi
+                      ? "अंतिम कीमत अलग हो सकती है"
+                      : "Final price may vary"}
                   </span>
                 </div>
               </div>
@@ -1042,13 +1354,15 @@ Thank you,
 
               <div>
                 <p className="text-[12px] font-bold">
-                  Secure & transparent booking
+                  {isHindi
+                    ? "सिक्योर और पारदर्शी बुकिंग"
+                    : "Secure & transparent booking"}
                 </p>
 
                 <p className="mt-1 text-[10px] leading-4 text-white/40">
-                  Your booking request is handled by
-                  the OurHub event support team. No
-                  hidden booking charges.
+                  {isHindi
+                    ? "आपकी बुकिंग रिक्वेस्ट OurHub इवेंट सपोर्ट टीम द्वारा संभाली जाती है। कोई छिपा हुआ बुकिंग चार्ज नहीं।"
+                    : "Your booking request is handled by the OurHub event support team. No hidden booking charges."}
                 </p>
               </div>
             </div>
@@ -1071,12 +1385,16 @@ Thank you,
               className="flex h-[54px] w-full items-center justify-center gap-2 rounded-2xl bg-[#DFAE45] text-sm font-extrabold text-black shadow-[0_12px_35px_rgba(223,174,69,0.15)] transition active:scale-[0.98]"
             >
               <MessageCircle size={18} />
-              Request Booking
+
+              {isHindi
+                ? "बुकिंग रिक्वेस्ट भेजें"
+                : "Request Booking"}
             </button>
 
             <p className="mt-3 text-center text-[9px] leading-4 text-white/30">
-              Your request will open WhatsApp with
-              your booking details pre-filled.
+              {isHindi
+                ? "आपकी डिटेल्स पहले से भरे हुए WhatsApp मैसेज के साथ खुलेंगी।"
+                : "Your request will open WhatsApp with your booking details pre-filled."}
             </p>
           </section>
         </form>
@@ -1092,7 +1410,9 @@ Thank you,
               className="text-[#DFAE45]"
             />
 
-            Need help with your booking?
+            {isHindi
+              ? "बुकिंग में मदद चाहिए?"
+              : "Need help with your booking?"}
           </a>
         </section>
       </div>
@@ -1151,4 +1471,3 @@ function SummaryRow({
     </div>
   );
 }
-

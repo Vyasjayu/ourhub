@@ -9,16 +9,44 @@ import {
   Sparkles,
 } from "lucide-react";
 
+import { useLanguage } from "@/context/LanguageContext";
 import ContactBottomSheet from "./ContactBottomSheet";
 
 export default function StickyBottom() {
   const [open, setOpen] = useState(false);
 
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
   const phone = "918878632431";
 
   const whatsappMessage = encodeURIComponent(
-    "Hello OurHub Team 👋\n\nI want to develop a website. Please share more details."
+    isHindi
+      ? "नमस्ते OurHub टीम 👋\n\nमैं एक वेबसाइट प्रोजेक्ट शुरू करना चाहता हूं। कृपया पूरी जानकारी साझा करें।"
+      : "Hello OurHub Team 👋\n\nI want to develop a website. Please share more details."
   );
+
+  const t = {
+    chatWhatsApp: isHindi
+      ? "व्हाट्सऐप पर OurHub से चैट करें"
+      : "Chat with OurHub on WhatsApp",
+
+    callOurHub: isHindi
+      ? "OurHub को कॉल करें"
+      : "Call OurHub",
+
+    startYourProject: isHindi
+      ? "अपना प्रोजेक्ट शुरू करें"
+      : "Start Your Project",
+
+    freeConsultation: isHindi
+      ? "फ्री कंसल्टेशन"
+      : "Free Consultation",
+
+    quickResponse: isHindi
+      ? "त्वरित रिस्पॉन्स"
+      : "Quick Response",
+  };
 
   return (
     <>
@@ -29,14 +57,18 @@ export default function StickyBottom() {
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[100] flex justify-center">
         <div className="pointer-events-auto relative w-full max-w-[430px] px-3 pb-3">
           {/* Bottom ambient glow */}
+
           <div className="pointer-events-none absolute -bottom-8 left-1/2 h-28 w-72 -translate-x-1/2 rounded-full bg-[#DFAE45]/10 blur-3xl" />
 
           {/* Main glass container */}
+
           <div className="group relative overflow-hidden rounded-[26px] border border-white/[0.09] bg-[#07111D]/95 p-2 shadow-[0_-15px_55px_rgba(0,0,0,0.48)] backdrop-blur-2xl">
             {/* Gold top highlight */}
+
             <div className="pointer-events-none absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-[#DFAE45]/55 to-transparent" />
 
             {/* Subtle bottom highlight */}
+
             <div className="pointer-events-none absolute bottom-0 left-1/2 h-px w-1/2 -translate-x-1/2 bg-gradient-to-r from-transparent via-[#DFAE45]/30 to-transparent" />
 
             {/* =================================================
@@ -52,7 +84,7 @@ export default function StickyBottom() {
                 href={`https://wa.me/${phone}?text=${whatsappMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Chat with OurHub on WhatsApp"
+                aria-label={t.chatWhatsApp}
                 className="
                   group/whatsapp relative
                   flex h-[49px] w-[49px] shrink-0
@@ -68,6 +100,7 @@ export default function StickyBottom() {
                 "
               >
                 {/* Shine */}
+
                 <span className="pointer-events-none absolute -left-10 top-0 h-full w-7 rotate-[25deg] bg-white/20 blur-sm transition-all duration-700 group-hover/whatsapp:left-[120%]" />
 
                 <MessageCircle
@@ -77,6 +110,7 @@ export default function StickyBottom() {
                 />
 
                 {/* Online dot */}
+
                 <span className="absolute right-[6px] top-[6px] h-1.5 w-1.5 rounded-full border border-[#07111D] bg-green-400 shadow-[0_0_7px_rgba(74,222,128,0.8)]" />
               </a>
 
@@ -86,7 +120,7 @@ export default function StickyBottom() {
 
               <a
                 href={`tel:+${phone}`}
-                aria-label="Call OurHub"
+                aria-label={t.callOurHub}
                 className="
                   group/call
                   flex h-[49px] w-[49px] shrink-0
@@ -114,6 +148,7 @@ export default function StickyBottom() {
               <button
                 type="button"
                 onClick={() => setOpen(true)}
+                aria-label={t.startYourProject}
                 className="
                   group/cta relative flex h-[49px] flex-1
                   items-center justify-center gap-2
@@ -133,6 +168,7 @@ export default function StickyBottom() {
                 "
               >
                 {/* Shine animation */}
+
                 <span className="pointer-events-none absolute -left-14 top-0 h-full w-10 rotate-[20deg] bg-white/30 blur-sm transition-all duration-700 group-hover/cta:left-[120%]" />
 
                 <Sparkles
@@ -142,7 +178,7 @@ export default function StickyBottom() {
                 />
 
                 <span className="relative z-10">
-                  Start Your Project
+                  {t.startYourProject}
                 </span>
 
                 <ArrowRight
@@ -165,13 +201,13 @@ export default function StickyBottom() {
               />
 
               <span className="text-[7px] font-bold uppercase tracking-[0.8px] text-gray-600">
-                Free Consultation
+                {t.freeConsultation}
               </span>
 
               <span className="h-1 w-1 rounded-full bg-white/10" />
 
               <span className="text-[7px] font-bold uppercase tracking-[0.8px] text-gray-600">
-                Quick Response
+                {t.quickResponse}
               </span>
 
               <span className="h-1 w-1 rounded-full bg-white/10" />

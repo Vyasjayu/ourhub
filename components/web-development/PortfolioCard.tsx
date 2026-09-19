@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -9,6 +8,8 @@ import {
   ExternalLink,
   Sparkles,
 } from "lucide-react";
+
+import { useLanguage } from "@/context/LanguageContext";
 
 interface PortfolioCardProps {
   slug: string;
@@ -27,6 +28,43 @@ export default function PortfolioCard({
   technology,
   price,
 }: PortfolioCardProps) {
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
+  const t = {
+    liveProject: isHindi
+      ? "लाइव प्रोजेक्ट"
+      : "Live Project",
+
+    premiumWebSolution: isHindi
+      ? "प्रीमियम वेब सॉल्यूशन"
+      : "Premium web solution",
+
+    from: isHindi
+      ? "शुरुआत"
+      : "From",
+
+    technology: isHindi
+      ? "टेक्नोलॉजी"
+      : "Technology",
+
+    more: isHindi
+      ? "और"
+      : "more",
+
+    viewProject: isHindi
+      ? "प्रोजेक्ट देखें"
+      : "View Project",
+
+    view: isHindi
+      ? "देखें"
+      : "View",
+
+    viewProjectFor: isHindi
+      ? `${title} प्रोजेक्ट देखें`
+      : `View ${title}`,
+  };
+
   return (
     <article
       className="
@@ -166,7 +204,7 @@ export default function PortfolioCard({
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]" />
 
           <span className="text-[8px] font-bold uppercase tracking-[0.12em] text-white/70">
-            Live Project
+            {t.liveProject}
           </span>
         </div>
       </div>
@@ -176,7 +214,6 @@ export default function PortfolioCard({
       ========================== */}
 
       <div className="px-4 pb-4 pt-3">
-
         {/* Title row */}
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
@@ -200,7 +237,7 @@ export default function PortfolioCard({
               />
 
               <span className="text-[8px] font-medium text-slate-500">
-                Premium web solution
+                {t.premiumWebSolution}
               </span>
             </div>
           </div>
@@ -208,7 +245,7 @@ export default function PortfolioCard({
           {/* Price */}
           <div className="shrink-0 text-right">
             <p className="text-[7px] font-bold uppercase tracking-[0.12em] text-slate-600">
-              From
+              {t.from}
             </p>
 
             <p className="mt-0.5 text-[14px] font-black text-[#E7B94F]">
@@ -224,12 +261,12 @@ export default function PortfolioCard({
         <div className="mt-4">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-[8px] font-bold uppercase tracking-[0.14em] text-slate-600">
-              Technology
+              {t.technology}
             </span>
 
             {technology.length > 3 && (
               <span className="text-[7px] font-semibold text-slate-600">
-                +{technology.length - 3} more
+                +{technology.length - 3} {t.more}
               </span>
             )}
           </div>
@@ -310,7 +347,7 @@ export default function PortfolioCard({
               active:scale-[0.97]
             "
           >
-            <span>View Project</span>
+            <span>{t.viewProject}</span>
 
             <ArrowUpRight
               size={13}
@@ -326,7 +363,7 @@ export default function PortfolioCard({
 
           <Link
             href={`/web-development/project/${slug}`}
-            aria-label={`View ${title}`}
+            aria-label={t.viewProjectFor}
             className="
               flex
               h-10
@@ -401,4 +438,3 @@ export default function PortfolioCard({
     </article>
   );
 }
-

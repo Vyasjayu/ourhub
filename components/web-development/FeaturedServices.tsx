@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -6,20 +5,57 @@ import { ArrowRight, Sparkles } from "lucide-react";
 
 import { webServices } from "@/data/webDevelopment";
 import ServiceCard from "./ServiceCard";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function FeaturedServices() {
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
+  const t = {
+    ourExpertise: isHindi
+      ? "हमारी विशेषज्ञता"
+      : "Our Expertise",
+
+    featuredServices: isHindi
+      ? "फीचर्ड सर्विसेज"
+      : "Featured Services",
+
+    description: isHindi
+      ? "मॉडर्न बिज़नेस के लिए प्रीमियम डिजिटल सॉल्यूशंस"
+      : "Premium digital solutions for modern businesses",
+
+    viewAll: isHindi
+      ? "सभी देखें"
+      : "View All",
+
+    chooseWhatYouNeed: isHindi
+      ? "अपनी जरूरत की सर्विस चुनें"
+      : "Choose what you need",
+
+    professionalSolutions: isHindi
+      ? "प्रोफेशनल सॉल्यूशंस"
+      : "Professional Solutions",
+
+    builtForGoals: isHindi
+      ? "आपके बिज़नेस गोल्स के लिए तैयार"
+      : "Built for your business goals",
+
+    ourHub: "OurHub",
+  };
+
   return (
     <section className="relative mt-8 px-4">
-      {/* Ambient glow */}
+      {/* =====================================================
+          AMBIENT GLOW
+      ====================================================== */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -left-20 top-10 h-40 w-40 rounded-full bg-[#DFAE45]/[0.045] blur-[70px]"
       />
 
-      {/* =========================
+      {/* =====================================================
           SECTION HEADER
-      ========================== */}
-
+      ====================================================== */}
       <div className="relative mb-5 flex items-end justify-between">
         <div>
           {/* Small label */}
@@ -27,13 +63,14 @@ export default function FeaturedServices() {
             <span className="h-px w-5 bg-[#DFAE45]" />
 
             <span className="text-[9px] font-extrabold uppercase tracking-[0.18em] text-[#DFAE45]">
-              Our Expertise
+              {t.ourExpertise}
             </span>
           </div>
 
+          {/* Title + Count */}
           <div className="flex items-center gap-2">
             <h2 className="text-[21px] font-black tracking-[-0.03em] text-white">
-              Featured Services
+              {t.featuredServices}
             </h2>
 
             <span className="rounded-full border border-white/[0.07] bg-white/[0.035] px-2 py-0.5 text-[8px] font-bold text-slate-500">
@@ -41,14 +78,18 @@ export default function FeaturedServices() {
             </span>
           </div>
 
+          {/* Description */}
           <p className="mt-1 text-[10px] font-medium text-slate-500">
-            Premium digital solutions for modern businesses
+            {t.description}
           </p>
         </div>
 
-        {/* View All */}
+        {/* =================================================
+            VIEW ALL
+        ================================================== */}
         <Link
           href="/web-development/services"
+          aria-label={t.viewAll}
           className="
             group
             flex
@@ -71,7 +112,7 @@ export default function FeaturedServices() {
             active:scale-95
           "
         >
-          <span>View All</span>
+          <span>{t.viewAll}</span>
 
           <ArrowRight
             size={12}
@@ -81,10 +122,9 @@ export default function FeaturedServices() {
         </Link>
       </div>
 
-      {/* =========================
+      {/* =====================================================
           PREMIUM SERVICE AREA
-      ========================== */}
-
+      ====================================================== */}
       <div className="relative">
         {/* Top decorative line */}
         <div className="mb-3 flex items-center gap-2">
@@ -94,13 +134,15 @@ export default function FeaturedServices() {
           />
 
           <span className="text-[8px] font-semibold uppercase tracking-[0.14em] text-slate-600">
-            Choose what you need
+            {t.chooseWhatYouNeed}
           </span>
 
           <div className="h-px flex-1 bg-gradient-to-r from-white/[0.06] to-transparent" />
         </div>
 
-        {/* Services Grid */}
+        {/* =================================================
+            SERVICES GRID
+        ================================================== */}
         <div className="grid grid-cols-2 gap-3.5">
           {webServices.map((item) => (
             <div
@@ -141,10 +183,9 @@ export default function FeaturedServices() {
         </div>
       </div>
 
-      {/* =========================
+      {/* =====================================================
           BOTTOM TRUST STRIP
-      ========================== */}
-
+      ====================================================== */}
       <div
         className="
           mt-5
@@ -159,6 +200,7 @@ export default function FeaturedServices() {
           py-3
         "
       >
+        {/* Professional Solutions */}
         <div className="flex items-center gap-2">
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-400/[0.08]">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]" />
@@ -166,15 +208,16 @@ export default function FeaturedServices() {
 
           <div>
             <p className="text-[9px] font-bold text-slate-300">
-              Professional Solutions
+              {t.professionalSolutions}
             </p>
 
             <p className="mt-0.5 text-[7px] font-medium text-slate-600">
-              Built for your business goals
+              {t.builtForGoals}
             </p>
           </div>
         </div>
 
+        {/* OurHub */}
         <div className="flex items-center gap-1">
           <Sparkles
             size={10}
@@ -182,11 +225,10 @@ export default function FeaturedServices() {
           />
 
           <span className="text-[8px] font-bold text-[#DFAE45]">
-            OurHub
+            {t.ourHub}
           </span>
         </div>
       </div>
     </section>
   );
 }
-

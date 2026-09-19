@@ -1,4 +1,3 @@
-
 "use client";
 
 import {
@@ -9,38 +8,90 @@ import {
   Users,
 } from "lucide-react";
 
+import { useLanguage } from "@/context/LanguageContext";
+
 const stats = [
   {
     number: "250+",
-    label: "Projects",
-    description: "Delivered",
+    label: {
+      en: "Projects",
+      hi: "प्रोजेक्ट्स",
+    },
+    description: {
+      en: "Delivered",
+      hi: "डिलीवर किए गए",
+    },
     icon: BriefcaseBusiness,
   },
   {
     number: "150+",
-    label: "Clients",
-    description: "Trusted Us",
+    label: {
+      en: "Clients",
+      hi: "क्लाइंट्स",
+    },
+    description: {
+      en: "Trusted Us",
+      hi: "हम पर भरोसा किया",
+    },
     icon: Users,
   },
   {
     number: "99%",
-    label: "Success",
-    description: "Satisfaction",
+    label: {
+      en: "Success",
+      hi: "सक्सेस",
+    },
+    description: {
+      en: "Satisfaction",
+      hi: "संतुष्टि",
+    },
     icon: Sparkles,
   },
   {
     number: "24/7",
-    label: "Support",
-    description: "Always Available",
+    label: {
+      en: "Support",
+      hi: "सपोर्ट",
+    },
+    description: {
+      en: "Always Available",
+      hi: "हमेशा उपलब्ध",
+    },
     icon: Headphones,
   },
 ];
 
 export default function Stats() {
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
+  const t = {
+    ourNumbers: isHindi
+      ? "हमारे आंकड़े"
+      : "Our Numbers",
+
+    ourTrackRecord: isHindi
+      ? "हमारा ट्रैक रिकॉर्ड"
+      : "Our Track Record",
+
+    description: isHindi
+      ? "क्वालिटी, भरोसेमंद सर्विस और क्लाइंट संतुष्टि के प्रति हमारी प्रतिबद्धता को दर्शाने वाले आंकड़े।"
+      : "Numbers that reflect our commitment to quality, reliability and client satisfaction.",
+
+    growingWithEveryProject: isHindi
+      ? "हर प्रोजेक्ट के साथ आगे बढ़ रहे हैं"
+      : "Growing with every project",
+
+    nextNumber: isHindi
+      ? "आपकी सफलता अगला आंकड़ा है जिसे हम जोड़ना चाहते हैं।"
+      : "Your success is the next number we want to add.",
+  };
+
   return (
     <section className="relative mt-12 overflow-hidden px-4">
       {/* Ambient Glows */}
       <div className="pointer-events-none absolute -left-24 top-10 h-56 w-56 rounded-full bg-[#DFAE45]/[0.045] blur-3xl" />
+
       <div className="pointer-events-none absolute -right-24 bottom-0 h-64 w-64 rounded-full bg-blue-500/[0.025] blur-3xl" />
 
       <div className="relative">
@@ -57,7 +108,7 @@ export default function Stats() {
               </div>
 
               <span className="text-[10px] font-bold uppercase tracking-[2px] text-[#DFAE45]">
-                Our Numbers
+                {t.ourNumbers}
               </span>
             </div>
 
@@ -65,13 +116,12 @@ export default function Stats() {
               <span className="h-7 w-1 rounded-full bg-gradient-to-b from-[#FFD86A] to-[#DFAE45]" />
 
               <h2 className="text-[24px] font-extrabold tracking-tight text-white">
-                Our Track Record
+                {t.ourTrackRecord}
               </h2>
             </div>
 
             <p className="mt-2 pl-3 text-[13px] leading-5 text-gray-400">
-              Numbers that reflect our commitment to quality, reliability and
-              client satisfaction.
+              {t.description}
             </p>
           </div>
         </div>
@@ -101,7 +151,7 @@ export default function Stats() {
 
               return (
                 <div
-                  key={item.label}
+                  key={item.label.en}
                   className={`
                     group relative p-4
                     transition-all duration-300
@@ -160,7 +210,7 @@ export default function Stats() {
 
                   {/* Label */}
                   <p className="mt-2 text-[12px] font-extrabold text-white">
-                    {item.label}
+                    {item.label[language]}
                   </p>
 
                   {/* Description */}
@@ -168,7 +218,7 @@ export default function Stats() {
                     <span className="h-1.5 w-1.5 rounded-full bg-green-400 shadow-[0_0_7px_rgba(74,222,128,0.7)]" />
 
                     <span className="text-[8px] font-medium text-gray-600">
-                      {item.description}
+                      {item.description[language]}
                     </span>
                   </div>
 
@@ -191,11 +241,11 @@ export default function Stats() {
 
             <div className="min-w-0">
               <p className="text-[10px] font-bold text-white">
-                Growing with every project
+                {t.growingWithEveryProject}
               </p>
 
               <p className="mt-0.5 text-[8px] leading-4 text-gray-600">
-                Your success is the next number we want to add.
+                {t.nextNumber}
               </p>
             </div>
 
@@ -206,4 +256,3 @@ export default function Stats() {
     </section>
   );
 }
-

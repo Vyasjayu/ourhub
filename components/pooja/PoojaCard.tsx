@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -8,6 +9,8 @@ import {
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
+
+import { useLanguage } from "@/context/LanguageContext";
 
 interface PoojaCardProps {
   title: string;
@@ -26,7 +29,41 @@ export default function PoojaCard({
   image,
   slug,
 }: PoojaCardProps) {
+  const { language } = useLanguage();
+
   const bookingUrl = `/pooja/online/${slug}/book`;
+
+  const text = {
+    sacred:
+      language === "hi"
+        ? "पवित्र"
+        : "Sacred",
+
+    verifiedPooja:
+      language === "hi"
+        ? "प्रमाणित पूजा"
+        : "VERIFIED POOJA",
+
+    duration:
+      language === "hi"
+        ? "अवधि"
+        : "Duration",
+
+    startingFrom:
+      language === "hi"
+        ? "शुरुआत"
+        : "Starting From",
+
+    bookThisPooja:
+      language === "hi"
+        ? "यह पूजा बुक करें"
+        : "Book This Pooja",
+
+    imageAlt:
+      language === "hi"
+        ? `${title} - ऑनलाइन पूजा`
+        : `${title} - Online Pooja`,
+  };
 
   return (
     <div
@@ -51,7 +88,6 @@ export default function PoojaCard({
         active:scale-[0.985]
       "
     >
-
       {/* =====================================================
           AMBIENT GOLD GLOW
       ===================================================== */}
@@ -60,10 +96,7 @@ export default function PoojaCard({
 
       <div className="pointer-events-none absolute -bottom-20 -left-16 h-32 w-32 rounded-full bg-indigo-500/[0.04] blur-[45px]" />
 
-
       <div className="relative flex gap-3">
-
-
         {/* =================================================
             IMAGE
         ================================================= */}
@@ -82,10 +115,9 @@ export default function PoojaCard({
             bg-[#111827]
           "
         >
-
           <Image
             src={image}
-            alt={title}
+            alt={text.imageAlt}
             fill
             sizes="106px"
             className="
@@ -96,70 +128,50 @@ export default function PoojaCard({
             "
           />
 
-
           {/* Cinematic Overlay */}
-
           <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/10" />
 
-
           {/* Top Badge */}
-
           <div className="absolute left-2 top-2">
-
             <div className="flex items-center gap-1 rounded-full border border-[#DFAE45]/25 bg-black/45 px-2 py-1 backdrop-blur-md">
-
               <Sparkles
                 size={9}
                 className="text-[#DFAE45]"
               />
 
               <span className="text-[7px] font-extrabold uppercase tracking-wide text-[#F3D27A]">
-                Sacred
+                {text.sacred}
               </span>
-
             </div>
-
           </div>
 
-
           {/* Verified Badge */}
-
           <div className="absolute bottom-2 left-2 right-2">
-
             <div className="flex items-center justify-center gap-1 rounded-full border border-white/10 bg-black/50 px-2 py-1.5 backdrop-blur-md">
-
               <ShieldCheck
                 size={10}
                 className="text-[#DFAE45]"
               />
 
               <span className="text-[7px] font-bold text-white">
-                VERIFIED POOJA
+                {text.verifiedPooja}
               </span>
-
             </div>
-
           </div>
-
         </Link>
-
 
         {/* =================================================
             CONTENT
         ================================================= */}
 
         <div className="min-w-0 flex-1 py-0.5">
-
-
           {/* TITLE ROW */}
 
           <Link
             href={bookingUrl}
             className="block"
           >
-
             <div className="flex items-start justify-between gap-2">
-
               <h3
                 className="
                   line-clamp-2
@@ -177,18 +189,13 @@ export default function PoojaCard({
               </h3>
 
               <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#DFAE45]/[0.07]">
-
                 <Sparkles
                   size={11}
                   className="text-[#DFAE45]"
                 />
-
               </div>
-
             </div>
-
           </Link>
-
 
           {/* DESCRIPTION */}
 
@@ -196,60 +203,46 @@ export default function PoojaCard({
             {description}
           </p>
 
-
           {/* DIVIDER */}
 
           <div className="my-2.5 h-px bg-gradient-to-r from-white/[0.08] via-white/[0.04] to-transparent" />
 
-
           {/* INFO */}
 
           <div className="flex items-center gap-3">
-
             {/* Duration */}
 
             <div className="flex items-center gap-1.5">
-
               <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-white/[0.035]">
-
                 <Clock3
                   size={11}
                   className="text-[#DFAE45]"
                 />
-
               </div>
 
               <div>
-
                 <p className="text-[7px] uppercase tracking-wide text-gray-600">
-                  Duration
+                  {text.duration}
                 </p>
 
                 <p className="mt-0.5 text-[9px] font-semibold text-gray-300">
                   {duration}
                 </p>
-
               </div>
-
             </div>
-
 
             {/* Price */}
 
             <div>
-
               <p className="text-[7px] uppercase tracking-wide text-gray-600">
-                Starting From
+                {text.startingFrom}
               </p>
 
               <p className="mt-0.5 text-[16px] font-extrabold leading-none text-[#F3C75F]">
                 ₹{price}
               </p>
-
             </div>
-
           </div>
-
 
           {/* =================================================
               BOOK BUTTON
@@ -279,28 +272,26 @@ export default function PoojaCard({
               active:scale-95
             "
           >
-
-            Book This Pooja
+            {text.bookThisPooja}
 
             <ArrowRight
               size={12}
               strokeWidth={2.5}
-              className="transition-transform duration-300 group-hover:translate-x-0.5"
+              className="
+                transition-transform
+                duration-300
+                group-hover:translate-x-0.5
+              "
             />
-
           </Link>
-
         </div>
-
       </div>
-
 
       {/* =====================================================
           PREMIUM BOTTOM ACCENT
       ===================================================== */}
 
       <div className="pointer-events-none absolute bottom-0 left-1/2 h-[1px] w-0 -translate-x-1/2 bg-gradient-to-r from-transparent via-[#DFAE45] to-transparent transition-all duration-500 group-hover:w-[65%]" />
-
     </div>
   );
 }

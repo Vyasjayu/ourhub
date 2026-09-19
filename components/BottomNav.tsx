@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -12,6 +11,8 @@ import {
   Info,
 } from "lucide-react";
 
+import { useLanguage } from "@/context/LanguageContext";
+
 interface BottomNavProps {
   onCategoriesClick?: () => void;
 }
@@ -21,6 +22,32 @@ export default function BottomNav({
 }: BottomNavProps) {
   const pathname = usePathname();
   const router = useRouter();
+
+  const { language } = useLanguage();
+
+  /* =========================================================
+     TRANSLATIONS
+  ========================================================= */
+
+  const translations = {
+    en: {
+      home: "Home",
+      categories: "Categories",
+      bookings: "Bookings",
+      about: "About",
+      profile: "Profile",
+    },
+
+    hi: {
+      home: "होम",
+      categories: "श्रेणियाँ",
+      bookings: "बुकिंग",
+      about: "हमारे बारे में",
+      profile: "प्रोफ़ाइल",
+    },
+  };
+
+  const text = translations[language];
 
   /* =========================================================
      PROFILE LOGIN CHECK
@@ -92,7 +119,6 @@ export default function BottomNav({
         -translate-x-1/2
       "
     >
-
       {/* =====================================================
           OUTER GLOW
       ===================================================== */}
@@ -118,23 +144,16 @@ export default function BottomNav({
           flex
           items-center
           justify-between
-
           rounded-[26px]
-
           border
           border-white/[0.09]
-
           bg-[#090b0f]/95
-
           px-2
           py-2
-
           shadow-[0_15px_50px_rgba(0,0,0,0.65)]
-
           backdrop-blur-2xl
         "
       >
-
         {/* ===================================================
             TOP GOLD LINE
         =================================================== */}
@@ -160,11 +179,9 @@ export default function BottomNav({
 
         <Link
           href="/"
-          className={navItemClass(
-            isActive("/")
-          )}
+          aria-label={text.home}
+          className={navItemClass(isActive("/"))}
         >
-
           {/* Active Background */}
 
           {isActive("/") && (
@@ -204,9 +221,7 @@ export default function BottomNav({
           >
             <House
               size={21}
-              strokeWidth={
-                isActive("/") ? 2.4 : 1.9
-              }
+              strokeWidth={isActive("/") ? 2.4 : 1.9}
             />
 
             {/* Active Dot */}
@@ -238,9 +253,8 @@ export default function BottomNav({
               }
             `}
           >
-            Home
+            {text.home}
           </span>
-
         </Link>
 
         {/* ===================================================
@@ -249,12 +263,10 @@ export default function BottomNav({
 
         <button
           type="button"
-          onClick={() =>
-            onCategoriesClick?.()
-          }
+          onClick={() => onCategoriesClick?.()}
+          aria-label={text.categories}
           className={navItemClass(false)}
         >
-
           <div
             className="
               flex
@@ -278,14 +290,14 @@ export default function BottomNav({
           <span
             className="
               mt-0.5
+              whitespace-nowrap
               text-[10px]
               font-medium
               text-slate-500
             "
           >
-            Categories
+            {text.categories}
           </span>
-
         </button>
 
         {/* ===================================================
@@ -294,10 +306,12 @@ export default function BottomNav({
 
         <Link
           href="/bookings"
+          aria-label={text.bookings}
           className={navItemClass(
             isActive("/bookings")
           )}
         >
+          {/* Active Background */}
 
           {isActive("/bookings") && (
             <div
@@ -312,6 +326,8 @@ export default function BottomNav({
               "
             />
           )}
+
+          {/* Icon */}
 
           <div
             className={`
@@ -340,6 +356,8 @@ export default function BottomNav({
               }
             />
 
+            {/* Active Dot */}
+
             {isActive("/bookings") && (
               <span
                 className="
@@ -359,6 +377,7 @@ export default function BottomNav({
             className={`
               relative
               mt-0.5
+              whitespace-nowrap
               text-[10px]
               ${
                 isActive("/bookings")
@@ -367,9 +386,8 @@ export default function BottomNav({
               }
             `}
           >
-            Bookings
+            {text.bookings}
           </span>
-
         </Link>
 
         {/* ===================================================
@@ -378,10 +396,12 @@ export default function BottomNav({
 
         <Link
           href="/about"
+          aria-label={text.about}
           className={navItemClass(
             isActive("/about")
           )}
         >
+          {/* Active Background */}
 
           {isActive("/about") && (
             <div
@@ -396,6 +416,8 @@ export default function BottomNav({
               "
             />
           )}
+
+          {/* Icon */}
 
           <div
             className={`
@@ -423,6 +445,8 @@ export default function BottomNav({
               }
             />
 
+            {/* Active Dot */}
+
             {isActive("/about") && (
               <span
                 className="
@@ -442,6 +466,7 @@ export default function BottomNav({
             className={`
               relative
               mt-0.5
+              whitespace-nowrap
               text-[10px]
               ${
                 isActive("/about")
@@ -450,9 +475,8 @@ export default function BottomNav({
               }
             `}
           >
-            About
+            {text.about}
           </span>
-
         </Link>
 
         {/* ===================================================
@@ -462,10 +486,12 @@ export default function BottomNav({
         <button
           type="button"
           onClick={handleProfileClick}
+          aria-label={text.profile}
           className={navItemClass(
             isActive("/profile")
           )}
         >
+          {/* Active Background */}
 
           {isActive("/profile") && (
             <div
@@ -480,6 +506,8 @@ export default function BottomNav({
               "
             />
           )}
+
+          {/* Icon */}
 
           <div
             className={`
@@ -507,6 +535,8 @@ export default function BottomNav({
               }
             />
 
+            {/* Active Dot */}
+
             {isActive("/profile") && (
               <span
                 className="
@@ -526,6 +556,7 @@ export default function BottomNav({
             className={`
               relative
               mt-0.5
+              whitespace-nowrap
               text-[10px]
               ${
                 isActive("/profile")
@@ -534,14 +565,10 @@ export default function BottomNav({
               }
             `}
           >
-            Profile
+            {text.profile}
           </span>
-
         </button>
-
       </div>
-
     </nav>
   );
 }
-

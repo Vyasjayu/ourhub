@@ -1,4 +1,3 @@
-
 "use client";
 
 import {
@@ -9,32 +8,81 @@ import {
   Star,
 } from "lucide-react";
 
+import { useLanguage } from "@/context/LanguageContext";
+
 const reviews = [
   {
     name: "Rahul Sharma",
-    review: "Amazing website quality. Very professional team.",
+    review: {
+      en: "Amazing website quality. Very professional team.",
+      hi: "वेबसाइट की क्वालिटी शानदार है। बहुत ही प्रोफेशनल टीम है।",
+    },
     rating: 5,
     initials: "RS",
   },
   {
     name: "Neha Patel",
-    review: "OurHub delivered before deadline.",
+    review: {
+      en: "OurHub delivered before deadline.",
+      hi: "OurHub ने तय समय से पहले प्रोजेक्ट डिलीवर कर दिया।",
+    },
     rating: 5,
     initials: "NP",
   },
   {
     name: "Vikas Singh",
-    review: "Best UI & UX experience.",
+    review: {
+      en: "Best UI & UX experience.",
+      hi: "बहुत शानदार UI और UX एक्सपीरियंस रहा।",
+    },
     rating: 5,
     initials: "VS",
   },
 ];
 
 export default function Testimonials() {
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
+  const t = {
+    clientStories: isHindi
+      ? "क्लाइंट स्टोरीज"
+      : "Client Stories",
+
+    happyClients: isHindi
+      ? "खुश ग्राहक"
+      : "Happy Clients",
+
+    description: isHindi
+      ? "उन बिज़नेसेज़ के रियल एक्सपीरियंस जिन्होंने अपनी डिजिटल पहचान के लिए OurHub पर भरोसा किया।"
+      : "Real experiences from businesses who trusted OurHub with their digital presence.",
+
+    clientSatisfaction: isHindi
+      ? "क्लाइंट संतुष्टि"
+      : "Client satisfaction",
+
+    positive: isHindi
+      ? "सकारात्मक"
+      : "Positive",
+
+    fiveStar: isHindi
+      ? "5 स्टार"
+      : "5 Star",
+
+    verifiedClient: isHindi
+      ? "वेरिफाइड क्लाइंट"
+      : "Verified Client",
+
+    trustedPremium: isHindi
+      ? "प्रीमियम डिजिटल एक्सपीरियंस के लिए भरोसेमंद"
+      : "Trusted for premium digital experiences",
+  };
+
   return (
     <section className="relative mt-12 overflow-hidden px-4">
       {/* Ambient Glow */}
       <div className="pointer-events-none absolute -left-24 top-20 h-56 w-56 rounded-full bg-[#DFAE45]/[0.045] blur-3xl" />
+
       <div className="pointer-events-none absolute -right-24 bottom-10 h-64 w-64 rounded-full bg-blue-500/[0.025] blur-3xl" />
 
       <div className="relative">
@@ -49,7 +97,7 @@ export default function Testimonials() {
           </div>
 
           <span className="text-[10px] font-bold uppercase tracking-[2px] text-[#DFAE45]">
-            Client Stories
+            {t.clientStories}
           </span>
         </div>
 
@@ -58,14 +106,13 @@ export default function Testimonials() {
 
           <div>
             <h2 className="text-[24px] font-extrabold tracking-tight text-white">
-              Happy Clients
+              {t.happyClients}
             </h2>
           </div>
         </div>
 
         <p className="mt-2 pl-3 text-[13px] leading-5 text-gray-400">
-          Real experiences from businesses who trusted OurHub with their
-          digital presence.
+          {t.description}
         </p>
 
         {/* Rating Summary */}
@@ -103,7 +150,7 @@ export default function Testimonials() {
                 </div>
 
                 <p className="mt-0.5 text-[9px] font-medium text-gray-500">
-                  Client satisfaction
+                  {t.clientSatisfaction}
                 </p>
               </div>
             </div>
@@ -112,8 +159,9 @@ export default function Testimonials() {
               <p className="text-[16px] font-extrabold text-[#DFAE45]">
                 100%
               </p>
+
               <p className="text-[8px] font-semibold uppercase tracking-[1px] text-gray-600">
-                Positive
+                {t.positive}
               </p>
             </div>
           </div>
@@ -155,26 +203,28 @@ export default function Testimonials() {
               {/* Rating */}
               <div className="relative flex items-center justify-between">
                 <div className="flex items-center gap-1">
-                  {Array.from({ length: item.rating }).map((_, starIndex) => (
-                    <Star
-                      key={starIndex}
-                      size={13}
-                      className="text-[#DFAE45]"
-                      fill="currentColor"
-                      strokeWidth={1.5}
-                    />
-                  ))}
+                  {Array.from({ length: item.rating }).map(
+                    (_, starIndex) => (
+                      <Star
+                        key={starIndex}
+                        size={13}
+                        className="text-[#DFAE45]"
+                        fill="currentColor"
+                        strokeWidth={1.5}
+                      />
+                    )
+                  )}
                 </div>
 
                 <span className="mr-12 rounded-full border border-green-400/10 bg-green-400/[0.06] px-2 py-1 text-[7px] font-bold uppercase tracking-[1px] text-green-400">
-                  5 Star
+                  {t.fiveStar}
                 </span>
               </div>
 
               {/* Review */}
               <div className="relative mt-4">
                 <p className="text-[13px] leading-[21px] text-gray-300">
-                  &ldquo;{item.review}&rdquo;
+                  &ldquo;{item.review[language]}&rdquo;
                 </p>
               </div>
 
@@ -205,7 +255,7 @@ export default function Testimonials() {
 
                     <div className="mt-0.5 flex items-center gap-1.5">
                       <span className="text-[8px] font-medium text-gray-600">
-                        Verified Client
+                        {t.verifiedClient}
                       </span>
 
                       <span className="h-1 w-1 rounded-full bg-[#DFAE45]/40" />
@@ -237,7 +287,7 @@ export default function Testimonials() {
           />
 
           <span className="text-[9px] font-semibold text-gray-500">
-            Trusted for premium digital experiences
+            {t.trustedPremium}
           </span>
 
           <Sparkles
@@ -250,4 +300,3 @@ export default function Testimonials() {
     </section>
   );
 }
-

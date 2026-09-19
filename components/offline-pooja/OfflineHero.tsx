@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -12,8 +13,12 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+import { useLanguage } from "@/context/LanguageContext";
+
 export default function OfflineHero() {
   const router = useRouter();
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
 
   return (
     <section className="relative px-4 pt-4">
@@ -21,11 +26,10 @@ export default function OfflineHero() {
       <div className="pointer-events-none absolute left-1/2 top-0 h-44 w-72 -translate-x-1/2 rounded-full bg-[#DFAE45]/[0.08] blur-3xl" />
 
       <div className="group relative h-[390px] overflow-hidden rounded-[28px] border border-[#DFAE45]/25 bg-[#080D14] shadow-[0_25px_70px_rgba(0,0,0,0.45)]">
-
         {/* Background Image */}
         <Image
           src="/images/offline-pooja/temple-hero.jpg"
-          alt="Sacred Temple"
+          alt={isHindi ? "पवित्र मंदिर" : "Sacred Temple"}
           fill
           priority
           sizes="(max-width: 430px) 100vw, 430px"
@@ -51,7 +55,7 @@ export default function OfflineHero() {
           </span>
 
           <span className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#F3C75F]">
-            Sacred Experience
+            {isHindi ? "पवित्र अनुभव" : "Sacred Experience"}
           </span>
         </div>
 
@@ -63,35 +67,47 @@ export default function OfflineHero() {
           </span>
 
           <span className="text-[9px] font-semibold text-white">
-            Available
+            {isHindi ? "उपलब्ध" : "Available"}
           </span>
         </div>
 
         {/* Main Content */}
         <div className="absolute inset-x-0 bottom-0 p-5">
-
           {/* Small label */}
           <div className="mb-2 flex items-center gap-2">
             <span className="h-px w-7 bg-[#DFAE45]" />
 
             <span className="text-[9px] font-bold uppercase tracking-[0.22em] text-[#DFAE45]">
-              Divine Temple Pooja
+              {isHindi ? "दिव्य मंदिर पूजा" : "Divine Temple Pooja"}
             </span>
           </div>
 
           {/* Heading */}
           <h2 className="max-w-[310px] text-[30px] font-extrabold leading-[1.08] tracking-[-0.03em] text-white">
-            Sacred Rituals
-            <br />
-            <span className="bg-gradient-to-r from-[#F7D77A] via-[#DFAE45] to-[#B98222] bg-clip-text text-transparent">
-              At Divine Temples
-            </span>
+            {isHindi ? (
+              <>
+                पवित्र अनुष्ठान
+                <br />
+                <span className="bg-gradient-to-r from-[#F7D77A] via-[#DFAE45] to-[#B98222] bg-clip-text text-transparent">
+                  दिव्य मंदिरों में
+                </span>
+              </>
+            ) : (
+              <>
+                Sacred Rituals
+                <br />
+                <span className="bg-gradient-to-r from-[#F7D77A] via-[#DFAE45] to-[#B98222] bg-clip-text text-transparent">
+                  At Divine Temples
+                </span>
+              </>
+            )}
           </h2>
 
           {/* Description */}
           <p className="mt-3 max-w-[315px] text-[13px] leading-[1.65] text-slate-200/90">
-            Let our verified pandits perform authentic rituals at your
-            selected temple with complete devotion and transparency.
+            {isHindi
+              ? "हमारे प्रमाणित पंडित आपकी चुनी हुई मंदिर में पूरे समर्पण और पारदर्शिता के साथ प्रामाणिक अनुष्ठान संपन्न करते हैं।"
+              : "Let our verified pandits perform authentic rituals at your selected temple with complete devotion and transparency."}
           </p>
 
           {/* Rating strip */}
@@ -102,6 +118,7 @@ export default function OfflineHero() {
                 className="text-[#F3C75F]"
                 fill="currentColor"
               />
+
               <span className="text-[10px] font-bold text-white">
                 4.9
               </span>
@@ -117,14 +134,15 @@ export default function OfflineHero() {
               />
 
               <span className="text-[10px] font-medium text-slate-200">
-                Verified Temple Service
+                {isHindi
+                  ? "प्रमाणित मंदिर सेवा"
+                  : "Verified Temple Service"}
               </span>
             </div>
           </div>
 
           {/* Trust Points */}
           <div className="mt-4 grid grid-cols-3 gap-2">
-
             {/* Item 1 */}
             <div className="rounded-2xl border border-white/[0.08] bg-black/30 p-2.5 backdrop-blur-md">
               <div className="mb-2 flex h-7 w-7 items-center justify-center rounded-xl border border-[#DFAE45]/20 bg-[#DFAE45]/10">
@@ -135,9 +153,19 @@ export default function OfflineHero() {
               </div>
 
               <p className="text-[9px] font-semibold leading-3.5 text-white">
-                Real Temple
-                <br />
-                Experience
+                {isHindi ? (
+                  <>
+                    वास्तविक मंदिर
+                    <br />
+                    अनुभव
+                  </>
+                ) : (
+                  <>
+                    Real Temple
+                    <br />
+                    Experience
+                  </>
+                )}
               </p>
             </div>
 
@@ -151,9 +179,19 @@ export default function OfflineHero() {
               </div>
 
               <p className="text-[9px] font-semibold leading-3.5 text-white">
-                Verified
-                <br />
-                Pandits
+                {isHindi ? (
+                  <>
+                    प्रमाणित
+                    <br />
+                    पंडित
+                  </>
+                ) : (
+                  <>
+                    Verified
+                    <br />
+                    Pandits
+                  </>
+                )}
               </p>
             </div>
 
@@ -167,9 +205,19 @@ export default function OfflineHero() {
               </div>
 
               <p className="text-[9px] font-semibold leading-3.5 text-white">
-                Complete
-                <br />
-                Transparency
+                {isHindi ? (
+                  <>
+                    पूर्ण
+                    <br />
+                    पारदर्शिता
+                  </>
+                ) : (
+                  <>
+                    Complete
+                    <br />
+                    Transparency
+                  </>
+                )}
               </p>
             </div>
           </div>
@@ -188,7 +236,7 @@ export default function OfflineHero() {
             </span>
 
             <span className="relative z-10">
-              Book Offline Pooja
+              {isHindi ? "ऑफलाइन पूजा बुक करें" : "Book Offline Pooja"}
             </span>
 
             <span className="relative z-10 flex h-7 w-7 items-center justify-center rounded-full bg-black/10 transition-transform duration-300 group-hover/btn:translate-x-1">
@@ -210,14 +258,23 @@ export default function OfflineHero() {
 
       {/* Bottom micro trust text */}
       <div className="mt-2 flex items-center justify-center gap-2">
-        <ShieldCheck size={11} className="text-[#DFAE45]" />
+        <ShieldCheck
+          size={11}
+          className="text-[#DFAE45]"
+        />
 
         <span className="text-[8px] font-medium uppercase tracking-[0.16em] text-slate-500">
-          Authentic • Verified • Trusted
+          {isHindi
+            ? "प्रामाणिक • प्रमाणित • विश्वसनीय"
+            : "Authentic • Verified • Trusted"}
         </span>
 
-        <ShieldCheck size={11} className="text-[#DFAE45]" />
+        <ShieldCheck
+          size={11}
+          className="text-[#DFAE45]"
+        />
       </div>
     </section>
   );
 }
+

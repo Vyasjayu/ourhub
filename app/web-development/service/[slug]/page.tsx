@@ -2,8 +2,13 @@
 
 import { use, useState } from "react";
 import { notFound } from "next/navigation";
-import { ArrowLeft, CheckCircle2, Code2, Sparkles } from "lucide-react";
+import {
+  CheckCircle2,
+  Code2,
+  Sparkles,
+} from "lucide-react";
 
+import { useLanguage } from "@/context/LanguageContext";
 import { services } from "@/data/services";
 
 import ServiceHeader from "@/components/web-development/service/ServiceHeader";
@@ -23,13 +28,97 @@ interface Props {
 
 export default function ServicePage({ params }: Props) {
   const { slug } = use(params);
+
   const [contactOpen, setContactOpen] = useState(false);
 
-  const service = services.find((item) => item.slug === slug);
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
+  const service = services.find(
+    (item) => item.slug === slug
+  );
 
   if (!service) {
     notFound();
   }
+
+  const t = {
+    // Identity strip
+    premiumService: isHindi
+      ? "प्रीमियम सर्विस"
+      : "Premium Service",
+
+    professionalDigitalSolution: isHindi
+      ? "OurHub द्वारा प्रोफेशनल डिजिटल सॉल्यूशन"
+      : "Professional digital solution by OurHub",
+
+    verified: isHindi
+      ? "वेरिफाइड"
+      : "Verified",
+
+    // Trust bar
+    premium: isHindi
+      ? "प्रीमियम"
+      : "Premium",
+
+    quality: isHindi
+      ? "क्वालिटी"
+      : "Quality",
+
+    fast: isHindi
+      ? "फास्ट"
+      : "Fast",
+
+    delivery: isHindi
+      ? "डिलीवरी"
+      : "Delivery",
+
+    support: isHindi
+      ? "सपोर्ट"
+      : "Support",
+
+    dedicated: isHindi
+      ? "डेडिकेटेड"
+      : "Dedicated",
+
+    // Mid CTA
+    readyToBuild: isHindi
+      ? "बनाने के लिए तैयार?"
+      : "Ready to build?",
+
+    letsTurnIdea: isHindi
+      ? "आइए आपके आइडिया को हकीकत में बदलें।"
+      : "Let's turn your idea into reality.",
+
+    ctaDescription: isHindi
+      ? "हमें बताएं कि आपको क्या चाहिए और हमारी टीम आपके बिज़नेस के लिए सही सॉल्यूशन चुनने में मदद करेगी।"
+      : "Tell us what you need and our team will help you choose the right solution for your business.",
+
+    startYourProject: isHindi
+      ? "अपना प्रोजेक्ट शुरू करें"
+      : "Start Your Project",
+
+    // Final trust
+    builtWithOurHub: isHindi
+      ? "OurHub स्टैंडर्ड के साथ तैयार"
+      : "Built with the OurHub Standard",
+
+    finalDescription: isHindi
+      ? "प्रीमियम डिजाइन, क्लीन डेवलपमेंट, रिस्पॉन्सिव एक्सपीरियंस और प्रोफेशनल सपोर्ट।"
+      : "Premium design, clean development, responsive experience and professional support.",
+
+    mobileFirst: isHindi
+      ? "मोबाइल फर्स्ट"
+      : "Mobile First",
+
+    seoReady: isHindi
+      ? "SEO रेडी"
+      : "SEO Ready",
+
+    supportTag: isHindi
+      ? "सपोर्ट"
+      : "Support",
+  };
 
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-[#02060D] text-white">
@@ -51,6 +140,7 @@ export default function ServicePage({ params }: Props) {
 
       <div className="relative mx-auto min-h-screen w-full max-w-[430px] overflow-hidden bg-[#050B14] shadow-[0_0_100px_rgba(0,0,0,0.35)]">
         {/* subtle top ambient glow */}
+
         <div className="pointer-events-none absolute left-1/2 top-0 h-64 w-[85%] -translate-x-1/2 rounded-full bg-[#DFAE45]/[0.035] blur-[90px]" />
 
         {/* =====================================================
@@ -68,13 +158,16 @@ export default function ServicePage({ params }: Props) {
         <section className="relative px-4 pt-4">
           <div className="relative overflow-hidden rounded-[24px] border border-white/[0.07] bg-gradient-to-r from-[#101C2B] via-[#0B1725] to-[#08121E] p-4 shadow-[0_15px_40px_rgba(0,0,0,0.18)]">
             {/* glow */}
+
             <div className="pointer-events-none absolute -right-12 -top-16 h-40 w-40 rounded-full bg-[#DFAE45]/10 blur-3xl" />
 
             {/* top highlight */}
+
             <div className="pointer-events-none absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-[#DFAE45]/40 to-transparent" />
 
             <div className="relative flex items-center gap-3">
               {/* icon */}
+
               <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-[17px] border border-[#DFAE45]/20 bg-[#DFAE45]/10">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#DFAE45]/10 to-transparent" />
 
@@ -88,6 +181,7 @@ export default function ServicePage({ params }: Props) {
               </div>
 
               {/* text */}
+
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <Sparkles
@@ -97,7 +191,7 @@ export default function ServicePage({ params }: Props) {
                   />
 
                   <span className="text-[8px] font-extrabold uppercase tracking-[1.6px] text-[#DFAE45]">
-                    Premium Service
+                    {t.premiumService}
                   </span>
                 </div>
 
@@ -106,11 +200,12 @@ export default function ServicePage({ params }: Props) {
                 </h2>
 
                 <p className="mt-0.5 text-[9px] text-gray-500">
-                  Professional digital solution by OurHub
+                  {t.professionalDigitalSolution}
                 </p>
               </div>
 
               {/* verified */}
+
               <div className="flex shrink-0 flex-col items-center">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full border border-green-400/15 bg-green-400/[0.07]">
                   <CheckCircle2
@@ -121,7 +216,7 @@ export default function ServicePage({ params }: Props) {
                 </div>
 
                 <span className="mt-1 text-[6px] font-bold uppercase tracking-[0.7px] text-green-400">
-                  Verified
+                  {t.verified}
                 </span>
               </div>
             </div>
@@ -145,33 +240,39 @@ export default function ServicePage({ params }: Props) {
 
         <section className="relative px-4 pt-4">
           <div className="grid grid-cols-3 overflow-hidden rounded-[20px] border border-white/[0.06] bg-[#091421]">
+            {/* Premium */}
+
             <div className="relative px-2 py-3 text-center">
               <p className="text-[10px] font-extrabold text-[#DFAE45]">
-                Premium
+                {t.premium}
               </p>
 
               <p className="mt-1 text-[7px] font-semibold uppercase tracking-[0.7px] text-gray-600">
-                Quality
+                {t.quality}
               </p>
             </div>
+
+            {/* Fast */}
 
             <div className="relative border-x border-white/[0.06] px-2 py-3 text-center">
               <p className="text-[10px] font-extrabold text-white">
-                Fast
+                {t.fast}
               </p>
 
               <p className="mt-1 text-[7px] font-semibold uppercase tracking-[0.7px] text-gray-600">
-                Delivery
+                {t.delivery}
               </p>
             </div>
 
+            {/* Support */}
+
             <div className="relative px-2 py-3 text-center">
               <p className="text-[10px] font-extrabold text-green-400">
-                Support
+                {t.support}
               </p>
 
               <p className="mt-1 text-[7px] font-semibold uppercase tracking-[0.7px] text-gray-600">
-                Dedicated
+                {t.dedicated}
               </p>
             </div>
           </div>
@@ -208,9 +309,11 @@ export default function ServicePage({ params }: Props) {
         <section className="relative mt-8 px-4">
           <div className="group relative overflow-hidden rounded-[26px] border border-[#DFAE45]/15 bg-gradient-to-br from-[#121F30] via-[#0B1725] to-[#07111D] p-5 shadow-[0_18px_45px_rgba(0,0,0,0.22)]">
             {/* glow */}
+
             <div className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-[#DFAE45]/10 blur-3xl" />
 
             {/* shine */}
+
             <div className="pointer-events-none absolute -left-20 top-0 h-full w-12 rotate-[20deg] bg-white/[0.04] blur-md transition-all duration-1000 group-hover:left-[120%]" />
 
             <div className="relative">
@@ -224,17 +327,16 @@ export default function ServicePage({ params }: Props) {
                 </div>
 
                 <span className="text-[8px] font-extrabold uppercase tracking-[1.5px] text-[#DFAE45]">
-                  Ready to build?
+                  {t.readyToBuild}
                 </span>
               </div>
 
               <h3 className="mt-3 text-[18px] font-extrabold tracking-tight text-white">
-                Let&apos;s turn your idea into reality.
+                {t.letsTurnIdea}
               </h3>
 
               <p className="mt-2 max-w-[320px] text-[10px] leading-5 text-gray-500">
-                Tell us what you need and our team will help you choose the
-                right solution for your business.
+                {t.ctaDescription}
               </p>
 
               <button
@@ -242,7 +344,7 @@ export default function ServicePage({ params }: Props) {
                 onClick={() => setContactOpen(true)}
                 className="mt-4 flex h-[44px] w-full items-center justify-center rounded-2xl bg-gradient-to-r from-[#DFAE45] to-[#FFD86A] text-[10px] font-extrabold text-black shadow-[0_10px_30px_rgba(223,174,69,0.16)] transition-all duration-300 hover:shadow-[0_12px_35px_rgba(223,174,69,0.28)] active:scale-[0.98]"
               >
-                Start Your Project
+                {t.startYourProject}
               </button>
             </div>
           </div>
@@ -274,25 +376,24 @@ export default function ServicePage({ params }: Props) {
               </div>
 
               <h3 className="mt-3 text-[15px] font-extrabold text-white">
-                Built with the OurHub Standard
+                {t.builtWithOurHub}
               </h3>
 
               <p className="mx-auto mt-1.5 max-w-[290px] text-[9px] leading-4 text-gray-600">
-                Premium design, clean development, responsive experience and
-                professional support.
+                {t.finalDescription}
               </p>
 
               <div className="mt-4 flex items-center justify-center gap-2">
                 <span className="rounded-full border border-white/[0.06] bg-white/[0.025] px-2.5 py-1.5 text-[7px] font-bold uppercase tracking-[0.8px] text-gray-500">
-                  Mobile First
+                  {t.mobileFirst}
                 </span>
 
                 <span className="rounded-full border border-white/[0.06] bg-white/[0.025] px-2.5 py-1.5 text-[7px] font-bold uppercase tracking-[0.8px] text-gray-500">
-                  SEO Ready
+                  {t.seoReady}
                 </span>
 
                 <span className="rounded-full border border-white/[0.06] bg-white/[0.025] px-2.5 py-1.5 text-[7px] font-bold uppercase tracking-[0.8px] text-gray-500">
-                  Support
+                  {t.supportTag}
                 </span>
               </div>
             </div>
@@ -315,6 +416,7 @@ export default function ServicePage({ params }: Props) {
         />
 
         {/* extra space for sticky CTA */}
+
         <div className="h-24" />
       </div>
     </main>

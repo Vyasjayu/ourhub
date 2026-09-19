@@ -1,15 +1,31 @@
-
 "use client";
 
 import { ArrowLeft, Code2, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Header() {
   const router = useRouter();
+  const { language } = useLanguage();
+
+  const isHindi = language === "hi";
+
+  const t = {
+    goBack: isHindi ? "वापस जाएं" : "Go back",
+    webDevelopment: isHindi ? "वेब डेवलपमेंट" : "Web Development",
+    premiumWebsiteDesign: isHindi
+      ? "प्रीमियम वेबसाइट डिजाइन सर्विसेज"
+      : "Premium Website Design Services",
+    pro: "Pro",
+    ourHub: "OurHub",
+    digitalStudio: isHindi ? "डिजिटल स्टूडियो" : "Digital Studio",
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#050B14]/90 backdrop-blur-2xl">
-      {/* Premium top glow */}
+      {/* =====================================================
+          PREMIUM TOP GLOW
+      ====================================================== */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 top-0 h-px w-[65%] -translate-x-1/2 bg-gradient-to-r from-transparent via-[#DFAE45]/60 to-transparent"
@@ -17,11 +33,13 @@ export default function Header() {
 
       <div className="relative mx-auto flex max-w-[430px] items-center px-4 py-3.5">
 
-        {/* Back Button */}
+        {/* =================================================
+            BACK BUTTON
+        ================================================== */}
         <button
           type="button"
           onClick={() => router.back()}
-          aria-label="Go back"
+          aria-label={t.goBack}
           className="
             group
             flex
@@ -49,7 +67,9 @@ export default function Header() {
           />
         </button>
 
-        {/* Header Content */}
+        {/* =================================================
+            HEADER CONTENT
+        ================================================== */}
         <div className="ml-3.5 flex min-w-0 flex-1 items-center gap-3">
 
           {/* Icon */}
@@ -92,12 +112,13 @@ export default function Header() {
             <div className="flex items-center gap-2">
 
               <h1 className="truncate text-[16px] font-extrabold tracking-[-0.02em] text-white">
-                Web Development
+                {t.webDevelopment}
               </h1>
 
               <span
                 className="
                   hidden
+                  min-[380px]:inline-flex
                   rounded-full
                   border
                   border-[#DFAE45]/20
@@ -109,48 +130,54 @@ export default function Header() {
                   uppercase
                   tracking-[0.12em]
                   text-[#E7B94F]
-                  min-[380px]:inline-flex
                 "
               >
-                Pro
+                {t.pro}
               </span>
 
             </div>
 
             <div className="mt-0.5 flex items-center gap-1.5">
 
-              {/* Status dot */}
+              {/* Status Dot */}
               <span className="relative flex h-1.5 w-1.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
               </span>
 
               <p className="truncate text-[10px] font-medium tracking-wide text-slate-400">
-                Premium Website Design Services
+                {t.premiumWebsiteDesign}
               </p>
 
             </div>
-
           </div>
         </div>
 
-        {/* Right Gold Accent */}
+        {/* =================================================
+            RIGHT GOLD ACCENT
+        ================================================== */}
         <div className="ml-2 hidden items-center min-[390px]:flex">
+
           <div className="h-7 w-px bg-white/[0.06]" />
 
           <div className="ml-3 flex flex-col items-end">
+
             <span className="text-[8px] font-bold uppercase tracking-[0.16em] text-slate-500">
-              OurHub
+              {t.ourHub}
             </span>
 
             <span className="mt-0.5 text-[9px] font-semibold text-[#DFAE45]">
-              Digital Studio
+              {t.digitalStudio}
             </span>
+
           </div>
         </div>
       </div>
 
-      {/* Bottom subtle highlight */}
+      {/* =====================================================
+          BOTTOM SUBTLE HIGHLIGHT
+      ====================================================== */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute bottom-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-white/[0.04] to-transparent"
@@ -158,4 +185,3 @@ export default function Header() {
     </header>
   );
 }
-

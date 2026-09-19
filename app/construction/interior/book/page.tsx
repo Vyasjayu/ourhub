@@ -1,4 +1,3 @@
-
 "use client";
 
 import { FormEvent, useState } from "react";
@@ -16,8 +15,13 @@ import {
   Wallet,
 } from "lucide-react";
 
+import { useLanguage } from "@/context/LanguageContext";
+
 export default function InteriorBookingPage() {
   const router = useRouter();
+  const { language } = useLanguage();
+
+  const isHindi = language === "hi";
 
   const [submitted, setSubmitted] = useState(false);
 
@@ -39,26 +43,384 @@ export default function InteriorBookingPage() {
     }));
   };
 
+  /* ============================================================
+     TRANSLATIONS
+  ============================================================ */
+
+  const t = {
+    interior: isHindi ? "इंटीरियर" : "Interior",
+
+    interiorConsultation: isHindi
+      ? "इंटीरियर कंसल्टेशन"
+      : "Interior Consultation",
+
+    requestReceived: isHindi
+      ? "रिक्वेस्ट प्राप्त हुई"
+      : "REQUEST RECEIVED",
+
+    thankYou: isHindi
+      ? "धन्यवाद!"
+      : "Thank You!",
+
+    successDescription: isHindi
+      ? "आपकी इंटीरियर कंसल्टेशन रिक्वेस्ट सफलतापूर्वक सबमिट हो गई है।"
+      : "Your interior consultation request has been successfully submitted.",
+
+    whatHappensNext: isHindi
+      ? "आगे क्या होगा"
+      : "WHAT HAPPENS NEXT",
+
+    nextStep1: isHindi
+      ? "हमारे इंटीरियर एक्सपर्ट आपकी जरूरत की समीक्षा करेंगे।"
+      : "Our interior expert will review your requirement.",
+
+    nextStep2: isHindi
+      ? "आपको अपने प्रोजेक्ट के संबंध में कॉल प्राप्त होगी।"
+      : "You will receive a call regarding your project.",
+
+    nextStep3: isHindi
+      ? "डिजाइन, बजट और प्रोजेक्ट टाइमलाइन पर चर्चा की जाएगी।"
+      : "Discuss design, budget and project timeline.",
+
+    backToInterior: isHindi
+      ? "इंटीरियर पर वापस जाएं"
+      : "Back To Interior",
+
+    getStarted: isHindi
+      ? "शुरू करें"
+      : "GET STARTED",
+
+    tellUsAboutHome: isHindi
+      ? "अपने घर के बारे में बताएं"
+      : "Tell Us About Your Home",
+
+    formDescription: isHindi
+      ? "कुछ जानकारी साझा करें और हमारे इंटीरियर एक्सपर्ट आपसे संपर्क करेंगे।"
+      : "Share a few details and our interior expert will contact you.",
+
+    contactDetails: isHindi
+      ? "कॉन्टैक्ट डिटेल्स"
+      : "Contact Details",
+
+    yourName: isHindi
+      ? "आपका नाम"
+      : "Your Name",
+
+    enterFullName: isHindi
+      ? "अपना पूरा नाम दर्ज करें"
+      : "Enter your full name",
+
+    mobileNumber: isHindi
+      ? "मोबाइल नंबर"
+      : "Mobile Number",
+
+    enterMobile: isHindi
+      ? "मोबाइल नंबर दर्ज करें"
+      : "Enter mobile number",
+
+    city: isHindi
+      ? "शहर"
+      : "City",
+
+    propertyDetails: isHindi
+      ? "प्रॉपर्टी डिटेल्स"
+      : "Property Details",
+
+    propertyType: isHindi
+      ? "प्रॉपर्टी का प्रकार"
+      : "Property Type",
+
+    selectPropertyType: isHindi
+      ? "प्रॉपर्टी का प्रकार चुनें"
+      : "Select property type",
+
+    rooms: isHindi
+      ? "कमरों की संख्या"
+      : "Number of Rooms",
+
+    selectRooms: isHindi
+      ? "कमरे चुनें"
+      : "Select rooms",
+
+    interiorRequirement: isHindi
+      ? "इंटीरियर रिक्वायरमेंट"
+      : "Interior Requirement",
+
+    whatDoYouNeed: isHindi
+      ? "आपको क्या चाहिए?"
+      : "What do you need?",
+
+    completeInterior: isHindi
+      ? "कम्प्लीट इंटीरियर"
+      : "Complete Interior",
+
+    modularKitchen: isHindi
+      ? "मॉड्यूलर किचन"
+      : "Modular Kitchen",
+
+    livingRoom: isHindi
+      ? "लिविंग रूम"
+      : "Living Room",
+
+    bedroom: isHindi
+      ? "बेडरूम"
+      : "Bedroom",
+
+    falseCeiling: isHindi
+      ? "फॉल्स सीलिंग"
+      : "False Ceiling",
+
+    paintingDecor: isHindi
+      ? "पेंटिंग और डेकोर"
+      : "Painting & Décor",
+
+    budgetTimeline: isHindi
+      ? "बजट और टाइमलाइन"
+      : "Budget & Timeline",
+
+    estimatedBudget: isHindi
+      ? "अनुमानित इंटीरियर बजट"
+      : "Estimated Interior Budget",
+
+    selectBudget: isHindi
+      ? "अपना बजट चुनें"
+      : "Select your budget",
+
+    startWhen: isHindi
+      ? "आप कब शुरू करना चाहते हैं?"
+      : "When do you want to start?",
+
+    selectTimeline: isHindi
+      ? "टाइमलाइन चुनें"
+      : "Select timeline",
+
+    immediately: isHindi
+      ? "तुरंत"
+      : "Immediately",
+
+    withinOneMonth: isHindi
+      ? "1 महीने के अंदर"
+      : "Within 1 Month",
+
+    oneToThreeMonths: isHindi
+      ? "1–3 महीने"
+      : "1–3 Months",
+
+    threeToSixMonths: isHindi
+      ? "3–6 महीने"
+      : "3–6 Months",
+
+    justExploring: isHindi
+      ? "अभी सिर्फ जानकारी ले रहा हूं"
+      : "Just Exploring",
+
+    promise: isHindi
+      ? "OURHUB का वादा"
+      : "OURHUB PROMISE",
+
+    noPressure: isHindi
+      ? "कोई दबाव नहीं। सिर्फ एक्सपर्ट गाइडेंस।"
+      : "No pressure. Just expert guidance.",
+
+    verifiedExperts: isHindi
+      ? "वेरिफाइड इंटीरियर एक्सपर्ट्स"
+      : "Verified interior experts",
+
+    transparentEstimates: isHindi
+      ? "पारदर्शी एस्टिमेट"
+      : "Transparent estimates",
+
+    designedBudget: isHindi
+      ? "आपके बजट के अनुसार डिजाइन"
+      : "Designed around your budget",
+
+    freeConsultation: isHindi
+      ? "फ्री कंसल्टेशन"
+      : "FREE CONSULTATION",
+
+    submitRequirement: isHindi
+      ? "अपनी रिक्वायरमेंट सबमिट करें"
+      : "Submit Requirement",
+
+    invalidName: isHindi
+      ? "कृपया अपना नाम दर्ज करें"
+      : "Please enter your name",
+
+    invalidMobile: isHindi
+      ? "कृपया सही मोबाइल नंबर दर्ज करें"
+      : "Please enter a valid mobile number",
+
+    invalidProperty: isHindi
+      ? "कृपया प्रॉपर्टी का प्रकार चुनें"
+      : "Please select property type",
+
+    invalidService: isHindi
+      ? "कृपया इंटीरियर सर्विस चुनें"
+      : "Please select interior service",
+  };
+
+  /* ============================================================
+     OPTIONS
+  ============================================================ */
+
+  const cities = [
+    {
+      value: "Indore",
+      label: isHindi ? "इंदौर" : "Indore",
+    },
+    {
+      value: "Ujjain",
+      label: isHindi ? "उज्जैन" : "Ujjain",
+    },
+    {
+      value: "Ratlam",
+      label: isHindi ? "रतलाम" : "Ratlam",
+    },
+  ];
+
+  const propertyOptions = [
+    {
+      value: "2 BHK Apartment",
+      label: isHindi ? "2 BHK अपार्टमेंट" : "2 BHK Apartment",
+    },
+    {
+      value: "3 BHK Apartment",
+      label: isHindi ? "3 BHK अपार्टमेंट" : "3 BHK Apartment",
+    },
+    {
+      value: "4 BHK Apartment",
+      label: isHindi ? "4 BHK अपार्टमेंट" : "4 BHK Apartment",
+    },
+    {
+      value: "Independent House",
+      label: isHindi ? "इंडिपेंडेंट हाउस" : "Independent House",
+    },
+    {
+      value: "Villa",
+      label: isHindi ? "विला" : "Villa",
+    },
+    {
+      value: "Office / Commercial",
+      label: isHindi ? "ऑफिस / कमर्शियल" : "Office / Commercial",
+    },
+  ];
+
+  const roomOptions = [
+    {
+      value: "1–2 Rooms",
+      label: isHindi ? "1–2 कमरे" : "1–2 Rooms",
+    },
+    {
+      value: "3–4 Rooms",
+      label: isHindi ? "3–4 कमरे" : "3–4 Rooms",
+    },
+    {
+      value: "5–6 Rooms",
+      label: isHindi ? "5–6 कमरे" : "5–6 Rooms",
+    },
+    {
+      value: "Full Home",
+      label: isHindi ? "पूरा घर" : "Full Home",
+    },
+  ];
+
+  const serviceOptions = [
+    {
+      value: "Complete Interior",
+      label: t.completeInterior,
+    },
+    {
+      value: "Modular Kitchen",
+      label: t.modularKitchen,
+    },
+    {
+      value: "Living Room",
+      label: t.livingRoom,
+    },
+    {
+      value: "Bedroom",
+      label: t.bedroom,
+    },
+    {
+      value: "False Ceiling",
+      label: t.falseCeiling,
+    },
+    {
+      value: "Painting & Décor",
+      label: t.paintingDecor,
+    },
+  ];
+
+  const budgetOptions = [
+    {
+      value: "₹2 – ₹5 Lakhs",
+      label: isHindi ? "₹2 – ₹5 लाख" : "₹2 – ₹5 Lakhs",
+    },
+    {
+      value: "₹5 – ₹10 Lakhs",
+      label: isHindi ? "₹5 – ₹10 लाख" : "₹5 – ₹10 Lakhs",
+    },
+    {
+      value: "₹10 – ₹15 Lakhs",
+      label: isHindi ? "₹10 – ₹15 लाख" : "₹10 – ₹15 Lakhs",
+    },
+    {
+      value: "₹15 – ₹25 Lakhs",
+      label: isHindi ? "₹15 – ₹25 लाख" : "₹15 – ₹25 Lakhs",
+    },
+    {
+      value: "₹25 Lakhs+",
+      label: isHindi ? "₹25 लाख+" : "₹25 Lakhs+",
+    },
+  ];
+
+  const timelineOptions = [
+    {
+      value: "Immediately",
+      label: t.immediately,
+    },
+    {
+      value: "Within 1 Month",
+      label: t.withinOneMonth,
+    },
+    {
+      value: "1–3 Months",
+      label: t.oneToThreeMonths,
+    },
+    {
+      value: "3–6 Months",
+      label: t.threeToSixMonths,
+    },
+    {
+      value: "Just Exploring",
+      label: t.justExploring,
+    },
+  ];
+
+  /* ============================================================
+     SUBMIT
+  ============================================================ */
+
   const submitForm = (e: FormEvent) => {
     e.preventDefault();
 
     if (!form.name.trim()) {
-      alert("Please enter your name");
+      alert(t.invalidName);
       return;
     }
 
     if (!/^[6-9]\d{9}$/.test(form.mobile)) {
-      alert("Please enter a valid mobile number");
+      alert(t.invalidMobile);
       return;
     }
 
     if (!form.propertyType) {
-      alert("Please select property type");
+      alert(t.invalidProperty);
       return;
     }
 
     if (!form.service) {
-      alert("Please select interior service");
+      alert(t.invalidService);
       return;
     }
 
@@ -72,13 +434,14 @@ export default function InteriorBookingPage() {
   if (submitted) {
     return (
       <main className="min-h-screen bg-[#020202]">
-
         <div className="mx-auto flex min-h-screen w-full max-w-[430px] flex-col bg-[#070707] px-4 text-white">
 
+          {/* HEADER */}
           <header className="flex h-[56px] items-center justify-between border-b border-white/[0.08]">
-
             <button
+              type="button"
               onClick={() => router.back()}
+              aria-label={isHindi ? "वापस जाएं" : "Go back"}
               className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.04]"
             >
               <ArrowLeft size={17} />
@@ -90,77 +453,75 @@ export default function InteriorBookingPage() {
               </p>
 
               <p className="text-[12px] font-semibold">
-                Interior
+                {t.interior}
               </p>
             </div>
 
             <div className="w-9" />
-
           </header>
 
+          {/* SUCCESS */}
           <div className="flex flex-1 flex-col items-center justify-center pb-20 text-center">
 
             <div className="flex h-[76px] w-[76px] items-center justify-center rounded-full border border-[#DFAE45]/20 bg-[#DFAE45]/10">
-
               <CheckCircle2
                 size={40}
                 className="text-[#DFAE45]"
               />
-
             </div>
 
             <p className="mt-7 text-[8px] font-bold uppercase tracking-[3px] text-[#DFAE45]">
-              REQUEST RECEIVED
+              {t.requestReceived}
             </p>
 
             <h1 className="mt-2 text-[25px] font-bold">
-              Thank You!
+              {t.thankYou}
             </h1>
 
             <p className="mt-3 max-w-[300px] text-[11px] leading-5 text-white/45">
-              Your interior consultation request has been
-              successfully submitted.
+              {t.successDescription}
             </p>
 
+            {/* NEXT STEPS */}
             <div className="mt-7 w-full rounded-[20px] border border-white/10 bg-white/[0.035] p-4 text-left">
 
               <p className="text-[8px] font-bold uppercase tracking-[2px] text-white/30">
-                WHAT HAPPENS NEXT
+                {t.whatHappensNext}
               </p>
 
               <div className="mt-4 space-y-3">
 
                 <NextStep
                   number="01"
-                  text="Our interior expert will review your requirement."
+                  text={t.nextStep1}
                 />
 
                 <NextStep
                   number="02"
-                  text="You will receive a call regarding your project."
+                  text={t.nextStep2}
                 />
 
                 <NextStep
                   number="03"
-                  text="Discuss design, budget and project timeline."
+                  text={t.nextStep3}
                 />
 
               </div>
-
             </div>
 
             <button
-              onClick={() => router.push("/construction/interior")}
+              type="button"
+              onClick={() =>
+                router.push("/construction/interior")
+              }
               className="mt-6 flex h-[48px] w-full items-center justify-center gap-2 rounded-[15px] bg-[#DFAE45] text-[12px] font-bold text-black"
             >
-              Back To Interior
+              {t.backToInterior}
               <ArrowRight size={15} />
             </button>
 
           </div>
-
         </div>
-
       </main>
     );
   }
@@ -174,51 +535,41 @@ export default function InteriorBookingPage() {
 
       <div className="mx-auto min-h-screen w-full max-w-[430px] bg-[#070707] text-white">
 
-        {/* ======================================================
-            HEADER
-        ======================================================= */}
-
+        {/* HEADER */}
         <header className="sticky top-0 z-50 h-[56px] border-b border-white/[0.08] bg-[#070707]/95 backdrop-blur-xl">
 
           <div className="flex h-full items-center justify-between px-4">
 
             <button
+              type="button"
               onClick={() => router.back()}
+              aria-label={isHindi ? "वापस जाएं" : "Go back"}
               className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.04]"
             >
               <ArrowLeft size={17} />
             </button>
 
             <div className="text-center">
-
               <p className="text-[7px] font-bold uppercase tracking-[3px] text-[#DFAE45]">
                 OURHUB
               </p>
 
               <p className="text-[12px] font-semibold">
-                Interior Consultation
+                {t.interiorConsultation}
               </p>
-
             </div>
 
             <div className="w-9" />
 
           </div>
-
         </header>
 
-        {/* ======================================================
-            CONTENT
-        ======================================================= */}
-
+        {/* FORM */}
         <form onSubmit={submitForm}>
 
           <div className="px-4 pb-[100px]">
 
-            {/* ==================================================
-                TITLE
-            =================================================== */}
-
+            {/* TITLE */}
             <section className="pt-5">
 
               <div className="flex items-center gap-2">
@@ -226,49 +577,46 @@ export default function InteriorBookingPage() {
                 <span className="h-px w-6 bg-[#DFAE45]/50" />
 
                 <span className="text-[7px] font-bold uppercase tracking-[2.5px] text-[#DFAE45]">
-                  GET STARTED
+                  {t.getStarted}
                 </span>
 
               </div>
 
               <h1 className="mt-2 text-[25px] font-bold tracking-[-0.5px]">
-                Tell Us About Your Home
+                {t.tellUsAboutHome}
               </h1>
 
               <p className="mt-1.5 text-[10px] leading-[17px] text-white/35">
-                Share a few details and our interior expert
-                will contact you.
+                {t.formDescription}
               </p>
 
             </section>
 
-            {/* ==================================================
-                CONTACT DETAILS
-            =================================================== */}
-
+            {/* CONTACT DETAILS */}
             <section className="mt-6">
 
               <SectionTitle
                 number="01"
-                title="Contact Details"
+                title={t.contactDetails}
               />
 
               <div className="mt-3 space-y-3">
 
                 <Input
-                  label="Your Name"
-                  placeholder="Enter your full name"
+                  label={t.yourName}
+                  placeholder={t.enterFullName}
                   value={form.name}
-                  onChange={(value) => update("name", value)}
+                  onChange={(value) =>
+                    update("name", value)
+                  }
                   icon={<User size={15} />}
                 />
 
                 {/* MOBILE */}
-
                 <div>
 
                   <label className="mb-1.5 block text-[9px] font-semibold text-white/50">
-                    Mobile Number
+                    {t.mobileNumber}
                   </label>
 
                   <div className="flex h-[48px] overflow-hidden rounded-[14px] border border-white/10 bg-white/[0.035] focus-within:border-[#DFAE45]/40">
@@ -281,7 +629,7 @@ export default function InteriorBookingPage() {
                       type="tel"
                       inputMode="numeric"
                       maxLength={10}
-                      placeholder="Enter mobile number"
+                      placeholder={t.enterMobile}
                       value={form.mobile}
                       onChange={(e) =>
                         update(
@@ -297,20 +645,16 @@ export default function InteriorBookingPage() {
                     </div>
 
                   </div>
-
                 </div>
 
                 {/* CITY */}
-
                 <Select
-                  label="City"
+                  label={t.city}
                   value={form.city}
-                  onChange={(value) => update("city", value)}
-                  options={[
-                    "Indore",
-                    "Ujjain",
-                    "Ratlam",
-                  ]}
+                  onChange={(value) =>
+                    update("city", value)
+                  }
+                  options={cities}
                   icon={<MapPin size={15} />}
                 />
 
@@ -318,50 +662,35 @@ export default function InteriorBookingPage() {
 
             </section>
 
-            {/* ==================================================
-                PROPERTY
-            =================================================== */}
-
+            {/* PROPERTY */}
             <section className="mt-7">
 
               <SectionTitle
                 number="02"
-                title="Property Details"
+                title={t.propertyDetails}
               />
 
               <div className="mt-3 space-y-3">
 
                 <Select
-                  label="Property Type"
+                  label={t.propertyType}
                   value={form.propertyType}
                   onChange={(value) =>
                     update("propertyType", value)
                   }
-                  placeholder="Select property type"
-                  options={[
-                    "2 BHK Apartment",
-                    "3 BHK Apartment",
-                    "4 BHK Apartment",
-                    "Independent House",
-                    "Villa",
-                    "Office / Commercial",
-                  ]}
+                  placeholder={t.selectPropertyType}
+                  options={propertyOptions}
                   icon={<Home size={15} />}
                 />
 
                 <Select
-                  label="Number of Rooms"
+                  label={t.rooms}
                   value={form.rooms}
                   onChange={(value) =>
                     update("rooms", value)
                   }
-                  placeholder="Select rooms"
-                  options={[
-                    "1–2 Rooms",
-                    "3–4 Rooms",
-                    "5–6 Rooms",
-                    "Full Home",
-                  ]}
+                  placeholder={t.selectRooms}
+                  options={roomOptions}
                   icon={<Home size={15} />}
                 />
 
@@ -369,43 +698,36 @@ export default function InteriorBookingPage() {
 
             </section>
 
-            {/* ==================================================
-                REQUIREMENT
-            =================================================== */}
-
+            {/* REQUIREMENT */}
             <section className="mt-7">
 
               <SectionTitle
                 number="03"
-                title="Interior Requirement"
+                title={t.interiorRequirement}
               />
 
               <div className="mt-3">
 
                 <label className="mb-2 block text-[9px] font-semibold text-white/50">
-                  What do you need?
+                  {t.whatDoYouNeed}
                 </label>
 
                 <div className="grid grid-cols-2 gap-2">
 
-                  {[
-                    "Complete Interior",
-                    "Modular Kitchen",
-                    "Living Room",
-                    "Bedroom",
-                    "False Ceiling",
-                    "Painting & Décor",
-                  ].map((item) => {
+                  {serviceOptions.map((item) => {
 
                     const active =
-                      form.service === item;
+                      form.service === item.value;
 
                     return (
                       <button
-                        key={item}
+                        key={item.value}
                         type="button"
                         onClick={() =>
-                          update("service", item)
+                          update(
+                            "service",
+                            item.value
+                          )
                         }
                         className={`min-h-[47px] rounded-[13px] border px-2 text-left text-[9px] font-semibold transition ${
                           active
@@ -413,10 +735,11 @@ export default function InteriorBookingPage() {
                             : "border-white/10 bg-white/[0.035] text-white/55"
                         }`}
                       >
+
                         <div className="flex items-center justify-between gap-2">
 
                           <span>
-                            {item}
+                            {item.label}
                           </span>
 
                           {active && (
@@ -427,9 +750,9 @@ export default function InteriorBookingPage() {
                           )}
 
                         </div>
+
                       </button>
                     );
-
                   })}
 
                 </div>
@@ -438,50 +761,35 @@ export default function InteriorBookingPage() {
 
             </section>
 
-            {/* ==================================================
-                BUDGET
-            =================================================== */}
-
+            {/* BUDGET */}
             <section className="mt-7">
 
               <SectionTitle
                 number="04"
-                title="Budget & Timeline"
+                title={t.budgetTimeline}
               />
 
               <div className="mt-3 space-y-3">
 
                 <Select
-                  label="Estimated Interior Budget"
+                  label={t.estimatedBudget}
                   value={form.budget}
                   onChange={(value) =>
                     update("budget", value)
                   }
-                  placeholder="Select your budget"
-                  options={[
-                    "₹2 – ₹5 Lakhs",
-                    "₹5 – ₹10 Lakhs",
-                    "₹10 – ₹15 Lakhs",
-                    "₹15 – ₹25 Lakhs",
-                    "₹25 Lakhs+",
-                  ]}
+                  placeholder={t.selectBudget}
+                  options={budgetOptions}
                   icon={<Wallet size={15} />}
                 />
 
                 <Select
-                  label="When do you want to start?"
+                  label={t.startWhen}
                   value={form.timeline}
                   onChange={(value) =>
                     update("timeline", value)
                   }
-                  placeholder="Select timeline"
-                  options={[
-                    "Immediately",
-                    "Within 1 Month",
-                    "1–3 Months",
-                    "3–6 Months",
-                    "Just Exploring",
-                  ]}
+                  placeholder={t.selectTimeline}
+                  options={timelineOptions}
                   icon={<MapPin size={15} />}
                 />
 
@@ -489,10 +797,7 @@ export default function InteriorBookingPage() {
 
             </section>
 
-            {/* ==================================================
-                SUMMARY
-            =================================================== */}
-
+            {/* SUMMARY */}
             <section className="mt-7">
 
               <div className="rounded-[18px] border border-[#DFAE45]/15 bg-[#DFAE45]/[0.035] p-4">
@@ -504,11 +809,11 @@ export default function InteriorBookingPage() {
                   <div>
 
                     <p className="text-[7px] font-bold uppercase tracking-[2px] text-[#DFAE45]">
-                      OURHUB PROMISE
+                      {t.promise}
                     </p>
 
                     <p className="mt-1 text-[11px] font-semibold">
-                      No pressure. Just expert guidance.
+                      {t.noPressure}
                     </p>
 
                   </div>
@@ -517,11 +822,17 @@ export default function InteriorBookingPage() {
 
                 <div className="mt-3 space-y-2">
 
-                  <Promise text="Verified interior experts" />
+                  <Promise
+                    text={t.verifiedExperts}
+                  />
 
-                  <Promise text="Transparent estimates" />
+                  <Promise
+                    text={t.transparentEstimates}
+                  />
 
-                  <Promise text="Designed around your budget" />
+                  <Promise
+                    text={t.designedBudget}
+                  />
 
                 </div>
 
@@ -531,10 +842,7 @@ export default function InteriorBookingPage() {
 
           </div>
 
-          {/* ====================================================
-              STICKY SUBMIT
-          ===================================================== */}
-
+          {/* STICKY SUBMIT */}
           <div className="fixed bottom-0 left-0 right-0 z-[100] border-t border-white/10 bg-[#070707]/95 px-3 py-2.5 backdrop-blur-xl">
 
             <div className="mx-auto w-full max-w-[430px]">
@@ -547,11 +855,11 @@ export default function InteriorBookingPage() {
                 <div className="text-left">
 
                   <p className="text-[7px] font-bold uppercase tracking-[2px] opacity-50">
-                    FREE CONSULTATION
+                    {t.freeConsultation}
                   </p>
 
                   <p className="mt-[2px] text-[13px] font-extrabold">
-                    Submit Requirement
+                    {t.submitRequirement}
                   </p>
 
                 </div>
@@ -631,7 +939,9 @@ function Input({
         <input
           type="text"
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) =>
+            onChange(e.target.value)
+          }
           placeholder={placeholder}
           className="min-w-0 flex-1 bg-transparent text-[11px] text-white outline-none placeholder:text-white/20"
         />
@@ -661,7 +971,10 @@ function Select({
   label: string;
   value: string;
   onChange: (value: string) => void;
-  options: string[];
+  options: {
+    value: string;
+    label: string;
+  }[];
   placeholder?: string;
   icon: React.ReactNode;
 }) {
@@ -676,7 +989,9 @@ function Select({
 
         <select
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) =>
+            onChange(e.target.value)
+          }
           className={`h-[48px] w-full appearance-none rounded-[14px] border border-white/10 bg-white/[0.035] px-10 pr-10 text-[11px] outline-none ${
             value
               ? "text-white"
@@ -694,11 +1009,11 @@ function Select({
 
           {options.map((option) => (
             <option
-              key={option}
-              value={option}
+              key={option.value}
+              value={option.value}
               className="bg-[#111] text-white"
             >
-              {option}
+              {option.label}
             </option>
           ))}
 
@@ -723,7 +1038,11 @@ function Select({
    PROMISE
 ============================================================ */
 
-function Promise({ text }: { text: string }) {
+function Promise({
+  text,
+}: {
+  text: string;
+}) {
   return (
     <div className="flex items-center gap-2">
 
@@ -778,18 +1097,16 @@ function NextStep({
 function ShieldIcon() {
   return (
     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#DFAE45]/10">
-
       <ShieldCheck
         size={17}
         className="text-[#DFAE45]"
       />
-
     </div>
   );
 }
 
 /* ============================================================
-   SHIELD IMPORT FIX
+   SHIELD CHECK
 ============================================================ */
 
 function ShieldCheck({
@@ -816,4 +1133,3 @@ function ShieldCheck({
     </svg>
   );
 }
-

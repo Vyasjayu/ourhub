@@ -17,6 +17,8 @@ import {
   ShieldCheck,
 } from "lucide-react";
 
+import { useLanguage } from "@/context/LanguageContext";
+
 /* =========================================================
    LOADING FALLBACK
 ========================================================= */
@@ -45,6 +47,105 @@ function ConstructionRequestSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
+  /* =======================================================
+     TRANSLATIONS
+  ======================================================= */
+
+  const t = {
+    loadingRequest: isHindi
+      ? "रिक्वेस्ट लोड हो रही है..."
+      : "Loading request...",
+
+    requestSubmitted: isHindi
+      ? "रिक्वेस्ट सबमिट हो गई"
+      : "Request Submitted",
+
+    requestSuccessfullySubmitted: isHindi
+      ? "रिक्वेस्ट सफलतापूर्वक सबमिट हो गई"
+      : "Request Successfully Submitted",
+
+    projectRequest: isHindi
+      ? "आपकी प्रोजेक्ट रिक्वेस्ट"
+      : "Your Project Request",
+
+    isOnItsWay: isHindi
+      ? "सही एक्सपर्ट तक पहुंच रही है!"
+      : "Is On Its Way!",
+
+    receivedDescription: isHindi
+      ? "हमें आपकी कंस्ट्रक्शन रिक्वायरमेंट मिल गई है। हमारी टीम आपके प्रोजेक्ट की जानकारी देखेगी और आपको सही एक्सपर्ट से कनेक्ट करेगी।"
+      : "We have received your construction requirement. Our team will review your project details and connect you with the right expert.",
+
+    yourRequestId: isHindi
+      ? "आपकी रिक्वेस्ट आईडी"
+      : "YOUR REQUEST ID",
+
+    selectedService: isHindi
+      ? "चुनी गई सर्विस"
+      : "SELECTED SERVICE",
+
+    whatHappensNext: isHindi
+      ? "आगे क्या होगा"
+      : "WHAT HAPPENS NEXT",
+
+    yourNextSteps: isHindi
+      ? "आपके अगले स्टेप्स"
+      : "Your Next Steps",
+
+    reviewProject: isHindi
+      ? "हम आपके प्रोजेक्ट की समीक्षा करेंगे"
+      : "We Review Your Project",
+
+    reviewProjectDescription: isHindi
+      ? "हमारी टीम आपकी कंस्ट्रक्शन रिक्वायरमेंट और प्रोजेक्ट की जानकारी की समीक्षा करेगी।"
+      : "Our team will review your construction requirements and project details.",
+
+    expertContacts: isHindi
+      ? "एक्सपर्ट आपसे संपर्क करेगा"
+      : "Expert Contacts You",
+
+    expertContactsDescription: isHindi
+      ? "एक उपयुक्त कंस्ट्रक्शन प्रोफेशनल आपकी रिक्वायरमेंट को बेहतर समझने के लिए आपसे संपर्क कर सकता है।"
+      : "A suitable construction professional may contact you to understand your requirements better.",
+
+    discussProject: isHindi
+      ? "अपने प्रोजेक्ट पर चर्चा करें"
+      : "Discuss Your Project",
+
+    discussProjectDescription: isHindi
+      ? "एक्सपर्ट के साथ अपने प्रोजेक्ट की जरूरतों, टाइमलाइन और अनुमानित बजट पर चर्चा करें।"
+      : "Discuss your project requirements, timeline and estimated budget with the expert.",
+
+    secureTitle: isHindi
+      ? "आपकी रिक्वेस्ट सुरक्षित है"
+      : "Your Request Is Secure",
+
+    secureDescription: isHindi
+      ? "आपकी प्रोजेक्ट जानकारी केवल आपकी रिक्वेस्ट की समीक्षा करने और आपको उपयुक्त कंस्ट्रक्शन प्रोफेशनल्स से कनेक्ट करने के उद्देश्य से साझा की जाती है।"
+      : "Your project information is shared only for the purpose of reviewing and connecting you with suitable construction professionals.",
+
+    needHelp: isHindi
+      ? "मदद चाहिए?"
+      : "Need Help?",
+
+    supportTeam: isHindi
+      ? "हमारी सपोर्ट टीम आपकी मदद के लिए है"
+      : "Our support team is here for you",
+
+    backToConstruction: isHindi
+      ? "कंस्ट्रक्शन सर्विसेज पर वापस जाएं"
+      : "Back To Construction Services",
+
+    trackRequest: isHindi
+      ? "मेरी रिक्वेस्ट ट्रैक करें"
+      : "Track My Request",
+
+    step: isHindi ? "स्टेप" : "STEP",
+  };
+
   /* =======================================================
      SERVICE
   ======================================================= */
@@ -54,28 +155,29 @@ function ConstructionRequestSuccessContent() {
   const serviceName = useMemo(() => {
     switch (service) {
       case "home-construction":
-        return "Home Construction";
+        return isHindi ? "होम कंस्ट्रक्शन" : "Home Construction";
 
       case "renovation":
-        return "Home Renovation";
+        return isHindi ? "होम रिनोवेशन" : "Home Renovation";
 
       case "interior":
-        return "Interior Work";
+        return isHindi ? "इंटीरियर वर्क" : "Interior Work";
 
       case "painting":
-        return "Painting Services";
+        return isHindi ? "पेंटिंग सर्विसेज" : "Painting Services";
 
       default:
-        return "Construction Service";
+        return isHindi
+          ? "कंस्ट्रक्शन सर्विस"
+          : "Construction Service";
     }
-  }, [service]);
+  }, [service, isHindi]);
 
   /* =======================================================
      REQUEST ID
 
-     IMPORTANT:
-     Request page se jo ID aa rahi hai usi ko use karenge.
-     Naya random ID generate nahi karenge.
+     Request page se jo ID aa rahi hai
+     usi ko use karenge.
   ======================================================= */
 
   const requestId = useMemo(() => {
@@ -117,6 +219,7 @@ function ConstructionRequestSuccessContent() {
       ===================================================== */}
 
       <div className="mx-auto min-h-screen w-full max-w-[430px] bg-[#080808] pb-[105px] text-white">
+
         {/* ===================================================
             HEADER
         =================================================== */}
@@ -129,7 +232,7 @@ function ConstructionRequestSuccessContent() {
               </p>
 
               <p className="mt-1 text-[12px] font-semibold">
-                Request Submitted
+                {t.requestSubmitted}
               </p>
             </div>
           </div>
@@ -140,11 +243,13 @@ function ConstructionRequestSuccessContent() {
         =================================================== */}
 
         <section className="relative overflow-hidden px-4 pt-10">
+
           {/* Background Glow */}
 
           <div className="pointer-events-none absolute left-1/2 top-8 h-[180px] w-[180px] -translate-x-1/2 rounded-full bg-[#DFAE45]/15 blur-[80px]" />
 
           <div className="relative text-center">
+
             {/* SUCCESS ICON */}
 
             <div className="relative mx-auto flex h-[88px] w-[88px] items-center justify-center">
@@ -170,25 +275,24 @@ function ConstructionRequestSuccessContent() {
               />
 
               <span className="text-[9px] font-semibold uppercase tracking-[1px] text-[#E8C86D]">
-                Request Successfully Submitted
+                {t.requestSuccessfullySubmitted}
               </span>
             </div>
 
             {/* HEADING */}
 
             <h1 className="mt-5 text-[28px] font-bold leading-[1.15]">
-              Your Project Request
+              {t.projectRequest}
+
               <span className="block text-[#DFAE45]">
-                Is On Its Way!
+                {t.isOnItsWay}
               </span>
             </h1>
 
             {/* DESCRIPTION */}
 
             <p className="mx-auto mt-4 max-w-[330px] text-[12px] leading-6 text-white/50">
-              We have received your construction requirement.
-              Our team will review your project details and connect
-              you with the right expert.
+              {t.receivedDescription}
             </p>
           </div>
         </section>
@@ -199,13 +303,15 @@ function ConstructionRequestSuccessContent() {
 
         <section className="mt-8 px-4">
           <div className="relative overflow-hidden rounded-[24px] border border-[#DFAE45]/20 bg-gradient-to-br from-[#19140C] via-[#11100D] to-[#0E0E0E] p-5">
+
             {/* Glow */}
 
             <div className="absolute -right-10 -top-10 h-[130px] w-[130px] rounded-full bg-[#DFAE45]/10 blur-[50px]" />
 
             <div className="relative">
+
               <p className="text-[9px] font-bold uppercase tracking-[2px] text-[#DFAE45]">
-                YOUR REQUEST ID
+                {t.yourRequestId}
               </p>
 
               <div className="mt-2 flex items-center justify-between gap-3">
@@ -228,7 +334,7 @@ function ConstructionRequestSuccessContent() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-[9px] text-white/40">
-                    SELECTED SERVICE
+                    {t.selectedService}
                   </p>
 
                   <p className="mt-1 text-[12px] font-semibold">
@@ -252,15 +358,17 @@ function ConstructionRequestSuccessContent() {
         =================================================== */}
 
         <section className="mt-10 px-4">
+
           <p className="text-[9px] font-bold uppercase tracking-[2px] text-[#DFAE45]">
-            WHAT HAPPENS NEXT
+            {t.whatHappensNext}
           </p>
 
           <h2 className="mt-1 text-[21px] font-bold">
-            Your Next Steps
+            {t.yourNextSteps}
           </h2>
 
           <div className="mt-6 space-y-5">
+
             {/* STEP 01 */}
 
             <div className="relative flex gap-4">
@@ -273,16 +381,15 @@ function ConstructionRequestSuccessContent() {
 
               <div>
                 <p className="text-[9px] font-bold tracking-[2px] text-[#DFAE45]/70">
-                  STEP 01
+                  {t.step} 01
                 </p>
 
                 <h3 className="mt-1 text-[13px] font-semibold">
-                  We Review Your Project
+                  {t.reviewProject}
                 </h3>
 
                 <p className="mt-1 text-[11px] leading-5 text-white/45">
-                  Our team will review your construction requirements
-                  and project details.
+                  {t.reviewProjectDescription}
                 </p>
               </div>
             </div>
@@ -299,16 +406,15 @@ function ConstructionRequestSuccessContent() {
 
               <div>
                 <p className="text-[9px] font-bold tracking-[2px] text-[#DFAE45]/70">
-                  STEP 02
+                  {t.step} 02
                 </p>
 
                 <h3 className="mt-1 text-[13px] font-semibold">
-                  Expert Contacts You
+                  {t.expertContacts}
                 </h3>
 
                 <p className="mt-1 text-[11px] leading-5 text-white/45">
-                  A suitable construction professional may contact you
-                  to understand your requirements better.
+                  {t.expertContactsDescription}
                 </p>
               </div>
             </div>
@@ -325,19 +431,19 @@ function ConstructionRequestSuccessContent() {
 
               <div>
                 <p className="text-[9px] font-bold tracking-[2px] text-[#DFAE45]/70">
-                  STEP 03
+                  {t.step} 03
                 </p>
 
                 <h3 className="mt-1 text-[13px] font-semibold">
-                  Discuss Your Project
+                  {t.discussProject}
                 </h3>
 
                 <p className="mt-1 text-[11px] leading-5 text-white/45">
-                  Discuss your project requirements, timeline and
-                  estimated budget with the expert.
+                  {t.discussProjectDescription}
                 </p>
               </div>
             </div>
+
           </div>
         </section>
 
@@ -347,7 +453,9 @@ function ConstructionRequestSuccessContent() {
 
         <section className="mt-10 px-4">
           <div className="rounded-[25px] border border-white/[0.07] bg-[#111111] p-5">
+
             <div className="flex gap-3">
+
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#DFAE45]/10">
                 <ShieldCheck
                   size={21}
@@ -357,15 +465,14 @@ function ConstructionRequestSuccessContent() {
 
               <div>
                 <h3 className="text-[14px] font-semibold">
-                  Your Request Is Secure
+                  {t.secureTitle}
                 </h3>
 
                 <p className="mt-2 text-[11px] leading-5 text-white/45">
-                  Your project information is shared only for the
-                  purpose of reviewing and connecting you with suitable
-                  construction professionals.
+                  {t.secureDescription}
                 </p>
               </div>
+
             </div>
           </div>
         </section>
@@ -376,7 +483,9 @@ function ConstructionRequestSuccessContent() {
 
         <section className="mt-5 px-4">
           <div className="flex items-center justify-between rounded-[22px] border border-white/[0.07] bg-[#111111] p-4">
+
             <div className="flex items-center gap-3">
+
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#DFAE45]/10">
                 <Clock3
                   size={18}
@@ -386,13 +495,14 @@ function ConstructionRequestSuccessContent() {
 
               <div>
                 <p className="text-[12px] font-semibold">
-                  Need Help?
+                  {t.needHelp}
                 </p>
 
                 <p className="mt-1 text-[9px] text-white/40">
-                  Our support team is here for you
+                  {t.supportTeam}
                 </p>
               </div>
+
             </div>
 
             <ChevronRight
@@ -414,7 +524,7 @@ function ConstructionRequestSuccessContent() {
           >
             <Home size={16} />
 
-            Back To Construction Services
+            {t.backToConstruction}
           </button>
         </section>
 
@@ -427,6 +537,7 @@ function ConstructionRequestSuccessContent() {
 
       <div className="fixed bottom-0 left-0 right-0 z-[100] bg-[#080808]/95 backdrop-blur-xl">
         <div className="mx-auto w-full max-w-[430px] border-t border-white/[0.07] px-4 py-3">
+
           <button
             type="button"
             onClick={handleTrackRequest}
@@ -434,10 +545,11 @@ function ConstructionRequestSuccessContent() {
           >
             <BadgeCheck size={18} />
 
-            Track My Request
+            {t.trackRequest}
 
             <ArrowRight size={18} />
           </button>
+
         </div>
       </div>
     </main>

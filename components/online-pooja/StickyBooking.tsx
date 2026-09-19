@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -6,8 +7,30 @@ import {
   CalendarCheck,
   Sparkles,
 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function StickyBooking() {
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
+  const text = {
+    title: isHindi
+      ? "ऑनलाइन पूजा बुक करें"
+      : "Book Online Pooja",
+
+    live: isHindi
+      ? "लाइव"
+      : "Live",
+
+    subtitle: isHindi
+      ? "प्रमाणित पंडित • सुरक्षित बुकिंग"
+      : "Verified Pandits • Secure Booking",
+
+    responsibility: isHindi
+      ? "आपकी श्रद्धा • हमारी जिम्मेदारी"
+      : "Your devotion • Our responsibility",
+  };
+
   return (
     <div
       className="
@@ -31,7 +54,16 @@ export default function StickyBooking() {
       <div className="pointer-events-auto w-full max-w-[430px] px-4">
         <div className="relative">
           {/* Ambient Glow */}
-          <div className="pointer-events-none absolute -inset-3 rounded-[24px] bg-[#DFAE45]/10 blur-2xl" />
+          <div
+            className="
+              pointer-events-none
+              absolute
+              -inset-3
+              rounded-[24px]
+              bg-[#DFAE45]/10
+              blur-2xl
+            "
+          />
 
           <Link
             href="/pooja/book"
@@ -99,7 +131,20 @@ export default function StickyBooking() {
               />
 
               {/* Small Spark */}
-              <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#080B10]">
+              <span
+                className="
+                  absolute
+                  -right-1
+                  -top-1
+                  flex
+                  h-4
+                  w-4
+                  items-center
+                  justify-center
+                  rounded-full
+                  bg-[#080B10]
+                "
+              >
                 <Sparkles
                   size={8}
                   className="text-[#F3C75F]"
@@ -110,22 +155,54 @@ export default function StickyBooking() {
             {/* Text */}
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5">
-                <span className="text-[14px] font-bold leading-5 text-[#080B10]">
-                  Book Online Pooja
+                <span
+                  className="
+                    text-[14px]
+                    font-bold
+                    leading-5
+                    text-[#080B10]
+                  "
+                >
+                  {text.title}
                 </span>
 
                 {/* Live Indicator */}
-                <span className="flex items-center gap-1 rounded-full bg-black/10 px-1.5 py-0.5">
+                <span
+                  className="
+                    flex
+                    items-center
+                    gap-1
+                    rounded-full
+                    bg-black/10
+                    px-1.5
+                    py-0.5
+                  "
+                >
                   <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-700" />
 
-                  <span className="text-[7px] font-bold uppercase tracking-wide text-[#080B10]/70">
-                    Live
+                  <span
+                    className="
+                      text-[7px]
+                      font-bold
+                      uppercase
+                      tracking-wide
+                      text-[#080B10]/70
+                    "
+                  >
+                    {text.live}
                   </span>
                 </span>
               </div>
 
-              <p className="mt-0.5 text-[8px] font-medium text-[#080B10]/60">
-                Verified Pandits • Secure Booking
+              <p
+                className="
+                  mt-0.5
+                  text-[8px]
+                  font-medium
+                  text-[#080B10]/60
+                "
+              >
+                {text.subtitle}
               </p>
             </div>
 
@@ -165,8 +242,15 @@ export default function StickyBooking() {
               className="text-[#DFAE45]/60"
             />
 
-            <span className="text-[7px] font-medium tracking-wide text-gray-600">
-              Your devotion • Our responsibility
+            <span
+              className="
+                text-[7px]
+                font-medium
+                tracking-wide
+                text-gray-600
+              "
+            >
+              {text.responsibility}
             </span>
 
             <Sparkles
@@ -179,3 +263,5 @@ export default function StickyBooking() {
     </div>
   );
 }
+
+

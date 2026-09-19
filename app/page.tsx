@@ -17,6 +17,7 @@ import CategoriesSheet from "@/components/CategoriesSheet";
 
 import ScrollReveal from "@/ScrollReveal";
 import { getPhone } from "@/lib/user";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -24,6 +25,68 @@ export default function Home() {
   const [, setPhone] = useState("");
 
   const [search, setSearch] = useState("");
+
+  const { language } = useLanguage();
+
+  const isHindi = language === "hi";
+
+  // ============================================================
+  // TRANSLATIONS
+  // ============================================================
+
+  const t = {
+    premiumHomeServices: isHindi
+      ? "✦ प्रीमियम होम सर्विसेज ✦"
+      : "✦ Premium Home Services ✦",
+
+    verifiedExperts: isHindi
+      ? "वेरिफाइड एक्सपर्ट"
+      : "Verified Experts",
+
+    trustedProfessionals: isHindi
+      ? "भरोसेमंद प्रोफेशनल्स"
+      : "Trusted Professionals",
+
+    premiumQuality: isHindi
+      ? "प्रीमियम क्वालिटी"
+      : "Premium Quality",
+
+    bestServiceExperience: isHindi
+      ? "बेहतरीन सर्विस अनुभव"
+      : "Best Service Experience",
+
+    fastBooking: isHindi
+      ? "फास्ट बुकिंग"
+      : "Fast Booking",
+
+    quickEasy: isHindi
+      ? "तेज और आसान"
+      : "Quick & Easy",
+
+    exclusiveBenefits: isHindi
+      ? "विशेष लाभ"
+      : "EXCLUSIVE BENEFITS",
+
+    ourhubPremium: isHindi
+      ? "OURHUB प्रीमियम"
+      : "OURHUB PREMIUM",
+
+    exceptionalServices: isHindi
+      ? "बेहतरीन सेवाएं।"
+      : "Exceptional Services.",
+
+    exceptionalExperience: isHindi
+      ? "बेहतरीन अनुभव।"
+      : "Exceptional Experience.",
+
+    footerDescription: isHindi
+      ? "वेरिफाइड प्रोफेशनल्स, क्वालिटी सर्विस और बिना किसी परेशानी के आसान बुकिंग अनुभव।"
+      : "Verified professionals, quality service and a hassle-free booking experience.",
+  };
+
+  // ============================================================
+  // LOAD USER PHONE
+  // ============================================================
 
   useEffect(() => {
     const savedPhone = getPhone();
@@ -35,29 +98,39 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#030812] py-0 sm:py-6">
-      {/* ================= PREMIUM BACKGROUND ================= */}
+      {/* ========================================================
+          PREMIUM BACKGROUND
+      ======================================================== */}
 
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         {/* Top Gold Glow */}
+
         <div className="absolute left-1/2 top-[-250px] h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-[#f6bd28]/[0.07] blur-[140px]" />
 
         {/* Left Glow */}
+
         <div className="absolute left-[-250px] top-[450px] h-[400px] w-[400px] rounded-full bg-[#c68b12]/[0.05] blur-[130px]" />
 
         {/* Right Glow */}
+
         <div className="absolute right-[-250px] top-[900px] h-[400px] w-[400px] rounded-full bg-[#f6bd28]/[0.04] blur-[130px]" />
 
         {/* Grid Effect */}
+
         <div
           className="
-            absolute inset-0 opacity-[0.025]
+            absolute
+            inset-0
+            opacity-[0.025]
             [background-image:linear-gradient(rgba(255,255,255,0.5)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.5)_1px,transparent_1px)]
             [background-size:42px_42px]
           "
         />
       </div>
 
-      {/* ================= MOBILE APP CONTAINER ================= */}
+      {/* ========================================================
+          MOBILE APP CONTAINER
+      ======================================================== */}
 
       <div
         className="
@@ -76,30 +149,37 @@ export default function Home() {
         "
       >
         {/* Premium Top Glow */}
+
         <div className="pointer-events-none absolute left-1/2 top-0 h-[220px] w-[100%] -translate-x-1/2 bg-gradient-to-b from-[#f6bd28]/[0.045] to-transparent" />
 
         <ScrollReveal />
 
-        {/* ================= SIDEBAR ================= */}
+        {/* ======================================================
+            SIDEBAR
+        ====================================================== */}
 
         <Sidebar
           open={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
         />
 
-        {/* ================= CATEGORIES SHEET ================= */}
+        {/* ======================================================
+            CATEGORIES SHEET
+        ====================================================== */}
 
         <CategoriesSheet
           open={categoriesOpen}
           onClose={() => setCategoriesOpen(false)}
         />
 
-        {/* ================= PAGE CONTENT ================= */}
+        {/* ======================================================
+            PAGE CONTENT
+        ====================================================== */}
 
         <div className="relative z-10 px-4 pb-32">
-          {/* =====================================================
+          {/* ====================================================
               HEADER
-          ===================================================== */}
+          ==================================================== */}
 
           <div
             className="
@@ -115,7 +195,7 @@ export default function Home() {
               pt-2
             "
           >
-            {/* Premium line */}
+            {/* Premium Line */}
 
             <div className="absolute bottom-0 left-1/2 h-px w-[65%] -translate-x-1/2 bg-gradient-to-r from-transparent via-[#f6bd28]/40 to-transparent" />
 
@@ -124,9 +204,9 @@ export default function Home() {
             />
           </div>
 
-          {/* =====================================================
+          {/* ====================================================
               PREMIUM SEARCH
-          ===================================================== */}
+          ==================================================== */}
 
           <div className="relative mt-1">
             {/* Gold Glow */}
@@ -151,9 +231,9 @@ export default function Home() {
             </div>
           </div>
 
-          {/* =====================================================
+          {/* ====================================================
               PREMIUM STATUS STRIP
-          ===================================================== */}
+          ==================================================== */}
 
           <div className="mt-4 flex items-center justify-center gap-2">
             <span className="h-px flex-1 bg-gradient-to-r from-transparent to-[#d8aa39]/35" />
@@ -169,16 +249,16 @@ export default function Home() {
               "
             >
               <p className="text-[9px] font-bold uppercase tracking-[2px] text-[#e9b934]">
-                ✦ Premium Home Services ✦
+                {t.premiumHomeServices}
               </p>
             </div>
 
             <span className="h-px flex-1 bg-gradient-to-l from-transparent to-[#d8aa39]/35" />
           </div>
 
-          {/* =====================================================
+          {/* ====================================================
               HERO
-          ===================================================== */}
+          ==================================================== */}
 
           <section className="relative mt-5">
             {/* Glow */}
@@ -200,9 +280,9 @@ export default function Home() {
             </div>
           </section>
 
-          {/* =====================================================
+          {/* ====================================================
               TRUST BAR
-          ===================================================== */}
+          ==================================================== */}
 
           <section className="mt-5">
             <div
@@ -216,50 +296,61 @@ export default function Home() {
                 bg-[#0a1727]/80
               "
             >
+              {/* VERIFIED */}
+
               <div className="border-r border-[#d8aa39]/10 px-2 py-4 text-center">
-                <p className="text-[15px] text-white">✦</p>
+                <p className="text-[15px] text-white">
+                  ✦
+                </p>
 
                 <p className="mt-1 text-[10px] font-bold text-white">
-                  Verified Experts
+                  {t.verifiedExperts}
                 </p>
 
                 <p className="mt-1 text-[9px] text-slate-500">
-                  Trusted Professionals
+                  {t.trustedProfessionals}
                 </p>
               </div>
 
+              {/* QUALITY */}
+
               <div className="border-r border-[#d8aa39]/10 px-2 py-4 text-center">
-                <p className="text-[15px] text-white">◆</p>
+                <p className="text-[15px] text-white">
+                  ◆
+                </p>
 
                 <p className="mt-1 text-[10px] font-bold text-white">
-                  Premium Quality
+                  {t.premiumQuality}
                 </p>
 
                 <p className="mt-1 text-[9px] text-slate-500">
-                  Best Service Experience
+                  {t.bestServiceExperience}
                 </p>
               </div>
+
+              {/* BOOKING */}
 
               <div className="px-2 py-4 text-center">
-                <p className="text-[15px] text-white">✦</p>
+                <p className="text-[15px] text-white">
+                  ✦
+                </p>
 
                 <p className="mt-1 text-[10px] font-bold text-white">
-                  Fast Booking
+                  {t.fastBooking}
                 </p>
 
                 <p className="mt-1 text-[9px] text-slate-500">
-                  Quick & Easy
+                  {t.quickEasy}
                 </p>
               </div>
             </div>
           </section>
 
-          {/* =====================================================
+          {/* ====================================================
               POPULAR CATEGORIES
-          ===================================================== */}
+          ==================================================== */}
 
           <section className="mt-9">
-          
             <div
               className="
                 mt-4
@@ -272,21 +363,23 @@ export default function Home() {
             >
               <PopularCategories
                 search={search}
-                onMoreClick={() => setCategoriesOpen(true)}
+                onMoreClick={() =>
+                  setCategoriesOpen(true)
+                }
               />
             </div>
           </section>
 
-          {/* =====================================================
+          {/* ====================================================
               PREMIUM OFFER
-          ===================================================== */}
+          ==================================================== */}
 
           <section className="mt-8">
             <div className="mb-3 flex items-center gap-2">
               <span className="h-[2px] w-7 bg-[#f6bd28]" />
 
               <p className="text-[10px] font-bold tracking-[2px] text-[#e9b934]">
-                EXCLUSIVE BENEFITS
+                {t.exclusiveBenefits}
               </p>
             </div>
 
@@ -307,12 +400,11 @@ export default function Home() {
             </div>
           </section>
 
-          {/* =====================================================
+          {/* ====================================================
               MOST BOOKED
-          ===================================================== */}
+          ==================================================== */}
 
           <section className="mt-5">
-
             <div
               className="
                 mt-4
@@ -329,12 +421,11 @@ export default function Home() {
             </div>
           </section>
 
-          {/* =====================================================
+          {/* ====================================================
               WHY CHOOSE US
-          ===================================================== */}
+          ==================================================== */}
 
           <section className="mt-10">
-          
             <div
               className="
                 mt-5
@@ -351,13 +442,11 @@ export default function Home() {
             </div>
           </section>
 
-          {/* =====================================================
+          {/* ====================================================
               TESTIMONIALS
-          ===================================================== */}
+          ==================================================== */}
 
           <section className="mt-10">
-            
-
             <div
               className="
                 mt-5
@@ -373,9 +462,9 @@ export default function Home() {
             </div>
           </section>
 
-          {/* =====================================================
+          {/* ====================================================
               PREMIUM FOOTER BADGE
-          ===================================================== */}
+          ==================================================== */}
 
           <section className="mt-10 pb-4">
             <div
@@ -394,30 +483,38 @@ export default function Home() {
                 text-center
               "
             >
+              {/* Top Line */}
+
               <div className="absolute left-1/2 top-0 h-px w-[70%] -translate-x-1/2 bg-gradient-to-r from-transparent via-[#f6bd28]/70 to-transparent" />
 
+              {/* Brand */}
+
               <p className="text-[10px] font-bold tracking-[3px] text-[#e9b934]">
-                OURHUB PREMIUM
+                {t.ourhubPremium}
               </p>
 
+              {/* Main Heading */}
+
               <h3 className="mt-2 text-[16px] font-bold text-white">
-                Exceptional Services.
+                {t.exceptionalServices}
+
                 <span className="block text-[#e9b934]">
-                  Exceptional Experience.
+                  {t.exceptionalExperience}
                 </span>
               </h3>
 
+              {/* Description */}
+
               <p className="mt-3 text-[11px] leading-5 text-slate-500">
-                Verified professionals, quality service and a hassle-free
-                booking experience.
+                {t.footerDescription}
               </p>
             </div>
           </section>
         </div>
 
-        {/* =====================================================
+        {/* ======================================================
             PREMIUM BOTTOM NAV
-        ===================================================== */}
+        ====================================================== */}
 
         <div
           className="
@@ -435,10 +532,14 @@ export default function Home() {
             backdrop-blur-xl
           "
         >
+          {/* Top Line */}
+
           <div className="absolute left-1/2 top-0 h-px w-[60%] -translate-x-1/2 bg-gradient-to-r from-transparent via-[#f6bd28]/40 to-transparent" />
 
           <BottomNav
-            onCategoriesClick={() => setCategoriesOpen(true)}
+            onCategoriesClick={() =>
+              setCategoriesOpen(true)
+            }
           />
         </div>
       </div>

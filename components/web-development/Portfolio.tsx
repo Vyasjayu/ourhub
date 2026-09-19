@@ -1,4 +1,3 @@
-
 "use client";
 
 import { ArrowRight, BriefcaseBusiness, Sparkles } from "lucide-react";
@@ -6,8 +5,54 @@ import Link from "next/link";
 
 import { webProjects } from "@/data/webPortfolio";
 import PortfolioCard from "./PortfolioCard";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function PortfolioSection() {
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
+  const t = {
+    ourWork: isHindi ? "हमारा काम" : "Our Work",
+
+    recentProjects: isHindi
+      ? "हाल के प्रोजेक्ट्स"
+      : "Recent Projects",
+
+    description: isHindi
+      ? "OurHub द्वारा तैयार की गई प्रीमियम वेबसाइट्स की एक झलक।"
+      : "A glimpse of premium websites crafted by OurHub.",
+
+    viewAll: isHindi
+      ? "सभी देखें"
+      : "View All",
+
+    selectedWork: isHindi
+      ? "चुने हुए प्रोजेक्ट्स"
+      : "Selected Work",
+
+    categories: isHindi
+      ? "बिज़नेस • ई-कॉमर्स • लैंडिंग पेज"
+      : "Business • E-commerce • Landing Pages",
+
+    featuredProject: isHindi
+      ? "फीचर्ड प्रोजेक्ट"
+      : "Featured Project",
+
+    swipeToExplore: isHindi
+      ? "स्वाइप करके देखें"
+      : "Swipe to explore",
+
+    yourBusinessCouldBeNext: isHindi
+      ? "आपका बिज़नेस अगला हो सकता है"
+      : "Your business could be next",
+
+    createSomethingExceptional: isHindi
+      ? "आइए कुछ शानदार बनाएं"
+      : "Let's create something exceptional",
+
+    ourHub: "OurHub",
+  };
+
   return (
     <section className="relative mt-12 w-full overflow-hidden">
       {/* Ambient background glow */}
@@ -38,14 +83,14 @@ export default function PortfolioSection() {
               <span className="h-px w-6 bg-[#DFAE45]" />
 
               <span className="text-[9px] font-extrabold uppercase tracking-[0.18em] text-[#DFAE45]">
-                Our Work
+                {t.ourWork}
               </span>
             </div>
 
             {/* Title */}
             <div className="flex items-center gap-2.5">
               <h2 className="text-[22px] font-black tracking-[-0.035em] text-white">
-                Recent Projects
+                {t.recentProjects}
               </h2>
 
               <span
@@ -66,7 +111,7 @@ export default function PortfolioSection() {
             </div>
 
             <p className="mt-1 text-[10px] font-medium text-slate-500">
-              A glimpse of websites crafted by OurHub
+              {t.description}
             </p>
           </div>
 
@@ -95,12 +140,16 @@ export default function PortfolioSection() {
               active:scale-95
             "
           >
-            <span>View All</span>
+            <span>{t.viewAll}</span>
 
             <ArrowRight
               size={12}
               strokeWidth={2.5}
-              className="transition-transform duration-200 group-hover:translate-x-0.5"
+              className="
+                transition-transform
+                duration-200
+                group-hover:translate-x-0.5
+              "
             />
           </Link>
         </div>
@@ -128,11 +177,11 @@ export default function PortfolioSection() {
 
           <div>
             <p className="text-[8px] font-bold text-slate-300">
-              Selected Work
+              {t.selectedWork}
             </p>
 
             <p className="text-[7px] text-slate-600">
-              Business • E-commerce • Landing Pages
+              {t.categories}
             </p>
           </div>
         </div>
@@ -209,7 +258,7 @@ export default function PortfolioSection() {
                     />
 
                     <span className="text-[8px] font-bold uppercase tracking-[0.12em] text-slate-600">
-                      Featured Project
+                      {t.featuredProject}
                     </span>
                   </div>
 
@@ -268,7 +317,7 @@ export default function PortfolioSection() {
             />
 
             <span className="text-[8px] font-bold uppercase tracking-[0.16em] text-slate-600">
-              Swipe to explore
+              {t.swipeToExplore}
             </span>
           </div>
         </div>
@@ -314,21 +363,20 @@ export default function PortfolioSection() {
 
             <div>
               <p className="text-[9px] font-bold text-slate-300">
-                Your business could be next
+                {t.yourBusinessCouldBeNext}
               </p>
 
               <p className="mt-0.5 text-[7px] font-medium text-slate-600">
-                Let's create something exceptional
+                {t.createSomethingExceptional}
               </p>
             </div>
           </div>
 
           <span className="text-[8px] font-extrabold text-[#DFAE45]">
-            OurHub
+            {t.ourHub}
           </span>
         </div>
       </div>
     </section>
   );
 }
-

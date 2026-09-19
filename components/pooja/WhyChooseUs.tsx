@@ -10,34 +10,79 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 
+import { useLanguage } from "@/context/LanguageContext";
+
 const features = [
   {
     id: 1,
     icon: ShieldCheck,
-    title: "Verified Pandits",
-    desc: "Experienced & trusted Vedic Pandits",
+    title: {
+      en: "Verified Pandits",
+      hi: "प्रमाणित पंडित",
+    },
+    desc: {
+      en: "Experienced & trusted Vedic Pandits",
+      hi: "अनुभवी और विश्वसनीय वैदिक पंडित",
+    },
   },
   {
     id: 2,
     icon: BadgeCheck,
-    title: "Authentic Rituals",
-    desc: "Traditional Pooja Vidhi & Samagri",
+    title: {
+      en: "Authentic Rituals",
+      hi: "प्रामाणिक अनुष्ठान",
+    },
+    desc: {
+      en: "Traditional Pooja Vidhi & Samagri",
+      hi: "पारंपरिक पूजा विधि और सामग्री",
+    },
   },
   {
     id: 3,
     icon: CreditCard,
-    title: "Secure Payments",
-    desc: "Safe & fast online transactions",
+    title: {
+      en: "Secure Payments",
+      hi: "सुरक्षित भुगतान",
+    },
+    desc: {
+      en: "Safe & fast online transactions",
+      hi: "सुरक्षित और तेज़ ऑनलाइन लेनदेन",
+    },
   },
   {
     id: 4,
     icon: Headphones,
-    title: "24×7 Support",
-    desc: "We're always here to help",
+    title: {
+      en: "24×7 Support",
+      hi: "24×7 सहायता",
+    },
+    desc: {
+      en: "We're always here to help",
+      hi: "हम आपकी सहायता के लिए हमेशा उपलब्ध हैं",
+    },
   },
 ];
 
 export default function WhyChooseUs() {
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
+  const text = {
+    eyebrow: isHindi ? "हमारा वादा" : "Our Promise",
+
+    whyChoose: isHindi
+      ? "OurHub को क्यों चुनें?"
+      : "Why Choose OurHub?",
+
+    description: isHindi
+      ? "विश्वास और निश्चिंतता के साथ प्रामाणिक पूजा सेवाएं बुक करने का एक भरोसेमंद तरीका।"
+      : "A trusted way to book authentic pooja services with confidence and peace of mind.",
+
+    trustFooter: isHindi
+      ? "विश्वसनीय • सुरक्षित • प्रामाणिक"
+      : "Trusted • Secure • Authentic",
+  };
+
   return (
     <section className="mt-9 px-0">
       <div
@@ -56,6 +101,7 @@ export default function WhyChooseUs() {
           shadow-[0_20px_60px_rgba(0,0,0,0.4)]
         "
       >
+
         {/* =====================================================
             AMBIENT BACKGROUND
         ====================================================== */}
@@ -75,39 +121,56 @@ export default function WhyChooseUs() {
 
           {/* Eyebrow */}
           <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#DFAE45]/20 bg-[#DFAE45]/10 px-3 py-1.5">
+
             <Sparkles
               size={12}
+              strokeWidth={2}
               className="text-[#F3C75F]"
             />
 
-            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#F3C75F]">
-              Our Promise
+            <span className="text-[9px] font-bold tracking-[0.2em] text-[#F3C75F]">
+              {text.eyebrow}
             </span>
+
           </div>
 
           {/* Heading */}
           <h2 className="text-[23px] font-bold tracking-tight text-white">
-            Why Choose{" "}
-            <span className="text-[#F3C75F]">
-              OurHub?
-            </span>
+            {isHindi ? (
+              <>
+                OurHub को क्यों{" "}
+                <span className="text-[#F3C75F]">
+                  चुनें?
+                </span>
+              </>
+            ) : (
+              <>
+                Why Choose{" "}
+                <span className="text-[#F3C75F]">
+                  OurHub?
+                </span>
+              </>
+            )}
           </h2>
 
+          {/* Description */}
           <p className="mx-auto mt-2 max-w-[290px] text-[12px] leading-5 text-gray-500">
-            A trusted way to book authentic pooja services
-            with confidence and peace of mind.
+            {text.description}
           </p>
 
           {/* Decorative Divider */}
           <div className="mx-auto mt-4 flex items-center justify-center gap-2">
+
             <div className="h-px w-10 bg-gradient-to-r from-transparent to-[#DFAE45]/40" />
 
             <Sparkles
               size={11}
+              strokeWidth={2}
               className="text-[#DFAE45]"
             />
 
             <div className="h-px w-10 bg-gradient-to-l from-transparent to-[#DFAE45]/40" />
+
           </div>
         </div>
 
@@ -119,6 +182,14 @@ export default function WhyChooseUs() {
 
           {features.map((item, index) => {
             const Icon = item.icon;
+
+            const title = isHindi
+              ? item.title.hi
+              : item.title.en;
+
+            const desc = isHindi
+              ? item.desc.hi
+              : item.desc.en;
 
             return (
               <div
@@ -139,6 +210,7 @@ export default function WhyChooseUs() {
                   hover:border-[#DFAE45]/40
                   hover:bg-[#0D1B2D]
                   hover:shadow-[0_15px_35px_rgba(0,0,0,0.35)]
+                  active:scale-[0.98]
                 "
               >
 
@@ -175,7 +247,7 @@ export default function WhyChooseUs() {
                   <Icon
                     size={22}
                     strokeWidth={1.8}
-                    className="text-[#F3C75F] transition-transform duration-300 group-hover/card:scale-110"
+                    className="relative z-10 text-[#F3C75F] transition-transform duration-300 group-hover/card:scale-110"
                   />
 
                   {/* Icon Glow */}
@@ -184,12 +256,12 @@ export default function WhyChooseUs() {
 
                 {/* Title */}
                 <h3 className="relative mt-4 text-[13px] font-bold leading-5 text-white">
-                  {item.title}
+                  {title}
                 </h3>
 
                 {/* Description */}
                 <p className="relative mt-1.5 text-[10px] leading-[17px] text-gray-500">
-                  {item.desc}
+                  {desc}
                 </p>
 
                 {/* Bottom Arrow */}
@@ -215,12 +287,14 @@ export default function WhyChooseUs() {
                 >
                   <ArrowUpRight
                     size={12}
+                    strokeWidth={2}
                     className="text-gray-500 transition-colors group-hover/card:text-[#F3C75F]"
                   />
                 </div>
 
                 {/* Bottom Gold Accent */}
                 <div className="absolute bottom-0 left-1/2 h-[2px] w-0 -translate-x-1/2 bg-gradient-to-r from-transparent via-[#DFAE45] to-transparent transition-all duration-500 group-hover/card:w-[60%]" />
+
               </div>
             );
           })}
@@ -234,10 +308,13 @@ export default function WhyChooseUs() {
 
           <div className="flex items-center justify-center gap-2">
 
+            {/* Trust Icons */}
             <div className="flex -space-x-1.5">
+
               <div className="flex h-6 w-6 items-center justify-center rounded-full border border-[#0B1524] bg-[#DFAE45]/20">
                 <ShieldCheck
                   size={11}
+                  strokeWidth={2}
                   className="text-[#F3C75F]"
                 />
               </div>
@@ -245,6 +322,7 @@ export default function WhyChooseUs() {
               <div className="flex h-6 w-6 items-center justify-center rounded-full border border-[#0B1524] bg-[#DFAE45]/20">
                 <BadgeCheck
                   size={11}
+                  strokeWidth={2}
                   className="text-[#F3C75F]"
                 />
               </div>
@@ -252,13 +330,16 @@ export default function WhyChooseUs() {
               <div className="flex h-6 w-6 items-center justify-center rounded-full border border-[#0B1524] bg-[#DFAE45]/20">
                 <CreditCard
                   size={11}
+                  strokeWidth={2}
                   className="text-[#F3C75F]"
                 />
               </div>
+
             </div>
 
-            <p className="text-[9px] font-medium uppercase tracking-[0.13em] text-gray-500">
-              Trusted • Secure • Authentic
+            {/* Trust Text */}
+            <p className="text-[9px] font-medium tracking-[0.13em] text-gray-500">
+              {text.trustFooter}
             </p>
 
           </div>
@@ -266,7 +347,9 @@ export default function WhyChooseUs() {
 
         {/* Bottom Gold Line */}
         <div className="absolute bottom-0 left-1/2 h-px w-[45%] -translate-x-1/2 bg-gradient-to-r from-transparent via-[#DFAE45]/40 to-transparent" />
+
       </div>
     </section>
   );
 }
+

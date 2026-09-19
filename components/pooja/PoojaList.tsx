@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -9,36 +10,61 @@ import {
 } from "lucide-react";
 
 import PoojaCard from "./PoojaCard";
+import { useLanguage } from "@/context/LanguageContext";
 
 const poojas = [
   {
     slug: "ganesh-pooja",
-    title: "Ganesh Pooja",
-    description: "Remove obstacles and bring success & prosperity.",
+    title: {
+      en: "Ganesh Pooja",
+      hi: "गणेश पूजा",
+    },
+    description: {
+      en: "Remove obstacles and bring success & prosperity.",
+      hi: "बाधाओं को दूर करें और सफलता एवं समृद्धि प्राप्त करें।",
+    },
     duration: "60-90 min",
     price: "1,101",
     image: "/pooja/ganesh-card.jpg",
   },
   {
     slug: "lakshmi-pooja",
-    title: "Lakshmi Pooja",
-    description: "Attract wealth, happiness and good fortune.",
+    title: {
+      en: "Lakshmi Pooja",
+      hi: "लक्ष्मी पूजा",
+    },
+    description: {
+      en: "Attract wealth, happiness and good fortune.",
+      hi: "धन, सुख-समृद्धि और सौभाग्य को आकर्षित करें।",
+    },
     duration: "60-90 min",
     price: "1,251",
     image: "/pooja/lakshmi-card.jpg",
   },
   {
     slug: "navgrah-pooja",
-    title: "Navgrah Shanti Pooja",
-    description: "Balance planetary energies and reduce doshas.",
+    title: {
+      en: "Navgrah Shanti Pooja",
+      hi: "नवग्रह शांति पूजा",
+    },
+    description: {
+      en: "Balance planetary energies and reduce doshas.",
+      hi: "ग्रहों की ऊर्जा को संतुलित करें और दोषों को कम करें।",
+    },
     duration: "90-120 min",
     price: "2,101",
     image: "/pooja/navgrah-card.jpg",
   },
   {
     slug: "maha-mrityunjaya-pooja",
-    title: "Maha Mrityunjaya Pooja",
-    description: "For good health, peace and protection.",
+    title: {
+      en: "Maha Mrityunjaya Pooja",
+      hi: "महामृत्युंजय पूजा",
+    },
+    description: {
+      en: "For good health, peace and protection.",
+      hi: "अच्छे स्वास्थ्य, शांति और सुरक्षा के लिए।",
+    },
     duration: "60-90 min",
     price: "1,501",
     image: "/pooja/mahadev-card.jpg",
@@ -46,10 +72,75 @@ const poojas = [
 ];
 
 export default function PoojaList() {
+  const { language } = useLanguage();
+
+  const text = {
+    sacredRituals:
+      language === "hi"
+        ? "पवित्र अनुष्ठान"
+        : "Sacred Rituals",
+
+    choosePooja:
+      language === "hi"
+        ? "पूजा चुनें"
+        : "Choose a Pooja",
+
+    subtitle:
+      language === "hi"
+        ? "अपने घर में दिव्य आशीर्वाद लाएं"
+        : "Bring divine blessings to your home",
+
+    viewAll:
+      language === "hi"
+        ? "सभी देखें"
+        : "View All",
+
+    highlyRated:
+      language === "hi"
+        ? "उत्कृष्ट रेटिंग"
+        : "Highly Rated",
+
+    authenticRituals:
+      language === "hi"
+        ? "प्रामाणिक अनुष्ठान"
+        : "Authentic Rituals",
+
+    verifiedPandits:
+      language === "hi"
+        ? "प्रमाणित पंडित"
+        : "Verified Pandits",
+
+    exploreMore:
+      language === "hi"
+        ? "और देखें"
+        : "Explore More",
+
+    sacredPoojas:
+      language === "hi"
+        ? "पवित्र पूजाएं"
+        : "Sacred Poojas",
+
+    exploreDescription:
+      language === "hi"
+        ? "और अधिक पूजा, अनुष्ठान, समारोह और विशेष पूजाओं की खोज करें।"
+        : "Discover more rituals, ceremonies and special poojas.",
+
+    viewAllPoojas:
+      language === "hi"
+        ? "सभी पूजाएं देखें"
+        : "View all poojas",
+
+    swipe:
+      language === "hi"
+        ? "देखने के लिए स्वाइप करें"
+        : "Swipe to explore",
+  };
+
   return (
     <section className="relative mt-9 w-full overflow-hidden">
       {/* AMBIENT GLOW */}
       <div className="pointer-events-none absolute -left-20 top-10 h-40 w-40 rounded-full bg-[#DFAE45]/10 blur-[70px]" />
+
       <div className="pointer-events-none absolute -right-20 bottom-10 h-44 w-44 rounded-full bg-[#8B5CF6]/10 blur-[80px]" />
 
       {/* ================= HEADER ================= */}
@@ -60,7 +151,7 @@ export default function PoojaList() {
             <span className="h-px w-6 bg-gradient-to-r from-transparent to-[#DFAE45]" />
 
             <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#DFAE45]">
-              Sacred Rituals
+              {text.sacredRituals}
             </span>
 
             <Sparkles
@@ -82,11 +173,11 @@ export default function PoojaList() {
 
             <div>
               <h2 className="text-[21px] font-bold leading-tight tracking-[-0.02em] text-white">
-                Choose a Pooja
+                {text.choosePooja}
               </h2>
 
               <p className="mt-0.5 text-[11px] text-white/40">
-                Bring divine blessings to your home
+                {text.subtitle}
               </p>
             </div>
           </div>
@@ -117,7 +208,7 @@ export default function PoojaList() {
             hover:bg-[#DFAE45]/10
           "
         >
-          <span>View All</span>
+          <span>{text.viewAll}</span>
 
           <ChevronRight
             size={14}
@@ -128,6 +219,7 @@ export default function PoojaList() {
 
       {/* ================= TRUST STRIP ================= */}
       <div className="mb-4 flex items-center gap-2 overflow-hidden px-1">
+        {/* Highly Rated */}
         <div className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/[0.07] bg-white/[0.025] px-2.5 py-1.5">
           <Star
             size={11}
@@ -136,12 +228,13 @@ export default function PoojaList() {
           />
 
           <span className="text-[9px] font-medium text-white/55">
-            Highly Rated
+            {text.highlyRated}
           </span>
         </div>
 
         <div className="h-1 w-1 shrink-0 rounded-full bg-white/15" />
 
+        {/* Authentic Rituals */}
         <div className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/[0.07] bg-white/[0.025] px-2.5 py-1.5">
           <Sparkles
             size={11}
@@ -149,15 +242,16 @@ export default function PoojaList() {
           />
 
           <span className="text-[9px] font-medium text-white/55">
-            Authentic Rituals
+            {text.authenticRituals}
           </span>
         </div>
 
         <div className="h-1 w-1 shrink-0 rounded-full bg-white/15" />
 
+        {/* Verified Pandits */}
         <div className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/[0.07] bg-white/[0.025] px-2.5 py-1.5">
           <span className="text-[9px] font-medium text-white/55">
-            Verified Pandits
+            {text.verifiedPandits}
           </span>
         </div>
       </div>
@@ -208,8 +302,8 @@ export default function PoojaList() {
             <div className="relative">
               <PoojaCard
                 slug={item.slug}
-                title={item.title}
-                description={item.description}
+                title={item.title[language]}
+                description={item.description[language]}
                 duration={item.duration}
                 price={item.price}
                 image={item.image}
@@ -251,6 +345,7 @@ export default function PoojaList() {
           <div className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[#DFAE45]/15 blur-[45px]" />
 
           <div className="relative">
+            {/* Icon + Arrow */}
             <div className="flex items-center justify-between">
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#DFAE45]/20 bg-[#DFAE45]/10">
                 <Sparkles
@@ -266,23 +361,27 @@ export default function PoojaList() {
               />
             </div>
 
+            {/* Explore Label */}
             <span className="mt-5 block text-[9px] font-bold uppercase tracking-[0.2em] text-[#DFAE45]/70">
-              Explore More
+              {text.exploreMore}
             </span>
 
+            {/* Title */}
             <h3 className="mt-1.5 text-[18px] font-bold leading-tight text-white">
-              Sacred Poojas
+              {text.sacredPoojas}
             </h3>
 
+            {/* Description */}
             <p className="mt-2 text-[11px] leading-5 text-white/40">
-              Discover more rituals, ceremonies and special poojas.
+              {text.exploreDescription}
             </p>
           </div>
 
+          {/* View All Button */}
           <div className="relative mt-8">
             <div className="flex items-center justify-between rounded-xl border border-white/[0.07] bg-white/[0.025] px-3 py-2.5">
               <span className="text-[10px] font-semibold text-white/60">
-                View all poojas
+                {text.viewAllPoojas}
               </span>
 
               <ChevronRight
@@ -306,9 +405,10 @@ export default function PoojaList() {
         <span className="h-1 w-1 rounded-full bg-white/15" />
 
         <span className="ml-1 text-[9px] font-medium text-white/25">
-          Swipe to explore
+          {text.swipe}
         </span>
       </div>
     </section>
   );
 }
+

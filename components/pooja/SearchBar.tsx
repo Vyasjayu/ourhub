@@ -1,8 +1,30 @@
+
 "use client";
 
 import { Search, Sparkles } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function SearchBar() {
+  const { language } = useLanguage();
+
+  /* =========================================================
+     TRANSLATIONS
+  ========================================================= */
+
+  const translations = {
+    en: {
+      placeholder: "Search Pooja, Temple...",
+      ariaLabel: "Search Pooja or Temple",
+    },
+
+    hi: {
+      placeholder: "पूजा, मंदिर खोजें...",
+      ariaLabel: "पूजा या मंदिर खोजें",
+    },
+  };
+
+  const text = translations[language];
+
   return (
     <div className="group relative w-full">
 
@@ -10,8 +32,23 @@ export default function SearchBar() {
           OUTER GLOW
       ================================================= */}
 
-      <div className="pointer-events-none absolute -inset-[1px] rounded-[19px] bg-gradient-to-r from-[#DFAE45]/0 via-[#DFAE45]/10 to-[#DFAE45]/0 opacity-0 blur-md transition duration-500 group-focus-within:opacity-100" />
-
+      <div
+        className="
+          pointer-events-none
+          absolute
+          -inset-[1px]
+          rounded-[19px]
+          bg-gradient-to-r
+          from-[#DFAE45]/0
+          via-[#DFAE45]/10
+          to-[#DFAE45]/0
+          opacity-0
+          blur-md
+          transition
+          duration-500
+          group-focus-within:opacity-100
+        "
+      />
 
       {/* =================================================
           SEARCH CONTAINER
@@ -43,16 +80,36 @@ export default function SearchBar() {
             LEFT ICON
         ================================================= */}
 
-        <div className="ml-3 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#DFAE45]/10 bg-[#DFAE45]/[0.06] transition-all duration-300 group-focus-within:border-[#DFAE45]/25 group-focus-within:bg-[#DFAE45]/10">
-
+        <div
+          className="
+            ml-3
+            flex
+            h-10
+            w-10
+            shrink-0
+            items-center
+            justify-center
+            rounded-xl
+            border
+            border-[#DFAE45]/10
+            bg-[#DFAE45]/[0.06]
+            transition-all
+            duration-300
+            group-focus-within:border-[#DFAE45]/25
+            group-focus-within:bg-[#DFAE45]/10
+          "
+        >
           <Search
             size={18}
             strokeWidth={2}
-            className="text-gray-500 transition-colors duration-300 group-focus-within:text-[#DFAE45]"
+            className="
+              text-gray-500
+              transition-colors
+              duration-300
+              group-focus-within:text-[#DFAE45]
+            "
           />
-
         </div>
-
 
         {/* =================================================
             INPUT
@@ -60,8 +117,8 @@ export default function SearchBar() {
 
         <input
           type="text"
-          placeholder="Search Pooja, Temple..."
-          aria-label="Search Pooja or Temple"
+          placeholder={text.placeholder}
+          aria-label={text.ariaLabel}
           className="
             h-full
             min-w-0
@@ -76,30 +133,54 @@ export default function SearchBar() {
           "
         />
 
-
         {/* =================================================
             RIGHT ICON
         ================================================= */}
 
-        <div className="mr-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/[0.035]">
-
+        <div
+          className="
+            mr-3
+            flex
+            h-9
+            w-9
+            shrink-0
+            items-center
+            justify-center
+            rounded-xl
+            bg-white/[0.035]
+          "
+        >
           <Sparkles
             size={14}
             strokeWidth={1.8}
             className="text-[#DFAE45]/70"
           />
-
         </div>
-
 
         {/* =================================================
             BOTTOM GOLD ACCENT
         ================================================= */}
 
-        <div className="pointer-events-none absolute bottom-0 left-1/2 h-[1px] w-0 -translate-x-1/2 bg-gradient-to-r from-transparent via-[#DFAE45] to-transparent transition-all duration-500 group-focus-within:w-[55%]" />
+        <div
+          className="
+            pointer-events-none
+            absolute
+            bottom-0
+            left-1/2
+            h-[1px]
+            w-0
+            -translate-x-1/2
+            bg-gradient-to-r
+            from-transparent
+            via-[#DFAE45]
+            to-transparent
+            transition-all
+            duration-500
+            group-focus-within:w-[55%]
+          "
+        />
 
       </div>
-
     </div>
   );
 }

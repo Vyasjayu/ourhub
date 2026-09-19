@@ -19,90 +19,214 @@ import {
   X,
 } from "lucide-react";
 
-const projectTypes = [
+import { useLanguage } from "@/context/LanguageContext";
+
+type LangText = {
+  en: string;
+  hi: string;
+};
+
+const projectTypes: Array<{
+  id: string;
+  title: LangText;
+  subtitle: LangText;
+  icon: typeof Home;
+}> = [
   {
     id: "independent-house",
-    title: "Independent House",
-    subtitle: "Complete residential construction",
+    title: {
+      en: "Independent House",
+      hi: "इंडिपेंडेंट हाउस",
+    },
+    subtitle: {
+      en: "Complete residential construction",
+      hi: "पूरा रेजिडेंशियल कंस्ट्रक्शन",
+    },
     icon: Home,
   },
   {
     id: "duplex",
-    title: "Duplex Home",
-    subtitle: "Two-floor residential home",
+    title: {
+      en: "Duplex Home",
+      hi: "डुप्लेक्स होम",
+    },
+    subtitle: {
+      en: "Two-floor residential home",
+      hi: "दो मंजिला रेजिडेंशियल होम",
+    },
     icon: Building2,
   },
   {
     id: "villa",
-    title: "Villa",
-    subtitle: "Premium custom construction",
+    title: {
+      en: "Villa",
+      hi: "विला",
+    },
+    subtitle: {
+      en: "Premium custom construction",
+      hi: "प्रीमियम कस्टम कंस्ट्रक्शन",
+    },
     icon: Sparkles,
   },
   {
     id: "floor-construction",
-    title: "Floor Construction",
-    subtitle: "Additional floor construction",
+    title: {
+      en: "Floor Construction",
+      hi: "फ्लोर कंस्ट्रक्शन",
+    },
+    subtitle: {
+      en: "Additional floor construction",
+      hi: "अतिरिक्त फ्लोर कंस्ट्रक्शन",
+    },
     icon: Building2,
   },
   {
     id: "home-extension",
-    title: "Home Extension",
-    subtitle: "Extend your existing home",
+    title: {
+      en: "Home Extension",
+      hi: "होम एक्सटेंशन",
+    },
+    subtitle: {
+      en: "Extend your existing home",
+      hi: "अपने मौजूदा घर का विस्तार करें",
+    },
     icon: Home,
   },
   {
     id: "custom-project",
-    title: "Custom Project",
-    subtitle: "Tell us your requirements",
+    title: {
+      en: "Custom Project",
+      hi: "कस्टम प्रोजेक्ट",
+    },
+    subtitle: {
+      en: "Tell us your requirements",
+      hi: "अपनी जरूरत हमें बताएं",
+    },
     icon: Ruler,
   },
 ];
 
-const plotSizes = [
-  "Below 500 sq.ft",
-  "500 - 1000 sq.ft",
-  "1000 - 2000 sq.ft",
-  "2000 - 3000 sq.ft",
-  "Above 3000 sq.ft",
+const plotSizes: LangText[] = [
+  {
+    en: "Below 500 sq.ft",
+    hi: "500 वर्ग फुट से कम",
+  },
+  {
+    en: "500 - 1000 sq.ft",
+    hi: "500 - 1000 वर्ग फुट",
+  },
+  {
+    en: "1000 - 2000 sq.ft",
+    hi: "1000 - 2000 वर्ग फुट",
+  },
+  {
+    en: "2000 - 3000 sq.ft",
+    hi: "2000 - 3000 वर्ग फुट",
+  },
+  {
+    en: "Above 3000 sq.ft",
+    hi: "3000 वर्ग फुट से अधिक",
+  },
 ];
 
-const floors = [
-  "Ground Floor",
-  "G + 1",
-  "G + 2",
-  "G + 3",
-  "Custom",
+const floors: LangText[] = [
+  {
+    en: "Ground Floor",
+    hi: "ग्राउंड फ्लोर",
+  },
+  {
+    en: "G + 1",
+    hi: "G + 1",
+  },
+  {
+    en: "G + 2",
+    hi: "G + 2",
+  },
+  {
+    en: "G + 3",
+    hi: "G + 3",
+  },
+  {
+    en: "Custom",
+    hi: "कस्टम",
+  },
 ];
 
-const budgets = [
-  "Below ₹10 Lakh",
-  "₹10 - ₹25 Lakh",
-  "₹25 - ₹50 Lakh",
-  "₹50 Lakh - ₹1 Crore",
-  "Above ₹1 Crore",
-  "Need Expert Advice",
+const budgets: LangText[] = [
+  {
+    en: "Below ₹10 Lakh",
+    hi: "₹10 लाख से कम",
+  },
+  {
+    en: "₹10 - ₹25 Lakh",
+    hi: "₹10 - ₹25 लाख",
+  },
+  {
+    en: "₹25 - ₹50 Lakh",
+    hi: "₹25 - ₹50 लाख",
+  },
+  {
+    en: "₹50 Lakh - ₹1 Crore",
+    hi: "₹50 लाख - ₹1 करोड़",
+  },
+  {
+    en: "Above ₹1 Crore",
+    hi: "₹1 करोड़ से अधिक",
+  },
+  {
+    en: "Need Expert Advice",
+    hi: "एक्सपर्ट की सलाह चाहिए",
+  },
 ];
 
-const timelines = [
+const timelines: Array<{
+  id: string;
+  title: LangText;
+  subtitle: LangText;
+}> = [
   {
     id: "immediately",
-    title: "Immediately",
-    subtitle: "Ready to start soon",
+    title: {
+      en: "Immediately",
+      hi: "तुरंत",
+    },
+    subtitle: {
+      en: "Ready to start soon",
+      hi: "जल्द शुरू करने के लिए तैयार",
+    },
   },
   {
     id: "1-3-months",
-    title: "1 - 3 Months",
-    subtitle: "Planning stage",
+    title: {
+      en: "1 - 3 Months",
+      hi: "1 - 3 महीने",
+    },
+    subtitle: {
+      en: "Planning stage",
+      hi: "प्लानिंग स्टेज",
+    },
   },
   {
     id: "3-6-months",
-    title: "3 - 6 Months",
-    subtitle: "Future planning",
+    title: {
+      en: "3 - 6 Months",
+      hi: "3 - 6 महीने",
+    },
+    subtitle: {
+      en: "Future planning",
+      hi: "भविष्य की प्लानिंग",
+    },
   },
   {
     id: "exploring",
-    title: "Just Exploring",
-    subtitle: "Need information first",
+    title: {
+      en: "Just Exploring",
+      hi: "अभी जानकारी ले रहा हूं",
+    },
+    subtitle: {
+      en: "Need information first",
+      hi: "पहले जानकारी चाहिए",
+    },
   },
 ];
 
@@ -140,23 +264,198 @@ function ConstructionRequestContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const service = searchParams.get("service") || "construction";
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
 
-  const serviceName = useMemo(() => {
+  const service =
+    searchParams.get("service") || "construction";
+
+  const serviceName = useMemo<LangText>(() => {
     if (service === "home-construction") {
-      return "Home Construction";
+      return {
+        en: "Home Construction",
+        hi: "होम कंस्ट्रक्शन",
+      };
     }
 
     if (service === "renovation") {
-      return "Home Renovation";
+      return {
+        en: "Home Renovation",
+        hi: "होम रिनोवेशन",
+      };
     }
 
     if (service === "interior") {
-      return "Interior Work";
+      return {
+        en: "Interior Work",
+        hi: "इंटीरियर वर्क",
+      };
     }
 
-    return "Construction";
+    return {
+      en: "Construction",
+      hi: "कंस्ट्रक्शन",
+    };
   }, [service]);
+
+  const t = {
+    loading: isHindi
+      ? "रिक्वेस्ट फॉर्म लोड हो रहा है..."
+      : "Loading request form...",
+
+    goBack: isHindi ? "वापस जाएं" : "Go back",
+    close: isHindi ? "बंद करें" : "Close",
+
+    projectRequest: isHindi
+      ? "प्रोजेक्ट रिक्वेस्ट"
+      : "Project Request",
+
+    selectedService: isHindi
+      ? "आपकी चुनी हुई सर्विस"
+      : "YOUR SELECTED SERVICE",
+
+    step: isHindi ? "स्टेप" : "Step",
+    of: isHindi ? "में से" : "of",
+    complete: isHindi ? "पूरा" : "Complete",
+
+    projectDetails: isHindi
+      ? "प्रोजेक्ट डिटेल्स"
+      : "PROJECT DETAILS",
+
+    whatBuild: isHindi
+      ? "आप क्या बनाना चाहते हैं?"
+      : "What Do You Want",
+
+    toBuild: isHindi
+      ? ""
+      : "To Build?",
+
+    toBuildHindi: isHindi
+      ? ""
+      : "",
+
+    constructionType: isHindi
+      ? "आप किस प्रकार का कंस्ट्रक्शन प्रोजेक्ट प्लान कर रहे हैं, उसे चुनें।"
+      : "Select the type of construction project you are planning.",
+
+    propertyDetails: isHindi
+      ? "प्रॉपर्टी डिटेल्स"
+      : "PROPERTY DETAILS",
+
+    tellAbout: isHindi
+      ? "हमें अपनी"
+      : "Tell Us About",
+
+    property: isHindi
+      ? "प्रॉपर्टी के बारे में बताएं"
+      : "Your Property",
+
+    plotSize: isHindi ? "प्लॉट साइज" : "Plot Size",
+
+    floors: isHindi
+      ? "फ्लोर की संख्या"
+      : "Number Of Floors",
+
+    locationBudget: isHindi
+      ? "लोकेशन और बजट"
+      : "LOCATION & BUDGET",
+
+    projectLocation: isHindi
+      ? "आपका प्रोजेक्ट"
+      : "Where Is Your",
+
+    located: isHindi
+      ? "कहां स्थित है?"
+      : "Project Located?",
+
+    city: isHindi ? "शहर" : "City",
+
+    enterCity: isHindi
+      ? "अपना शहर दर्ज करें"
+      : "Enter your city",
+
+    areaLocality: isHindi
+      ? "एरिया / लोकैलिटी"
+      : "Area / Locality",
+
+    optional: isHindi ? "(वैकल्पिक)" : "(Optional)",
+
+    enterArea: isHindi
+      ? "एरिया या लोकैलिटी दर्ज करें"
+      : "Enter area or locality",
+
+    estimatedBudget: isHindi
+      ? "अनुमानित बजट"
+      : "Estimated Budget",
+
+    projectTimeline: isHindi
+      ? "प्रोजेक्ट टाइमलाइन"
+      : "PROJECT TIMELINE",
+
+    whenStart: isHindi
+      ? "आप कब शुरू"
+      : "When Do You Plan",
+
+    start: isHindi
+      ? "करना चाहते हैं?"
+      : "To Start?",
+
+    timelineDescription: isHindi
+      ? "इससे हमें आपको सही कंस्ट्रक्शन एक्सपर्ट से जोड़ने में मदद मिलेगी।"
+      : "This helps us connect you with the right construction expert.",
+
+    contactDetails: isHindi
+      ? "कॉन्टैक्ट डिटेल्स"
+      : "CONTACT DETAILS",
+
+    contactExpert: isHindi
+      ? "हमारे एक्सपर्ट आपसे"
+      : "Where Should Our Expert",
+
+    contactYou: isHindi
+      ? "कहां संपर्क करें?"
+      : "Contact You?",
+
+    contactDescription: isHindi
+      ? "हमारे कंस्ट्रक्शन एक्सपर्ट आपके प्रोजेक्ट के बारे में आपसे संपर्क करेंगे।"
+      : "Our construction expert will contact you regarding your project.",
+
+    yourName: isHindi ? "आपका नाम" : "Your Name",
+
+    enterName: isHindi
+      ? "अपना नाम दर्ज करें"
+      : "Enter your name",
+
+    mobileNumber: isHindi
+      ? "मोबाइल नंबर"
+      : "Mobile Number",
+
+    enterMobile: isHindi
+      ? "मोबाइल नंबर दर्ज करें"
+      : "Enter mobile number",
+
+    requestSummary: isHindi
+      ? "रिक्वेस्ट समरी"
+      : "REQUEST SUMMARY",
+
+    service: isHindi ? "सर्विस" : "Service",
+
+    project: isHindi ? "प्रोजेक्ट" : "Project",
+
+    budget: isHindi ? "बजट" : "Budget",
+
+    citySummary: isHindi ? "शहर" : "City",
+
+    consent: isHindi
+      ? "रिक्वेस्ट सबमिट करके आप अपने कंस्ट्रक्शन प्रोजेक्ट के संबंध में संपर्क किए जाने के लिए सहमत हैं।"
+      : "By submitting this request, you agree to be contacted regarding your construction project.",
+
+    continue: isHindi ? "आगे बढ़ें" : "Continue",
+
+    submit: isHindi
+      ? "प्रोजेक्ट रिक्वेस्ट सबमिट करें"
+      : "Submit Project Request",
+  };
 
   const [step, setStep] = useState(1);
 
@@ -240,12 +539,15 @@ function ConstructionRequestContent() {
     const selectedProject =
       projectTypes.find(
         (item) => item.id === projectType
-      )?.title || projectType;
+      )?.title[language] || projectType;
 
     const selectedTimeline =
       timelines.find(
         (item) => item.id === timeline
-      )?.title || timeline;
+      )?.title[language] || timeline;
+
+    const selectedServiceName =
+      serviceName[language];
 
     const requestId = `OH-CON-${Date.now()
       .toString()
@@ -253,7 +555,51 @@ function ConstructionRequestContent() {
 
     const whatsappNumber = "918878632431";
 
-    const message = `
+    const message = isHindi
+      ? `
+🏗️ *नई कंस्ट्रक्शन रिक्वेस्ट*
+
+🆔 *रिक्वेस्ट ID:* ${requestId}
+
+━━━━━━━━━━━━━━
+
+🏠 *सर्विस*
+${selectedServiceName}
+
+🏗️ *प्रोजेक्ट टाइप*
+${selectedProject}
+
+📐 *प्लॉट साइज*
+${plotSize}
+
+🏢 *फ्लोर*
+${floor}
+
+📍 *शहर*
+${city}
+
+📌 *एरिया / लोकैलिटी*
+${area || "उपलब्ध नहीं"}
+
+💰 *अनुमानित बजट*
+${budget}
+
+📅 *प्रोजेक्ट टाइमलाइन*
+${selectedTimeline}
+
+━━━━━━━━━━━━━━
+
+👤 *कस्टमर डिटेल्स*
+
+👤 नाम: ${name}
+
+📱 मोबाइल: +91 ${mobile}
+
+━━━━━━━━━━━━━━
+
+⚡ *OurHub वेबसाइट से रिक्वेस्ट प्राप्त हुई*
+`
+      : `
 🏗️ *NEW CONSTRUCTION REQUEST*
 
 🆔 *Request ID:* ${requestId}
@@ -261,7 +607,7 @@ function ConstructionRequestContent() {
 ━━━━━━━━━━━━━━
 
 🏠 *SERVICE*
-${serviceName}
+${selectedServiceName}
 
 🏗️ *PROJECT TYPE*
 ${selectedProject}
@@ -322,7 +668,7 @@ ${selectedTimeline}
             <button
               type="button"
               onClick={handleBack}
-              aria-label="Go back"
+              aria-label={t.goBack}
               className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.03] active:scale-95"
             >
               <ArrowLeft size={21} />
@@ -334,14 +680,16 @@ ${selectedTimeline}
               </p>
 
               <p className="mt-1 text-[12px] font-semibold">
-                Project Request
+                {t.projectRequest}
               </p>
             </div>
 
             <button
               type="button"
-              onClick={() => router.push("/construction")}
-              aria-label="Close"
+              onClick={() =>
+                router.push("/construction")
+              }
+              aria-label={t.close}
               className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.03] active:scale-95"
             >
               <X size={19} />
@@ -364,11 +712,11 @@ ${selectedTimeline}
 
               <div className="min-w-0 flex-1">
                 <p className="text-[8px] font-bold uppercase tracking-[2px] text-[#DFAE45]">
-                  YOUR SELECTED SERVICE
+                  {t.selectedService}
                 </p>
 
                 <h1 className="mt-1 text-[15px] font-semibold">
-                  {serviceName}
+                  {serviceName[language]}
                 </h1>
               </div>
 
@@ -382,11 +730,11 @@ ${selectedTimeline}
           <div className="flex items-center justify-between">
 
             <p className="text-[10px] font-medium text-white/50">
-              Step {step} of {totalSteps}
+              {t.step} {step} {t.of} {totalSteps}
             </p>
 
             <p className="text-[10px] font-semibold text-[#DFAE45]">
-              {Math.round(progress)}% Complete
+              {Math.round(progress)}% {t.complete}
             </p>
 
           </div>
@@ -407,18 +755,29 @@ ${selectedTimeline}
           <section className="px-4 pt-8">
 
             <p className="text-[9px] font-bold uppercase tracking-[2px] text-[#DFAE45]">
-              PROJECT DETAILS
+              {t.projectDetails}
             </p>
 
             <h2 className="mt-2 text-[24px] font-bold">
-              What Do You Want
-              <span className="block text-[#DFAE45]">
-                To Build?
-              </span>
+              {isHindi ? (
+                <>
+                  आप क्या{" "}
+                  <span className="block text-[#DFAE45]">
+                    बनाना चाहते हैं?
+                  </span>
+                </>
+              ) : (
+                <>
+                  What Do You Want
+                  <span className="block text-[#DFAE45]">
+                    To Build?
+                  </span>
+                </>
+              )}
             </h2>
 
             <p className="mt-3 text-[12px] leading-6 text-white/45">
-              Select the type of construction project you are planning.
+              {t.constructionType}
             </p>
 
             <div className="mt-6 space-y-3">
@@ -455,11 +814,11 @@ ${selectedTimeline}
                     <div className="min-w-0 flex-1">
 
                       <h3 className="text-[13px] font-semibold">
-                        {item.title}
+                        {item.title[language]}
                       </h3>
 
                       <p className="mt-1 text-[10px] text-white/45">
-                        {item.subtitle}
+                        {item.subtitle[language]}
                       </p>
 
                     </div>
@@ -490,14 +849,25 @@ ${selectedTimeline}
           <section className="px-4 pt-8">
 
             <p className="text-[9px] font-bold uppercase tracking-[2px] text-[#DFAE45]">
-              PROPERTY DETAILS
+              {t.propertyDetails}
             </p>
 
             <h2 className="mt-2 text-[24px] font-bold">
-              Tell Us About
-              <span className="block text-[#DFAE45]">
-                Your Property
-              </span>
+              {isHindi ? (
+                <>
+                  अपनी{" "}
+                  <span className="block text-[#DFAE45]">
+                    प्रॉपर्टी के बारे में बताएं
+                  </span>
+                </>
+              ) : (
+                <>
+                  Tell Us About
+                  <span className="block text-[#DFAE45]">
+                    Your Property
+                  </span>
+                </>
+              )}
             </h2>
 
             {/* PLOT SIZE */}
@@ -511,7 +881,7 @@ ${selectedTimeline}
                 />
 
                 <h3 className="text-[13px] font-semibold">
-                  Plot Size
+                  {t.plotSize}
                 </h3>
               </div>
 
@@ -519,14 +889,14 @@ ${selectedTimeline}
 
                 {plotSizes.map((size) => {
                   const selected =
-                    plotSize === size;
+                    plotSize === size.en;
 
                   return (
                     <button
-                      key={size}
+                      key={size.en}
                       type="button"
                       onClick={() =>
-                        setPlotSize(size)
+                        setPlotSize(size.en)
                       }
                       className={`rounded-2xl border px-3 py-4 text-left text-[11px] transition active:scale-[0.97] ${
                         selected
@@ -534,7 +904,7 @@ ${selectedTimeline}
                           : "border-white/[0.07] bg-[#111111] text-white/65"
                       }`}
                     >
-                      {size}
+                      {size[language]}
                     </button>
                   );
                 })}
@@ -553,7 +923,7 @@ ${selectedTimeline}
                 />
 
                 <h3 className="text-[13px] font-semibold">
-                  Number Of Floors
+                  {t.floors}
                 </h3>
               </div>
 
@@ -561,14 +931,14 @@ ${selectedTimeline}
 
                 {floors.map((item) => {
                   const selected =
-                    floor === item;
+                    floor === item.en;
 
                   return (
                     <button
-                      key={item}
+                      key={item.en}
                       type="button"
                       onClick={() =>
-                        setFloor(item)
+                        setFloor(item.en)
                       }
                       className={`rounded-2xl border px-3 py-4 text-left text-[11px] transition active:scale-[0.97] ${
                         selected
@@ -576,7 +946,7 @@ ${selectedTimeline}
                           : "border-white/[0.07] bg-[#111111] text-white/65"
                       }`}
                     >
-                      {item}
+                      {item[language]}
                     </button>
                   );
                 })}
@@ -593,14 +963,25 @@ ${selectedTimeline}
           <section className="px-4 pt-8">
 
             <p className="text-[9px] font-bold uppercase tracking-[2px] text-[#DFAE45]">
-              LOCATION & BUDGET
+              {t.locationBudget}
             </p>
 
             <h2 className="mt-2 text-[24px] font-bold">
-              Where Is Your
-              <span className="block text-[#DFAE45]">
-                Project Located?
-              </span>
+              {isHindi ? (
+                <>
+                  आपका प्रोजेक्ट{" "}
+                  <span className="block text-[#DFAE45]">
+                    कहां स्थित है?
+                  </span>
+                </>
+              ) : (
+                <>
+                  Where Is Your
+                  <span className="block text-[#DFAE45]">
+                    Project Located?
+                  </span>
+                </>
+              )}
             </h2>
 
             {/* CITY */}
@@ -608,7 +989,7 @@ ${selectedTimeline}
             <div className="mt-7">
 
               <label className="text-[12px] font-semibold">
-                City
+                {t.city}
               </label>
 
               <div className="mt-3 flex items-center gap-3 rounded-2xl border border-white/[0.08] bg-[#111111] px-4">
@@ -623,7 +1004,7 @@ ${selectedTimeline}
                   onChange={(e) =>
                     setCity(e.target.value)
                   }
-                  placeholder="Enter your city"
+                  placeholder={t.enterCity}
                   className="h-[52px] w-full bg-transparent text-[12px] outline-none placeholder:text-white/25"
                 />
 
@@ -636,9 +1017,10 @@ ${selectedTimeline}
             <div className="mt-5">
 
               <label className="text-[12px] font-semibold">
-                Area / Locality
+                {t.areaLocality}
+
                 <span className="ml-1 text-white/35">
-                  (Optional)
+                  {t.optional}
                 </span>
               </label>
 
@@ -654,7 +1036,7 @@ ${selectedTimeline}
                   onChange={(e) =>
                     setArea(e.target.value)
                   }
-                  placeholder="Enter area or locality"
+                  placeholder={t.enterArea}
                   className="h-[52px] w-full bg-transparent text-[12px] outline-none placeholder:text-white/25"
                 />
 
@@ -674,7 +1056,7 @@ ${selectedTimeline}
                 />
 
                 <h3 className="text-[13px] font-semibold">
-                  Estimated Budget
+                  {t.estimatedBudget}
                 </h3>
 
               </div>
@@ -683,14 +1065,14 @@ ${selectedTimeline}
 
                 {budgets.map((item) => {
                   const selected =
-                    budget === item;
+                    budget === item.en;
 
                   return (
                     <button
-                      key={item}
+                      key={item.en}
                       type="button"
                       onClick={() =>
-                        setBudget(item)
+                        setBudget(item.en)
                       }
                       className={`rounded-2xl border px-3 py-4 text-left text-[10px] transition active:scale-[0.97] ${
                         selected
@@ -698,7 +1080,7 @@ ${selectedTimeline}
                           : "border-white/[0.07] bg-[#111111] text-white/65"
                       }`}
                     >
-                      {item}
+                      {item[language]}
                     </button>
                   );
                 })}
@@ -716,18 +1098,29 @@ ${selectedTimeline}
           <section className="px-4 pt-8">
 
             <p className="text-[9px] font-bold uppercase tracking-[2px] text-[#DFAE45]">
-              PROJECT TIMELINE
+              {t.projectTimeline}
             </p>
 
             <h2 className="mt-2 text-[24px] font-bold">
-              When Do You Plan
-              <span className="block text-[#DFAE45]">
-                To Start?
-              </span>
+              {isHindi ? (
+                <>
+                  आप कब{" "}
+                  <span className="block text-[#DFAE45]">
+                    शुरू करना चाहते हैं?
+                  </span>
+                </>
+              ) : (
+                <>
+                  When Do You Plan
+                  <span className="block text-[#DFAE45]">
+                    To Start?
+                  </span>
+                </>
+              )}
             </h2>
 
             <p className="mt-3 text-[12px] leading-6 text-white/45">
-              This helps us connect you with the right construction expert.
+              {t.timelineDescription}
             </p>
 
             <div className="mt-7 space-y-3">
@@ -764,11 +1157,11 @@ ${selectedTimeline}
                     <div className="flex-1">
 
                       <h3 className="text-[13px] font-semibold">
-                        {item.title}
+                        {item.title[language]}
                       </h3>
 
                       <p className="mt-1 text-[10px] text-white/45">
-                        {item.subtitle}
+                        {item.subtitle[language]}
                       </p>
 
                     </div>
@@ -795,18 +1188,29 @@ ${selectedTimeline}
           <section className="px-4 pt-8">
 
             <p className="text-[9px] font-bold uppercase tracking-[2px] text-[#DFAE45]">
-              CONTACT DETAILS
+              {t.contactDetails}
             </p>
 
             <h2 className="mt-2 text-[24px] font-bold">
-              Where Should Our Expert
-              <span className="block text-[#DFAE45]">
-                Contact You?
-              </span>
+              {isHindi ? (
+                <>
+                  हमारे एक्सपर्ट आपसे{" "}
+                  <span className="block text-[#DFAE45]">
+                    कहां संपर्क करें?
+                  </span>
+                </>
+              ) : (
+                <>
+                  Where Should Our Expert
+                  <span className="block text-[#DFAE45]">
+                    Contact You?
+                  </span>
+                </>
+              )}
             </h2>
 
             <p className="mt-3 text-[12px] leading-6 text-white/45">
-              Our construction expert will contact you regarding your project.
+              {t.contactDescription}
             </p>
 
             {/* NAME */}
@@ -814,7 +1218,7 @@ ${selectedTimeline}
             <div className="mt-8">
 
               <label className="text-[12px] font-semibold">
-                Your Name
+                {t.yourName}
               </label>
 
               <div className="mt-3 flex items-center gap-3 rounded-2xl border border-white/[0.08] bg-[#111111] px-4">
@@ -829,7 +1233,7 @@ ${selectedTimeline}
                   onChange={(e) =>
                     setName(e.target.value)
                   }
-                  placeholder="Enter your name"
+                  placeholder={t.enterName}
                   className="h-[52px] w-full bg-transparent text-[12px] outline-none placeholder:text-white/25"
                 />
 
@@ -842,7 +1246,7 @@ ${selectedTimeline}
             <div className="mt-5">
 
               <label className="text-[12px] font-semibold">
-                Mobile Number
+                {t.mobileNumber}
               </label>
 
               <div className="mt-3 flex items-center gap-3 rounded-2xl border border-white/[0.08] bg-[#111111] px-4">
@@ -867,7 +1271,7 @@ ${selectedTimeline}
                   }
                   inputMode="numeric"
                   maxLength={10}
-                  placeholder="Enter mobile number"
+                  placeholder={t.enterMobile}
                   className="h-[52px] w-full bg-transparent text-[12px] outline-none placeholder:text-white/25"
                 />
 
@@ -880,38 +1284,48 @@ ${selectedTimeline}
             <div className="mt-8 rounded-[22px] border border-[#DFAE45]/15 bg-[#DFAE45]/[0.05] p-4">
 
               <p className="text-[9px] font-bold uppercase tracking-[2px] text-[#DFAE45]">
-                REQUEST SUMMARY
+                {t.requestSummary}
               </p>
 
               <div className="mt-4 space-y-3">
 
                 <SummaryRow
-                  label="Service"
-                  value={serviceName}
+                  label={t.service}
+                  value={serviceName[language]}
                 />
 
                 <SummaryRow
-                  label="Project"
+                  label={t.project}
                   value={
                     projectTypes.find(
                       (item) =>
                         item.id === projectType
-                    )?.title || "-"
+                    )?.title[language] || "-"
                   }
                 />
 
                 <SummaryRow
-                  label="Plot Size"
-                  value={plotSize}
+                  label={t.plotSize}
+                  value={
+                    plotSizes.find(
+                      (item) =>
+                        item.en === plotSize
+                    )?.[language] || "-"
+                  }
                 />
 
                 <SummaryRow
-                  label="Budget"
-                  value={budget}
+                  label={t.budget}
+                  value={
+                    budgets.find(
+                      (item) =>
+                        item.en === budget
+                    )?.[language] || "-"
+                  }
                 />
 
                 <SummaryRow
-                  label="City"
+                  label={t.citySummary}
                   value={city}
                 />
 
@@ -920,8 +1334,7 @@ ${selectedTimeline}
             </div>
 
             <p className="mt-4 text-center text-[9px] leading-4 text-white/35">
-              By submitting this request, you agree to be contacted
-              regarding your construction project.
+              {t.consent}
             </p>
 
           </section>
@@ -950,13 +1363,13 @@ ${selectedTimeline}
 
             {step === totalSteps ? (
               <>
-                Submit Project Request
+                {t.submit}
 
                 <CheckCircle2 size={18} />
               </>
             ) : (
               <>
-                Continue
+                {t.continue}
 
                 <ArrowRight size={18} />
               </>

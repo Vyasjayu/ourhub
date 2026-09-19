@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -25,7 +26,15 @@ import {
   type TempleCategory,
 } from "@/data/offlineTempleData";
 
+import { useLanguage } from "@/context/LanguageContext";
+
 const locations = ["Indore", "Ujjain", "Ratlam"] as const;
+
+const locationHindiNames: Record<string, string> = {
+  Indore: "इंदौर",
+  Ujjain: "उज्जैन",
+  Ratlam: "रतलाम",
+};
 
 const categories: TempleCategory[] = [
   "All Temples",
@@ -35,8 +44,63 @@ const categories: TempleCategory[] = [
   "Ganesh Temple",
 ];
 
+const categoryHindiNames: Record<TempleCategory, string> = {
+  "All Temples": "सभी मंदिर",
+  "Shiva Temple": "शिव मंदिर",
+  "Vishnu Temple": "विष्णु मंदिर",
+  "Devi Temple": "देवी मंदिर",
+  "Ganesh Temple": "गणेश मंदिर",
+};
+
+const templeHindiNames: Record<string, string> = {
+  "Mahakaleshwar Temple": "महाकालेश्वर मंदिर",
+  "Omkareshwar Temple": "ओंकारेश्वर मंदिर",
+  "Khajrana Ganesh Temple": "खजराना गणेश मंदिर",
+  "Annapurna Temple": "अन्नपूर्णा मंदिर",
+  "Mangalnath Temple": "मंगलनाथ मंदिर",
+  "Harsiddhi Temple": "हरसिद्धि मंदिर",
+  "Kal Bhairav Temple": "काल भैरव मंदिर",
+  "Chintaman Ganesh Temple": "चिंतामन गणेश मंदिर",
+  "Bade Ganeshji Temple": "बड़े गणेशजी मंदिर",
+  "Gopal Mandir": "गोपाल मंदिर",
+  "Gadkalika Temple": "गढ़कालिका मंदिर",
+  "Navlakhi Eco Temple": "नवलखी मंदिर",
+  "ISKCON Temple": "इस्कॉन मंदिर",
+  "Pitra Parvat Temple": "पितृ पर्वत मंदिर",
+};
+
+function getLocationName(
+  location: string,
+  isHindi: boolean
+) {
+  return isHindi
+    ? locationHindiNames[location] || location
+    : location;
+}
+
+function getCategoryName(
+  category: TempleCategory,
+  isHindi: boolean
+) {
+  return isHindi
+    ? categoryHindiNames[category] || category
+    : category;
+}
+
+function getTempleName(
+  name: string,
+  isHindi: boolean
+) {
+  return isHindi
+    ? templeHindiNames[name] || name
+    : name;
+}
+
 export default function SelectTemple() {
   const router = useRouter();
+  const { language } = useLanguage();
+
+  const isHindi = language === "hi";
 
   const [selectedLocation, setSelectedLocation] =
     useState<(typeof locations)[number]>("Indore");
@@ -59,9 +123,13 @@ export default function SelectTemple() {
         selectedCategory === "All Temples" ||
         temple.category === selectedCategory;
 
+      const templeHindiName =
+        templeHindiNames[temple.name] || "";
+
       const searchMatch =
         !searchText ||
         temple.name.toLowerCase().includes(searchText) ||
+        templeHindiName.toLowerCase().includes(searchText) ||
         temple.city.toLowerCase().includes(searchText);
 
       return (
@@ -75,7 +143,6 @@ export default function SelectTemple() {
   return (
     <main className="min-h-screen bg-[#02060A] text-white">
       <div className="relative mx-auto min-h-screen w-full max-w-[480px] overflow-x-hidden bg-[#07111B] pb-28">
-
         {/* ================================================= */}
         {/* AMBIENT BACKGROUND */}
         {/* ================================================= */}
@@ -90,7 +157,6 @@ export default function SelectTemple() {
 
         <header className="relative z-40 px-4 pb-3 pt-4">
           <div className="relative flex h-[66px] items-center justify-between overflow-hidden rounded-[23px] border border-white/[0.07] bg-[#0A1522]/85 px-3 shadow-[0_12px_40px_rgba(0,0,0,0.25)] backdrop-blur-2xl">
-
             {/* Header glow */}
             <div className="pointer-events-none absolute left-1/2 top-[-45px] h-32 w-52 -translate-x-1/2 rounded-full bg-[#DFAE45]/[0.08] blur-3xl" />
 
@@ -98,7 +164,9 @@ export default function SelectTemple() {
             <button
               type="button"
               onClick={() => router.back()}
-              aria-label="Go back"
+              aria-label={
+                isHindi ? "वापस जाएं" : "Go back"
+              }
               className="group relative z-10 flex h-11 w-11 items-center justify-center rounded-2xl border border-white/[0.07] bg-white/[0.035] text-slate-300 transition-all duration-300 hover:border-[#DFAE45]/30 hover:bg-[#DFAE45]/[0.07] hover:text-[#F3C75F] active:scale-90"
             >
               <ArrowLeft
@@ -133,14 +201,16 @@ export default function SelectTemple() {
               </div>
 
               <h1 className="mt-1 text-[16px] font-bold text-white">
-                Select Temple
+                {isHindi ? "मंदिर चुनें" : "Select Temple"}
               </h1>
 
               <div className="mt-0.5 flex items-center justify-center gap-1.5">
                 <span className="h-1 w-1 rounded-full bg-[#DFAE45]" />
 
                 <span className="text-[7px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                  Sacred • Authentic • Trusted
+                  {isHindi
+                    ? "पवित्र • प्रामाणिक • विश्वसनीय"
+                    : "Sacred • Authentic • Trusted"}
                 </span>
 
                 <span className="h-1 w-1 rounded-full bg-[#DFAE45]" />
@@ -150,7 +220,9 @@ export default function SelectTemple() {
             {/* Notification */}
             <button
               type="button"
-              aria-label="Notifications"
+              aria-label={
+                isHindi ? "सूचनाएं" : "Notifications"
+              }
               className="group relative z-10 flex h-11 w-11 items-center justify-center rounded-2xl border border-white/[0.07] bg-white/[0.035] text-slate-300 transition-all duration-300 hover:border-[#DFAE45]/30 hover:bg-[#DFAE45]/[0.07] hover:text-[#F3C75F] active:scale-90"
             >
               <Bell
@@ -183,18 +255,24 @@ export default function SelectTemple() {
             />
 
             <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-[#DFAE45]">
-              Find Your Sacred Temple
+              {isHindi
+                ? "अपना पवित्र मंदिर खोजें"
+                : "Find Your Sacred Temple"}
             </span>
           </div>
 
           <div className="grid grid-cols-[0.9fr_1.1fr] gap-2.5">
-
             {/* Location */}
             <div className="relative">
               <button
                 type="button"
                 onClick={() =>
                   setLocationOpen((prev) => !prev)
+                }
+                aria-label={
+                  isHindi
+                    ? "स्थान चुनें"
+                    : "Select location"
                 }
                 className={`flex h-[56px] w-full items-center gap-2 rounded-[19px] border px-3 text-left transition-all duration-300 ${
                   locationOpen
@@ -211,11 +289,15 @@ export default function SelectTemple() {
 
                 <span className="min-w-0 flex-1">
                   <span className="block text-[7px] uppercase tracking-[0.12em] text-slate-600">
-                    Location
+                    {isHindi ? "स्थान" : "Location"}
                   </span>
 
                   <span className="mt-0.5 block truncate text-[11px] font-semibold text-slate-200">
-                    {selectedLocation}, MP
+                    {getLocationName(
+                      selectedLocation,
+                      isHindi
+                    )}
+                    , MP
                   </span>
                 </span>
 
@@ -230,15 +312,18 @@ export default function SelectTemple() {
               {/* Location Dropdown */}
               {locationOpen && (
                 <div className="absolute left-0 right-0 top-[62px] z-[100] overflow-hidden rounded-[22px] border border-[#DFAE45]/20 bg-[#09131F]/[0.98] shadow-[0_25px_60px_rgba(0,0,0,0.55)] backdrop-blur-2xl">
-
                   <div className="flex items-center justify-between border-b border-white/[0.06] px-3.5 py-3">
                     <div>
                       <p className="text-[10px] font-bold text-white">
-                        Service Location
+                        {isHindi
+                          ? "सेवा का स्थान"
+                          : "Service Location"}
                       </p>
 
                       <p className="mt-0.5 text-[7px] text-slate-600">
-                        Choose your preferred city
+                        {isHindi
+                          ? "अपना पसंदीदा शहर चुनें"
+                          : "Choose your preferred city"}
                       </p>
                     </div>
 
@@ -246,6 +331,9 @@ export default function SelectTemple() {
                       type="button"
                       onClick={() =>
                         setLocationOpen(false)
+                      }
+                      aria-label={
+                        isHindi ? "बंद करें" : "Close"
                       }
                       className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/[0.04] text-slate-500"
                     >
@@ -297,11 +385,17 @@ export default function SelectTemple() {
                                   : "text-slate-300"
                               }`}
                             >
-                              {location}, MP
+                              {getLocationName(
+                                location,
+                                isHindi
+                              )}
+                              , MP
                             </span>
 
                             <span className="mt-0.5 block text-[7px] text-slate-600">
-                              Offline pooja available
+                              {isHindi
+                                ? "ऑफलाइन पूजा उपलब्ध"
+                                : "Offline pooja available"}
                             </span>
                           </span>
 
@@ -330,7 +424,7 @@ export default function SelectTemple() {
 
               <div className="min-w-0 flex-1">
                 <span className="block text-[7px] uppercase tracking-[0.12em] text-slate-600">
-                  Discover
+                  {isHindi ? "खोजें" : "Discover"}
                 </span>
 
                 <input
@@ -339,7 +433,16 @@ export default function SelectTemple() {
                     setSearch(e.target.value)
                   }
                   type="text"
-                  placeholder="Temple..."
+                  placeholder={
+                    isHindi
+                      ? "मंदिर खोजें..."
+                      : "Temple..."
+                  }
+                  aria-label={
+                    isHindi
+                      ? "मंदिर खोजें"
+                      : "Search temple"
+                  }
                   className="mt-0.5 w-full min-w-0 bg-transparent text-[11px] font-medium text-white outline-none placeholder:text-slate-600"
                 />
               </div>
@@ -348,6 +451,11 @@ export default function SelectTemple() {
                 <button
                   type="button"
                   onClick={() => setSearch("")}
+                  aria-label={
+                    isHindi
+                      ? "खोज साफ करें"
+                      : "Clear search"
+                  }
                   className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-white/[0.04] text-slate-500"
                 >
                   <X size={12} />
@@ -363,10 +471,13 @@ export default function SelectTemple() {
 
         <section className="relative px-4 pt-4">
           <div className="group relative h-[190px] overflow-hidden rounded-[27px] border border-[#DFAE45]/20 bg-[#0A141F] shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
-
             <Image
               src="/images/offline-pooja/temple-select.jpg"
-              alt="Choose a sacred temple"
+              alt={
+                isHindi
+                  ? "पवित्र मंदिर चुनें"
+                  : "Choose a sacred temple"
+              }
               fill
               sizes="(max-width: 480px) 100vw, 480px"
               className="object-cover transition-transform duration-1000 group-hover:scale-[1.04]"
@@ -382,7 +493,6 @@ export default function SelectTemple() {
 
             {/* Hero content */}
             <div className="absolute inset-y-0 left-0 flex max-w-[290px] flex-col justify-center p-5">
-
               <div className="mb-2 flex items-center gap-1.5">
                 <Sparkles
                   size={11}
@@ -391,21 +501,36 @@ export default function SelectTemple() {
                 />
 
                 <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-[#F3C75F]">
-                  Sacred Destination
+                  {isHindi
+                    ? "पवित्र गंतव्य"
+                    : "Sacred Destination"}
                 </span>
               </div>
 
               <h2 className="text-[25px] font-extrabold leading-[1.08] tracking-[-0.02em] text-white">
-                Choose a Sacred
-                <br />
-                <span className="bg-gradient-to-r from-[#F7D77A] via-[#DFAE45] to-[#B98222] bg-clip-text text-transparent">
-                  Temple
-                </span>
+                {isHindi ? (
+                  <>
+                    पवित्र मंदिर
+                    <br />
+                    <span className="bg-gradient-to-r from-[#F7D77A] via-[#DFAE45] to-[#B98222] bg-clip-text text-transparent">
+                      चुनें
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    Choose a Sacred
+                    <br />
+                    <span className="bg-gradient-to-r from-[#F7D77A] via-[#DFAE45] to-[#B98222] bg-clip-text text-transparent">
+                      Temple
+                    </span>
+                  </>
+                )}
               </h2>
 
               <p className="mt-2 max-w-[235px] text-[10px] leading-[1.6] text-slate-300">
-                Select where you want your pooja performed
-                with trusted local temple services.
+                {isHindi
+                  ? "विश्वसनीय स्थानीय मंदिर सेवा के साथ अपनी पूजा के लिए मंदिर चुनें।"
+                  : "Select where you want your pooja performed with trusted local temple services."}
               </p>
 
               {/* Mini trust row */}
@@ -417,7 +542,7 @@ export default function SelectTemple() {
                   />
 
                   <span className="text-[7px] font-semibold text-slate-200">
-                    Verified
+                    {isHindi ? "प्रमाणित" : "Verified"}
                   </span>
                 </div>
 
@@ -428,7 +553,7 @@ export default function SelectTemple() {
                   />
 
                   <span className="text-[7px] font-semibold text-slate-200">
-                    Authentic
+                    {isHindi ? "प्रामाणिक" : "Authentic"}
                   </span>
                 </div>
               </div>
@@ -464,16 +589,21 @@ export default function SelectTemple() {
           <div className="mb-2 flex items-center justify-between px-4">
             <div>
               <p className="text-[8px] font-bold uppercase tracking-[0.18em] text-[#DFAE45]">
-                Browse By Type
+                {isHindi
+                  ? "प्रकार के अनुसार खोजें"
+                  : "Browse By Type"}
               </p>
 
               <p className="mt-0.5 text-[10px] text-slate-500">
-                Find your preferred temple
+                {isHindi
+                  ? "अपना पसंदीदा मंदिर खोजें"
+                  : "Find your preferred temple"}
               </p>
             </div>
 
             <span className="rounded-full border border-white/[0.06] bg-white/[0.025] px-2.5 py-1 text-[7px] font-semibold text-slate-500">
-              {filteredTemples.length} Results
+              {filteredTemples.length}{" "}
+              {isHindi ? "परिणाम" : "Results"}
             </span>
           </div>
 
@@ -489,6 +619,10 @@ export default function SelectTemple() {
                   onClick={() =>
                     setSelectedCategory(category)
                   }
+                  aria-label={getCategoryName(
+                    category,
+                    isHindi
+                  )}
                   className={`group relative shrink-0 overflow-hidden rounded-full px-4 py-2.5 text-[9px] font-bold transition-all duration-300 active:scale-95 ${
                     active
                       ? "bg-gradient-to-r from-[#F3C75F] to-[#B98222] text-black shadow-[0_6px_18px_rgba(223,174,69,0.18)]"
@@ -497,11 +631,17 @@ export default function SelectTemple() {
                 >
                   {active && (
                     <span className="mr-1.5 inline-flex">
-                      <Check size={10} strokeWidth={3} />
+                      <Check
+                        size={10}
+                        strokeWidth={3}
+                      />
                     </span>
                   )}
 
-                  {category}
+                  {getCategoryName(
+                    category,
+                    isHindi
+                  )}
                 </button>
               );
             })}
@@ -519,12 +659,19 @@ export default function SelectTemple() {
                 <span className="h-1 w-1 rounded-full bg-[#DFAE45]" />
 
                 <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-[#DFAE45]">
-                  Available Temples
+                  {isHindi
+                    ? "उपलब्ध मंदिर"
+                    : "Available Temples"}
                 </span>
               </div>
 
               <h2 className="text-[19px] font-extrabold tracking-tight text-white">
-                Temples in {selectedLocation}
+                {isHindi
+                  ? `${getLocationName(
+                      selectedLocation,
+                      true
+                    )} के मंदिर`
+                  : `Temples in ${selectedLocation}`}
               </h2>
             </div>
 
@@ -535,7 +682,8 @@ export default function SelectTemple() {
               />
 
               <span className="text-[8px] font-bold text-slate-400">
-                {filteredTemples.length} temples
+                {filteredTemples.length}{" "}
+                {isHindi ? "मंदिर" : "temples"}
               </span>
             </div>
           </div>
@@ -549,127 +697,150 @@ export default function SelectTemple() {
 
         <section className="space-y-3 px-4 pt-4">
           {filteredTemples.length > 0 ? (
-            filteredTemples.map((temple, index) => (
-              <button
-                key={temple.id}
-                type="button"
-                onClick={() =>
-                  router.push(
-                    `/offline-pooja/select-temple/${temple.id}`
-                  )
-                }
-                className="group relative flex w-full items-center gap-3 overflow-hidden rounded-[23px] border border-white/[0.07] bg-gradient-to-r from-[#0C1724] to-[#08111B] p-2.5 text-left shadow-[0_12px_32px_rgba(0,0,0,0.2)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#DFAE45]/25 hover:shadow-[0_18px_38px_rgba(0,0,0,0.3)] active:scale-[0.99]"
-              >
-                {/* Card glow */}
-                <div className="pointer-events-none absolute -right-12 top-1/2 h-28 w-28 -translate-y-1/2 rounded-full bg-[#DFAE45]/[0.035] blur-2xl" />
+            filteredTemples.map((temple, index) => {
+              const displayTempleName =
+                getTempleName(
+                  temple.name,
+                  isHindi
+                );
 
-                {/* Image */}
-                <div className="relative h-[102px] w-[96px] shrink-0 overflow-hidden rounded-[17px] bg-[#111C29]">
-                  <Image
-                    src={temple.image}
-                    alt={temple.name}
-                    fill
-                    sizes="96px"
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
+              return (
+                <button
+                  key={temple.id}
+                  type="button"
+                  onClick={() =>
+                    router.push(
+                      `/offline-pooja/select-temple/${temple.id}`
+                    )
+                  }
+                  aria-label={
+                    isHindi
+                      ? `${displayTempleName} चुनें`
+                      : `Select ${temple.name}`
+                  }
+                  className="group relative flex w-full items-center gap-3 overflow-hidden rounded-[23px] border border-white/[0.07] bg-gradient-to-r from-[#0C1724] to-[#08111B] p-2.5 text-left shadow-[0_12px_32px_rgba(0,0,0,0.2)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#DFAE45]/25 hover:shadow-[0_18px_38px_rgba(0,0,0,0.3)] active:scale-[0.99]"
+                >
+                  {/* Card glow */}
+                  <div className="pointer-events-none absolute -right-12 top-1/2 h-28 w-28 -translate-y-1/2 rounded-full bg-[#DFAE45]/[0.035] blur-2xl" />
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/10" />
-
-                  {/* Number */}
-                  <span className="absolute left-2 top-2 flex h-5 min-w-5 items-center justify-center rounded-full border border-white/10 bg-black/45 px-1 text-[7px] font-bold text-white backdrop-blur-md">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-
-                  {/* Verified */}
-                  <span className="absolute bottom-2 left-2 flex items-center gap-1 rounded-full border border-emerald-400/15 bg-black/50 px-1.5 py-1 backdrop-blur-md">
-                    <BadgeCheck
-                      size={9}
-                      className="text-emerald-400"
+                  {/* Image */}
+                  <div className="relative h-[102px] w-[96px] shrink-0 overflow-hidden rounded-[17px] bg-[#111C29]">
+                    <Image
+                      src={temple.image}
+                      alt={displayTempleName}
+                      fill
+                      sizes="96px"
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
 
-                    <span className="text-[6px] font-bold uppercase text-emerald-300">
-                      Verified
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/10" />
+
+                    {/* Number */}
+                    <span className="absolute left-2 top-2 flex h-5 min-w-5 items-center justify-center rounded-full border border-white/10 bg-black/45 px-1 text-[7px] font-bold text-white backdrop-blur-md">
+                      {String(index + 1).padStart(
+                        2,
+                        "0"
+                      )}
                     </span>
-                  </span>
-                </div>
 
-                {/* Content */}
-                <div className="relative z-10 min-w-0 flex-1 py-1">
-
-                  <div className="flex items-start gap-2">
-                    <h3 className="line-clamp-2 flex-1 text-[14px] font-extrabold leading-[18px] text-white">
-                      {temple.name}
-                    </h3>
-
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/[0.06] bg-white/[0.025]">
-                      <ChevronRight
-                        size={14}
-                        className="text-[#DFAE45] transition-transform duration-300 group-hover:translate-x-0.5"
+                    {/* Verified */}
+                    <span className="absolute bottom-2 left-2 flex items-center gap-1 rounded-full border border-emerald-400/15 bg-black/50 px-1.5 py-1 backdrop-blur-md">
+                      <BadgeCheck
+                        size={9}
+                        className="text-emerald-400"
                       />
+
+                      <span className="text-[6px] font-bold uppercase text-emerald-300">
+                        {isHindi
+                          ? "प्रमाणित"
+                          : "Verified"}
+                      </span>
                     </span>
                   </div>
 
-                  {/* City */}
-                  <div className="mt-1 flex items-center gap-1">
-                    <MapPin
-                      size={10}
-                      className="text-[#DFAE45]"
-                    />
+                  {/* Content */}
+                  <div className="relative z-10 min-w-0 flex-1 py-1">
+                    <div className="flex items-start gap-2">
+                      <h3 className="line-clamp-2 flex-1 text-[14px] font-extrabold leading-[18px] text-white">
+                        {displayTempleName}
+                      </h3>
 
-                    <p className="truncate text-[9px] font-medium text-slate-500">
-                      {temple.city}, {temple.state}
-                    </p>
-                  </div>
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/[0.06] bg-white/[0.025]">
+                        <ChevronRight
+                          size={14}
+                          className="text-[#DFAE45] transition-transform duration-300 group-hover:translate-x-0.5"
+                        />
+                      </span>
+                    </div>
 
-                  {/* Meta */}
-                  <div className="mt-3 flex flex-wrap items-center gap-1.5">
-
-                    <span className="flex items-center gap-1 rounded-lg border border-white/[0.06] bg-white/[0.025] px-2 py-1">
+                    {/* City */}
+                    <div className="mt-1 flex items-center gap-1">
                       <MapPin
-                        size={9}
-                        className="text-slate-500"
+                        size={10}
+                        className="text-[#DFAE45]"
                       />
 
-                      <span className="text-[7px] font-semibold text-slate-400">
-                        {temple.distance}
-                      </span>
-                    </span>
+                      <p className="truncate text-[9px] font-medium text-slate-500">
+                        {isHindi
+                          ? getLocationName(
+                              temple.city,
+                              true
+                            )
+                          : temple.city}
+                        , {temple.state}
+                      </p>
+                    </div>
 
-                    <span className="flex items-center gap-1 rounded-lg border border-[#DFAE45]/10 bg-[#DFAE45]/[0.04] px-2 py-1">
-                      <Star
-                        size={9}
-                        className="text-[#F3C75F]"
-                        fill="currentColor"
-                      />
-
-                      <span className="text-[7px] font-bold text-[#F3C75F]">
-                        {temple.rating}
-                      </span>
-                    </span>
-
-                    {temple.popular && (
-                      <span className="flex items-center gap-1 rounded-lg border border-emerald-400/10 bg-emerald-400/[0.05] px-2 py-1">
-                        <Sparkles
-                          size={8}
-                          className="text-emerald-400"
+                    {/* Meta */}
+                    <div className="mt-3 flex flex-wrap items-center gap-1.5">
+                      <span className="flex items-center gap-1 rounded-lg border border-white/[0.06] bg-white/[0.025] px-2 py-1">
+                        <MapPin
+                          size={9}
+                          className="text-slate-500"
                         />
 
-                        <span className="text-[7px] font-bold text-emerald-300">
-                          Popular
+                        <span className="text-[7px] font-semibold text-slate-400">
+                          {temple.distance}
                         </span>
                       </span>
-                    )}
-                  </div>
-                </div>
 
-                {/* Bottom Accent */}
-                <div className="absolute bottom-0 left-8 h-px w-16 bg-gradient-to-r from-[#DFAE45]/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              </button>
-            ))
+                      <span className="flex items-center gap-1 rounded-lg border border-[#DFAE45]/10 bg-[#DFAE45]/[0.04] px-2 py-1">
+                        <Star
+                          size={9}
+                          className="text-[#F3C75F]"
+                          fill="currentColor"
+                        />
+
+                        <span className="text-[7px] font-bold text-[#F3C75F]">
+                          {temple.rating}
+                        </span>
+                      </span>
+
+                      {temple.popular && (
+                        <span className="flex items-center gap-1 rounded-lg border border-emerald-400/10 bg-emerald-400/[0.05] px-2 py-1">
+                          <Sparkles
+                            size={8}
+                            className="text-emerald-400"
+                          />
+
+                          <span className="text-[7px] font-bold text-emerald-300">
+                            {isHindi
+                              ? "लोकप्रिय"
+                              : "Popular"}
+                          </span>
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Bottom Accent */}
+                  <div className="absolute bottom-0 left-8 h-px w-16 bg-gradient-to-r from-[#DFAE45]/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                </button>
+              );
+            })
           ) : (
             /* Empty State */
             <div className="relative overflow-hidden rounded-[25px] border border-[#DFAE45]/15 bg-gradient-to-b from-[#0D1825] to-[#08111B] px-5 py-12 text-center">
-
               <div className="pointer-events-none absolute left-1/2 top-0 h-32 w-32 -translate-x-1/2 rounded-full bg-[#DFAE45]/[0.07] blur-3xl" />
 
               <div className="relative mx-auto flex h-16 w-16 items-center justify-center rounded-[22px] border border-[#DFAE45]/20 bg-[#DFAE45]/[0.07]">
@@ -681,12 +852,15 @@ export default function SelectTemple() {
               </div>
 
               <h3 className="relative mt-4 text-[15px] font-bold text-white">
-                No temple found
+                {isHindi
+                  ? "कोई मंदिर नहीं मिला"
+                  : "No temple found"}
               </h3>
 
               <p className="relative mx-auto mt-1.5 max-w-[240px] text-[10px] leading-5 text-slate-500">
-                Try another location, temple category or search
-                for a different sacred place.
+                {isHindi
+                  ? "कोई दूसरा स्थान, मंदिर की श्रेणी चुनें या किसी अन्य पवित्र स्थान को खोजें।"
+                  : "Try another location, temple category or search for a different sacred place."}
               </p>
 
               <button
@@ -697,7 +871,9 @@ export default function SelectTemple() {
                 }}
                 className="relative mt-5 rounded-full bg-gradient-to-r from-[#F3C75F] to-[#B98222] px-5 py-2.5 text-[9px] font-bold text-black shadow-[0_8px_20px_rgba(223,174,69,0.15)] active:scale-95"
               >
-                Reset Filters
+                {isHindi
+                  ? "फ़िल्टर रीसेट करें"
+                  : "Reset Filters"}
               </button>
             </div>
           )}
@@ -709,12 +885,10 @@ export default function SelectTemple() {
 
         <section className="relative mt-6 px-4">
           <div className="group relative overflow-hidden rounded-[25px] border border-[#DFAE45]/18 bg-gradient-to-br from-[#101C2A] via-[#0B1622] to-[#08111B] p-4 shadow-[0_15px_35px_rgba(0,0,0,0.2)]">
-
             {/* Ambient glow */}
             <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#DFAE45]/[0.07] blur-3xl" />
 
             <div className="relative flex items-center gap-3">
-
               {/* Icon */}
               <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-[19px] border border-[#DFAE45]/20 bg-[#DFAE45]/[0.07]">
                 <Landmark
@@ -735,16 +909,21 @@ export default function SelectTemple() {
               {/* Text */}
               <div className="min-w-0 flex-1">
                 <p className="text-[8px] font-bold uppercase tracking-[0.18em] text-[#DFAE45]">
-                  Can't find your temple?
+                  {isHindi
+                    ? "अपना मंदिर नहीं मिला?"
+                    : "Can't find your temple?"}
                 </p>
 
                 <h3 className="mt-1 text-[14px] font-extrabold text-white">
-                  Request a Temple
+                  {isHindi
+                    ? "मंदिर का अनुरोध करें"
+                    : "Request a Temple"}
                 </h3>
 
                 <p className="mt-1 text-[9px] leading-4 text-slate-500">
-                  Tell us your preferred temple and we'll try
-                  to arrange the service for you.
+                  {isHindi
+                    ? "अपने पसंदीदा मंदिर के बारे में बताएं और हम आपके लिए सेवा की व्यवस्था करने का प्रयास करेंगे।"
+                    : "Tell us your preferred temple and we'll try to arrange the service for you."}
                 </p>
               </div>
             </div>
@@ -765,7 +944,9 @@ export default function SelectTemple() {
               />
 
               <span className="relative z-10">
-                Request This Temple
+                {isHindi
+                  ? "इस मंदिर का अनुरोध करें"
+                  : "Request This Temple"}
               </span>
 
               <ArrowRight
@@ -784,20 +965,20 @@ export default function SelectTemple() {
           <div className="grid grid-cols-3 gap-2">
             <TrustItem
               icon={<BadgeCheck size={14} />}
-              title="Verified"
-              subtitle="Temples"
+              title={isHindi ? "प्रमाणित" : "Verified"}
+              subtitle={isHindi ? "मंदिर" : "Temples"}
             />
 
             <TrustItem
               icon={<ShieldCheck size={14} />}
-              title="Trusted"
-              subtitle="Pandits"
+              title={isHindi ? "विश्वसनीय" : "Trusted"}
+              subtitle={isHindi ? "पंडित" : "Pandits"}
             />
 
             <TrustItem
               icon={<Star size={14} />}
-              title="Top Rated"
-              subtitle="Services"
+              title={isHindi ? "शीर्ष रेटेड" : "Top Rated"}
+              subtitle={isHindi ? "सेवाएं" : "Services"}
             />
           </div>
         </section>
@@ -816,7 +997,9 @@ export default function SelectTemple() {
           />
 
           <span className="text-[7px] font-semibold uppercase tracking-[0.2em] text-slate-700">
-            Divine • Authentic • Trusted
+            {isHindi
+              ? "दिव्य • प्रामाणिक • विश्वसनीय"
+              : "Divine • Authentic • Trusted"}
           </span>
 
           <Sparkles
@@ -834,13 +1017,12 @@ export default function SelectTemple() {
 
         <nav className="fixed bottom-0 left-1/2 z-50 w-full max-w-[480px] -translate-x-1/2 px-2 pb-2">
           <div className="relative overflow-hidden rounded-[24px] border border-white/[0.08] bg-[#07111B]/[0.97] px-1.5 pt-2 shadow-[0_-10px_40px_rgba(0,0,0,0.38)] backdrop-blur-2xl">
-
             {/* Top Gold Highlight */}
             <div className="pointer-events-none absolute left-1/2 top-0 h-px w-32 -translate-x-1/2 bg-gradient-to-r from-transparent via-[#DFAE45]/70 to-transparent" />
 
             <div className="relative grid grid-cols-5">
               <BottomItem
-                label="Home"
+                label={isHindi ? "होम" : "Home"}
                 icon={HomeIcon}
                 active={false}
                 onClick={() =>
@@ -849,7 +1031,7 @@ export default function SelectTemple() {
               />
 
               <BottomItem
-                label="Categories"
+                label={isHindi ? "श्रेणियां" : "Categories"}
                 icon={GridIcon}
                 active={true}
                 onClick={() =>
@@ -860,7 +1042,7 @@ export default function SelectTemple() {
               />
 
               <BottomItem
-                label="Bookings"
+                label={isHindi ? "बुकिंग" : "Bookings"}
                 icon={CalendarIcon}
                 active={false}
                 onClick={() =>
@@ -871,7 +1053,7 @@ export default function SelectTemple() {
               />
 
               <BottomItem
-                label="Wallet"
+                label={isHindi ? "वॉलेट" : "Wallet"}
                 icon={WalletIcon}
                 active={false}
                 onClick={() =>
@@ -880,7 +1062,7 @@ export default function SelectTemple() {
               />
 
               <BottomItem
-                label="Profile"
+                label={isHindi ? "प्रोफ़ाइल" : "Profile"}
                 icon={ProfileIcon}
                 active={false}
                 onClick={() =>
@@ -1172,6 +1354,7 @@ function ProfileIcon(props: {
         stroke="currentColor"
         strokeWidth={props.strokeWidth ?? 1.8}
       />
+
       <path
         d="M5 20C5.7 16.6 8.1 14.5 12 14.5C15.9 14.5 18.3 16.6 19 20"
         stroke="currentColor"
@@ -1181,3 +1364,4 @@ function ProfileIcon(props: {
     </svg>
   );
 }
+

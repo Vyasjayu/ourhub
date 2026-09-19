@@ -10,7 +10,6 @@ import {
   ChevronDown,
   Clock3,
   Flower2,
-  Gift,
   Heart,
   Home,
   MapPin,
@@ -22,137 +21,433 @@ import {
   Users,
 } from "lucide-react";
 
+import { useLanguage } from "@/context/LanguageContext";
+
 const whatsappNumber = "918878632431";
 
 const whatsappLink = (message: string) =>
   `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 
-const decorationServices = [
+type Localized = {
+  en: string;
+  hi: string;
+};
+
+const decorationServices: {
+  icon: typeof Flower2;
+  title: Localized;
+  description: Localized;
+}[] = [
   {
     icon: Flower2,
-    title: "Floral Decoration",
-    description:
-      "Elegant fresh and artificial floral arrangements for stages, entrances, tables and special corners.",
+    title: {
+      en: "Floral Decoration",
+      hi: "फ्लोरल डेकोरेशन",
+    },
+    description: {
+      en: "Elegant fresh and artificial floral arrangements for stages, entrances, tables and special corners.",
+      hi: "स्टेज, एंट्रेंस, टेबल और स्पेशल कॉर्नर्स के लिए खूबसूरत फ्रेश और आर्टिफिशियल फ्लोरल अरेंजमेंट।",
+    },
   },
   {
     icon: Sparkles,
-    title: "Theme Decoration",
-    description:
-      "Custom themes with coordinated colors, backdrops, props and premium styling.",
+    title: {
+      en: "Theme Decoration",
+      hi: "थीम डेकोरेशन",
+    },
+    description: {
+      en: "Custom themes with coordinated colors, backdrops, props and premium styling.",
+      hi: "कोऑर्डिनेटेड कलर्स, बैकड्रॉप, प्रॉप्स और प्रीमियम स्टाइलिंग के साथ कस्टम थीम डेकोरेशन।",
+    },
   },
   {
     icon: PartyPopper,
-    title: "Balloon Decoration",
-    description:
-      "Creative balloon arches, walls, columns and customized balloon installations.",
+    title: {
+      en: "Balloon Decoration",
+      hi: "बैलून डेकोरेशन",
+    },
+    description: {
+      en: "Creative balloon arches, walls, columns and customized balloon installations.",
+      hi: "क्रिएटिव बैलून आर्च, वॉल्स, कॉलम और कस्टमाइज्ड बैलून इंस्टॉलेशन।",
+    },
   },
   {
     icon: Heart,
-    title: "Wedding Decoration",
-    description:
-      "Beautiful wedding stages, mandap styling, varmala setup and complete venue decoration.",
+    title: {
+      en: "Wedding Decoration",
+      hi: "वेडिंग डेकोरेशन",
+    },
+    description: {
+      en: "Beautiful wedding stages, mandap styling, varmala setup and complete venue decoration.",
+      hi: "खूबसूरत वेडिंग स्टेज, मंडप स्टाइलिंग, वरमाला सेटअप और कम्प्लीट वेन्यू डेकोरेशन।",
+    },
   },
   {
     icon: Home,
-    title: "Home Decoration",
-    description:
-      "Transform your home for birthdays, anniversaries, baby showers and family celebrations.",
+    title: {
+      en: "Home Decoration",
+      hi: "होम डेकोरेशन",
+    },
+    description: {
+      en: "Transform your home for birthdays, anniversaries, baby showers and family celebrations.",
+      hi: "बर्थडे, एनिवर्सरी, बेबी शॉवर और फैमिली सेलिब्रेशन के लिए अपने घर को खूबसूरत तरीके से सजाएं।",
+    },
   },
   {
     icon: Store,
-    title: "Venue Decoration",
-    description:
-      "Complete decoration solutions for banquet halls, lawns, hotels and event venues.",
+    title: {
+      en: "Venue Decoration",
+      hi: "वेन्यू डेकोरेशन",
+    },
+    description: {
+      en: "Complete decoration solutions for banquet halls, lawns, hotels and event venues.",
+      hi: "बैंक्वेट हॉल, लॉन, होटल और अन्य इवेंट वेन्यू के लिए कम्प्लीट डेकोरेशन सॉल्यूशंस।",
+    },
   },
 ];
 
-const decorationTypes = [
-  "Wedding Decor",
-  "Birthday Decor",
-  "Baby Shower",
-  "Anniversary",
-  "Engagement",
-  "Corporate Events",
-  "Home Functions",
-  "Festival Decor",
+const decorationTypes: Localized[] = [
+  {
+    en: "Wedding Decor",
+    hi: "वेडिंग डेकोर",
+  },
+  {
+    en: "Birthday Decor",
+    hi: "बर्थडे डेकोर",
+  },
+  {
+    en: "Baby Shower",
+    hi: "बेबी शॉवर",
+  },
+  {
+    en: "Anniversary",
+    hi: "एनिवर्सरी",
+  },
+  {
+    en: "Engagement",
+    hi: "एंगेजमेंट",
+  },
+  {
+    en: "Corporate Events",
+    hi: "कॉर्पोरेट इवेंट्स",
+  },
+  {
+    en: "Home Functions",
+    hi: "होम फंक्शन्स",
+  },
+  {
+    en: "Festival Decor",
+    hi: "फेस्टिवल डेकोर",
+  },
 ];
 
-const packages = [
+const customThemeItems: Localized[] = [
   {
-    name: "Elegant Decor",
+    en: "Custom Colors",
+    hi: "कस्टम कलर्स",
+  },
+  {
+    en: "Personal Photos",
+    hi: "पर्सनल फोटोज",
+  },
+  {
+    en: "Floral Styling",
+    hi: "फ्लोरल स्टाइलिंग",
+  },
+  {
+    en: "Theme Backdrop",
+    hi: "थीम बैकड्रॉप",
+  },
+];
+
+const packages: {
+  name: Localized;
+  price: string;
+  popular?: boolean;
+  description: Localized;
+  features: Localized[];
+}[] = [
+  {
+    name: {
+      en: "Elegant Decor",
+      hi: "एलिगेंट डेकोर",
+    },
     price: "₹4,999",
-    description:
-      "A stylish decoration setup for intimate celebrations.",
+    description: {
+      en: "A stylish decoration setup for intimate celebrations.",
+      hi: "इंटिमेट सेलिब्रेशन के लिए एक स्टाइलिश डेकोरेशन सेटअप।",
+    },
     features: [
-      "Basic theme setup",
-      "Balloon decoration",
-      "Backdrop",
-      "Table styling",
-      "Welcome decoration",
+      {
+        en: "Basic theme setup",
+        hi: "बेसिक थीम सेटअप",
+      },
+      {
+        en: "Balloon decoration",
+        hi: "बैलून डेकोरेशन",
+      },
+      {
+        en: "Backdrop",
+        hi: "बैकड्रॉप",
+      },
+      {
+        en: "Table styling",
+        hi: "टेबल स्टाइलिंग",
+      },
+      {
+        en: "Welcome decoration",
+        hi: "वेलकम डेकोरेशन",
+      },
     ],
   },
   {
-    name: "Premium Decor",
+    name: {
+      en: "Premium Decor",
+      hi: "प्रीमियम डेकोर",
+    },
     price: "₹9,999",
     popular: true,
-    description:
-      "A complete premium setup for memorable celebrations.",
+    description: {
+      en: "A complete premium setup for memorable celebrations.",
+      hi: "यादगार सेलिब्रेशन के लिए एक कम्प्लीट प्रीमियम सेटअप।",
+    },
     features: [
-      "Premium theme backdrop",
-      "Floral & balloon styling",
-      "Stage decoration",
-      "Photo corner",
-      "Entrance decoration",
-      "Personalized elements",
+      {
+        en: "Premium theme backdrop",
+        hi: "प्रीमियम थीम बैकड्रॉप",
+      },
+      {
+        en: "Floral & balloon styling",
+        hi: "फ्लोरल और बैलून स्टाइलिंग",
+      },
+      {
+        en: "Stage decoration",
+        hi: "स्टेज डेकोरेशन",
+      },
+      {
+        en: "Photo corner",
+        hi: "फोटो कॉर्नर",
+      },
+      {
+        en: "Entrance decoration",
+        hi: "एंट्रेंस डेकोरेशन",
+      },
+      {
+        en: "Personalized elements",
+        hi: "पर्सनलाइज्ड एलिमेंट्स",
+      },
     ],
   },
   {
-    name: "Luxury Decor",
+    name: {
+      en: "Luxury Decor",
+      hi: "लक्ज़री डेकोर",
+    },
     price: "₹19,999",
-    description:
-      "A complete luxury transformation for your special event.",
+    description: {
+      en: "A complete luxury transformation for your special event.",
+      hi: "आपके खास इवेंट के लिए एक कम्प्लीट लक्ज़री ट्रांसफॉर्मेशन।",
+    },
     features: [
-      "Luxury event styling",
-      "Premium floral decoration",
-      "Designer stage",
-      "Entrance & venue styling",
-      "Photo & selfie zone",
-      "Complete decoration coordination",
+      {
+        en: "Luxury event styling",
+        hi: "लक्ज़री इवेंट स्टाइलिंग",
+      },
+      {
+        en: "Premium floral decoration",
+        hi: "प्रीमियम फ्लोरल डेकोरेशन",
+      },
+      {
+        en: "Designer stage",
+        hi: "डिज़ाइनर स्टेज",
+      },
+      {
+        en: "Entrance & venue styling",
+        hi: "एंट्रेंस और वेन्यू स्टाइलिंग",
+      },
+      {
+        en: "Photo & selfie zone",
+        hi: "फोटो और सेल्फी ज़ोन",
+      },
+      {
+        en: "Complete decoration coordination",
+        hi: "कम्प्लीट डेकोरेशन कोऑर्डिनेशन",
+      },
     ],
   },
 ];
 
-const faqs = [
+const decorationDetails: {
+  title: Localized;
+  text: Localized;
+}[] = [
   {
-    question: "What types of events do you decorate?",
-    answer:
-      "We provide decoration for weddings, birthdays, anniversaries, baby showers, engagements, corporate events, home functions and other celebrations.",
+    title: {
+      en: "Backdrops",
+      hi: "बैकड्रॉप्स",
+    },
+    text: {
+      en: "Elegant stages & photo walls",
+      hi: "एलिगेंट स्टेज और फोटो वॉल्स",
+    },
   },
   {
-    question: "Can I choose my own decoration theme?",
-    answer:
-      "Yes. You can share your preferred colors, flowers, reference images and theme ideas with our team.",
+    title: {
+      en: "Flowers",
+      hi: "फूल",
+    },
+    text: {
+      en: "Fresh & premium floral styling",
+      hi: "फ्रेश और प्रीमियम फ्लोरल स्टाइलिंग",
+    },
   },
   {
-    question: "Do you provide decoration for homes?",
-    answer:
-      "Yes. Our team can decorate homes, apartments, terraces and other private spaces for celebrations.",
+    title: {
+      en: "Lighting",
+      hi: "लाइटिंग",
+    },
+    text: {
+      en: "Warm & atmospheric lighting",
+      hi: "वार्म और खूबसूरत एंबिएंट लाइटिंग",
+    },
   },
   {
-    question: "How early should I book decoration?",
-    answer:
-      "We recommend booking at least 7–15 days in advance for better planning and availability, especially for larger events.",
+    title: {
+      en: "Props",
+      hi: "प्रॉप्स",
+    },
+    text: {
+      en: "Custom event props & elements",
+      hi: "कस्टम इवेंट प्रॉप्स और एलिमेंट्स",
+    },
+  },
+];
+
+const processSteps: {
+  number: string;
+  title: Localized;
+  text: Localized;
+}[] = [
+  {
+    number: "01",
+    title: {
+      en: "Tell Us Your Event",
+      hi: "अपना इवेंट बताएं",
+    },
+    text: {
+      en: "Share your date, venue, event type and decoration requirements.",
+      hi: "अपनी तारीख, वेन्यू, इवेंट टाइप और डेकोरेशन की जरूरतें शेयर करें।",
+    },
   },
   {
-    question: "Can you handle complete venue decoration?",
-    answer:
-      "Yes. We can coordinate entrance, stage, dining area, photo zone and other decoration requirements.",
+    number: "02",
+    title: {
+      en: "Choose Your Style",
+      hi: "अपना स्टाइल चुनें",
+    },
+    text: {
+      en: "Select your preferred theme, colors, flowers and decoration style.",
+      hi: "अपनी पसंदीदा थीम, कलर्स, फूल और डेकोरेशन स्टाइल चुनें।",
+    },
+  },
+  {
+    number: "03",
+    title: {
+      en: "Get Your Plan",
+      hi: "अपना प्लान पाएं",
+    },
+    text: {
+      en: "Our team creates a decoration plan based on your requirements.",
+      hi: "हमारी टीम आपकी जरूरतों के अनुसार डेकोरेशन प्लान तैयार करती है।",
+    },
+  },
+  {
+    number: "04",
+    title: {
+      en: "We Set Everything Up",
+      hi: "हम सब कुछ सेट करते हैं",
+    },
+    text: {
+      en: "Our decoration team arrives and transforms your space before the event.",
+      hi: "हमारी डेकोरेशन टीम इवेंट से पहले पहुंचकर आपके स्पेस को खूबसूरत तरीके से तैयार करती है।",
+    },
+  },
+];
+
+const faqs: {
+  question: Localized;
+  answer: Localized;
+}[] = [
+  {
+    question: {
+      en: "What types of events do you decorate?",
+      hi: "आप किन-किन इवेंट्स के लिए डेकोरेशन करते हैं?",
+    },
+    answer: {
+      en: "We provide decoration for weddings, birthdays, anniversaries, baby showers, engagements, corporate events, home functions and other celebrations.",
+      hi: "हम वेडिंग, बर्थडे, एनिवर्सरी, बेबी शॉवर, एंगेजमेंट, कॉर्पोरेट इवेंट्स, होम फंक्शन्स और अन्य सेलिब्रेशन के लिए डेकोरेशन प्रदान करते हैं।",
+    },
+  },
+  {
+    question: {
+      en: "Can I choose my own decoration theme?",
+      hi: "क्या मैं अपनी पसंद की डेकोरेशन थीम चुन सकता/सकती हूँ?",
+    },
+    answer: {
+      en: "Yes. You can share your preferred colors, flowers, reference images and theme ideas with our team.",
+      hi: "हां। आप अपनी पसंद के कलर्स, फूल, रेफरेंस इमेज और थीम आइडिया हमारी टीम के साथ शेयर कर सकते हैं।",
+    },
+  },
+  {
+    question: {
+      en: "Do you provide decoration for homes?",
+      hi: "क्या आप घरों के लिए भी डेकोरेशन करते हैं?",
+    },
+    answer: {
+      en: "Yes. Our team can decorate homes, apartments, terraces and other private spaces for celebrations.",
+      hi: "हां। हमारी टीम सेलिब्रेशन के लिए घर, अपार्टमेंट, टैरेस और अन्य प्राइवेट स्पेस को डेकोरेट कर सकती है।",
+    },
+  },
+  {
+    question: {
+      en: "How early should I book decoration?",
+      hi: "मुझे डेकोरेशन कितने दिन पहले बुक करना चाहिए?",
+    },
+    answer: {
+      en: "We recommend booking at least 7–15 days in advance for better planning and availability, especially for larger events.",
+      hi: "बेहतर प्लानिंग और उपलब्धता के लिए कम से कम 7–15 दिन पहले बुकिंग करने की सलाह दी जाती है, खासकर बड़े इवेंट्स के लिए।",
+    },
+  },
+  {
+    question: {
+      en: "Can you handle complete venue decoration?",
+      hi: "क्या आप कम्प्लीट वेन्यू डेकोरेशन संभाल सकते हैं?",
+    },
+    answer: {
+      en: "Yes. We can coordinate entrance, stage, dining area, photo zone and other decoration requirements.",
+      hi: "हां। हम एंट्रेंस, स्टेज, डाइनिंग एरिया, फोटो ज़ोन और अन्य डेकोरेशन जरूरतों को कोऑर्डिनेट कर सकते हैं।",
+    },
   },
 ];
 
 export default function DecorationPage() {
-  const enquiryMessage =
-    "Hello OurHub, I want to book Event Decoration services. Please share decoration packages and details.";
+  const { language } = useLanguage();
+
+  const isHindi = language === "hi";
+
+  const enquiryMessage = isHindi
+    ? "नमस्ते OurHub, मैं Event Decoration सर्विस बुक करना चाहता/चाहती हूँ। कृपया डेकोरेशन पैकेज और पूरी जानकारी साझा करें।"
+    : "Hello OurHub, I want to book Event Decoration services. Please share decoration packages and details.";
+
+  const getPackageMessage = (
+    pkg: (typeof packages)[number]
+  ) => {
+    if (isHindi) {
+      return `नमस्ते OurHub, मुझे ${pkg.name.hi} Event Decoration Package (${pkg.price}) में रुचि है। कृपया इसकी पूरी जानकारी साझा करें।`;
+    }
+
+    return `Hello OurHub, I am interested in the ${pkg.name.en} Event Decoration package priced at ${pkg.price}. Please share complete details.`;
+  };
 
   return (
     <main className="min-h-screen bg-[#05070B] pb-28 text-white">
@@ -162,6 +457,7 @@ export default function DecorationPage() {
           <Link
             href="/eventManagement"
             className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.04]"
+            aria-label={isHindi ? "वापस जाएं" : "Go back"}
           >
             <ArrowLeft size={20} />
           </Link>
@@ -172,7 +468,7 @@ export default function DecorationPage() {
             </p>
 
             <h1 className="mt-0.5 text-[15px] font-semibold">
-              Event Decoration
+              {isHindi ? "इवेंट डेकोरेशन" : "Event Decoration"}
             </h1>
           </div>
 
@@ -180,6 +476,7 @@ export default function DecorationPage() {
             href={whatsappLink(enquiryMessage)}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="WhatsApp"
             className="flex h-10 w-10 items-center justify-center rounded-full border border-[#DFAE45]/30 bg-[#DFAE45]/10 text-[#DFAE45]"
           >
             <MessageCircle size={19} />
@@ -193,7 +490,11 @@ export default function DecorationPage() {
           <div className="relative min-h-[510px] overflow-hidden rounded-[30px] border border-[#DFAE45]/20 bg-[#0B0D11]">
             <img
               src="/images/events/decoration.jpg"
-              alt="Premium Event Decoration"
+              alt={
+                isHindi
+                  ? "प्रीमियम इवेंट डेकोरेशन"
+                  : "Premium Event Decoration"
+              }
               className="absolute inset-0 h-full w-full object-cover"
             />
 
@@ -207,33 +508,47 @@ export default function DecorationPage() {
                 />
 
                 <span className="text-[11px] font-semibold tracking-wide text-[#F5D98B]">
-                  PREMIUM EVENT DECORATION
+                  {isHindi
+                    ? "प्रीमियम इवेंट डेकोरेशन"
+                    : "PREMIUM EVENT DECORATION"}
                 </span>
               </div>
 
               <h2 className="max-w-[390px] text-[39px] font-bold leading-[1.02] tracking-[-1.6px]">
-                Turn Every Space
-                <span className="block text-[#E7B94F]">
-                  Into A Celebration.
-                </span>
+                {isHindi ? (
+                  <>
+                    हर स्पेस को
+                    <span className="block text-[#E7B94F]">
+                      सेलिब्रेशन बनाएं।
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    Turn Every Space
+                    <span className="block text-[#E7B94F]">
+                      Into A Celebration.
+                    </span>
+                  </>
+                )}
               </h2>
 
               <p className="mt-4 max-w-[370px] text-[14px] leading-6 text-white/70">
-                Premium decoration designed to transform ordinary spaces
-                into beautiful, memorable celebrations.
+                {isHindi
+                  ? "प्रीमियम डेकोरेशन जो साधारण स्पेस को खूबसूरत और यादगार सेलिब्रेशन में बदल दे।"
+                  : "Premium decoration designed to transform ordinary spaces into beautiful, memorable celebrations."}
               </p>
 
               <div className="mt-6 flex flex-wrap gap-2">
                 <span className="rounded-full border border-white/10 bg-white/[0.07] px-3 py-2 text-[11px] text-white/75">
-                  ✦ Custom Themes
+                  ✦ {isHindi ? "कस्टम थीम्स" : "Custom Themes"}
                 </span>
 
                 <span className="rounded-full border border-white/10 bg-white/[0.07] px-3 py-2 text-[11px] text-white/75">
-                  ✦ Premium Styling
+                  ✦ {isHindi ? "प्रीमियम स्टाइलिंग" : "Premium Styling"}
                 </span>
 
                 <span className="rounded-full border border-white/10 bg-white/[0.07] px-3 py-2 text-[11px] text-white/75">
-                  ✦ Complete Setup
+                  ✦ {isHindi ? "कम्प्लीट सेटअप" : "Complete Setup"}
                 </span>
               </div>
             </div>
@@ -250,7 +565,7 @@ export default function DecorationPage() {
               />
 
               <p className="mt-2 text-[10px] font-medium text-white/65">
-                Trusted Team
+                {isHindi ? "भरोसेमंद टीम" : "Trusted Team"}
               </p>
             </div>
 
@@ -261,7 +576,7 @@ export default function DecorationPage() {
               />
 
               <p className="mt-2 text-[10px] font-medium text-white/65">
-                Premium Finish
+                {isHindi ? "प्रीमियम फिनिश" : "Premium Finish"}
               </p>
             </div>
 
@@ -272,7 +587,7 @@ export default function DecorationPage() {
               />
 
               <p className="mt-2 text-[10px] font-medium text-white/65">
-                On-time Setup
+                {isHindi ? "समय पर सेटअप" : "On-time Setup"}
               </p>
             </div>
           </div>
@@ -281,32 +596,50 @@ export default function DecorationPage() {
         {/* ================= INTRO ================= */}
         <section className="px-5 pt-12">
           <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#DFAE45]">
-            Designed Around Your Occasion
+            {isHindi
+              ? "आपके अवसर के अनुसार तैयार"
+              : "Designed Around Your Occasion"}
           </p>
 
           <h3 className="mt-3 text-[29px] font-bold leading-tight tracking-[-0.8px]">
-            Beautiful Details.
-            <br />
-            <span className="text-white/45">
-              Memorable Spaces.
-            </span>
+            {isHindi ? (
+              <>
+                खूबसूरत डिटेल्स।
+                <br />
+                <span className="text-white/45">
+                  यादगार स्पेस।
+                </span>
+              </>
+            ) : (
+              <>
+                Beautiful Details.
+                <br />
+                <span className="text-white/45">
+                  Memorable Spaces.
+                </span>
+              </>
+            )}
           </h3>
 
           <p className="mt-4 text-[14px] leading-7 text-white/60">
-            From a simple home celebration to a grand wedding venue, OurHub
-            creates decoration experiences that match your occasion, style
-            and budget.
+            {isHindi
+              ? "सिंपल होम सेलिब्रेशन से लेकर ग्रैंड वेडिंग वेन्यू तक, OurHub आपके अवसर, स्टाइल और बजट के अनुसार डेकोरेशन एक्सपीरियंस तैयार करता है।"
+              : "From a simple home celebration to a grand wedding venue, OurHub creates decoration experiences that match your occasion, style and budget."}
           </p>
         </section>
 
         {/* ================= SERVICES ================= */}
         <section className="px-5 pt-12">
           <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#DFAE45]">
-            Our Decoration Services
+            {isHindi
+              ? "हमारी डेकोरेशन सर्विसेज"
+              : "Our Decoration Services"}
           </p>
 
           <h3 className="mt-2 text-[25px] font-bold">
-            Everything Your Event Needs
+            {isHindi
+              ? "आपके इवेंट के लिए सब कुछ"
+              : "Everything Your Event Needs"}
           </h3>
 
           <div className="mt-6 space-y-3">
@@ -315,7 +648,7 @@ export default function DecorationPage() {
 
               return (
                 <div
-                  key={service.title}
+                  key={service.title.en}
                   className="rounded-[22px] border border-white/[0.07] bg-gradient-to-br from-white/[0.055] to-white/[0.015] p-4 transition-all duration-300 hover:border-[#DFAE45]/30"
                 >
                   <div className="flex gap-4">
@@ -328,11 +661,11 @@ export default function DecorationPage() {
 
                     <div>
                       <h4 className="text-[15px] font-semibold">
-                        {service.title}
+                        {service.title[language]}
                       </h4>
 
                       <p className="mt-1.5 text-[12px] leading-5 text-white/50">
-                        {service.description}
+                        {service.description[language]}
                       </p>
                     </div>
                   </div>
@@ -345,20 +678,20 @@ export default function DecorationPage() {
         {/* ================= OCCASIONS ================= */}
         <section className="px-5 pt-12">
           <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#DFAE45]">
-            Perfect For
+            {isHindi ? "इनके लिए परफेक्ट" : "Perfect For"}
           </p>
 
           <h3 className="mt-2 text-[25px] font-bold">
-            Every Celebration
+            {isHindi ? "हर सेलिब्रेशन" : "Every Celebration"}
           </h3>
 
           <div className="mt-5 flex flex-wrap gap-2">
             {decorationTypes.map((type) => (
               <span
-                key={type}
+                key={type.en}
                 className="rounded-full border border-white/10 bg-white/[0.035] px-4 py-2.5 text-[11px] font-medium text-white/65"
               >
-                {type}
+                {type[language]}
               </span>
             ))}
           </div>
@@ -378,35 +711,42 @@ export default function DecorationPage() {
               </div>
 
               <h3 className="mt-5 text-[25px] font-bold leading-tight">
-                Your Theme.
-                <br />
-                <span className="text-[#E7B94F]">
-                  Your Signature.
-                </span>
+                {isHindi ? (
+                  <>
+                    आपकी थीम।
+                    <br />
+                    <span className="text-[#E7B94F]">
+                      आपकी पहचान।
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    Your Theme.
+                    <br />
+                    <span className="text-[#E7B94F]">
+                      Your Signature.
+                    </span>
+                  </>
+                )}
               </h3>
 
               <p className="mt-3 text-[13px] leading-6 text-white/55">
-                Share your inspiration, favorite colors, photographs or
-                decoration reference with us. We will build the setup around
-                your vision.
+                {isHindi
+                  ? "अपनी इंस्पिरेशन, पसंदीदा कलर्स, फोटोग्राफ्स या डेकोरेशन रेफरेंस हमारे साथ शेयर करें। हम आपके विज़न के अनुसार पूरा सेटअप तैयार करेंगे।"
+                  : "Share your inspiration, favorite colors, photographs or decoration reference with us. We will build the setup around your vision."}
               </p>
 
               <div className="mt-5 grid grid-cols-2 gap-3">
-                {[
-                  "Custom Colors",
-                  "Personal Photos",
-                  "Floral Styling",
-                  "Theme Backdrop",
-                ].map((item) => (
+                {customThemeItems.map((item) => (
                   <div
-                    key={item}
+                    key={item.en}
                     className="rounded-xl border border-white/[0.07] bg-black/20 px-3 py-3 text-[11px] text-white/65"
                   >
                     <span className="mr-2 text-[#DFAE45]">
                       ✦
                     </span>
 
-                    {item}
+                    {item[language]}
                   </div>
                 ))}
               </div>
@@ -417,17 +757,19 @@ export default function DecorationPage() {
         {/* ================= PACKAGES ================= */}
         <section className="px-5 pt-12">
           <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#DFAE45]">
-            Decoration Packages
+            {isHindi
+              ? "डेकोरेशन पैकेज"
+              : "Decoration Packages"}
           </p>
 
           <h3 className="mt-2 text-[25px] font-bold">
-            Choose Your Style
+            {isHindi ? "अपना स्टाइल चुनें" : "Choose Your Style"}
           </h3>
 
           <div className="mt-6 space-y-4">
             {packages.map((pkg) => (
               <div
-                key={pkg.name}
+                key={pkg.name.en}
                 className={`relative overflow-hidden rounded-[25px] border p-5 ${
                   pkg.popular
                     ? "border-[#DFAE45]/45 bg-gradient-to-br from-[#DFAE45]/10 via-white/[0.04] to-transparent"
@@ -436,18 +778,18 @@ export default function DecorationPage() {
               >
                 {pkg.popular && (
                   <div className="absolute right-4 top-4 rounded-full bg-[#DFAE45] px-3 py-1 text-[9px] font-bold uppercase tracking-wider text-black">
-                    Most Popular
+                    {isHindi ? "सबसे लोकप्रिय" : "Most Popular"}
                   </div>
                 )}
 
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <h4 className="text-[18px] font-bold">
-                      {pkg.name}
+                      {pkg.name[language]}
                     </h4>
 
                     <p className="mt-1.5 max-w-[250px] text-[12px] leading-5 text-white/50">
-                      {pkg.description}
+                      {pkg.description[language]}
                     </p>
                   </div>
 
@@ -457,7 +799,7 @@ export default function DecorationPage() {
                     </p>
 
                     <p className="text-[9px] text-white/35">
-                      starting from
+                      {isHindi ? "से शुरू" : "starting from"}
                     </p>
                   </div>
                 </div>
@@ -466,7 +808,7 @@ export default function DecorationPage() {
                   <div className="space-y-2.5">
                     {pkg.features.map((feature) => (
                       <div
-                        key={feature}
+                        key={feature.en}
                         className="flex items-center gap-2.5"
                       >
                         <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#DFAE45]/10">
@@ -477,7 +819,7 @@ export default function DecorationPage() {
                         </div>
 
                         <span className="text-[12px] text-white/65">
-                          {feature}
+                          {feature[language]}
                         </span>
                       </div>
                     ))}
@@ -485,14 +827,15 @@ export default function DecorationPage() {
                 </div>
 
                 <a
-                  href={whatsappLink(
-                    `Hello OurHub, I am interested in the ${pkg.name} Event Decoration package priced at ${pkg.price}. Please share complete details.`
-                  )}
+                  href={whatsappLink(getPackageMessage(pkg))}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-5 flex h-11 items-center justify-center gap-2 rounded-xl border border-[#DFAE45]/25 bg-[#DFAE45]/10 text-[12px] font-semibold text-[#F0CC73]"
                 >
-                  Enquire About This Package
+                  {isHindi
+                    ? "इस पैकेज के बारे में पूछें"
+                    : "Enquire About This Package"}
+
                   <ArrowRight size={15} />
                 </a>
               </div>
@@ -513,36 +856,23 @@ export default function DecorationPage() {
 
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#DFAE45]">
-                  Decoration Details
+                  {isHindi
+                    ? "डेकोरेशन डिटेल्स"
+                    : "Decoration Details"}
                 </p>
 
                 <h4 className="mt-1 text-[16px] font-semibold">
-                  Crafted From The Smallest Details
+                  {isHindi
+                    ? "छोटी से छोटी डिटेल से तैयार"
+                    : "Crafted From The Smallest Details"}
                 </h4>
               </div>
             </div>
 
             <div className="mt-5 grid grid-cols-2 gap-3">
-              {[
-                {
-                  title: "Backdrops",
-                  text: "Elegant stages & photo walls",
-                },
-                {
-                  title: "Flowers",
-                  text: "Fresh & premium floral styling",
-                },
-                {
-                  title: "Lighting",
-                  text: "Warm & atmospheric lighting",
-                },
-                {
-                  title: "Props",
-                  text: "Custom event props & elements",
-                },
-              ].map((item) => (
+              {decorationDetails.map((item) => (
                 <div
-                  key={item.title}
+                  key={item.title.en}
                   className="rounded-2xl border border-white/[0.06] bg-black/20 p-4"
                 >
                   <Sparkles
@@ -551,11 +881,11 @@ export default function DecorationPage() {
                   />
 
                   <p className="mt-3 text-[12px] font-semibold">
-                    {item.title}
+                    {item.title[language]}
                   </p>
 
                   <p className="mt-1 text-[10px] leading-5 text-white/40">
-                    {item.text}
+                    {item.text[language]}
                   </p>
                 </div>
               ))}
@@ -566,36 +896,17 @@ export default function DecorationPage() {
         {/* ================= PROCESS ================= */}
         <section className="px-5 pt-12">
           <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#DFAE45]">
-            Simple Process
+            {isHindi ? "आसान प्रक्रिया" : "Simple Process"}
           </p>
 
           <h3 className="mt-2 text-[25px] font-bold">
-            From Idea To Final Setup
+            {isHindi
+              ? "आइडिया से फाइनल सेटअप तक"
+              : "From Idea To Final Setup"}
           </h3>
 
           <div className="mt-6 space-y-3">
-            {[
-              {
-                number: "01",
-                title: "Tell Us Your Event",
-                text: "Share your date, venue, event type and decoration requirements.",
-              },
-              {
-                number: "02",
-                title: "Choose Your Style",
-                text: "Select your preferred theme, colors, flowers and decoration style.",
-              },
-              {
-                number: "03",
-                title: "Get Your Plan",
-                text: "Our team creates a decoration plan based on your requirements.",
-              },
-              {
-                number: "04",
-                title: "We Set Everything Up",
-                text: "Our decoration team arrives and transforms your space before the event.",
-              },
-            ].map((step) => (
+            {processSteps.map((step) => (
               <div
                 key={step.number}
                 className="flex gap-4 rounded-[20px] border border-white/[0.07] bg-white/[0.025] p-4"
@@ -606,11 +917,11 @@ export default function DecorationPage() {
 
                 <div>
                   <h4 className="text-[14px] font-semibold">
-                    {step.title}
+                    {step.title[language]}
                   </h4>
 
                   <p className="mt-1 text-[11px] leading-5 text-white/45">
-                    {step.text}
+                    {step.text[language]}
                   </p>
                 </div>
               </div>
@@ -623,11 +934,13 @@ export default function DecorationPage() {
           <div className="flex items-end justify-between">
             <div>
               <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#DFAE45]">
-                Inspiration
+                {isHindi ? "इंस्पिरेशन" : "Inspiration"}
               </p>
 
               <h3 className="mt-2 text-[25px] font-bold">
-                Our Decoration Style
+                {isHindi
+                  ? "हमारी डेकोरेशन स्टाइल"
+                  : "Our Decoration Style"}
               </h3>
             </div>
 
@@ -641,21 +954,31 @@ export default function DecorationPage() {
             <div className="relative col-span-2 h-[220px] overflow-hidden rounded-[23px] border border-white/[0.08]">
               <img
                 src="/images/events/decoration-1.jpg"
-                alt="Premium event decoration"
+                alt={
+                  isHindi
+                    ? "प्रीमियम इवेंट डेकोरेशन"
+                    : "Premium event decoration"
+                }
                 className="h-full w-full object-cover"
               />
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
 
               <span className="absolute bottom-4 left-4 text-[11px] font-medium text-white/80">
-                Premium Event Styling
+                {isHindi
+                  ? "प्रीमियम इवेंट स्टाइलिंग"
+                  : "Premium Event Styling"}
               </span>
             </div>
 
             <div className="relative h-[155px] overflow-hidden rounded-[21px] border border-white/[0.08]">
               <img
                 src="/images/events/decoration-2.jpg"
-                alt="Floral event decoration"
+                alt={
+                  isHindi
+                    ? "फ्लोरल इवेंट डेकोरेशन"
+                    : "Floral event decoration"
+                }
                 className="h-full w-full object-cover"
               />
 
@@ -665,7 +988,11 @@ export default function DecorationPage() {
             <div className="relative h-[155px] overflow-hidden rounded-[21px] border border-white/[0.08]">
               <img
                 src="/images/events/decoration-3.jpg"
-                alt="Wedding decoration"
+                alt={
+                  isHindi
+                    ? "वेडिंग डेकोरेशन"
+                    : "Wedding decoration"
+                }
                 className="h-full w-full object-cover"
               />
 
@@ -689,8 +1016,9 @@ export default function DecorationPage() {
             </div>
 
             <p className="mt-5 text-[17px] font-medium leading-7 text-white/80">
-              “The decoration completely transformed our venue. Everything
-              looked elegant, clean and exactly like we imagined.”
+              {isHindi
+                ? "“डेकोरेशन ने हमारे वेन्यू को पूरी तरह बदल दिया। सब कुछ बहुत एलिगेंट, साफ-सुथरा और बिल्कुल वैसा ही था जैसा हमने सोचा था।”"
+                : "“The decoration completely transformed our venue. Everything looked elegant, clean and exactly like we imagined.”"}
             </p>
 
             <div className="mt-5 flex items-center gap-3">
@@ -703,11 +1031,15 @@ export default function DecorationPage() {
 
               <div>
                 <p className="text-[12px] font-semibold">
-                  OurHub Customer
+                  {isHindi
+                    ? "OurHub ग्राहक"
+                    : "OurHub Customer"}
                 </p>
 
                 <p className="text-[10px] text-white/40">
-                  Event Decoration
+                  {isHindi
+                    ? "इवेंट डेकोरेशन"
+                    : "Event Decoration"}
                 </p>
               </div>
             </div>
@@ -727,7 +1059,9 @@ export default function DecorationPage() {
 
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#DFAE45]">
-                  Service Areas
+                  {isHindi
+                    ? "सर्विस एरिया"
+                    : "Service Areas"}
                 </p>
 
                 <h4 className="mt-1 text-[15px] font-semibold">
@@ -735,8 +1069,9 @@ export default function DecorationPage() {
                 </h4>
 
                 <p className="mt-1 text-[11px] leading-5 text-white/45">
-                  Event decoration services available in nearby areas as
-                  well.
+                  {isHindi
+                    ? "आसपास के क्षेत्रों में भी इवेंट डेकोरेशन सर्विस उपलब्ध है।"
+                    : "Event decoration services available in nearby areas as well."}
                 </p>
               </div>
             </div>
@@ -746,21 +1081,23 @@ export default function DecorationPage() {
         {/* ================= FAQ ================= */}
         <section className="px-5 pt-12">
           <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#DFAE45]">
-            Questions
+            {isHindi ? "सवाल" : "Questions"}
           </p>
 
           <h3 className="mt-2 text-[25px] font-bold">
-            Frequently Asked
+            {isHindi
+              ? "अक्सर पूछे जाने वाले सवाल"
+              : "Frequently Asked"}
           </h3>
 
           <div className="mt-5 space-y-3">
             {faqs.map((faq) => (
               <details
-                key={faq.question}
+                key={faq.question.en}
                 className="group rounded-[19px] border border-white/[0.07] bg-white/[0.025]"
               >
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-4 text-[12px] font-semibold">
-                  <span>{faq.question}</span>
+                  <span>{faq.question[language]}</span>
 
                   <ChevronDown
                     size={16}
@@ -770,7 +1107,7 @@ export default function DecorationPage() {
 
                 <div className="border-t border-white/[0.06] px-4 pb-4 pt-3">
                   <p className="text-[11px] leading-5 text-white/45">
-                    {faq.answer}
+                    {faq.answer[language]}
                   </p>
                 </div>
               </details>
@@ -794,18 +1131,31 @@ export default function DecorationPage() {
               </div>
 
               <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.25em] text-[#DFAE45]">
-                Create The Perfect Setting
+                {isHindi
+                  ? "परफेक्ट सेटिंग बनाएं"
+                  : "Create The Perfect Setting"}
               </p>
 
               <h3 className="mt-2 text-[28px] font-bold leading-tight">
-                Decorate Your
-                <br />
-                Special Day
+                {isHindi ? (
+                  <>
+                    अपने खास दिन को
+                    <br />
+                    सजाएं
+                  </>
+                ) : (
+                  <>
+                    Decorate Your
+                    <br />
+                    Special Day
+                  </>
+                )}
               </h3>
 
               <p className="mx-auto mt-3 max-w-[320px] text-[12px] leading-5 text-white/50">
-                Tell us your event details and let OurHub create a beautiful
-                decoration setup around your celebration.
+                {isHindi
+                  ? "अपने इवेंट की डिटेल्स बताएं और OurHub को आपके सेलिब्रेशन के अनुसार खूबसूरत डेकोरेशन सेटअप तैयार करने दें।"
+                  : "Tell us your event details and let OurHub create a beautiful decoration setup around your celebration."}
               </p>
 
               <a
@@ -815,7 +1165,11 @@ export default function DecorationPage() {
                 className="mt-6 flex h-13 items-center justify-center gap-2 rounded-2xl bg-[#DFAE45] px-5 text-[13px] font-bold text-black shadow-[0_10px_35px_rgba(223,174,69,0.18)]"
               >
                 <MessageCircle size={18} />
-                Book Decoration
+
+                {isHindi
+                  ? "डेकोरेशन बुक करें"
+                  : "Book Decoration"}
+
                 <ArrowRight size={16} />
               </a>
             </div>
@@ -831,7 +1185,9 @@ export default function DecorationPage() {
           </p>
 
           <p className="mt-1 text-[10px] text-white/25">
-            All Services, One Hub
+            {isHindi
+              ? "सभी सर्विसेज, एक हब"
+              : "All Services, One Hub"}
           </p>
         </footer>
       </div>
@@ -846,7 +1202,8 @@ export default function DecorationPage() {
             className="flex h-12 flex-1 items-center justify-center gap-2 rounded-xl border border-[#DFAE45]/30 bg-[#DFAE45]/10 text-[12px] font-semibold text-[#F0CC73]"
           >
             <MessageCircle size={17} />
-            WhatsApp
+
+            {isHindi ? "WhatsApp" : "WhatsApp"}
           </a>
 
           <a
@@ -855,7 +1212,10 @@ export default function DecorationPage() {
             rel="noopener noreferrer"
             className="flex h-12 flex-[1.6] items-center justify-center gap-2 rounded-xl bg-[#DFAE45] text-[12px] font-bold text-black"
           >
-            Plan Decoration
+            {isHindi
+              ? "डेकोरेशन प्लान करें"
+              : "Plan Decoration"}
+
             <ArrowRight size={16} />
           </a>
         </div>

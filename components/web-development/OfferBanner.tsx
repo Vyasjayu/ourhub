@@ -1,9 +1,52 @@
-
 "use client";
 
-import { ArrowRight, Clock3, Sparkles, Zap } from "lucide-react";
+import {
+  ArrowRight,
+  Clock3,
+  Sparkles,
+  Zap,
+} from "lucide-react";
+
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function OfferBanner() {
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
+
+  const t = {
+    limitedTimeOffer: isHindi
+      ? "सीमित समय का ऑफर"
+      : "Limited Time Offer",
+
+    buildWebsiteSave: isHindi
+      ? "वेबसाइट बनाएं और बचत करें"
+      : "Build your website & save",
+
+    off: isHindi
+      ? "छूट"
+      : "OFF",
+
+    description: isHindi
+      ? "अपनी बिज़नेस वेबसाइट बनवाएं, प्रोफेशनल लुक पाएं और ऑनलाइन ग्रोथ शुरू करें।"
+      : "Get a premium website designed to make your business look professional and grow online.",
+
+    claimOffer: isHindi
+      ? "ऑफर पाएं"
+      : "Claim Offer",
+
+    limited: isHindi
+      ? "सीमित"
+      : "Limited",
+
+    availability: isHindi
+      ? "उपलब्धता"
+      : "Availability",
+
+    trustText: isHindi
+      ? "यह ऑफर चुनिंदा वेबसाइट पैकेज पर उपलब्ध है"
+      : "Offer available on selected website packages",
+  };
+
   return (
     <section className="relative mt-8 px-4">
       <div
@@ -22,7 +65,10 @@ export default function OfferBanner() {
           shadow-[0_25px_65px_rgba(223,174,69,0.12)]
         "
       >
-        {/* Inner card */}
+        {/* =========================
+            INNER CARD
+        ========================== */}
+
         <div
           className="
             relative
@@ -71,7 +117,10 @@ export default function OfferBanner() {
             "
           />
 
-          {/* Decorative rings */}
+          {/* =========================
+              DECORATIVE RINGS
+          ========================== */}
+
           <div
             aria-hidden="true"
             className="
@@ -127,7 +176,7 @@ export default function OfferBanner() {
               />
 
               <span className="text-[9px] font-black uppercase tracking-[0.16em] text-black">
-                Limited Time Offer
+                {t.limitedTimeOffer}
               </span>
             </div>
 
@@ -146,7 +195,7 @@ export default function OfferBanner() {
 
           <div className="relative z-10 mt-5">
             <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-black/60">
-              Build your website & save
+              {t.buildWebsiteSave}
             </p>
 
             <div className="mt-0.5 flex items-end gap-2">
@@ -163,18 +212,17 @@ export default function OfferBanner() {
               </h2>
 
               <span className="mb-1.5 text-[16px] font-black uppercase text-black/75">
-                OFF
+                {t.off}
               </span>
             </div>
 
             <p className="mt-2 max-w-[245px] text-[11px] font-semibold leading-[1.5] text-black/70">
-              Get a premium website designed to make your business look
-              professional and grow online.
+              {t.description}
             </p>
           </div>
 
           {/* =========================
-              CTA + TIMER
+              CTA + AVAILABILITY
           ========================== */}
 
           <div className="relative z-10 mt-5 flex items-center justify-between gap-3">
@@ -199,12 +247,16 @@ export default function OfferBanner() {
                 active:scale-95
               "
             >
-              <span>Claim Offer</span>
+              <span>{t.claimOffer}</span>
 
               <ArrowRight
                 size={14}
                 strokeWidth={2.5}
-                className="transition-transform duration-200 group-hover/btn:translate-x-1"
+                className="
+                  transition-transform
+                  duration-200
+                  group-hover/btn:translate-x-1
+                "
               />
             </button>
 
@@ -217,11 +269,11 @@ export default function OfferBanner() {
 
               <div>
                 <p className="text-[7px] font-bold uppercase tracking-wider text-black/50">
-                  Limited
+                  {t.limited}
                 </p>
 
                 <p className="text-[9px] font-black text-black/75">
-                  Availability
+                  {t.availability}
                 </p>
               </div>
             </div>
@@ -252,15 +304,17 @@ export default function OfferBanner() {
         </div>
       </div>
 
-      {/* Small trust text */}
+      {/* =========================
+          TRUST TEXT
+      ========================== */}
+
       <div className="mt-2.5 flex items-center justify-center gap-1.5">
         <span className="h-1 w-1 rounded-full bg-emerald-400" />
 
         <span className="text-[8px] font-semibold text-slate-600">
-          Offer available on selected website packages
+          {t.trustText}
         </span>
       </div>
     </section>
   );
 }
-

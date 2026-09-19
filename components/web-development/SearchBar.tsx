@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -11,19 +10,73 @@ import {
 } from "lucide-react";
 
 import { services } from "@/data/services";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function SearchBar() {
   const router = useRouter();
+  const { language } = useLanguage();
+
+  const isHindi = language === "hi";
 
   const [query, setQuery] = useState("");
   const [focused, setFocused] = useState(false);
   const [error, setError] = useState("");
 
+  const t = {
+    findYourService: isHindi
+      ? "अपनी सर्विस खोजें"
+      : "Find Your Service",
+
+    quickSearch: isHindi
+      ? "क्विक सर्च"
+      : "Quick Search",
+
+    placeholder: isHindi
+      ? "वेबसाइट सर्विस सर्च करें..."
+      : "Search website services...",
+
+    tryText: isHindi
+      ? "ट्राई करें: बिज़नेस वेबसाइट, ई-कॉमर्स, लैंडिंग पेज"
+      : "Try: Business Website, E-commerce, Landing Page",
+
+    clearSearch: isHindi
+      ? "सर्च साफ करें"
+      : "Clear search",
+
+    search: isHindi
+      ? "सर्च"
+      : "Search",
+
+    popular: isHindi
+      ? "लोकप्रिय"
+      : "Popular",
+
+    emptySearch: isHindi
+      ? "सर्च करने के लिए सर्विस का नाम डालें।"
+      : "Enter a service name to search.",
+
+    noMatch: isHindi
+      ? "कोई मैचिंग सर्विस नहीं मिली।"
+      : "No matching service found.",
+  };
+
+  const popularSearches = isHindi
+    ? [
+        "बिज़नेस वेबसाइट",
+        "ई-कॉमर्स",
+        "लैंडिंग पेज",
+      ]
+    : [
+        "Business Website",
+        "E-commerce",
+        "Landing Page",
+      ];
+
   const handleSearch = () => {
     const value = query.trim().toLowerCase();
 
     if (!value) {
-      setError("Enter a service name to search.");
+      setError(t.emptySearch);
       return;
     }
 
@@ -37,9 +90,11 @@ export default function SearchBar() {
 
     if (service) {
       setError("");
-      router.push(`/web-development/service/${service.slug}`);
+      router.push(
+        `/web-development/service/${service.slug}`
+      );
     } else {
-      setError("No matching service found.");
+      setError(t.noMatch);
     }
   };
 
@@ -50,7 +105,9 @@ export default function SearchBar() {
 
   return (
     <section className="px-4 pt-5">
-      {/* Section heading */}
+      {/* =====================================================
+          SECTION HEADING
+      ====================================================== */}
       <div className="mb-3 flex items-center justify-between px-1">
         <div className="flex items-center gap-2">
           <Sparkles
@@ -59,16 +116,18 @@ export default function SearchBar() {
           />
 
           <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
-            Find Your Service
+            {t.findYourService}
           </span>
         </div>
 
         <span className="text-[9px] font-medium text-slate-600">
-          Quick Search
+          {t.quickSearch}
         </span>
       </div>
 
-      {/* Search container */}
+      {/* =====================================================
+          SEARCH CONTAINER
+      ====================================================== */}
       <div
         className={`
           relative
@@ -88,7 +147,9 @@ export default function SearchBar() {
         {/* Top highlight */}
         <div className="pointer-events-none absolute left-1/2 top-0 h-px w-[55%] -translate-x-1/2 bg-gradient-to-r from-transparent via-[#DFAE45]/40 to-transparent" />
 
-        {/* Search row */}
+        {/* =================================================
+            SEARCH ROW
+        ================================================== */}
         <div className="flex items-center gap-2 p-2">
 
           {/* Search icon box */}
@@ -122,13 +183,18 @@ export default function SearchBar() {
             />
           </div>
 
-          {/* Input */}
+          {/* =================================================
+              INPUT
+          ================================================== */}
           <div className="min-w-0 flex-1">
             <input
               value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
-                if (error) setError("");
+
+                if (error) {
+                  setError("");
+                }
               }}
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
@@ -137,8 +203,8 @@ export default function SearchBar() {
                   handleSearch();
                 }
               }}
-              placeholder="Search website services..."
-              aria-label="Search website services"
+              placeholder={t.placeholder}
+              aria-label={t.placeholder}
               className="
                 w-full
                 bg-transparent
@@ -155,16 +221,18 @@ export default function SearchBar() {
             />
 
             <p className="px-1 text-[8px] font-medium text-slate-600">
-              Try: Business Website, E-commerce, Landing Page
+              {t.tryText}
             </p>
           </div>
 
-          {/* Clear button */}
+          {/* =================================================
+              CLEAR BUTTON
+          ================================================== */}
           {query && (
             <button
               type="button"
               onClick={clearSearch}
-              aria-label="Clear search"
+              aria-label={t.clearSearch}
               className="
                 flex
                 h-8
@@ -184,11 +252,13 @@ export default function SearchBar() {
             </button>
           )}
 
-          {/* Search button */}
+          {/* =================================================
+              SEARCH BUTTON
+          ================================================== */}
           <button
             type="button"
             onClick={handleSearch}
-            aria-label="Search"
+            aria-label={t.search}
             className="
               group
               flex
@@ -211,7 +281,7 @@ export default function SearchBar() {
             "
           >
             <span className="hidden min-[360px]:inline">
-              Search
+              {t.search}
             </span>
 
             <ArrowRight
@@ -222,7 +292,9 @@ export default function SearchBar() {
           </button>
         </div>
 
-        {/* Error */}
+        {/* =================================================
+            ERROR
+        ================================================== */}
         {error && (
           <div className="border-t border-red-400/10 bg-red-400/[0.035] px-4 py-2.5">
             <p className="text-[9px] font-semibold text-red-300">
@@ -247,17 +319,15 @@ export default function SearchBar() {
         />
       </div>
 
-      {/* Popular searches */}
+      {/* =====================================================
+          POPULAR SEARCHES
+      ====================================================== */}
       <div className="mt-3 flex items-center gap-2 overflow-x-auto px-1 pb-1 scrollbar-none">
         <span className="shrink-0 text-[8px] font-bold uppercase tracking-wider text-slate-600">
-          Popular
+          {t.popular}
         </span>
 
-        {[
-          "Business Website",
-          "E-commerce",
-          "Landing Page",
-        ].map((item) => (
+        {popularSearches.map((item) => (
           <button
             key={item}
             type="button"
@@ -290,4 +360,3 @@ export default function SearchBar() {
     </section>
   );
 }
-

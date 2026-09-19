@@ -14,6 +14,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface Props {
   search?: string;
@@ -153,16 +154,202 @@ const services = [
 export default function MostBookedServices({
   search = "",
 }: Props) {
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const [sheetSearch, setSheetSearch] = useState("");
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
 
-  const filteredServices = services.filter((service) =>
-    service.title.toLowerCase().includes(search.toLowerCase())
+  const [isSheetOpen, setIsSheetOpen] =
+    useState(false);
+
+  const [sheetSearch, setSheetSearch] =
+    useState("");
+
+  /* ================= TRANSLATIONS ================= */
+
+  const t = {
+    eyebrow: isHindi
+      ? "ग्राहकों की पसंद"
+      : "CUSTOMER FAVORITES",
+
+    most: isHindi ? "सबसे" : "Most",
+
+    booked: isHindi ? "बुक की गई" : "Booked",
+
+    subtitle: isHindi
+      ? "हमारे ग्राहकों द्वारा भरोसेमंद और पसंद की जाने वाली सेवाएं"
+      : "Services trusted and loved by our customers",
+
+    viewAll: isHindi
+      ? "सभी देखें"
+      : "View All",
+
+    verified: isHindi
+      ? "वेरिफाइड प्रोफेशनल्स • भरोसेमंद सर्विस"
+      : "VERIFIED PROFESSIONALS • TRUSTED SERVICE",
+
+    exploreMore: isHindi
+      ? "और सेवाएं देखें"
+      : "Explore More Services",
+
+    bookNow: isHindi
+      ? "अभी बुक करें"
+      : "Book Now",
+
+    noServices: isHindi
+      ? "कोई सेवा नहीं मिली"
+      : "No Services Found",
+
+    tryAnother: isHindi
+      ? "किसी अन्य कीवर्ड से खोजने का प्रयास करें।"
+      : "Try searching with another keyword.",
+
+    marketplace: isHindi
+      ? "OURHUB मार्केटप्लेस"
+      : "OURHUB MARKETPLACE",
+
+    explore: isHindi
+      ? "सेवाएं देखें"
+      : "Explore Services",
+
+    sheetSubtitle: isHindi
+      ? "अपनी जरूरत के लिए सही सर्विस खोजें"
+      : "Find the perfect service for your needs",
+
+    searchPlaceholder: isHindi
+      ? "सर्विस खोजें..."
+      : "Search for a service...",
+
+    available: isHindi
+      ? "उपलब्ध सेवाएं"
+      : "AVAILABLE SERVICES",
+
+    services: isHindi
+      ? "सेवाएं"
+      : "SERVICES",
+
+    book: isHindi
+      ? "बुक"
+      : "Book",
+
+    clearSearch: isHindi
+      ? "सर्च साफ करें"
+      : "Clear Search",
+
+    closeServices: isHindi
+      ? "सेवाएं बंद करें"
+      : "Close services",
+
+    close: isHindi
+      ? "बंद करें"
+      : "Close",
+
+    searchClear: isHindi
+      ? "सर्च साफ करें"
+      : "Clear search",
+  };
+
+  /* ================= SERVICE TRANSLATIONS ================= */
+
+  const getServiceTitle = (
+    service: (typeof services)[number]
+  ) => {
+    if (!isHindi) {
+      return service.title;
+    }
+
+    const hindiTitles: Record<number, string> = {
+      1: "पूजा बुकिंग",
+      2: "ज्योतिष",
+      3: "एसी रिपेयर",
+      4: "इलेक्ट्रीशियन",
+      5: "बढ़ई सेवा",
+      6: "वेडिंग प्लानर",
+      7: "वास्तु",
+      8: "होम क्लीनिंग",
+      9: "प्लंबर",
+      10: "पेंटर",
+      11: "कार सर्विस",
+      12: "बाइक सर्विस",
+      13: "एसी इंस्टॉलेशन",
+      14: "होम अप्लायंस",
+      15: "इवेंट मैनेजमेंट",
+      16: "वेब डेवलपमेंट",
+    };
+
+    return (
+      hindiTitles[service.id] ||
+      service.title
+    );
+  };
+
+  const getServiceTag = (tag: string) => {
+    if (!isHindi) {
+      return tag;
+    }
+
+    const hindiTags: Record<string, string> = {
+      Spiritual: "आध्यात्मिक",
+      Guidance: "मार्गदर्शन",
+      "Home Care": "होम केयर",
+      Expert: "एक्सपर्ट",
+      Popular: "लोकप्रिय",
+      Premium: "प्रीमियम",
+      Trusted: "भरोसेमंद",
+      Auto: "ऑटो",
+      Repair: "रिपेयर",
+      Events: "इवेंट्स",
+      Digital: "डिजिटल",
+    };
+
+    return hindiTags[tag] || tag;
+  };
+
+  /* ================= SEARCH FILTER ================= */
+
+  const normalizedSearch =
+    search.trim().toLowerCase();
+
+  const filteredServices = services.filter(
+    (service) => {
+      const englishTitle =
+        service.title.toLowerCase();
+
+      const hindiTitle =
+        getServiceTitle(service).toLowerCase();
+
+      return (
+        englishTitle.includes(
+          normalizedSearch
+        ) ||
+        hindiTitle.includes(
+          normalizedSearch
+        )
+      );
+    }
   );
 
-  const sheetServices = services.filter((service) =>
-    service.title.toLowerCase().includes(sheetSearch.toLowerCase())
+  const normalizedSheetSearch =
+    sheetSearch.trim().toLowerCase();
+
+  const sheetServices = services.filter(
+    (service) => {
+      const englishTitle =
+        service.title.toLowerCase();
+
+      const hindiTitle =
+        getServiceTitle(service).toLowerCase();
+
+      return (
+        englishTitle.includes(
+          normalizedSheetSearch
+        ) ||
+        hindiTitle.includes(
+          normalizedSheetSearch
+        )
+      );
+    }
   );
+
+  /* ================= SHEET ================= */
 
   const openSheet = () => {
     setSheetSearch("");
@@ -174,19 +361,29 @@ export default function MostBookedServices({
     setSheetSearch("");
   };
 
+  /* ================= ESCAPE KEY ================= */
+
   useEffect(() => {
     if (!isSheetOpen) return;
 
-    const handleKeyDown = (event: KeyboardEvent) => {
+    const handleKeyDown = (
+      event: KeyboardEvent
+    ) => {
       if (event.key === "Escape") {
         closeSheet();
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener(
+      "keydown",
+      handleKeyDown
+    );
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener(
+        "keydown",
+        handleKeyDown
+      );
     };
   }, [isSheetOpen]);
 
@@ -216,21 +413,21 @@ export default function MostBookedServices({
               </div>
 
               <span className="text-[9px] font-bold tracking-[2px] text-[#F4C542]">
-                CUSTOMER FAVORITES
+                {t.eyebrow}
               </span>
             </div>
 
             {/* Title */}
 
             <h2 className="mt-2 text-[23px] font-bold tracking-tight text-white">
-              Most{" "}
+              {t.most}{" "}
               <span className="text-[#F4C542]">
-                Booked
+                {t.booked}
               </span>
             </h2>
 
             <p className="mt-1 text-[11px] text-slate-500">
-              Services trusted and loved by our customers
+              {t.subtitle}
             </p>
           </div>
 
@@ -263,7 +460,7 @@ export default function MostBookedServices({
               active:scale-95
             "
           >
-            View All
+            {t.viewAll}
 
             <ChevronRight
               size={15}
@@ -277,136 +474,147 @@ export default function MostBookedServices({
         {filteredServices.length > 0 ? (
           <>
             <div className="grid grid-cols-3 gap-3">
-              {filteredServices.slice(0, 6).map((service, index) => (
-                <Link
-                  key={service.id}
-                  href={service.link}
-                  className="
-                    group
-                    relative
-                    min-w-0
-                    overflow-hidden
-                    rounded-[20px]
-                    border
-                    border-white/[0.07]
-                    bg-[#091624]
-                    shadow-[0_10px_30px_rgba(0,0,0,0.22)]
-                    transition-all
-                    duration-300
-                    hover:-translate-y-1
-                    hover:border-[#F4C542]/40
-                    hover:shadow-[0_18px_35px_rgba(0,0,0,0.35)]
-                    active:scale-[0.98]
-                  "
-                >
-                  {/* Gold corner glow */}
+              {filteredServices
+                .slice(0, 6)
+                .map((service, index) => (
+                  <Link
+                    key={service.id}
+                    href={service.link}
+                    className="
+                      group
+                      relative
+                      min-w-0
+                      overflow-hidden
+                      rounded-[20px]
+                      border
+                      border-white/[0.07]
+                      bg-[#091624]
+                      shadow-[0_10px_30px_rgba(0,0,0,0.22)]
+                      transition-all
+                      duration-300
+                      hover:-translate-y-1
+                      hover:border-[#F4C542]/40
+                      hover:shadow-[0_18px_35px_rgba(0,0,0,0.35)]
+                      active:scale-[0.98]
+                    "
+                  >
+                    {/* Gold corner glow */}
 
-                  <div className="pointer-events-none absolute -right-7 -top-7 z-20 h-16 w-16 rounded-full bg-[#F4C542]/[0.08] blur-2xl transition duration-300 group-hover:bg-[#F4C542]/[0.15]" />
+                    <div className="pointer-events-none absolute -right-7 -top-7 z-20 h-16 w-16 rounded-full bg-[#F4C542]/[0.08] blur-2xl transition duration-300 group-hover:bg-[#F4C542]/[0.15]" />
 
-                  {/* ================= IMAGE ================= */}
+                    {/* IMAGE */}
 
-                  <div className="relative aspect-[1.08/1] w-full overflow-hidden bg-[#06111E]">
-                    <Image
-                      src={service.image}
-                      alt={service.title}
-                      fill
-                      sizes="(max-width: 430px) 31vw, 130px"
-                      className="
-                        object-cover
-                        transition-transform
-                        duration-700
-                        group-hover:scale-110
-                      "
-                    />
-
-                    {/* Image overlays */}
-
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#071321] via-[#071321]/15 to-transparent" />
-
-                    <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/40 to-transparent" />
-
-                    {/* Number */}
-
-                    <div className="absolute left-2 top-2 flex h-5 min-w-5 items-center justify-center rounded-full border border-white/10 bg-black/40 px-1 text-[7px] font-bold text-white backdrop-blur-md">
-                      0{index + 1}
-                    </div>
-
-                    {/* Rating */}
-
-                    <div className="absolute bottom-2 left-2 flex items-center gap-1 rounded-full border border-white/10 bg-black/50 px-2 py-1 backdrop-blur-md">
-                      <Star
-                        size={9}
-                        fill="currentColor"
-                        className="text-[#F4C542]"
+                    <div className="relative aspect-[1.08/1] w-full overflow-hidden bg-[#06111E]">
+                      <Image
+                        src={service.image}
+                        alt={getServiceTitle(
+                          service
+                        )}
+                        fill
+                        sizes="(max-width: 430px) 31vw, 130px"
+                        className="
+                          object-cover
+                          transition-transform
+                          duration-700
+                          group-hover:scale-110
+                        "
                       />
 
-                      <span className="text-[8px] font-bold text-white">
-                        {service.rating}
-                      </span>
+                      {/* Image overlays */}
+
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#071321] via-[#071321]/15 to-transparent" />
+
+                      <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/40 to-transparent" />
+
+                      {/* Number */}
+
+                      <div className="absolute left-2 top-2 flex h-5 min-w-5 items-center justify-center rounded-full border border-white/10 bg-black/40 px-1 text-[7px] font-bold text-white backdrop-blur-md">
+                        {String(index + 1).padStart(
+                          2,
+                          "0"
+                        )}
+                      </div>
+
+                      {/* Rating */}
+
+                      <div className="absolute bottom-2 left-2 flex items-center gap-1 rounded-full border border-white/10 bg-black/50 px-2 py-1 backdrop-blur-md">
+                        <Star
+                          size={9}
+                          fill="currentColor"
+                          className="text-[#F4C542]"
+                        />
+
+                        <span className="text-[8px] font-bold text-white">
+                          {service.rating}
+                        </span>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* ================= CONTENT ================= */}
+                    {/* CONTENT */}
 
-                  <div className="relative p-2.5">
-                    {/* Tag */}
+                    <div className="relative p-2.5">
+                      {/* Tag */}
 
-                    <div className="mb-1.5 flex items-center gap-1">
-                      <Crown
-                        size={8}
-                        fill="currentColor"
-                        className="text-[#F4C542]/80"
-                      />
+                      <div className="mb-1.5 flex items-center gap-1">
+                        <Crown
+                          size={8}
+                          fill="currentColor"
+                          className="text-[#F4C542]/80"
+                        />
 
-                      <span className="truncate text-[7px] font-bold uppercase tracking-[0.7px] text-[#F4C542]/70">
-                        {service.tag}
-                      </span>
+                        <span className="truncate text-[7px] font-bold uppercase tracking-[0.7px] text-[#F4C542]/70">
+                          {getServiceTag(
+                            service.tag
+                          )}
+                        </span>
+                      </div>
+
+                      {/* Title */}
+
+                      <h3 className="line-clamp-2 min-h-[30px] text-[10px] font-bold leading-[1.35] text-white">
+                        {getServiceTitle(
+                          service
+                        )}
+                      </h3>
+
+                      {/* CTA */}
+
+                      <div
+                        className="
+                          mt-2.5
+                          flex
+                          items-center
+                          justify-center
+                          gap-1
+                          rounded-xl
+                          border
+                          border-[#F4C542]/20
+                          bg-[#F4C542]/[0.07]
+                          py-2
+                          text-[9px]
+                          font-extrabold
+                          text-[#F4C542]
+                          transition-all
+                          duration-300
+                          group-hover:border-[#F4C542]/50
+                          group-hover:bg-[#F4C542]
+                          group-hover:text-[#071424]
+                        "
+                      >
+                        {t.bookNow}
+
+                        <ArrowUpRight
+                          size={11}
+                          className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                        />
+                      </div>
                     </div>
 
-                    {/* Title */}
+                    {/* Bottom gold line */}
 
-                    <h3 className="line-clamp-2 min-h-[30px] text-[10px] font-bold leading-[1.35] text-white">
-                      {service.title}
-                    </h3>
-
-                    {/* CTA */}
-
-                    <div
-                      className="
-                        mt-2.5
-                        flex
-                        items-center
-                        justify-center
-                        gap-1
-                        rounded-xl
-                        border
-                        border-[#F4C542]/20
-                        bg-[#F4C542]/[0.07]
-                        py-2
-                        text-[9px]
-                        font-extrabold
-                        text-[#F4C542]
-                        transition-all
-                        duration-300
-                        group-hover:border-[#F4C542]/50
-                        group-hover:bg-[#F4C542]
-                        group-hover:text-[#071424]
-                      "
-                    >
-                      Book Now
-
-                      <ArrowUpRight
-                        size={11}
-                        className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Bottom gold line */}
-
-                  <div className="h-px bg-gradient-to-r from-transparent via-[#F4C542]/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                </Link>
-              ))}
+                    <div className="h-px bg-gradient-to-r from-transparent via-[#F4C542]/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  </Link>
+                ))}
             </div>
 
             {/* ================= TRUST STRIP ================= */}
@@ -418,7 +626,7 @@ export default function MostBookedServices({
               />
 
               <span className="text-[9px] font-medium tracking-wide text-slate-500">
-                VERIFIED PROFESSIONALS • TRUSTED SERVICE
+                {t.verified}
               </span>
             </div>
 
@@ -455,7 +663,7 @@ export default function MostBookedServices({
               >
                 <span className="absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-[#F4C542]/40 to-transparent" />
 
-                <span>Explore More Services</span>
+                <span>{t.exploreMore}</span>
 
                 <ArrowRight
                   size={15}
@@ -465,6 +673,8 @@ export default function MostBookedServices({
             </div>
           </>
         ) : (
+          /* EMPTY STATE */
+
           <div className="rounded-[24px] border border-white/[0.08] bg-[#091624] px-6 py-10 text-center">
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-[#F4C542]/15 bg-[#F4C542]/[0.05]">
               <Search
@@ -474,18 +684,18 @@ export default function MostBookedServices({
             </div>
 
             <h3 className="mt-4 text-sm font-bold text-white">
-              No Services Found
+              {t.noServices}
             </h3>
 
             <p className="mt-1 text-[11px] text-slate-500">
-              Try searching with another keyword.
+              {t.tryAnother}
             </p>
           </div>
         )}
       </section>
 
       {/* ================================================= */}
-      {/*                 PREMIUM BOTTOM SHEET              */}
+      {/*                 PREMIUM BOTTOM SHEET               */}
       {/* ================================================= */}
 
       {isSheetOpen && (
@@ -494,7 +704,7 @@ export default function MostBookedServices({
 
           <button
             type="button"
-            aria-label="Close services"
+            aria-label={t.closeServices}
             onClick={closeSheet}
             className="absolute inset-0 h-full w-full bg-[#02070D]/80 backdrop-blur-[5px]"
           />
@@ -526,7 +736,7 @@ export default function MostBookedServices({
 
             <div className="pointer-events-none absolute left-1/2 top-0 h-[120px] w-[260px] -translate-x-1/2 rounded-full bg-[#F4C542]/[0.06] blur-[60px]" />
 
-            {/* ================= HANDLE ================= */}
+            {/* HANDLE */}
 
             <div className="relative flex justify-center pt-3">
               <div className="h-1 w-12 rounded-full bg-gradient-to-r from-white/10 via-[#F4C542]/50 to-white/10" />
@@ -543,19 +753,22 @@ export default function MostBookedServices({
                   />
 
                   <span className="text-[9px] font-bold tracking-[2px] text-[#F4C542]">
-                    OURHUB MARKETPLACE
+                    {t.marketplace}
                   </span>
                 </div>
 
                 <h2 className="mt-2 text-[24px] font-bold tracking-tight text-white">
-                  Explore{" "}
+                  {t.explore.split(" ")[0]}{" "}
                   <span className="text-[#F4C542]">
-                    Services
+                    {t.explore
+                      .split(" ")
+                      .slice(1)
+                      .join(" ")}
                   </span>
                 </h2>
 
                 <p className="mt-1 text-[10px] text-slate-500">
-                  Find the perfect service for your needs
+                  {t.sheetSubtitle}
                 </p>
               </div>
 
@@ -564,7 +777,7 @@ export default function MostBookedServices({
               <button
                 type="button"
                 onClick={closeSheet}
-                aria-label="Close"
+                aria-label={t.close}
                 className="
                   flex
                   h-10
@@ -619,9 +832,14 @@ export default function MostBookedServices({
                   type="text"
                   value={sheetSearch}
                   onChange={(e) =>
-                    setSheetSearch(e.target.value)
+                    setSheetSearch(
+                      e.target.value
+                    )
                   }
-                  placeholder="Search for a service..."
+                  placeholder={t.searchPlaceholder}
+                  aria-label={
+                    t.searchPlaceholder
+                  }
                   className="
                     min-w-0
                     flex-1
@@ -637,8 +855,12 @@ export default function MostBookedServices({
                 {sheetSearch && (
                   <button
                     type="button"
-                    onClick={() => setSheetSearch("")}
-                    aria-label="Clear search"
+                    onClick={() =>
+                      setSheetSearch("")
+                    }
+                    aria-label={
+                      t.searchClear
+                    }
                     className="
                       ml-2
                       flex
@@ -664,11 +886,12 @@ export default function MostBookedServices({
 
             <div className="flex items-center justify-between px-5 pb-3">
               <span className="text-[9px] font-bold tracking-[1px] text-slate-500">
-                AVAILABLE SERVICES
+                {t.available}
               </span>
 
               <span className="rounded-full border border-[#F4C542]/15 bg-[#F4C542]/[0.05] px-2 py-1 text-[8px] font-bold text-[#F4C542]">
-                {sheetServices.length} SERVICES
+                {sheetServices.length}{" "}
+                {t.services}
               </span>
             </div>
 
@@ -677,109 +900,119 @@ export default function MostBookedServices({
             <div className="relative flex-1 overflow-y-auto px-5 pb-8">
               {sheetServices.length > 0 ? (
                 <div className="grid grid-cols-3 gap-3">
-                  {sheetServices.map((service, index) => (
-                    <Link
-                      key={service.id}
-                      href={service.link}
-                      onClick={closeSheet}
-                      className="
-                        group
-                        relative
-                        overflow-hidden
-                        rounded-[18px]
-                        border
-                        border-white/[0.07]
-                        bg-[#0A1827]
-                        shadow-[0_8px_22px_rgba(0,0,0,0.18)]
-                        transition-all
-                        duration-300
-                        hover:-translate-y-1
-                        hover:border-[#F4C542]/35
-                        active:scale-[0.98]
-                      "
-                    >
-                      {/* IMAGE */}
+                  {sheetServices.map(
+                    (service, index) => (
+                      <Link
+                        key={service.id}
+                        href={service.link}
+                        onClick={closeSheet}
+                        className="
+                          group
+                          relative
+                          overflow-hidden
+                          rounded-[18px]
+                          border
+                          border-white/[0.07]
+                          bg-[#0A1827]
+                          shadow-[0_8px_22px_rgba(0,0,0,0.18)]
+                          transition-all
+                          duration-300
+                          hover:-translate-y-1
+                          hover:border-[#F4C542]/35
+                          active:scale-[0.98]
+                        "
+                      >
+                        {/* IMAGE */}
 
-                      <div className="relative aspect-square overflow-hidden">
-                        <Image
-                          src={service.image}
-                          alt={service.title}
-                          fill
-                          sizes="(max-width: 430px) 31vw, 130px"
-                          className="
-                            object-cover
-                            transition-transform
-                            duration-700
-                            group-hover:scale-110
-                          "
-                        />
-
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#071321] via-black/10 to-transparent" />
-
-                        {/* Index */}
-
-                        <div className="absolute left-1.5 top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-black/45 px-1 text-[7px] font-bold text-white backdrop-blur">
-                          {String(index + 1).padStart(2, "0")}
-                        </div>
-
-                        {/* Rating */}
-
-                        <div className="absolute bottom-1.5 left-1.5 flex items-center gap-1 rounded-full border border-white/10 bg-black/50 px-1.5 py-1 backdrop-blur-md">
-                          <Star
-                            size={8}
-                            fill="currentColor"
-                            className="text-[#F4C542]"
+                        <div className="relative aspect-square overflow-hidden">
+                          <Image
+                            src={service.image}
+                            alt={getServiceTitle(
+                              service
+                            )}
+                            fill
+                            sizes="(max-width: 430px) 31vw, 130px"
+                            className="
+                              object-cover
+                              transition-transform
+                              duration-700
+                              group-hover:scale-110
+                            "
                           />
 
-                          <span className="text-[7px] font-bold text-white">
-                            {service.rating}
-                          </span>
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#071321] via-black/10 to-transparent" />
+
+                          {/* Index */}
+
+                          <div className="absolute left-1.5 top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-black/45 px-1 text-[7px] font-bold text-white backdrop-blur">
+                            {String(
+                              index + 1
+                            ).padStart(2, "0")}
+                          </div>
+
+                          {/* Rating */}
+
+                          <div className="absolute bottom-1.5 left-1.5 flex items-center gap-1 rounded-full border border-white/10 bg-black/50 px-1.5 py-1 backdrop-blur-md">
+                            <Star
+                              size={8}
+                              fill="currentColor"
+                              className="text-[#F4C542]"
+                            />
+
+                            <span className="text-[7px] font-bold text-white">
+                              {service.rating}
+                            </span>
+                          </div>
                         </div>
-                      </div>
 
-                      {/* CONTENT */}
+                        {/* CONTENT */}
 
-                      <div className="p-2.5">
-                        <p className="line-clamp-2 min-h-[28px] text-[9px] font-bold leading-[1.45] text-white">
-                          {service.title}
-                        </p>
+                        <div className="p-2.5">
+                          <p className="line-clamp-2 min-h-[28px] text-[9px] font-bold leading-[1.45] text-white">
+                            {getServiceTitle(
+                              service
+                            )}
+                          </p>
 
-                        <div
-                          className="
-                            mt-2
-                            flex
-                            items-center
-                            justify-center
-                            gap-1
-                            rounded-lg
-                            border
-                            border-[#F4C542]/15
-                            bg-[#F4C542]/[0.06]
-                            py-1.5
-                            text-[8px]
-                            font-extrabold
-                            text-[#F4C542]
-                            transition-all
-                            group-hover:bg-[#F4C542]
-                            group-hover:text-[#071424]
-                          "
-                        >
-                          Book
+                          <div
+                            className="
+                              mt-2
+                              flex
+                              items-center
+                              justify-center
+                              gap-1
+                              rounded-lg
+                              border
+                              border-[#F4C542]/15
+                              bg-[#F4C542]/[0.06]
+                              py-1.5
+                              text-[8px]
+                              font-extrabold
+                              text-[#F4C542]
+                              transition-all
+                              group-hover:bg-[#F4C542]
+                              group-hover:text-[#071424]
+                            "
+                          >
+                            {t.book}
 
-                          <ArrowRight
-                            size={9}
-                            className="transition-transform group-hover:translate-x-0.5"
-                          />
+                            <ArrowRight
+                              size={9}
+                              className="transition-transform group-hover:translate-x-0.5"
+                            />
+                          </div>
                         </div>
-                      </div>
 
-                      {/* Bottom line */}
+                        {/* Bottom line */}
 
-                      <div className="h-px bg-gradient-to-r from-transparent via-[#F4C542]/40 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-                    </Link>
-                  ))}
+                        <div className="h-px bg-gradient-to-r from-transparent via-[#F4C542]/40 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                      </Link>
+                    )
+                  )}
                 </div>
               ) : (
+                /* EMPTY SHEET STATE */
+
                 <div className="rounded-[22px] border border-white/[0.07] bg-[#0A1827] px-6 py-10 text-center">
                   <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-[#F4C542]/15 bg-[#F4C542]/[0.05]">
                     <Search
@@ -789,19 +1022,21 @@ export default function MostBookedServices({
                   </div>
 
                   <h3 className="mt-4 text-sm font-bold text-white">
-                    No Services Found
+                    {t.noServices}
                   </h3>
 
                   <p className="mt-1 text-[10px] text-slate-500">
-                    Try searching with another keyword.
+                    {t.tryAnother}
                   </p>
 
                   <button
                     type="button"
-                    onClick={() => setSheetSearch("")}
+                    onClick={() =>
+                      setSheetSearch("")
+                    }
                     className="mt-4 text-[10px] font-bold text-[#F4C542]"
                   >
-                    Clear Search
+                    {t.clearSearch}
                   </button>
                 </div>
               )}

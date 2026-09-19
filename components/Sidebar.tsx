@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -15,9 +14,15 @@ import {
   ChevronRight,
   ShieldCheck,
   UserRound,
+  Languages,
 } from "lucide-react";
 
 import { FaOm } from "react-icons/fa6";
+
+import {
+  useLanguage,
+  type Language,
+} from "@/context/LanguageContext";
 
 /* =========================================================
    MENU ITEMS
@@ -25,27 +30,42 @@ import { FaOm } from "react-icons/fa6";
 
 const menuItems = [
   {
-    name: "Religious Services",
+    name: {
+      en: "Religious Services",
+      hi: "धार्मिक सेवाएं",
+    },
     icon: FaOm,
     href: "/religious",
   },
   {
-    name: "Home Services",
+    name: {
+      en: "Home Services",
+      hi: "होम सर्विसेज",
+    },
     icon: Wrench,
     href: "/home-services",
   },
   {
-    name: "Web Design & Development",
+    name: {
+      en: "Web Design & Development",
+      hi: "वेब डिजाइन एवं डेवलपमेंट",
+    },
     icon: Monitor,
     href: "/web-development",
   },
   {
-    name: "Event Management",
+    name: {
+      en: "Event Management",
+      hi: "इवेंट मैनेजमेंट",
+    },
     icon: PartyPopper,
     href: "/eventManagement",
   },
   {
-    name: "Construction",
+    name: {
+      en: "Construction",
+      hi: "कंस्ट्रक्शन",
+    },
     icon: Building2,
     href: "/construction",
   },
@@ -56,8 +76,14 @@ const menuItems = [
 ========================================================= */
 
 const locations = [
-  "Ujjain, Madhya Pradesh",
-  "Ratlam, Madhya Pradesh",
+  {
+    en: "Ujjain, Madhya Pradesh",
+    hi: "उज्जैन, मध्य प्रदेश",
+  },
+  {
+    en: "Ratlam, Madhya Pradesh",
+    hi: "रतलाम, मध्य प्रदेश",
+  },
 ];
 
 /* =========================================================
@@ -70,22 +96,80 @@ interface Props {
 }
 
 /* =========================================================
+   TRANSLATIONS
+========================================================= */
+
+const text = {
+  en: {
+    smartPlatform: "Smart Service Platform",
+    welcome: "Welcome Guest",
+    servicesNear: "Services near you",
+    exploreServices: "Explore Services",
+    premiumServices: "Premium Services",
+    trustedProfessionals:
+      "Trusted professionals at your doorstep",
+    closeMenu: "Close menu",
+    location: "Location",
+    websiteLanguage: "Website Language",
+    english: "English",
+    hindi: "Hindi",
+    switchToEnglish: "Switch to English",
+    switchToHindi: "Switch to Hindi",
+  },
+
+  hi: {
+    smartPlatform: "स्मार्ट सर्विस प्लेटफॉर्म",
+    welcome: "स्वागत है",
+    servicesNear: "आपके आसपास की सेवाएं",
+    exploreServices: "सेवाएं देखें",
+    premiumServices: "प्रीमियम सेवाएं",
+    trustedProfessionals:
+      "आपके घर तक भरोसेमंद प्रोफेशनल्स",
+    closeMenu: "मेन्यू बंद करें",
+    location: "स्थान",
+    websiteLanguage: "वेबसाइट की भाषा",
+    english: "English",
+    hindi: "हिंदी",
+    switchToEnglish: "Switch to English",
+    switchToHindi: "हिंदी में बदलें",
+  },
+} as const;
+
+/* =========================================================
    SIDEBAR
 ========================================================= */
 
-export default function Sidebar({ open, onClose }: Props) {
-  const [selectedLocation, setSelectedLocation] = useState(
-    "Ujjain, Madhya Pradesh"
-  );
+export default function Sidebar({
+  open,
+  onClose,
+}: Props) {
+  /* =======================================================
+     LANGUAGE
+  ======================================================= */
 
-  const [locationOpen, setLocationOpen] = useState(false);
+  const {
+    language,
+    setLanguage,
+  } = useLanguage();
+
+  /* =======================================================
+     LOCATION
+  ======================================================= */
+
+  const [selectedLocation, setSelectedLocation] =
+    useState("Ujjain, Madhya Pradesh");
+
+  const [locationOpen, setLocationOpen] =
+    useState(false);
 
   /* =======================================================
      BODY SCROLL LOCK
   ======================================================= */
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "auto";
+    document.body.style.overflow = open
+      ? "hidden"
+      : "auto";
 
     return () => {
       document.body.style.overflow = "auto";
@@ -93,7 +177,7 @@ export default function Sidebar({ open, onClose }: Props) {
   }, [open]);
 
   /* =======================================================
-     CLOSE DROPDOWN WHEN SIDEBAR CLOSES
+     CLOSE LOCATION DROPDOWN
   ======================================================= */
 
   useEffect(() => {
@@ -101,6 +185,38 @@ export default function Sidebar({ open, onClose }: Props) {
       setLocationOpen(false);
     }
   }, [open]);
+
+  /* =======================================================
+     LANGUAGE CHANGE
+  ======================================================= */
+
+  const changeLanguage = (
+    newLanguage: Language
+  ) => {
+    setLanguage(newLanguage);
+  };
+
+  /* =======================================================
+     CURRENT TRANSLATION
+  ======================================================= */
+
+  const t = text[language];
+
+  /* =======================================================
+     CURRENT LOCATION LABEL
+  ======================================================= */
+
+  const currentLocation =
+    language === "en"
+      ? selectedLocation
+      : locations.find(
+          (item) =>
+            item.en === selectedLocation
+        )?.hi ?? selectedLocation;
+
+  /* =======================================================
+     RETURN
+  ======================================================= */
 
   return (
     <div
@@ -116,7 +232,6 @@ export default function Sidebar({ open, onClose }: Props) {
         }
       `}
     >
-
       {/* =====================================================
           OVERLAY
       ===================================================== */}
@@ -126,7 +241,6 @@ export default function Sidebar({ open, onClose }: Props) {
         className={`
           absolute
           inset-0
-
           bg-black/75
           backdrop-blur-[3px]
 
@@ -243,8 +357,6 @@ export default function Sidebar({ open, onClose }: Props) {
 
                 <div className="flex items-center gap-2">
 
-                  {/* Logo Icon */}
-
                   <div
                     className="
                       flex
@@ -252,12 +364,9 @@ export default function Sidebar({ open, onClose }: Props) {
                       w-9
                       items-center
                       justify-center
-
                       rounded-xl
-
                       border
                       border-yellow-400/20
-
                       bg-yellow-400/[0.08]
                     "
                   >
@@ -266,8 +375,6 @@ export default function Sidebar({ open, onClose }: Props) {
                       className="text-yellow-400"
                     />
                   </div>
-
-                  {/* Brand Name */}
 
                   <div>
 
@@ -294,7 +401,7 @@ export default function Sidebar({ open, onClose }: Props) {
                         text-slate-500
                       "
                     >
-                      Smart Service Platform
+                      {t.smartPlatform}
                     </p>
 
                   </div>
@@ -304,41 +411,181 @@ export default function Sidebar({ open, onClose }: Props) {
               </div>
 
               {/* =============================================
-                  CLOSE BUTTON
+                  RIGHT SIDE
               ============================================= */}
 
-              <button
-                type="button"
-                onClick={onClose}
-                aria-label="Close menu"
-                className="
-                  flex
-                  h-10
-                  w-10
-                  items-center
-                  justify-center
+              <div className="flex items-center gap-2">
 
-                  rounded-xl
+                {/* =========================================
+                    LANGUAGE SWITCHER
+                ========================================= */}
 
-                  border
-                  border-white/[0.08]
+                <div
+                  className="
+                    flex
+                    items-center
+                    rounded-xl
+                    border
+                    border-yellow-400/15
+                    bg-white/[0.035]
+                    p-1
+                  "
+                >
 
-                  bg-white/[0.04]
+                  {/* English */}
 
-                  text-slate-300
+                  <button
+                    type="button"
+                    onClick={() =>
+                      changeLanguage("en")
+                    }
+                    aria-label={
+                      t.switchToEnglish
+                    }
+                    aria-pressed={
+                      language === "en"
+                    }
+                    className={`
+                      flex
+                      h-8
+                      min-w-[34px]
+                      items-center
+                      justify-center
+                      rounded-lg
+                      px-2
 
-                  transition-all
-                  duration-200
+                      text-[10px]
+                      font-extrabold
 
-                  active:scale-95
+                      transition-all
+                      duration-200
 
-                  hover:border-yellow-400/20
-                  hover:bg-yellow-400/10
-                  hover:text-yellow-400
-                "
-              >
-                <X size={20} />
-              </button>
+                      ${
+                        language === "en"
+                          ? "bg-yellow-400 text-black shadow-[0_4px_15px_rgba(250,204,21,0.18)]"
+                          : "text-slate-400 hover:text-white"
+                      }
+                    `}
+                  >
+                    EN
+                  </button>
+
+                  <div className="mx-0.5 h-4 w-px bg-white/10" />
+
+                  {/* Hindi */}
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      changeLanguage("hi")
+                    }
+                    aria-label={
+                      t.switchToHindi
+                    }
+                    aria-pressed={
+                      language === "hi"
+                    }
+                    className={`
+                      flex
+                      h-8
+                      min-w-[38px]
+                      items-center
+                      justify-center
+                      rounded-lg
+                      px-2
+
+                      text-[10px]
+                      font-extrabold
+
+                      transition-all
+                      duration-200
+
+                      ${
+                        language === "hi"
+                          ? "bg-yellow-400 text-black shadow-[0_4px_15px_rgba(250,204,21,0.18)]"
+                          : "text-slate-400 hover:text-white"
+                      }
+                    `}
+                  >
+                    हिं
+                  </button>
+
+                </div>
+
+                {/* =========================================
+                    CLOSE BUTTON
+                ========================================= */}
+
+                <button
+                  type="button"
+                  onClick={onClose}
+                  aria-label={t.closeMenu}
+                  className="
+                    flex
+                    h-10
+                    w-10
+                    items-center
+                    justify-center
+
+                    rounded-xl
+
+                    border
+                    border-white/[0.08]
+
+                    bg-white/[0.04]
+
+                    text-slate-300
+
+                    transition-all
+                    duration-200
+
+                    active:scale-95
+
+                    hover:border-yellow-400/20
+                    hover:bg-yellow-400/10
+                    hover:text-yellow-400
+                  "
+                >
+                  <X size={20} />
+                </button>
+
+              </div>
+
+            </div>
+
+            {/* =================================================
+                LANGUAGE LABEL
+            ================================================= */}
+
+            <div
+              className="
+                mt-4
+                flex
+                items-center
+                gap-2
+                rounded-xl
+                border
+                border-white/[0.06]
+                bg-white/[0.025]
+                px-3
+                py-2
+              "
+            >
+
+              <Languages
+                size={14}
+                className="text-yellow-400"
+              />
+
+              <span className="text-[10px] text-slate-500">
+                {t.websiteLanguage}
+              </span>
+
+              <span className="ml-auto text-[10px] font-bold text-yellow-400">
+                {language === "en"
+                  ? t.english
+                  : t.hindi}
+              </span>
 
             </div>
 
@@ -354,22 +601,16 @@ export default function Sidebar({ open, onClose }: Props) {
               className="
                 relative
                 overflow-hidden
-
                 rounded-2xl
-
                 border
                 border-yellow-400/15
-
                 bg-gradient-to-br
                 from-yellow-400/[0.10]
                 via-[#111]
                 to-[#0b0b0b]
-
                 p-4
               "
             >
-
-              {/* Glow */}
 
               <div
                 className="
@@ -384,11 +625,7 @@ export default function Sidebar({ open, onClose }: Props) {
                 "
               />
 
-              {/* User */}
-
               <div className="relative flex items-center gap-3">
-
-                {/* Avatar */}
 
                 <div
                   className="
@@ -398,12 +635,9 @@ export default function Sidebar({ open, onClose }: Props) {
                     shrink-0
                     items-center
                     justify-center
-
                     rounded-full
-
                     border
                     border-yellow-400/30
-
                     bg-yellow-400/[0.10]
                   "
                 >
@@ -412,8 +646,6 @@ export default function Sidebar({ open, onClose }: Props) {
                     className="text-yellow-400"
                   />
                 </div>
-
-                {/* User Info */}
 
                 <div className="min-w-0">
 
@@ -426,7 +658,7 @@ export default function Sidebar({ open, onClose }: Props) {
                         text-white
                       "
                     >
-                      Welcome Guest
+                      {t.welcome}
                     </h3>
 
                     <ShieldCheck
@@ -436,14 +668,7 @@ export default function Sidebar({ open, onClose }: Props) {
 
                   </div>
 
-                  <div
-                    className="
-                      mt-1
-                      flex
-                      items-center
-                      gap-1.5
-                    "
-                  >
+                  <div className="mt-1 flex items-center gap-1.5">
 
                     <MapPin
                       size={12}
@@ -456,7 +681,7 @@ export default function Sidebar({ open, onClose }: Props) {
                         text-slate-400
                       "
                     >
-                      Services near you
+                      {t.servicesNear}
                     </span>
 
                   </div>
@@ -469,7 +694,119 @@ export default function Sidebar({ open, onClose }: Props) {
                   LOCATION SELECTOR
               ================================================= */}
 
-              
+              <div className="relative mt-4">
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setLocationOpen(
+                      (prev) => !prev
+                    )
+                  }
+                  className="
+                    flex
+                    w-full
+                    items-center
+                    gap-2
+                    rounded-xl
+                    border
+                    border-white/[0.07]
+                    bg-black/20
+                    px-3
+                    py-2.5
+                    text-left
+                    transition
+                    hover:border-yellow-400/20
+                  "
+                >
+
+                  <MapPin
+                    size={14}
+                    className="text-yellow-400"
+                  />
+
+                  <span className="flex-1 text-[11px] text-slate-300">
+                    {currentLocation}
+                  </span>
+
+                  <ChevronRight
+                    size={14}
+                    className={`
+                      text-slate-500
+                      transition-transform
+
+                      ${
+                        locationOpen
+                          ? "rotate-90"
+                          : ""
+                      }
+                    `}
+                  />
+
+                </button>
+
+                {locationOpen && (
+                  <div
+                    className="
+                      absolute
+                      left-0
+                      right-0
+                      top-[calc(100%+6px)]
+                      z-50
+                      overflow-hidden
+                      rounded-xl
+                      border
+                      border-white/10
+                      bg-[#0b0d11]
+                      shadow-2xl
+                    "
+                  >
+
+                    {locations.map(
+                      (location) => (
+                        <button
+                          key={location.en}
+                          type="button"
+                          onClick={() => {
+                            setSelectedLocation(
+                              location.en
+                            );
+
+                            setLocationOpen(false);
+                          }}
+                          className="
+                            flex
+                            w-full
+                            items-center
+                            gap-2
+                            px-3
+                            py-3
+                            text-left
+                            text-[11px]
+                            text-slate-300
+                            transition
+                            hover:bg-yellow-400/[0.06]
+                            hover:text-yellow-400
+                          "
+                        >
+
+                          <MapPin
+                            size={13}
+                            className="text-yellow-400"
+                          />
+
+                          {language === "en"
+                            ? location.en
+                            : location.hi}
+
+                        </button>
+                      )
+                    )}
+
+                  </div>
+                )}
+
+              </div>
 
             </div>
 
@@ -483,21 +820,15 @@ export default function Sidebar({ open, onClose }: Props) {
             className="
               relative
               mt-5
-
               flex-1
-
               overflow-y-auto
-
               px-4
               pb-4
-
               scrollbar-thin
               scrollbar-track-transparent
               scrollbar-thumb-white/10
             "
           >
-
-            {/* Section Heading */}
 
             <div
               className="
@@ -518,7 +849,7 @@ export default function Sidebar({ open, onClose }: Props) {
                   text-slate-500
                 "
               >
-                Explore Services
+                {t.exploreServices}
               </span>
 
               <div
@@ -531,51 +862,39 @@ export default function Sidebar({ open, onClose }: Props) {
 
             </div>
 
-            {/* Menu List */}
-
             <div className="space-y-1.5">
 
               {menuItems.map((item) => {
-
                 const Icon = item.icon;
 
                 return (
                   <Link
-                    key={item.name}
+                    key={item.href}
                     href={item.href}
                     onClick={onClose}
                     className="
                       group
                       relative
-
                       flex
                       items-center
                       gap-3
-
                       overflow-hidden
-
                       rounded-2xl
-
                       border
                       border-transparent
-
                       px-3
                       py-3
-
                       text-slate-300
-
                       transition-all
                       duration-200
-
                       hover:border-yellow-400/15
                       hover:bg-yellow-400/[0.07]
                       hover:text-white
-
                       active:scale-[0.98]
                     "
                   >
 
-                    {/* Left Gold Indicator */}
+                    {/* Gold Indicator */}
 
                     <div
                       className="
@@ -583,16 +902,11 @@ export default function Sidebar({ open, onClose }: Props) {
                         inset-y-0
                         left-0
                         w-1
-
                         -translate-x-full
-
                         rounded-r-full
-
                         bg-yellow-400
-
                         transition-transform
                         duration-200
-
                         group-hover:translate-x-0
                       "
                     />
@@ -607,17 +921,12 @@ export default function Sidebar({ open, onClose }: Props) {
                         shrink-0
                         items-center
                         justify-center
-
                         rounded-xl
-
                         border
                         border-white/[0.06]
-
                         bg-white/[0.035]
-
                         transition-all
                         duration-200
-
                         group-hover:border-yellow-400/20
                         group-hover:bg-yellow-400/10
                         group-hover:text-yellow-400
@@ -631,13 +940,12 @@ export default function Sidebar({ open, onClose }: Props) {
                     <span
                       className="
                         flex-1
-
                         text-[13px]
                         font-medium
                         leading-5
                       "
                     >
-                      {item.name}
+                      {item.name[language]}
                     </span>
 
                     {/* Arrow */}
@@ -646,10 +954,8 @@ export default function Sidebar({ open, onClose }: Props) {
                       size={16}
                       className="
                         text-slate-600
-
                         transition-all
                         duration-200
-
                         group-hover:translate-x-0.5
                         group-hover:text-yellow-400
                       "
@@ -679,36 +985,26 @@ export default function Sidebar({ open, onClose }: Props) {
               className="
                 relative
                 overflow-hidden
-
                 rounded-2xl
-
                 border
                 border-yellow-400/20
-
                 bg-gradient-to-r
                 from-yellow-400/[0.10]
                 via-yellow-400/[0.04]
                 to-transparent
-
                 p-4
               "
             >
-
-              {/* Glow */}
 
               <div
                 className="
                   absolute
                   -right-5
                   -top-10
-
                   h-28
                   w-28
-
                   rounded-full
-
                   bg-yellow-400/10
-
                   blur-2xl
                 "
               />
@@ -722,22 +1018,16 @@ export default function Sidebar({ open, onClose }: Props) {
                 "
               >
 
-                {/* Icon */}
-
                 <div
                   className="
                     flex
                     h-10
                     w-10
                     shrink-0
-
                     items-center
                     justify-center
-
                     rounded-xl
-
                     bg-yellow-400
-
                     shadow-[0_0_20px_rgba(250,204,21,0.18)]
                   "
                 >
@@ -746,8 +1036,6 @@ export default function Sidebar({ open, onClose }: Props) {
                     className="text-black"
                   />
                 </div>
-
-                {/* Text */}
 
                 <div className="min-w-0">
 
@@ -758,7 +1046,7 @@ export default function Sidebar({ open, onClose }: Props) {
                       text-white
                     "
                   >
-                    Premium Services
+                    {t.premiumServices}
                   </p>
 
                   <p
@@ -769,7 +1057,7 @@ export default function Sidebar({ open, onClose }: Props) {
                       text-slate-400
                     "
                   >
-                    Trusted professionals at your doorstep
+                    {t.trustedProfessionals}
                   </p>
 
                 </div>
@@ -777,8 +1065,6 @@ export default function Sidebar({ open, onClose }: Props) {
               </div>
 
             </div>
-
-            {/* Footer */}
 
             <p
               className="
@@ -800,4 +1086,3 @@ export default function Sidebar({ open, onClose }: Props) {
     </div>
   );
 }
-

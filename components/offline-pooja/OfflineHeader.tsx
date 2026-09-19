@@ -4,8 +4,13 @@
 import { ArrowLeft, Bell, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+import { useLanguage } from "@/context/LanguageContext";
+
 export default function OfflineHeader() {
   const router = useRouter();
+  const { language } = useLanguage();
+
+  const isHindi = language === "hi";
 
   return (
     <header className="relative z-30 px-4 pb-3 pt-4">
@@ -42,7 +47,9 @@ export default function OfflineHeader() {
         <button
           type="button"
           onClick={() => router.back()}
-          aria-label="Go back"
+          aria-label={
+            isHindi ? "वापस जाएं" : "Go back"
+          }
           className="
             group
             flex
@@ -104,7 +111,7 @@ export default function OfflineHeader() {
           {/* TITLE */}
 
           <h1 className="mt-1 text-[16px] font-bold tracking-tight text-white">
-            Offline Pooja
+            {isHindi ? "ऑफलाइन पूजा" : "Offline Pooja"}
           </h1>
 
           {/* SUBTITLE */}
@@ -113,7 +120,9 @@ export default function OfflineHeader() {
             <span className="h-1 w-1 rounded-full bg-[#DFAE45]" />
 
             <span className="text-[7px] font-semibold uppercase tracking-[0.2em] text-slate-500">
-              Sacred • Personal • Trusted
+              {isHindi
+                ? "पवित्र • व्यक्तिगत • विश्वसनीय"
+                : "Sacred • Personal • Trusted"}
             </span>
 
             <span className="h-1 w-1 rounded-full bg-[#DFAE45]" />
@@ -126,7 +135,9 @@ export default function OfflineHeader() {
 
         <button
           type="button"
-          aria-label="Notifications"
+          aria-label={
+            isHindi ? "सूचनाएं" : "Notifications"
+          }
           className="
             group
             relative
@@ -190,13 +201,17 @@ export default function OfflineHeader() {
 
       <div className="flex items-center justify-center gap-2 pt-2">
         <span className="text-[7px] font-medium tracking-[0.18em] text-slate-700">
-          BOOK AUTHENTIC POOJA
+          {isHindi
+            ? "प्रामाणिक पूजा बुक करें"
+            : "BOOK AUTHENTIC POOJA"}
         </span>
 
         <span className="h-1 w-1 rounded-full bg-[#DFAE45]/40" />
 
         <span className="text-[7px] font-medium tracking-[0.18em] text-slate-700">
-          AT YOUR PLACE
+          {isHindi
+            ? "अपने स्थान पर"
+            : "AT YOUR PLACE"}
         </span>
       </div>
     </header>

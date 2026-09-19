@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -20,7 +19,6 @@ import {
   MessageCircle,
   Mic2,
   MonitorPlay,
-  Music,
   Presentation,
   ShieldCheck,
   Sparkles,
@@ -29,148 +27,384 @@ import {
   Utensils,
 } from "lucide-react";
 
-const services = [
+import { useLanguage } from "@/context/LanguageContext";
+
+const whatsappNumber = "918878632431";
+
+type Localized = {
+  en: string;
+  hi: string;
+};
+
+const services: {
+  icon: typeof Presentation;
+  title: Localized;
+  text: Localized;
+}[] = [
   {
     icon: Presentation,
-    title: "Conferences",
-    text: "Professional conference planning with complete stage and technical setup.",
+    title: {
+      en: "Conferences",
+      hi: "कॉन्फ्रेंस",
+    },
+    text: {
+      en: "Professional conference planning with complete stage and technical setup.",
+      hi: "कम्प्लीट स्टेज और टेक्निकल सेटअप के साथ प्रोफेशनल कॉन्फ्रेंस प्लानिंग।",
+    },
   },
   {
     icon: BriefcaseBusiness,
-    title: "Corporate Meetings",
-    text: "Well-organized meetings designed for productive business interactions.",
+    title: {
+      en: "Corporate Meetings",
+      hi: "कॉर्पोरेट मीटिंग्स",
+    },
+    text: {
+      en: "Well-organized meetings designed for productive business interactions.",
+      hi: "प्रोडक्टिव बिजनेस इंटरैक्शन के लिए व्यवस्थित और प्रोफेशनल मीटिंग्स।",
+    },
   },
   {
     icon: Award,
-    title: "Award Functions",
-    text: "Premium award ceremonies with stage, lighting and guest coordination.",
+    title: {
+      en: "Award Functions",
+      hi: "अवार्ड फंक्शन्स",
+    },
+    text: {
+      en: "Premium award ceremonies with stage, lighting and guest coordination.",
+      hi: "स्टेज, लाइटिंग और गेस्ट कोऑर्डिनेशन के साथ प्रीमियम अवार्ड सेरेमनी।",
+    },
   },
   {
     icon: Mic2,
-    title: "Seminars & Workshops",
-    text: "Complete arrangements for seminars, workshops and training programs.",
+    title: {
+      en: "Seminars & Workshops",
+      hi: "सेमिनार और वर्कशॉप्स",
+    },
+    text: {
+      en: "Complete arrangements for seminars, workshops and training programs.",
+      hi: "सेमिनार, वर्कशॉप्स और ट्रेनिंग प्रोग्राम्स के लिए कम्प्लीट अरेंजमेंट।",
+    },
   },
   {
     icon: MonitorPlay,
-    title: "AV & Technical",
-    text: "Screens, projectors, sound, microphones and professional AV support.",
+    title: {
+      en: "AV & Technical",
+      hi: "AV और टेक्निकल",
+    },
+    text: {
+      en: "Screens, projectors, sound, microphones and professional AV support.",
+      hi: "स्क्रीन, प्रोजेक्टर, साउंड, माइक्रोफोन और प्रोफेशनल AV सपोर्ट।",
+    },
   },
   {
     icon: Utensils,
-    title: "Food & Catering",
-    text: "Corporate catering, refreshments, meals and hospitality arrangements.",
+    title: {
+      en: "Food & Catering",
+      hi: "फूड और कैटरिंग",
+    },
+    text: {
+      en: "Corporate catering, refreshments, meals and hospitality arrangements.",
+      hi: "कॉर्पोरेट कैटरिंग, रिफ्रेशमेंट्स, मील्स और हॉस्पिटैलिटी अरेंजमेंट्स।",
+    },
   },
 ];
 
-const packages = [
+const packages: {
+  title: Localized;
+  price: string;
+  subtitle: Localized;
+  icon: typeof BriefcaseBusiness;
+  popular?: boolean;
+  features: Localized[];
+}[] = [
   {
-    title: "Business",
+    title: {
+      en: "Business",
+      hi: "बिजनेस",
+    },
     price: "₹9,999",
-    subtitle: "For meetings & small corporate gatherings",
+    subtitle: {
+      en: "For meetings & small corporate gatherings",
+      hi: "मीटिंग्स और छोटे कॉर्पोरेट गैदरिंग्स के लिए",
+    },
     icon: BriefcaseBusiness,
     features: [
-      "Venue coordination",
-      "Basic stage setup",
-      "Sound & microphone",
-      "Seating arrangement",
-      "Event coordination",
+      {
+        en: "Venue coordination",
+        hi: "वेन्यू कोऑर्डिनेशन",
+      },
+      {
+        en: "Basic stage setup",
+        hi: "बेसिक स्टेज सेटअप",
+      },
+      {
+        en: "Sound & microphone",
+        hi: "साउंड और माइक्रोफोन",
+      },
+      {
+        en: "Seating arrangement",
+        hi: "सीटिंग अरेंजमेंट",
+      },
+      {
+        en: "Event coordination",
+        hi: "इवेंट कोऑर्डिनेशन",
+      },
     ],
   },
   {
-    title: "Professional",
+    title: {
+      en: "Professional",
+      hi: "प्रोफेशनल",
+    },
     price: "₹24,999",
-    subtitle: "For conferences & corporate events",
+    subtitle: {
+      en: "For conferences & corporate events",
+      hi: "कॉन्फ्रेंस और कॉर्पोरेट इवेंट्स के लिए",
+    },
     icon: Crown,
     popular: true,
     features: [
-      "Premium venue setup",
-      "Stage & backdrop",
-      "Professional AV setup",
-      "Photography & video",
-      "Guest management",
-      "Catering coordination",
-      "Dedicated event coordinator",
+      {
+        en: "Premium venue setup",
+        hi: "प्रीमियम वेन्यू सेटअप",
+      },
+      {
+        en: "Stage & backdrop",
+        hi: "स्टेज और बैकड्रॉप",
+      },
+      {
+        en: "Professional AV setup",
+        hi: "प्रोफेशनल AV सेटअप",
+      },
+      {
+        en: "Photography & video",
+        hi: "फोटोग्राफी और वीडियो",
+      },
+      {
+        en: "Guest management",
+        hi: "गेस्ट मैनेजमेंट",
+      },
+      {
+        en: "Catering coordination",
+        hi: "कैटरिंग कोऑर्डिनेशन",
+      },
+      {
+        en: "Dedicated event coordinator",
+        hi: "डेडिकेटेड इवेंट कोऑर्डिनेटर",
+      },
     ],
   },
   {
-    title: "Enterprise",
+    title: {
+      en: "Enterprise",
+      hi: "एंटरप्राइज",
+    },
     price: "₹49,999",
-    subtitle: "For large-scale corporate events",
+    subtitle: {
+      en: "For large-scale corporate events",
+      hi: "बड़े स्तर के कॉर्पोरेट इवेंट्स के लिए",
+    },
     icon: Building2,
     features: [
-      "Complete event planning",
-      "Luxury stage & branding",
-      "Advanced AV production",
-      "Professional photography",
-      "Cinematic event video",
-      "Hospitality management",
-      "Guest & registration desk",
-      "Dedicated event manager",
+      {
+        en: "Complete event planning",
+        hi: "कम्प्लीट इवेंट प्लानिंग",
+      },
+      {
+        en: "Luxury stage & branding",
+        hi: "लग्ज़री स्टेज और ब्रांडिंग",
+      },
+      {
+        en: "Advanced AV production",
+        hi: "एडवांस्ड AV प्रोडक्शन",
+      },
+      {
+        en: "Professional photography",
+        hi: "प्रोफेशनल फोटोग्राफी",
+      },
+      {
+        en: "Cinematic event video",
+        hi: "सिनेमैटिक इवेंट वीडियो",
+      },
+      {
+        en: "Hospitality management",
+        hi: "हॉस्पिटैलिटी मैनेजमेंट",
+      },
+      {
+        en: "Guest & registration desk",
+        hi: "गेस्ट और रजिस्ट्रेशन डेस्क",
+      },
+      {
+        en: "Dedicated event manager",
+        hi: "डेडिकेटेड इवेंट मैनेजर",
+      },
     ],
   },
 ];
 
-const process = [
+const process: {
+  number: string;
+  title: Localized;
+  text: Localized;
+}[] = [
   {
     number: "01",
-    title: "Share Your Requirement",
-    text: "Tell us your event type, date, venue, guest count and requirements.",
+    title: {
+      en: "Share Your Requirement",
+      hi: "अपनी जरूरत बताएं",
+    },
+    text: {
+      en: "Tell us your event type, date, venue, guest count and requirements.",
+      hi: "हमें अपना इवेंट टाइप, तारीख, वेन्यू, गेस्ट काउंट और जरूरतें बताएं।",
+    },
   },
   {
     number: "02",
-    title: "Get Your Event Plan",
-    text: "Our team creates a suitable event plan based on your objectives and budget.",
+    title: {
+      en: "Get Your Event Plan",
+      hi: "अपना इवेंट प्लान पाएं",
+    },
+    text: {
+      en: "Our team creates a suitable event plan based on your objectives and budget.",
+      hi: "हमारी टीम आपके उद्देश्य और बजट के अनुसार उपयुक्त इवेंट प्लान तैयार करती है।",
+    },
   },
   {
     number: "03",
-    title: "We Coordinate Everything",
-    text: "Vendors, stage, AV, catering, branding and guest management are coordinated.",
+    title: {
+      en: "We Coordinate Everything",
+      hi: "हम सब कुछ कोऑर्डिनेट करते हैं",
+    },
+    text: {
+      en: "Vendors, stage, AV, catering, branding and guest management are coordinated.",
+      hi: "वेंडर्स, स्टेज, AV, कैटरिंग, ब्रांडिंग और गेस्ट मैनेजमेंट कोऑर्डिनेट किया जाता है।",
+    },
   },
   {
     number: "04",
-    title: "Deliver a Seamless Event",
-    text: "Your team focuses on business while we manage the event execution.",
+    title: {
+      en: "Deliver a Seamless Event",
+      hi: "शानदार इवेंट डिलीवर करें",
+    },
+    text: {
+      en: "Your team focuses on business while we manage the event execution.",
+      hi: "आपकी टीम बिजनेस पर फोकस करती है और हम इवेंट का एग्जीक्यूशन संभालते हैं।",
+    },
   },
 ];
 
-const eventTypes = [
-  "Corporate Meetings",
-  "Annual Functions",
-  "Conferences",
-  "Product Launches",
-  "Award Ceremonies",
-  "Seminars",
-  "Workshops",
-  "Dealer Meets",
-  "Team Events",
-  "Company Celebrations",
+const eventTypes: Localized[] = [
+  {
+    en: "Corporate Meetings",
+    hi: "कॉर्पोरेट मीटिंग्स",
+  },
+  {
+    en: "Annual Functions",
+    hi: "एनुअल फंक्शन्स",
+  },
+  {
+    en: "Conferences",
+    hi: "कॉन्फ्रेंस",
+  },
+  {
+    en: "Product Launches",
+    hi: "प्रोडक्ट लॉन्च",
+  },
+  {
+    en: "Award Ceremonies",
+    hi: "अवार्ड सेरेमनी",
+  },
+  {
+    en: "Seminars",
+    hi: "सेमिनार",
+  },
+  {
+    en: "Workshops",
+    hi: "वर्कशॉप्स",
+  },
+  {
+    en: "Dealer Meets",
+    hi: "डीलर मीट्स",
+  },
+  {
+    en: "Team Events",
+    hi: "टीम इवेंट्स",
+  },
+  {
+    en: "Company Celebrations",
+    hi: "कंपनी सेलिब्रेशन",
+  },
 ];
 
-const faqs = [
+const faqs: {
+  q: Localized;
+  a: Localized;
+}[] = [
   {
-    q: "What types of corporate events do you manage?",
-    a: "We manage meetings, conferences, seminars, workshops, award functions, product launches, annual functions, dealer meets and company celebrations.",
+    q: {
+      en: "What types of corporate events do you manage?",
+      hi: "आप किस प्रकार के कॉर्पोरेट इवेंट्स मैनेज करते हैं?",
+    },
+    a: {
+      en: "We manage meetings, conferences, seminars, workshops, award functions, product launches, annual functions, dealer meets and company celebrations.",
+      hi: "हम मीटिंग्स, कॉन्फ्रेंस, सेमिनार, वर्कशॉप्स, अवार्ड फंक्शन्स, प्रोडक्ट लॉन्च, एनुअल फंक्शन्स, डीलर मीट्स और कंपनी सेलिब्रेशन मैनेज करते हैं।",
+    },
   },
   {
-    q: "Can you arrange the venue?",
-    a: "Yes. We can help coordinate suitable hotels, conference halls, banquet spaces and other venues based on your requirements.",
+    q: {
+      en: "Can you arrange the venue?",
+      hi: "क्या आप वेन्यू की व्यवस्था कर सकते हैं?",
+    },
+    a: {
+      en: "Yes. We can help coordinate suitable hotels, conference halls, banquet spaces and other venues based on your requirements.",
+      hi: "हां। हम आपकी जरूरत के अनुसार उपयुक्त होटल, कॉन्फ्रेंस हॉल, बैंक्वेट स्पेस और अन्य वेन्यू कोऑर्डिनेट करने में मदद कर सकते हैं।",
+    },
   },
   {
-    q: "Do you provide AV and technical equipment?",
-    a: "Yes. Audio systems, microphones, LED screens, projectors, presentations and other technical requirements can be arranged.",
+    q: {
+      en: "Do you provide AV and technical equipment?",
+      hi: "क्या आप AV और टेक्निकल इक्विपमेंट उपलब्ध कराते हैं?",
+    },
+    a: {
+      en: "Yes. Audio systems, microphones, LED screens, projectors, presentations and other technical requirements can be arranged.",
+      hi: "हां। ऑडियो सिस्टम, माइक्रोफोन, LED स्क्रीन, प्रोजेक्टर, प्रेजेंटेशन और अन्य टेक्निकल जरूरतों की व्यवस्था की जा सकती है।",
+    },
   },
   {
-    q: "Can the event be customized according to our brand?",
-    a: "Yes. Stage design, branding, welcome areas, backdrops and event elements can be customized around your company identity.",
+    q: {
+      en: "Can the event be customized according to our brand?",
+      hi: "क्या इवेंट को हमारी ब्रांड पहचान के अनुसार कस्टमाइज़ किया जा सकता है?",
+    },
+    a: {
+      en: "Yes. Stage design, branding, welcome areas, backdrops and event elements can be customized around your company identity.",
+      hi: "हां। स्टेज डिजाइन, ब्रांडिंग, वेलकम एरिया, बैकड्रॉप और अन्य इवेंट एलिमेंट्स को आपकी कंपनी की ब्रांड पहचान के अनुसार कस्टमाइज़ किया जा सकता है।",
+    },
   },
 ];
 
 export default function CorporateEventsPage() {
-  const whatsappNumber = "918878632431";
+  const { language } = useLanguage();
 
-  const whatsappMessage = encodeURIComponent(
-    "Hello OurHub, I want to plan a Corporate Event.\n\nPlease share your corporate event packages, pricing and available services."
-  );
+  const isHindi = language === "hi";
+
+  const whatsappMessage = isHindi
+    ? "नमस्ते OurHub, मैं एक कॉर्पोरेट इवेंट प्लान करना चाहता/चाहती हूँ।\n\nकृपया कॉर्पोरेट इवेंट पैकेज, कीमत और उपलब्ध सर्विसेज की जानकारी साझा करें।"
+    : "Hello OurHub, I want to plan a Corporate Event.\n\nPlease share your corporate event packages, pricing and available services.";
+
+  const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+    whatsappMessage
+  )}`;
+
+  const getPackageMessage = (
+    title: Localized,
+    price: string
+  ) => {
+    if (isHindi) {
+      return `नमस्ते OurHub, मुझे ${title.hi} कॉर्पोरेट इवेंट पैकेज (${price}) में रुचि है। कृपया पूरी जानकारी साझा करें।`;
+    }
+
+    return `Hello OurHub, I am interested in the ${title.en} Corporate Event Package (${price}). Please share complete details.`;
+  };
 
   return (
     <main className="min-h-screen bg-[#05070B] text-white">
@@ -181,7 +415,7 @@ export default function CorporateEventsPage() {
       </div>
 
       <div className="relative mx-auto w-full max-w-[480px] overflow-hidden">
-        {/* Header */}
+        {/* HEADER */}
         <header className="absolute left-0 right-0 top-0 z-30 px-5 pt-5">
           <div className="flex items-center justify-between">
             <Link
@@ -198,12 +432,15 @@ export default function CorporateEventsPage() {
             </div>
 
             <a
-              href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+              href={whatsappLink}
               target="_blank"
               rel="noreferrer"
               className="flex h-11 w-11 items-center justify-center rounded-full border border-[#25D366]/30 bg-[#25D366]/10 backdrop-blur-xl"
             >
-              <MessageCircle size={19} className="text-[#25D366]" />
+              <MessageCircle
+                size={19}
+                className="text-[#25D366]"
+              />
             </a>
           </div>
         </header>
@@ -212,7 +449,11 @@ export default function CorporateEventsPage() {
         <section className="relative h-[650px] overflow-hidden">
           <img
             src="/images/events/corporate.jpg"
-            alt="Corporate event"
+            alt={
+              isHindi
+                ? "कॉर्पोरेट इवेंट"
+                : "Corporate event"
+            }
             className="absolute inset-0 h-full w-full object-cover"
           />
 
@@ -222,34 +463,53 @@ export default function CorporateEventsPage() {
 
           <div className="absolute bottom-9 left-5 right-5">
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#DFAE45]/30 bg-black/45 px-3 py-2 backdrop-blur-xl">
-              <Sparkles size={14} className="text-[#E7B94F]" />
+              <Sparkles
+                size={14}
+                className="text-[#E7B94F]"
+              />
 
               <span className="text-[10px] font-bold uppercase tracking-[0.17em] text-[#E7B94F]">
-                Professional Event Management
+                {isHindi
+                  ? "प्रोफेशनल इवेंट मैनेजमेंट"
+                  : "Professional Event Management"}
               </span>
             </div>
 
             <h1 className="max-w-[400px] text-[40px] font-bold leading-[1] tracking-[-0.04em]">
-              Business Events,
-              <span className="block text-[#E7B94F]">
-                Executed Perfectly.
-              </span>
+              {isHindi ? (
+                <>
+                  बिजनेस इवेंट्स,
+                  <span className="block text-[#E7B94F]">
+                    परफेक्शन के साथ।
+                  </span>
+                </>
+              ) : (
+                <>
+                  Business Events,
+                  <span className="block text-[#E7B94F]">
+                    Executed Perfectly.
+                  </span>
+                </>
+              )}
             </h1>
 
             <p className="mt-4 max-w-[390px] text-[14px] leading-6 text-white/65">
-              From conferences and meetings to award ceremonies and product
-              launches — we manage the details so your team can focus on what
-              matters.
+              {isHindi
+                ? "कॉन्फ्रेंस और मीटिंग्स से लेकर अवार्ड सेरेमनी और प्रोडक्ट लॉन्च तक — हम सभी डिटेल्स संभालते हैं ताकि आपकी टीम जरूरी काम पर फोकस कर सके।"
+                : "From conferences and meetings to award ceremonies and product launches — we manage the details so your team can focus on what matters."}
             </p>
 
             <div className="mt-6 flex gap-3">
               <a
-                href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+                href={whatsappLink}
                 target="_blank"
                 rel="noreferrer"
                 className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-[#DFAE45] px-5 py-4 text-sm font-bold text-black shadow-[0_10px_35px_rgba(223,174,69,0.2)]"
               >
-                Plan Corporate Event
+                {isHindi
+                  ? "कॉर्पोरेट इवेंट प्लान करें"
+                  : "Plan Corporate Event"}
+
                 <ArrowRight size={17} />
               </a>
 
@@ -271,7 +531,12 @@ export default function CorporateEventsPage() {
                 size={19}
                 className="mx-auto mb-2 text-[#E7B94F]"
               />
-              <p className="text-[10px] font-semibold">Professional Team</p>
+
+              <p className="text-[10px] font-semibold">
+                {isHindi
+                  ? "प्रोफेशनल टीम"
+                  : "Professional Team"}
+              </p>
             </div>
 
             <div className="border-r border-white/10 px-2 py-4 text-center">
@@ -279,7 +544,12 @@ export default function CorporateEventsPage() {
                 size={19}
                 className="mx-auto mb-2 text-[#E7B94F]"
               />
-              <p className="text-[10px] font-semibold">Reliable Execution</p>
+
+              <p className="text-[10px] font-semibold">
+                {isHindi
+                  ? "विश्वसनीय एग्जीक्यूशन"
+                  : "Reliable Execution"}
+              </p>
             </div>
 
             <div className="px-2 py-4 text-center">
@@ -287,7 +557,12 @@ export default function CorporateEventsPage() {
                 size={19}
                 className="mx-auto mb-2 text-[#E7B94F]"
               />
-              <p className="text-[10px] font-semibold">On-Time Delivery</p>
+
+              <p className="text-[10px] font-semibold">
+                {isHindi
+                  ? "समय पर डिलीवरी"
+                  : "On-Time Delivery"}
+              </p>
             </div>
           </div>
         </section>
@@ -295,21 +570,35 @@ export default function CorporateEventsPage() {
         {/* INTRO */}
         <section className="px-5 pt-14">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E7B94F]">
-            Corporate Excellence
+            {isHindi
+              ? "कॉर्पोरेट एक्सीलेंस"
+              : "Corporate Excellence"}
           </p>
 
           <h2 className="mt-3 text-[29px] font-bold leading-tight">
-            Your business is
-            <br />
-            <span className="text-white/40">
-              the priority. Not the logistics.
-            </span>
+            {isHindi ? (
+              <>
+                आपका बिजनेस है
+                <br />
+                <span className="text-white/40">
+                  प्राथमिकता, लॉजिस्टिक्स नहीं।
+                </span>
+              </>
+            ) : (
+              <>
+                Your business is
+                <br />
+                <span className="text-white/40">
+                  the priority. Not the logistics.
+                </span>
+              </>
+            )}
           </h2>
 
           <p className="mt-4 text-[14px] leading-6 text-white/50">
-            A successful corporate event needs more than decoration. It needs
-            precise planning, professional coordination, technical support and
-            seamless execution.
+            {isHindi
+              ? "एक सफल कॉर्पोरेट इवेंट के लिए सिर्फ डेकोरेशन काफी नहीं है। इसके लिए सटीक प्लानिंग, प्रोफेशनल कोऑर्डिनेशन, टेक्निकल सपोर्ट और सीमलेस एग्जीक्यूशन जरूरी है।"
+              : "A successful corporate event needs more than decoration. It needs precise planning, professional coordination, technical support and seamless execution."}
           </p>
         </section>
 
@@ -317,11 +606,15 @@ export default function CorporateEventsPage() {
         <section className="px-5 pt-12">
           <div className="mb-5">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#E7B94F]">
-              What We Manage
+              {isHindi
+                ? "हम क्या मैनेज करते हैं"
+                : "What We Manage"}
             </p>
 
             <h2 className="mt-2 text-2xl font-bold">
-              Complete Corporate Solutions
+              {isHindi
+                ? "कम्प्लीट कॉर्पोरेट सॉल्यूशंस"
+                : "Complete Corporate Solutions"}
             </h2>
           </div>
 
@@ -331,19 +624,22 @@ export default function CorporateEventsPage() {
 
               return (
                 <div
-                  key={service.title}
+                  key={service.title.en}
                   className="rounded-[22px] border border-white/10 bg-white/[0.035] p-4"
                 >
                   <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#DFAE45]/10">
-                    <Icon size={21} className="text-[#E7B94F]" />
+                    <Icon
+                      size={21}
+                      className="text-[#E7B94F]"
+                    />
                   </div>
 
                   <h3 className="mt-4 text-sm font-bold">
-                    {service.title}
+                    {service.title[language]}
                   </h3>
 
                   <p className="mt-2 text-[11px] leading-5 text-white/40">
-                    {service.text}
+                    {service.text[language]}
                   </p>
                 </div>
               );
@@ -364,11 +660,15 @@ export default function CorporateEventsPage() {
 
               <div>
                 <p className="text-xs uppercase tracking-[0.16em] text-[#E7B94F]">
-                  Event Types
+                  {isHindi
+                    ? "इवेंट टाइप्स"
+                    : "Event Types"}
                 </p>
 
                 <h2 className="mt-1 text-xl font-bold">
-                  Built For Business
+                  {isHindi
+                    ? "बिजनेस के लिए बनाया गया"
+                    : "Built For Business"}
                 </h2>
               </div>
             </div>
@@ -376,10 +676,10 @@ export default function CorporateEventsPage() {
             <div className="mt-6 flex flex-wrap gap-2">
               {eventTypes.map((type) => (
                 <span
-                  key={type}
+                  key={type.en}
                   className="rounded-full border border-white/10 bg-white/[0.035] px-3 py-2 text-[11px] text-white/60"
                 >
-                  {type}
+                  {type[language]}
                 </span>
               ))}
             </div>
@@ -387,18 +687,27 @@ export default function CorporateEventsPage() {
         </section>
 
         {/* PACKAGES */}
-        <section id="packages" className="px-5 pt-16">
+        <section
+          id="packages"
+          className="px-5 pt-16"
+        >
           <div className="mb-6">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#E7B94F]">
-              Corporate Packages
+              {isHindi
+                ? "कॉर्पोरेट पैकेज"
+                : "Corporate Packages"}
             </p>
 
             <h2 className="mt-2 text-[29px] font-bold">
-              Choose Your Scale
+              {isHindi
+                ? "अपना स्केल चुनें"
+                : "Choose Your Scale"}
             </h2>
 
             <p className="mt-2 text-sm leading-5 text-white/40">
-              Flexible packages that can be customized around your event.
+              {isHindi
+                ? "फ्लेक्सिबल पैकेज जिन्हें आपके इवेंट के अनुसार कस्टमाइज़ किया जा सकता है।"
+                : "Flexible packages that can be customized around your event."}
             </p>
           </div>
 
@@ -408,7 +717,7 @@ export default function CorporateEventsPage() {
 
               return (
                 <div
-                  key={pkg.title}
+                  key={pkg.title.en}
                   className={`relative overflow-hidden rounded-[27px] border p-5 ${
                     pkg.popular
                       ? "border-[#DFAE45]/50 bg-gradient-to-br from-[#DFAE45]/10 to-white/[0.025]"
@@ -417,20 +726,27 @@ export default function CorporateEventsPage() {
                 >
                   {pkg.popular && (
                     <div className="absolute right-4 top-4 rounded-full bg-[#DFAE45] px-3 py-1 text-[9px] font-black uppercase tracking-wider text-black">
-                      Recommended
+                      {isHindi
+                        ? "सबसे लोकप्रिय"
+                        : "Recommended"}
                     </div>
                   )}
 
                   <div className="flex items-start gap-4">
                     <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#DFAE45]/10">
-                      <Icon size={22} className="text-[#E7B94F]" />
+                      <Icon
+                        size={22}
+                        className="text-[#E7B94F]"
+                      />
                     </div>
 
                     <div>
-                      <h3 className="text-lg font-bold">{pkg.title}</h3>
+                      <h3 className="text-lg font-bold">
+                        {pkg.title[language]}
+                      </h3>
 
                       <p className="mt-1 max-w-[235px] text-xs leading-5 text-white/40">
-                        {pkg.subtitle}
+                        {pkg.subtitle[language]}
                       </p>
                     </div>
                   </div>
@@ -441,7 +757,9 @@ export default function CorporateEventsPage() {
                     </span>
 
                     <span className="ml-2 text-xs text-white/35">
-                      starting from
+                      {isHindi
+                        ? "से शुरू"
+                        : "starting from"}
                     </span>
                   </div>
 
@@ -450,7 +768,7 @@ export default function CorporateEventsPage() {
                   <div className="space-y-3">
                     {pkg.features.map((feature) => (
                       <div
-                        key={feature}
+                        key={feature.en}
                         className="flex items-center gap-3 text-xs text-white/65"
                       >
                         <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#DFAE45]/10">
@@ -460,14 +778,17 @@ export default function CorporateEventsPage() {
                           />
                         </div>
 
-                        {feature}
+                        {feature[language]}
                       </div>
                     ))}
                   </div>
 
                   <a
                     href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-                      `Hello OurHub, I am interested in the ${pkg.title} Corporate Event Package (${pkg.price}). Please share complete details.`
+                      getPackageMessage(
+                        pkg.title,
+                        pkg.price
+                      )
                     )}`}
                     target="_blank"
                     rel="noreferrer"
@@ -477,7 +798,10 @@ export default function CorporateEventsPage() {
                         : "border border-white/10 bg-white/5 text-white"
                     }`}
                   >
-                    Discuss Package
+                    {isHindi
+                      ? "पैकेज पर चर्चा करें"
+                      : "Discuss Package"}
+
                     <ArrowRight size={16} />
                   </a>
                 </div>
@@ -493,16 +817,30 @@ export default function CorporateEventsPage() {
               <Sparkles size={17} />
 
               <span className="text-xs font-bold uppercase tracking-[0.15em]">
-                Why OurHub
+                {isHindi
+                  ? "क्यों OurHub"
+                  : "Why OurHub"}
               </span>
             </div>
 
             <h2 className="mt-4 text-[25px] font-bold leading-tight">
-              Professional planning.
-              <br />
-              <span className="text-[#E7B94F]">
-                Zero unnecessary stress.
-              </span>
+              {isHindi ? (
+                <>
+                  प्रोफेशनल प्लानिंग।
+                  <br />
+                  <span className="text-[#E7B94F]">
+                    बिना अनावश्यक तनाव के।
+                  </span>
+                </>
+              ) : (
+                <>
+                  Professional planning.
+                  <br />
+                  <span className="text-[#E7B94F]">
+                    Zero unnecessary stress.
+                  </span>
+                </>
+              )}
             </h2>
 
             <div className="mt-7 space-y-4">
@@ -516,12 +854,15 @@ export default function CorporateEventsPage() {
 
                 <div>
                   <h3 className="text-sm font-bold">
-                    Dedicated Coordination
+                    {isHindi
+                      ? "डेडिकेटेड कोऑर्डिनेशन"
+                      : "Dedicated Coordination"}
                   </h3>
 
                   <p className="mt-1 text-xs leading-5 text-white/40">
-                    One team coordinating your complete event from planning to
-                    execution.
+                    {isHindi
+                      ? "प्लानिंग से लेकर एग्जीक्यूशन तक आपके पूरे इवेंट को एक टीम कोऑर्डिनेट करती है।"
+                      : "One team coordinating your complete event from planning to execution."}
                   </p>
                 </div>
               </div>
@@ -536,12 +877,15 @@ export default function CorporateEventsPage() {
 
                 <div>
                   <h3 className="text-sm font-bold">
-                    Technical Expertise
+                    {isHindi
+                      ? "टेक्निकल एक्सपर्टीज"
+                      : "Technical Expertise"}
                   </h3>
 
                   <p className="mt-1 text-xs leading-5 text-white/40">
-                    Professional sound, display and presentation support for
-                    smooth event execution.
+                    {isHindi
+                      ? "स्मूद इवेंट एग्जीक्यूशन के लिए प्रोफेशनल साउंड, डिस्प्ले और प्रेजेंटेशन सपोर्ट।"
+                      : "Professional sound, display and presentation support for smooth event execution."}
                   </p>
                 </div>
               </div>
@@ -556,11 +900,15 @@ export default function CorporateEventsPage() {
 
                 <div>
                   <h3 className="text-sm font-bold">
-                    Reliable Execution
+                    {isHindi
+                      ? "विश्वसनीय एग्जीक्यूशन"
+                      : "Reliable Execution"}
                   </h3>
 
                   <p className="mt-1 text-xs leading-5 text-white/40">
-                    Every important detail is planned before your event day.
+                    {isHindi
+                      ? "आपके इवेंट के दिन से पहले हर जरूरी डिटेल की प्लानिंग की जाती है।"
+                      : "Every important detail is planned before your event day."}
                   </p>
                 </div>
               </div>
@@ -571,16 +919,23 @@ export default function CorporateEventsPage() {
         {/* PROCESS */}
         <section className="px-5 pt-16">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#E7B94F]">
-            Our Process
+            {isHindi
+              ? "हमारी प्रक्रिया"
+              : "Our Process"}
           </p>
 
           <h2 className="mt-2 text-2xl font-bold">
-            From Brief to Execution
+            {isHindi
+              ? "ब्रीफ से एग्जीक्यूशन तक"
+              : "From Brief to Execution"}
           </h2>
 
           <div className="mt-7 space-y-5">
             {process.map((step, index) => (
-              <div key={step.number} className="flex gap-4">
+              <div
+                key={step.number}
+                className="flex gap-4"
+              >
                 <div className="relative flex w-11 shrink-0 justify-center">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#DFAE45]/30 bg-[#DFAE45]/10 text-xs font-bold text-[#E7B94F]">
                     {step.number}
@@ -593,11 +948,11 @@ export default function CorporateEventsPage() {
 
                 <div className="pb-2">
                   <h3 className="text-sm font-bold">
-                    {step.title}
+                    {step.title[language]}
                   </h3>
 
                   <p className="mt-1 text-xs leading-5 text-white/40">
-                    {step.text}
+                    {step.text[language]}
                   </p>
                 </div>
               </div>
@@ -618,16 +973,30 @@ export default function CorporateEventsPage() {
                 />
 
                 <span className="text-xs font-bold uppercase tracking-[0.15em] text-[#E7B94F]">
-                  Corporate Hospitality
+                  {isHindi
+                    ? "कॉर्पोरेट हॉस्पिटैलिटी"
+                    : "Corporate Hospitality"}
                 </span>
               </div>
 
               <h2 className="mt-4 text-2xl font-bold leading-tight">
-                Make every guest
-                <br />
-                <span className="text-white/45">
-                  feel professionally welcomed.
-                </span>
+                {isHindi ? (
+                  <>
+                    हर गेस्ट को
+                    <br />
+                    <span className="text-white/45">
+                      प्रोफेशनल वेलकमिंग दें।
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    Make every guest
+                    <br />
+                    <span className="text-white/45">
+                      feel professionally welcomed.
+                    </span>
+                  </>
+                )}
               </h2>
 
               <div className="mt-6 grid grid-cols-2 gap-3">
@@ -638,11 +1007,15 @@ export default function CorporateEventsPage() {
                   />
 
                   <p className="mt-3 text-sm font-bold">
-                    Guest Management
+                    {isHindi
+                      ? "गेस्ट मैनेजमेंट"
+                      : "Guest Management"}
                   </p>
 
                   <p className="mt-1 text-[11px] leading-5 text-white/35">
-                    Smooth registration & coordination
+                    {isHindi
+                      ? "स्मूद रजिस्ट्रेशन और कोऑर्डिनेशन"
+                      : "Smooth registration & coordination"}
                   </p>
                 </div>
 
@@ -653,11 +1026,15 @@ export default function CorporateEventsPage() {
                   />
 
                   <p className="mt-3 text-sm font-bold">
-                    Hospitality
+                    {isHindi
+                      ? "हॉस्पिटैलिटी"
+                      : "Hospitality"}
                   </p>
 
                   <p className="mt-1 text-[11px] leading-5 text-white/35">
-                    Professional guest experience
+                    {isHindi
+                      ? "प्रोफेशनल गेस्ट एक्सपीरियंस"
+                      : "Professional guest experience"}
                   </p>
                 </div>
               </div>
@@ -670,11 +1047,15 @@ export default function CorporateEventsPage() {
           <div className="mb-5 flex items-end justify-between">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#E7B94F]">
-                Event Inspiration
+                {isHindi
+                  ? "इवेंट इंस्पिरेशन"
+                  : "Event Inspiration"}
               </p>
 
               <h2 className="mt-2 text-2xl font-bold">
-                Corporate Moments
+                {isHindi
+                  ? "कॉर्पोरेट मोमेंट्स"
+                  : "Corporate Moments"}
               </h2>
             </div>
 
@@ -688,28 +1069,40 @@ export default function CorporateEventsPage() {
             <div className="relative h-52 overflow-hidden rounded-[22px]">
               <img
                 src="/images/events/corporate.jpg"
-                alt="Corporate conference"
+                alt={
+                  isHindi
+                    ? "कॉर्पोरेट कॉन्फ्रेंस"
+                    : "Corporate conference"
+                }
                 className="h-full w-full object-cover"
               />
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
 
               <span className="absolute bottom-3 left-3 text-xs font-semibold">
-                Conferences
+                {isHindi
+                  ? "कॉन्फ्रेंस"
+                  : "Conferences"}
               </span>
             </div>
 
             <div className="relative h-52 overflow-hidden rounded-[22px]">
               <img
                 src="/images/events/corporate.jpg"
-                alt="Corporate event setup"
+                alt={
+                  isHindi
+                    ? "कॉर्पोरेट इवेंट सेटअप"
+                    : "Corporate event setup"
+                }
                 className="h-full w-full object-cover"
               />
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
 
               <span className="absolute bottom-3 left-3 text-xs font-semibold">
-                Business Events
+                {isHindi
+                  ? "बिजनेस इवेंट्स"
+                  : "Business Events"}
               </span>
             </div>
           </div>
@@ -730,9 +1123,9 @@ export default function CorporateEventsPage() {
             </div>
 
             <p className="mt-5 text-[17px] font-medium leading-7 text-white/75">
-              “The entire event was handled professionally. From setup and
-              technical arrangements to guest coordination, everything felt
-              organized.”
+              {isHindi
+                ? "“पूरा इवेंट बहुत प्रोफेशनल तरीके से संभाला गया। सेटअप और टेक्निकल अरेंजमेंट से लेकर गेस्ट कोऑर्डिनेशन तक, सब कुछ बहुत व्यवस्थित लगा।”"
+                : "“The entire event was handled professionally. From setup and technical arrangements to guest coordination, everything felt organized.”"}
             </p>
 
             <div className="mt-5 flex items-center gap-3">
@@ -745,11 +1138,15 @@ export default function CorporateEventsPage() {
 
               <div>
                 <p className="text-sm font-bold">
-                  OurHub Corporate Client
+                  {isHindi
+                    ? "OurHub कॉर्पोरेट क्लाइंट"
+                    : "OurHub Corporate Client"}
                 </p>
 
                 <p className="text-xs text-white/40">
-                  Corporate Event
+                  {isHindi
+                    ? "कॉर्पोरेट इवेंट"
+                    : "Corporate Event"}
                 </p>
               </div>
             </div>
@@ -768,11 +1165,15 @@ export default function CorporateEventsPage() {
 
             <div>
               <p className="text-sm font-bold">
-                Corporate Event Management
+                {isHindi
+                  ? "कॉर्पोरेट इवेंट मैनेजमेंट"
+                  : "Corporate Event Management"}
               </p>
 
               <p className="mt-1 text-xs text-white/40">
-                Ujjain • Ratlam • Indore & nearby areas
+                {isHindi
+                  ? "उज्जैन • रतलाम • इंदौर और आसपास के क्षेत्र"
+                  : "Ujjain • Ratlam • Indore & nearby areas"}
               </p>
             </div>
           </div>
@@ -781,21 +1182,23 @@ export default function CorporateEventsPage() {
         {/* FAQ */}
         <section className="px-5 pt-16">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#E7B94F]">
-            FAQ
+            {isHindi ? "सवाल-जवाब" : "FAQ"}
           </p>
 
           <h2 className="mt-2 text-2xl font-bold">
-            Frequently Asked Questions
+            {isHindi
+              ? "अक्सर पूछे जाने वाले सवाल"
+              : "Frequently Asked Questions"}
           </h2>
 
           <div className="mt-6 space-y-3">
             {faqs.map((faq) => (
               <details
-                key={faq.q}
+                key={faq.q.en}
                 className="group rounded-2xl border border-white/10 bg-white/[0.035]"
               >
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-3 p-4 text-sm font-semibold">
-                  {faq.q}
+                  <span>{faq.q[language]}</span>
 
                   <ChevronRight
                     size={17}
@@ -804,7 +1207,7 @@ export default function CorporateEventsPage() {
                 </summary>
 
                 <p className="px-4 pb-4 text-xs leading-5 text-white/40">
-                  {faq.a}
+                  {faq.a[language]}
                 </p>
               </details>
             ))}
@@ -825,22 +1228,28 @@ export default function CorporateEventsPage() {
               </div>
 
               <h2 className="mt-5 text-2xl font-black">
-                Planning a Corporate Event?
+                {isHindi
+                  ? "कॉर्पोरेट इवेंट प्लान कर रहे हैं?"
+                  : "Planning a Corporate Event?"}
               </h2>
 
               <p className="mx-auto mt-3 max-w-[315px] text-sm leading-6 text-white/45">
-                Share your event requirements and let our team create a
-                professional plan for you.
+                {isHindi
+                  ? "अपनी इवेंट जरूरतें हमारे साथ शेयर करें और हमारी टीम आपके लिए एक प्रोफेशनल प्लान तैयार करेगी।"
+                  : "Share your event requirements and let our team create a professional plan for you."}
               </p>
 
               <a
-                href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+                href={whatsappLink}
                 target="_blank"
                 rel="noreferrer"
                 className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#DFAE45] py-4 text-sm font-black text-black"
               >
                 <MessageCircle size={18} />
-                Discuss Your Event
+
+                {isHindi
+                  ? "अपने इवेंट पर चर्चा करें"
+                  : "Discuss Your Event"}
               </a>
 
               <a
@@ -848,7 +1257,10 @@ export default function CorporateEventsPage() {
                 className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 py-4 text-sm font-semibold"
               >
                 <Headphones size={17} />
-                Talk to OurHub
+
+                {isHindi
+                  ? "OurHub से बात करें"
+                  : "Talk to OurHub"}
               </a>
             </div>
           </div>
@@ -857,12 +1269,15 @@ export default function CorporateEventsPage() {
         {/* FIXED CTA */}
         <div className="fixed bottom-0 left-1/2 z-40 w-full max-w-[480px] -translate-x-1/2 border-t border-white/10 bg-[#05070B]/90 px-4 py-3 backdrop-blur-2xl">
           <a
-            href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+            href={whatsappLink}
             target="_blank"
             rel="noreferrer"
             className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#DFAE45] py-3.5 text-sm font-black text-black"
           >
-            Plan Corporate Event
+            {isHindi
+              ? "कॉर्पोरेट इवेंट प्लान करें"
+              : "Plan Corporate Event"}
+
             <ArrowRight size={17} />
           </a>
         </div>
@@ -870,4 +1285,3 @@ export default function CorporateEventsPage() {
     </main>
   );
 }
-
