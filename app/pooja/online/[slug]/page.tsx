@@ -5,7 +5,6 @@ import { useParams, useRouter } from "next/navigation";
 import {
   ArrowLeft,
   CalendarDays,
-  Check,
   ChevronRight,
   Clock3,
   HelpCircle,
@@ -17,10 +16,14 @@ import {
 } from "lucide-react";
 
 import { poojas } from "@/lib/pooja-data";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function PoojaBookingPage() {
   const params = useParams();
   const router = useRouter();
+
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
 
   const slug = String(params?.slug || "");
 
@@ -36,57 +39,232 @@ export default function PoojaBookingPage() {
   const [gotra, setGotra] = useState("");
   const [sankalp, setSankalp] = useState("");
 
-  const [paymentMethod, setPaymentMethod] = useState<
-    "online" | "contact"
-  >("online");
-
   const [loading, setLoading] = useState(false);
 
   const OURHUB_WHATSAPP = "918878632431";
 
   const minDate = new Date().toISOString().split("T")[0];
 
+  // =========================================================
+  // LANGUAGE TEXT
+  // =========================================================
+
+  const text = {
+    poojaNotFound: isHindi
+      ? "पूजा उपलब्ध नहीं है"
+      : "Pooja Not Found",
+
+    poojaNotFoundDesc: isHindi
+      ? "चयनित पूजा अभी उपलब्ध नहीं है।"
+      : "The selected pooja is not available.",
+
+    backToOnlinePooja: isHindi
+      ? "ऑनलाइन पूजा पर वापस जाएँ"
+      : "Back to Online Pooja",
+
+    bookPooja: isHindi
+      ? "पूजा के लिए अनुरोध करें"
+      : "Request Pooja",
+
+    verifiedPooja: isHindi
+      ? "सत्यापित पूजा"
+      : "Verified Pooja",
+
+    startingFrom: isHindi
+      ? "शुरुआत से"
+      : "Starting From",
+
+    yourDetails: isHindi
+      ? "आपकी जानकारी"
+      : "Your Details",
+
+    detailsDesc: isHindi
+      ? "पूजा की कीमत जानने और बुकिंग के लिए अपनी जानकारी दर्ज करें।"
+      : "Please provide your details to request the pooja price and booking.",
+
+    fullName: isHindi
+      ? "पूरा नाम"
+      : "Full Name",
+
+    enterFullName: isHindi
+      ? "अपना पूरा नाम दर्ज करें"
+      : "Enter your full name",
+
+    mobileNumber: isHindi
+      ? "मोबाइल नंबर"
+      : "Mobile Number",
+
+    mobilePlaceholder: isHindi
+      ? "10 अंकों का मोबाइल नंबर"
+      : "10 digit mobile number",
+
+    city: isHindi
+      ? "शहर"
+      : "City",
+
+    cityPlaceholder: isHindi
+      ? "इंदौर, उज्जैन, रतलाम..."
+      : "Indore, Ujjain, Ratlam...",
+
+    poojaDate: isHindi
+      ? "पूजा की तारीख"
+      : "Pooja Date",
+
+    preferredTime: isHindi
+      ? "पसंदीदा समय"
+      : "Preferred Time",
+
+    gotra: isHindi
+      ? "गोत्र"
+      : "Gotra",
+
+    optional: isHindi
+      ? "वैकल्पिक"
+      : "Optional",
+
+    gotraPlaceholder: isHindi
+      ? "अपना गोत्र दर्ज करें"
+      : "Enter your gotra",
+
+    sankalp: isHindi
+      ? "संकल्प / विशेष अनुरोध"
+      : "Sankalp / Special Request",
+
+    sankalpPlaceholder: isHindi
+      ? "उदाहरण: परिवार की शांति, व्यापार में सफलता, विवाह..."
+      : "Example: family peace, business success, marriage...",
+
+    requestPrice: isHindi
+      ? "कीमत के लिए अनुरोध करें"
+      : "Request for Price",
+
+    requestPriceDesc: isHindi
+      ? "हमारी टीम आपकी जानकारी के अनुसार अंतिम कीमत बताएगी।"
+      : "Our team will share the final price based on your requirements.",
+
+    priceOnRequest: isHindi
+      ? "कीमत अनुरोध पर"
+      : "Price on Request",
+
+    safeBooking: isHindi
+      ? "सुरक्षित और सत्यापित अनुरोध"
+      : "Safe & Verified Request",
+
+    safeBookingDesc: isHindi
+      ? "आपकी जानकारी OurHub Services द्वारा सुरक्षित रूप से संभाली जाती है।"
+      : "Your details are securely handled by OurHub Services.",
+
+    livePooja: isHindi
+      ? "लाइव पूजा"
+      : "Live Pooja",
+
+    verifiedPandit: isHindi
+      ? "सत्यापित पंडित"
+      : "Verified Pandit",
+
+    needHelp: isHindi
+      ? "सहायता चाहिए?"
+      : "Need help?",
+
+    helpDesc: isHindi
+      ? "हमारी टीम आपको सही पूजा और कीमत की जानकारी देने में सहायता करेगी।"
+      : "Our team can help you choose the right pooja and price.",
+
+    call: isHindi
+      ? "कॉल करें"
+      : "Call",
+
+    startingPrice: isHindi
+      ? "शुरुआती कीमत"
+      : "Starting Price",
+
+    pleaseWait: isHindi
+      ? "कृपया प्रतीक्षा करें..."
+      : "Please wait...",
+
+    requestNow: isHindi
+      ? "अभी अनुरोध करें"
+      : "Request Now",
+
+    poojaNotFoundAlert: isHindi
+      ? "पूजा नहीं मिली।"
+      : "Pooja not found.",
+
+    enterName: isHindi
+      ? "कृपया अपना नाम दर्ज करें।"
+      : "Please enter your name.",
+
+    validMobile: isHindi
+      ? "कृपया सही 10 अंकों का मोबाइल नंबर दर्ज करें।"
+      : "Please enter a valid 10 digit mobile number.",
+
+    enterCity: isHindi
+      ? "कृपया अपना शहर दर्ज करें।"
+      : "Please enter your city.",
+
+    selectDate: isHindi
+      ? "कृपया पूजा की तारीख चुनें।"
+      : "Please select pooja date.",
+
+    selectTime: isHindi
+      ? "कृपया पसंदीदा समय चुनें।"
+      : "Please select preferred time.",
+  };
+
+  // =========================================================
+  // SUBMIT REQUEST
+  // =========================================================
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!pooja) {
-      alert("Pooja not found.");
+      alert(text.poojaNotFoundAlert);
       return;
     }
 
     if (!name.trim()) {
-      alert("Please enter your name.");
+      alert(text.enterName);
       return;
     }
 
     if (!/^[6-9]\d{9}$/.test(mobile)) {
-      alert("Please enter a valid 10 digit mobile number.");
+      alert(text.validMobile);
       return;
     }
 
     if (!city.trim()) {
-      alert("Please enter your city.");
+      alert(text.enterCity);
       return;
     }
 
     if (!date) {
-      alert("Please select pooja date.");
+      alert(text.selectDate);
       return;
     }
 
     if (!time) {
-      alert("Please select preferred time.");
+      alert(text.selectTime);
       return;
     }
 
     setLoading(true);
 
-    const bookingData = {
+    const formattedDate = new Date(
+      `${date}T00:00:00`
+    ).toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+
+    const requestData = {
       poojaSlug: pooja.slug,
       poojaName: pooja.name,
       icon: pooja.icon,
       duration: pooja.duration,
-      price: pooja.price,
+
+      startingPrice: pooja.price,
 
       customerName: name.trim(),
       mobile,
@@ -98,36 +276,68 @@ export default function PoojaBookingPage() {
       gotra: gotra.trim(),
       sankalp: sankalp.trim(),
 
-      paymentMethod,
+      requestType: "price-request",
+      requestStatus: "price-requested",
 
-      bookingStatus:
-        paymentMethod === "online"
-          ? "payment_pending"
-          : "contact_requested",
+      language,
 
       createdAt: new Date().toISOString(),
     };
 
     localStorage.setItem(
-      "ourhub-pooja-booking",
-      JSON.stringify(bookingData)
+      "ourhub-pooja-price-request",
+      JSON.stringify(requestData)
     );
 
     // =====================================================
-    // CONTACT ME FIRST
+    // WHATSAPP PRICE REQUEST
     // =====================================================
 
-    if (paymentMethod === "contact") {
-      const formattedDate = new Date(
-        `${date}T00:00:00`
-      ).toLocaleDateString("en-IN", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      });
+    const whatsappMessage = isHindi
+      ? `
+🙏 *OurHub Services - पूजा कीमत अनुरोध*
 
-      const whatsappMessage = `
-🙏 *OurHub Services - Pooja Booking Request*
+━━━━━━━━━━━━━━━━━━
+🪔 *पूजा की जानकारी*
+━━━━━━━━━━━━━━━━━━
+
+पूजा: ${pooja.name}
+अवधि: ${pooja.duration}
+शुरुआती कीमत: ₹${pooja.price.toLocaleString("en-IN")}
+
+⚠️ अंतिम कीमत पूजा की सामग्री, स्थान और आवश्यकताओं के अनुसार बताई जाएगी।
+
+━━━━━━━━━━━━━━━━━━
+👤 *ग्राहक की जानकारी*
+━━━━━━━━━━━━━━━━━━
+
+नाम: ${name.trim()}
+मोबाइल: +91 ${mobile}
+शहर: ${city.trim()}
+
+━━━━━━━━━━━━━━━━━━
+📅 *पूजा की जानकारी*
+━━━━━━━━━━━━━━━━━━
+
+तारीख: ${formattedDate}
+पसंदीदा समय: ${time}
+
+गोत्र: ${gotra.trim() || "उपलब्ध नहीं कराया गया"}
+
+संकल्प / विशेष अनुरोध:
+${sankalp.trim() || "उपलब्ध नहीं कराया गया"}
+
+━━━━━━━━━━━━━━━━━━
+💰 *कीमत अनुरोध*
+━━━━━━━━━━━━━━━━━━
+
+कृपया मेरी पूजा के लिए अंतिम कीमत और उपलब्धता की जानकारी साझा करें।
+
+धन्यवाद,
+*OurHub Services*
+      `.trim()
+      : `
+🙏 *OurHub Services - Pooja Price Request*
 
 ━━━━━━━━━━━━━━━━━━
 🪔 *POOJA DETAILS*
@@ -135,7 +345,9 @@ export default function PoojaBookingPage() {
 
 Pooja: ${pooja.name}
 Duration: ${pooja.duration}
-Amount: ₹${pooja.price.toLocaleString("en-IN")}
+Starting Price: ₹${pooja.price.toLocaleString("en-IN")}
+
+⚠️ Final price will be shared based on samagri, location and requirements.
 
 ━━━━━━━━━━━━━━━━━━
 👤 *CUSTOMER DETAILS*
@@ -146,7 +358,7 @@ Mobile: +91 ${mobile}
 City: ${city.trim()}
 
 ━━━━━━━━━━━━━━━━━━
-📅 *BOOKING DETAILS*
+📅 *POOJA DETAILS*
 ━━━━━━━━━━━━━━━━━━
 
 Date: ${formattedDate}
@@ -158,31 +370,20 @@ Sankalp / Special Request:
 ${sankalp.trim() || "Not provided"}
 
 ━━━━━━━━━━━━━━━━━━
-📞 *BOOKING PREFERENCE*
+💰 *PRICE REQUEST*
 ━━━━━━━━━━━━━━━━━━
 
-Contact Me First
-
-Please contact me to confirm the pooja booking and payment details.
+Please share the final price and availability for this pooja.
 
 Thank you,
 *OurHub Services*
       `.trim();
 
-      const whatsappUrl =
-        `https://wa.me/${OURHUB_WHATSAPP}` +
-        `?text=${encodeURIComponent(whatsappMessage)}`;
+    const whatsappUrl =
+      `https://wa.me/${OURHUB_WHATSAPP}` +
+      `?text=${encodeURIComponent(whatsappMessage)}`;
 
-      window.location.href = whatsappUrl;
-      return;
-    }
-
-    // =====================================================
-    // ONLINE PAYMENT
-    // =====================================================
-
-    // Payment page will read booking from localStorage.
-    router.push(`/pooja/online/${pooja.slug}/book/payment`);
+    window.location.href = whatsappUrl;
   };
 
   // =======================================================
@@ -198,11 +399,11 @@ Thank you,
           </div>
 
           <h1 className="mt-5 text-xl font-bold">
-            Pooja Not Found
+            {text.poojaNotFound}
           </h1>
 
           <p className="mt-2 text-sm text-gray-400">
-            The selected pooja is not available.
+            {text.poojaNotFoundDesc}
           </p>
 
           <button
@@ -210,7 +411,7 @@ Thank you,
             onClick={() => router.push("/pooja/online")}
             className="mt-6 rounded-xl bg-yellow-400 px-5 py-3 text-sm font-bold text-black"
           >
-            Back to Online Pooja
+            {text.backToOnlinePooja}
           </button>
         </div>
       </main>
@@ -233,7 +434,7 @@ Thank you,
 
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold">
-              Book Pooja
+              {text.bookPooja}
             </p>
 
             <p className="text-[10px] text-gray-500">
@@ -269,7 +470,7 @@ Thank you,
                   />
 
                   <span className="text-[9px] font-semibold text-yellow-400">
-                    Verified Pooja
+                    {text.verifiedPooja}
                   </span>
                 </div>
 
@@ -277,14 +478,15 @@ Thank you,
                   {pooja.name}
                 </h1>
 
-                <div className="mt-1 flex items-center gap-3 text-[10px] text-gray-400">
-                  <span className="flex items-center gap-1">
+                <div className="mt-2 flex flex-wrap items-center gap-2">
+                  <span className="flex items-center gap-1 text-[10px] text-gray-400">
                     <Clock3 size={12} />
                     {pooja.duration}
                   </span>
 
-                  <span className="font-bold text-yellow-400">
-                    ₹{pooja.price.toLocaleString("en-IN")}
+                  <span className="rounded-full bg-yellow-400/10 px-2 py-1 text-[9px] font-bold text-yellow-400">
+                    {text.startingFrom} ₹
+                    {pooja.price.toLocaleString("en-IN")}
                   </span>
                 </div>
               </div>
@@ -296,11 +498,11 @@ Thank you,
 
         <section className="px-4 pt-6">
           <h2 className="text-lg font-bold">
-            Your Details
+            {text.yourDetails}
           </h2>
 
           <p className="mt-1 text-[11px] text-gray-500">
-            Please provide your details for the pooja booking.
+            {text.detailsDesc}
           </p>
         </section>
 
@@ -308,7 +510,7 @@ Thank you,
 
         <section className="px-4 pt-4">
           <label className="mb-2 block text-xs font-semibold text-gray-300">
-            Full Name *
+            {text.fullName} *
           </label>
 
           <div className="flex h-12 items-center gap-3 rounded-xl border border-white/10 bg-[#0d1a28] px-3">
@@ -321,7 +523,7 @@ Thank you,
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Enter your full name"
+              placeholder={text.enterFullName}
               className="w-full bg-transparent text-sm text-white outline-none placeholder:text-gray-600"
             />
           </div>
@@ -331,7 +533,7 @@ Thank you,
 
         <section className="px-4 pt-4">
           <label className="mb-2 block text-xs font-semibold text-gray-300">
-            Mobile Number *
+            {text.mobileNumber} *
           </label>
 
           <div className="flex h-12 items-center gap-3 rounded-xl border border-white/10 bg-[#0d1a28] px-3">
@@ -356,7 +558,7 @@ Thank you,
                     .slice(0, 10)
                 )
               }
-              placeholder="10 digit mobile number"
+              placeholder={text.mobilePlaceholder}
               className="w-full bg-transparent text-sm text-white outline-none placeholder:text-gray-600"
             />
           </div>
@@ -366,7 +568,7 @@ Thank you,
 
         <section className="px-4 pt-4">
           <label className="mb-2 block text-xs font-semibold text-gray-300">
-            City *
+            {text.city} *
           </label>
 
           <div className="flex h-12 items-center gap-3 rounded-xl border border-white/10 bg-[#0d1a28] px-3">
@@ -379,7 +581,7 @@ Thank you,
               type="text"
               value={city}
               onChange={(e) => setCity(e.target.value)}
-              placeholder="Indore, Ujjain, Ratlam..."
+              placeholder={text.cityPlaceholder}
               className="w-full bg-transparent text-sm text-white outline-none placeholder:text-gray-600"
             />
           </div>
@@ -391,7 +593,7 @@ Thank you,
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="mb-2 block text-xs font-semibold text-gray-300">
-                Pooja Date *
+                {text.poojaDate} *
               </label>
 
               <div className="flex h-12 items-center gap-2 rounded-xl border border-white/10 bg-[#0d1a28] px-3">
@@ -412,7 +614,7 @@ Thank you,
 
             <div>
               <label className="mb-2 block text-xs font-semibold text-gray-300">
-                Preferred Time *
+                {text.preferredTime} *
               </label>
 
               <div className="flex h-12 items-center gap-2 rounded-xl border border-white/10 bg-[#0d1a28] px-3">
@@ -436,9 +638,10 @@ Thank you,
 
         <section className="px-4 pt-5">
           <label className="mb-2 block text-xs font-semibold text-gray-300">
-            Gotra
+            {text.gotra}
+
             <span className="ml-1 font-normal text-gray-600">
-              (Optional)
+              ({text.optional})
             </span>
           </label>
 
@@ -446,7 +649,7 @@ Thank you,
             type="text"
             value={gotra}
             onChange={(e) => setGotra(e.target.value)}
-            placeholder="Enter your gotra"
+            placeholder={text.gotraPlaceholder}
             className="h-12 w-full rounded-xl border border-white/10 bg-[#0d1a28] px-3 text-sm text-white outline-none placeholder:text-gray-600"
           />
         </section>
@@ -455,107 +658,54 @@ Thank you,
 
         <section className="px-4 pt-5">
           <label className="mb-2 block text-xs font-semibold text-gray-300">
-            Sankalp / Special Request
+            {text.sankalp}
+
             <span className="ml-1 font-normal text-gray-600">
-              (Optional)
+              ({text.optional})
             </span>
           </label>
 
           <textarea
             value={sankalp}
             onChange={(e) => setSankalp(e.target.value)}
-            placeholder="Example: family peace, business success, marriage..."
+            placeholder={text.sankalpPlaceholder}
             rows={4}
             className="w-full resize-none rounded-xl border border-white/10 bg-[#0d1a28] px-3 py-3 text-sm text-white outline-none placeholder:text-gray-600"
           />
         </section>
 
-        {/* PAYMENT OPTION */}
+        {/* REQUEST FOR PRICE */}
 
         <section className="px-4 pt-6">
-          <h2 className="text-sm font-bold">
-            Booking Preference
-          </h2>
-
-          <div className="mt-3 space-y-2">
-            <button
-              type="button"
-              onClick={() => setPaymentMethod("online")}
-              className={`flex w-full items-center gap-3 rounded-xl border p-3 text-left ${
-                paymentMethod === "online"
-                  ? "border-yellow-500/50 bg-yellow-500/10"
-                  : "border-white/10 bg-[#0d1a28]"
-              }`}
-            >
-              <div
-                className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${
-                  paymentMethod === "online"
-                    ? "border-yellow-400 bg-yellow-400"
-                    : "border-gray-600"
-                }`}
-              >
-                {paymentMethod === "online" && (
-                  <Check
-                    size={13}
-                    className="text-black"
-                  />
-                )}
+          <div className="rounded-2xl border border-yellow-500/20 bg-yellow-500/[0.06] p-4">
+            <div className="flex items-start gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-yellow-400/10">
+                <Phone
+                  size={18}
+                  className="text-yellow-400"
+                />
               </div>
 
               <div className="min-w-0 flex-1">
-                <p className="text-xs font-semibold">
-                  Pay Online
+                <p className="text-sm font-bold text-white">
+                  {text.requestPrice}
                 </p>
 
-                <p className="mt-1 text-[10px] text-gray-500">
-                  Secure online payment & instant booking
+                <p className="mt-1 text-[10px] leading-5 text-gray-400">
+                  {text.requestPriceDesc}
                 </p>
+
+                <div className="mt-3 flex items-center justify-between rounded-xl bg-[#0d1a28] px-3 py-2">
+                  <span className="text-[9px] text-gray-500">
+                    {text.startingPrice}
+                  </span>
+
+                  <span className="text-sm font-bold text-yellow-400">
+                    ₹{pooja.price.toLocaleString("en-IN")}
+                  </span>
+                </div>
               </div>
-
-              <span className="rounded-full bg-green-500/10 px-2 py-1 text-[8px] font-semibold text-green-400">
-                Recommended
-              </span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setPaymentMethod("contact")}
-              className={`flex w-full items-center gap-3 rounded-xl border p-3 text-left ${
-                paymentMethod === "contact"
-                  ? "border-yellow-500/50 bg-yellow-500/10"
-                  : "border-white/10 bg-[#0d1a28]"
-              }`}
-            >
-              <div
-                className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${
-                  paymentMethod === "contact"
-                    ? "border-yellow-400 bg-yellow-400"
-                    : "border-gray-600"
-                }`}
-              >
-                {paymentMethod === "contact" && (
-                  <Check
-                    size={13}
-                    className="text-black"
-                  />
-                )}
-              </div>
-
-              <div className="min-w-0 flex-1">
-                <p className="text-xs font-semibold">
-                  Contact Me First
-                </p>
-
-                <p className="mt-1 text-[10px] text-gray-500">
-                  Our team will call you to confirm details
-                </p>
-              </div>
-
-              <Phone
-                size={17}
-                className="text-yellow-400"
-              />
-            </button>
+            </div>
           </div>
         </section>
 
@@ -573,12 +723,11 @@ Thank you,
 
               <div>
                 <p className="text-xs font-semibold">
-                  Safe & Verified Booking
+                  {text.safeBooking}
                 </p>
 
                 <p className="mt-1 text-[10px] leading-5 text-gray-500">
-                  Your booking details are securely handled by
-                  OurHub Services.
+                  {text.safeBookingDesc}
                 </p>
               </div>
             </div>
@@ -591,7 +740,7 @@ Thank you,
                 />
 
                 <span className="text-[9px] text-gray-400">
-                  Live Pooja
+                  {text.livePooja}
                 </span>
               </div>
 
@@ -602,7 +751,7 @@ Thank you,
                 />
 
                 <span className="text-[9px] text-gray-400">
-                  Verified Pandit
+                  {text.verifiedPandit}
                 </span>
               </div>
             </div>
@@ -620,11 +769,11 @@ Thank you,
 
             <div className="min-w-0 flex-1">
               <p className="text-xs font-semibold">
-                Need help with booking?
+                {text.needHelp}
               </p>
 
               <p className="mt-1 text-[9px] text-gray-500">
-                Our team can help you choose the right pooja.
+                {text.helpDesc}
               </p>
             </div>
 
@@ -632,7 +781,7 @@ Thank you,
               href="tel:+918878632431"
               className="flex h-9 shrink-0 items-center justify-center rounded-lg bg-white/5 px-3 text-[10px] font-semibold text-yellow-400"
             >
-              Call
+              {text.call}
             </a>
           </div>
         </section>
@@ -643,7 +792,7 @@ Thank you,
           <div className="mx-auto flex w-full max-w-[360px] items-center gap-2">
             <div className="min-w-0 flex-1">
               <p className="text-[8px] text-gray-500">
-                Total Amount
+                {text.startingPrice}
               </p>
 
               <p className="mt-0.5 text-[17px] font-bold text-yellow-400">
@@ -654,16 +803,16 @@ Thank you,
             <button
               type="submit"
               disabled={loading}
-              className="flex h-10 min-w-[125px] items-center justify-center gap-1.5 rounded-xl bg-yellow-400 px-3 text-[12px] font-bold text-black shadow-lg disabled:opacity-60"
+              className="flex h-10 min-w-[150px] items-center justify-center gap-1.5 rounded-xl bg-yellow-400 px-3 text-[11px] font-bold text-black shadow-lg disabled:opacity-60"
             >
               {loading ? (
                 <>
                   <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-black/30 border-t-black" />
-                  Please wait...
+                  {text.pleaseWait}
                 </>
               ) : (
                 <>
-                  Continue
+                  {text.requestNow}
                   <ChevronRight size={15} />
                 </>
               )}

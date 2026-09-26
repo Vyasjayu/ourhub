@@ -1,6 +1,6 @@
 export const allPoojas = [
   {
-    id: 1,
+    id: 1100,
     name: "Ganesh Pooja",
     image: "/images/pooja/ganesh.jpg",
     category: "God Pooja",

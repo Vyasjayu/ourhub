@@ -12,7 +12,7 @@ export const poojas: Pooja[] = [
     slug: "ganesh-pooja",
     name: "Ganesh Pooja",
     icon: "🙏",
-    price: 1,
+    price: 1100,
     duration: "60 Minutes",
     description:
       "Bhagwan Ganesh ki pooja se vighna door hote hain aur naye kaaryon mein safalta ka aashirwad milta hai.",
